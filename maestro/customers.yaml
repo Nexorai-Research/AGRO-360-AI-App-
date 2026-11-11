@@ -1,0 +1,18 @@
+# Customer search and customer 360. NOT RUN: needs an emulator or phone, the staging backend and a signed-in test user.
+# Run: maestro test -e CUSTOMER_NAME="<a customer name in your franchise>" maestro/customers.yaml
+appId: com.agro360.app
+---
+- launchApp
+- openLink: agro360://customers
+- assertVisible: "Customers"
+- tapOn: "Search name, mobile, village, code"
+- inputText: ${CUSTOMER_NAME}
+- hideKeyboard
+- assertVisible: ${CUSTOMER_NAME}
+- tapOn: ${CUSTOMER_NAME}
+- assertVisible: "Recent purchases"
+- assertVisible: "Purchases by season"
+- scrollUntilVisible:
+    element: "Ledger"
+- back
+- assertVisible: "Search name, mobile, village, code"

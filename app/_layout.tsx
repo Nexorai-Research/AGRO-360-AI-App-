@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { makeQueryClient } from '@/api/queryClient';
 import { AuthProvider, useAuth } from '@/auth/AuthProvider';
 import { initI18n } from '@/i18n';
 
-const queryClient = new QueryClient();
+const queryClient = makeQueryClient();
 void initI18n(); // picks the saved language, else the phone language, else English
 
 function Gate() {
