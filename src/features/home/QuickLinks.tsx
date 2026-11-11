@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 
 const LINKS = [
+  ['nav.pos', '/pos'],
   ['nav.stock', '/stock'],
   ['nav.customers', '/customers'],
   ['nav.collections', '/collections'],
