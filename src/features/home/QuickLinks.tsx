@@ -5,6 +5,8 @@ import { Button } from '@/ui/Button';
 
 const LINKS = [
   ['nav.pos', '/pos'],
+  ['nav.invoices', '/invoices'],
+  ['nav.shifts', '/shifts'],
   ['nav.stock', '/stock'],
   ['nav.customers', '/customers'],
   ['nav.collections', '/collections'],
