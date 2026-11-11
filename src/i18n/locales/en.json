@@ -1,0 +1,28 @@
+{
+  "app": { "name": "AGRO 360 AI" },
+  "login": {
+    "title": "Sign in",
+    "button": "Sign in",
+    "hint": "Use your login as <username>@<franchise code>",
+    "notConfigured": "This build has no server address set. Ask your administrator."
+  },
+  "home": { "hello": "Hello, {{name}}", "permissions": "Your permissions", "signOut": "Sign out" },
+  "common": { "loading": "Loading...", "retry": "Try again", "language": "Language" },
+  "errors": {
+    "generic": "Something went wrong. Code {{code}}, reference {{correlationId}}.",
+    "NETWORK": "No network. Check your connection and try again.",
+    "UNAUTHENTICATED": "You are signed out. Please sign in again.",
+    "FORBIDDEN": "You are not allowed to do this.",
+    "FRESH_AUTH_REQUIRED": "Please enter your password again to continue.",
+    "NOT_FOUND": "Not found.",
+    "VALIDATION": "Some details are not valid.",
+    "VALIDATION_FAILED": "Some details are not valid.",
+    "VERSION_CONFLICT": "Changed by someone else. Reload and try again.",
+    "PRICE_LOCKED": "This price is locked and cannot be changed.",
+    "STOCK_FROZEN": "Stock is frozen for counting. Try later.",
+    "CREDIT_LIMIT_EXCEEDED": "Credit limit exceeded for this customer.",
+    "INSUFFICIENT_STOCK": "Not enough stock.",
+    "BATCH_REQUIRED": "A batch is required for this item.",
+    "EXPIRY_REQUIRED": "An expiry date is required for this item."
+  }
+}

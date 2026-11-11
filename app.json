@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "AGRO 360 AI",
+    "slug": "agro360-app",
+    "scheme": "agro360",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-localization",
+      ["expo-splash-screen", { "image": "./assets/splash-icon.png", "imageWidth": 220, "backgroundColor": "#ffffff" }]
+    ],
+    "experiments": { "typedRoutes": true },
+    "android": {
+      "package": "com.agro360.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "ios": { "bundleIdentifier": "com.agro360.app", "supportsTablet": true },
+    "web": { "favicon": "./assets/favicon.png" },
+    "extra": { "appEnv": "dev" }
+  }
+}
