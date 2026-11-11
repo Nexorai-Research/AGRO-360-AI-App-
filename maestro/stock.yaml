@@ -1,0 +1,17 @@
+# Stock check main flow. NOT RUN yet: needs a device or emulator with the app installed and a signed-in test user.
+appId: com.agro360.app
+---
+- launchApp
+- openLink: agro360://stock
+- assertVisible: 'Stock check'
+- tapOn: 'Search product code or name'
+- inputText: 'urea'
+- hideKeyboard
+- tapOn: 'Batches and expiry'
+- tapOn: 'Expiring in 60 days'
+- assertVisible: 'Batches and expiry'
+- tapOn: 'Stock'
+- tapOn: 'Scan'
+- assertVisible: 'Scan a product barcode'
+- tapOn: 'Close'
+- assertVisible: 'Stock check'
