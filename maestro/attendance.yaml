@@ -1,0 +1,17 @@
+# Attendance main flow. NOT RUN: needs a build on a device or emulator, the staging backend and a signed-in test user
+# who is linked to an employee record and has the permission hr.attendance.self.
+# Start with the app signed in and the attendance screen open (route /attendance). Location permission dialog is the phone's own.
+appId: com.agro360.app
+---
+- launchApp
+- openLink: agro360://attendance
+- assertVisible: "My attendance"
+- assertVisible: "You have not checked in today."
+- tapOn: "Check in"
+- assertVisible: "Checked in at.*"
+- tapOn: "Check out"
+- assertVisible: "Done for today"
+- scrollUntilVisible:
+    element: "Last 30 days"
+# language switch is on the home screen; here check the Hindi title after switching there
+- stopApp

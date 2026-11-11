@@ -1,0 +1,21 @@
+# Home dashboard main flow. NOT RUN: needs a build on a device or emulator, the staging backend and a signed-in test user.
+# Start with the app already signed in (sign in once by hand; the Keycloak page is in the system browser and is not scripted here).
+appId: com.agro360.app
+---
+- launchApp
+- assertVisible: "Today at your shop"
+- assertVisible: "Today's sales"
+- scrollUntilVisible:
+    element: "Sales, last 14 days"
+- scrollUntilVisible:
+    element: "Profile"
+# pull to refresh
+- scroll
+- swipe:
+    direction: DOWN
+- assertVisible: "Today at your shop"
+# language switch
+- tapOn: "हिन्दी"
+- assertVisible: "आज आपकी दुकान पर"
+- tapOn: "English"
+- assertVisible: "Today at your shop"

@@ -1,0 +1,8 @@
+node_modules
+.expo
+dist
+src/api/schema.d.ts
+src/i18n/locales
+*.md
+package-lock.json
+.claude
