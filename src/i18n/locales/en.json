@@ -1,13 +1,23 @@
 {
-  "app": { "name": "AGRO 360 AI" },
+  "app": {
+    "name": "AGRO 360 AI"
+  },
   "login": {
     "title": "Sign in",
     "button": "Sign in",
     "hint": "Use your login as <username>@<franchise code>",
     "notConfigured": "This build has no server address set. Ask your administrator."
   },
-  "home": { "hello": "Hello, {{name}}", "permissions": "Your permissions", "signOut": "Sign out" },
-  "common": { "loading": "Loading...", "retry": "Try again", "language": "Language" },
+  "home": {
+    "hello": "Hello, {{name}}",
+    "permissions": "Your permissions",
+    "signOut": "Sign out"
+  },
+  "common": {
+    "loading": "Loading...",
+    "retry": "Try again",
+    "language": "Language"
+  },
   "errors": {
     "generic": "Something went wrong. Code {{code}}, reference {{correlationId}}.",
     "NETWORK": "No network. Check your connection and try again.",
@@ -24,5 +34,41 @@
     "INSUFFICIENT_STOCK": "Not enough stock.",
     "BATCH_REQUIRED": "A batch is required for this item.",
     "EXPIRY_REQUIRED": "An expiry date is required for this item."
+  },
+  "stock": {
+    "title": "Stock check",
+    "tabStock": "Stock",
+    "tabBatches": "Batches and expiry",
+    "search": "Search product code or name",
+    "allBranches": "All branches",
+    "allWarehouses": "All warehouses",
+    "onHand": "On hand",
+    "reserved": "Reserved",
+    "available": "Available",
+    "inTransit": "In transit",
+    "value": "Value",
+    "valueAtRisk": "Value at risk",
+    "batch": "Batch",
+    "notSellable": "not sellable",
+    "expiredAgo": "Expired {{days}} days ago ({{date}})",
+    "expiresIn": "Expires in {{days}} days ({{date}})",
+    "expiresOn": "Expiry {{date}}",
+    "viewWithStock": "With stock",
+    "viewExpiring": "Expiring in 60 days",
+    "viewExpired": "Expired",
+    "empty": "No stock found. Change the search or the branch.",
+    "emptyBatches": "No batches in this list.",
+    "denied": "You do not have permission to see stock.",
+    "offline": "No network and nothing saved yet. Connect and try again.",
+    "staleBanner": "No network. These figures are saved from {{time}} and may be out of date.",
+    "asOf": "as of {{time}}",
+    "total": "{{count}} rows",
+    "scan": "Scan",
+    "scanTitle": "Scan a product barcode",
+    "scanHint": "Camera access is needed to scan barcodes.",
+    "cameraDenied": "Camera access is blocked. Allow it in the phone settings to scan.",
+    "grantCamera": "Allow camera",
+    "barcodeNotFound": "No product has the barcode {{code}}.",
+    "close": "Close"
   }
 }
