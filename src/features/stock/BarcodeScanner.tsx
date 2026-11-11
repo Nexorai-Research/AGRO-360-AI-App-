@@ -5,7 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../ui/Button';
 
 /** Full-screen camera that reports the first barcode it reads, once. Asks for camera permission and explains a refusal. */
-export function BarcodeScanner({ visible, onScanned, onClose }: { visible: boolean; onScanned: (code: string) => void; onClose: () => void }) {
+export function BarcodeScanner({
+  visible,
+  onScanned,
+  onClose,
+}: {
+  visible: boolean;
+  onScanned: (code: string) => void;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const [permission, requestPermission] = useCameraPermissions();
   const done = useRef(false);
@@ -19,7 +27,9 @@ export function BarcodeScanner({ visible, onScanned, onClose }: { visible: boole
           <CameraView
             style={s.camera}
             facing="back"
-            barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'] }}
+            barcodeScannerSettings={{
+              barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'],
+            }}
             onBarcodeScanned={({ data }) => {
               if (done.current || !data) return;
               done.current = true;
@@ -28,8 +38,12 @@ export function BarcodeScanner({ visible, onScanned, onClose }: { visible: boole
           />
         ) : (
           <View style={s.ask}>
-            <Text style={s.txt}>{permission && !permission.canAskAgain ? t('stock.cameraDenied') : t('stock.scanHint')}</Text>
-            {permission?.canAskAgain !== false ? <Button label={t('stock.grantCamera')} onPress={() => void requestPermission()} /> : null}
+            <Text style={s.txt}>
+              {permission && !permission.canAskAgain ? t('stock.cameraDenied') : t('stock.scanHint')}
+            </Text>
+            {permission?.canAskAgain !== false ? (
+              <Button label={t('stock.grantCamera')} onPress={() => void requestPermission()} />
+            ) : null}
           </View>
         )}
         <View style={s.bar}>

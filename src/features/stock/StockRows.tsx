@@ -10,14 +10,20 @@ import type { BatchRow, StockRow } from './types';
 export function ExpiryBadge({ days, date }: { days: number | null; date: string | null }) {
   const { t } = useTranslation();
   const level = expiryLevel(days);
-  if (level === 'none' || days === null) return date ? <Text style={s.muted}>{t('stock.expiresOn', { date })}</Text> : null;
+  if (level === 'none' || days === null)
+    return date ? <Text style={s.muted}>{t('stock.expiresOn', { date })}</Text> : null;
   const text =
     level === 'expired'
       ? t('stock.expiredAgo', { days: Math.abs(days), date })
       : t('stock.expiresIn', { days, date });
   return (
-    <View style={[s.badge, level === 'expired' ? s.expired : level === 'soon' ? s.soon : s.ok]} testID={`expiry-${level}`}>
-      <Text style={[s.badgeTxt, level === 'expired' ? s.expiredTxt : level === 'soon' ? s.soonTxt : s.okTxt]}>{text}</Text>
+    <View
+      style={[s.badge, level === 'expired' ? s.expired : level === 'soon' ? s.soon : s.ok]}
+      testID={`expiry-${level}`}
+    >
+      <Text style={[s.badgeTxt, level === 'expired' ? s.expiredTxt : level === 'soon' ? s.soonTxt : s.okTxt]}>
+        {text}
+      </Text>
     </View>
   );
 }
@@ -34,7 +40,11 @@ function Qty({ label, value, strong }: { label: string; value: string; strong?: 
 export const StockItem = memo(function StockItem({ row }: { row: StockRow }) {
   const { t } = useTranslation();
   return (
-    <View style={s.card} accessible accessibilityLabel={`${row.skuName}, ${t('stock.available')} ${formatQty(row.available)}`}>
+    <View
+      style={s.card}
+      accessible
+      accessibilityLabel={`${row.skuName}, ${t('stock.available')} ${formatQty(row.available)}`}
+    >
       <Text style={s.name}>{row.skuName}</Text>
       <Text style={s.muted}>
         {row.skuCode} · {row.branchName} / {row.warehouseCode}
@@ -42,7 +52,9 @@ export const StockItem = memo(function StockItem({ row }: { row: StockRow }) {
       </Text>
       {row.batchNo ? (
         <View style={s.batchRow}>
-          <Text style={s.muted}>{t('stock.batch')} {row.batchNo}</Text>
+          <Text style={s.muted}>
+            {t('stock.batch')} {row.batchNo}
+          </Text>
           <ExpiryBadge days={row.daysToExpiry} date={row.expiryDate} />
         </View>
       ) : null}
@@ -52,7 +64,11 @@ export const StockItem = memo(function StockItem({ row }: { row: StockRow }) {
         <Qty label={t('stock.available')} value={formatQty(row.available)} strong />
         {hasQty(row.inTransit) ? <Qty label={t('stock.inTransit')} value={formatQty(row.inTransit)} /> : null}
       </View>
-      {row.value !== null ? <Text style={s.muted}>{t('stock.value')}: {formatINR(row.value)}</Text> : null}
+      {row.value !== null ? (
+        <Text style={s.muted}>
+          {t('stock.value')}: {formatINR(row.value)}
+        </Text>
+      ) : null}
     </View>
   );
 });
@@ -70,13 +86,25 @@ export const BatchItem = memo(function BatchItem({ row }: { row: BatchRow }) {
         <Qty label={t('stock.onHand')} value={formatQty(row.onHand)} />
         <Qty label={t('stock.available')} value={formatQty(row.available)} strong />
       </View>
-      {row.valueAtRisk !== null ? <Text style={s.muted}>{t('stock.valueAtRisk')}: {formatINR(row.valueAtRisk)}</Text> : null}
+      {row.valueAtRisk !== null ? (
+        <Text style={s.muted}>
+          {t('stock.valueAtRisk')}: {formatINR(row.valueAtRisk)}
+        </Text>
+      ) : null}
     </View>
   );
 });
 
 const s = StyleSheet.create({
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 6, marginBottom: 10 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 14,
+    gap: 6,
+    marginBottom: 10,
+  },
   name: { fontSize: 16, fontWeight: '600', color: colors.ink },
   muted: { color: colors.muted, fontSize: 13 },
   batchRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center' },

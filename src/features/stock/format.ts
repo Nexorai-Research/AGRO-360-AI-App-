@@ -15,4 +15,5 @@ export function formatQty(q: string | null | undefined): string {
   return dec(q).toDecimalPlaces(3).toFixed();
 }
 
-export const hasQty = (q: string | null | undefined) => q !== null && q !== undefined && q !== '' && !dec(q).isZero();
+export const hasQty = (q: string | null | undefined) =>
+  q !== null && q !== undefined && q !== '' && !dec(q).isZero();

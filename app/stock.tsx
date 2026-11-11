@@ -16,7 +16,12 @@ type Tab = 'stock' | 'batches';
 
 function Chip({ label, on, onPress }: { label: string; on: boolean; onPress: () => void }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected: on }} onPress={onPress} style={[s.chip, on && s.chipOn]}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected: on }}
+      onPress={onPress}
+      style={[s.chip, on && s.chipOn]}
+    >
       <Text style={[s.chipTxt, on && s.chipTxtOn]}>{label}</Text>
     </Pressable>
   );
@@ -40,7 +45,11 @@ export default function StockScreen() {
   const branches = useBranches(client);
   const warehouses = useWarehouses(client, branch);
 
-  const stock = useStock(client, { q: q || undefined, branch, warehouse, product: product?.id }, tab === 'stock');
+  const stock = useStock(
+    client,
+    { q: q || undefined, branch, warehouse, product: product?.id },
+    tab === 'stock',
+  );
   const batches = useBatches(client, view, { warehouse, product: product?.id }, tab === 'batches');
   const active = tab === 'stock' ? stock : batches;
 
@@ -60,7 +69,11 @@ export default function StockScreen() {
         setProduct({ id: hit.id, name: `${hit.name} (${hit.code})` });
       } catch (e) {
         const m = errorMessage(e);
-        setScanError(e instanceof ApiError && e.status === 404 ? t('stock.barcodeNotFound', { code }) : t(m.key, m.params));
+        setScanError(
+          e instanceof ApiError && e.status === 404
+            ? t('stock.barcodeNotFound', { code })
+            : t(m.key, m.params),
+        );
       }
     },
     [client, t],
@@ -82,7 +95,11 @@ export default function StockScreen() {
     ) : offline ? (
       <StateView state="offline" onRetry={() => void active.refetch()} />
     ) : (
-      <StateView state="error" message={m ? t(m.key, m.params) : undefined} onRetry={() => void active.refetch()} />
+      <StateView
+        state="error"
+        message={m ? t(m.key, m.params) : undefined}
+        onRetry={() => void active.refetch()}
+      />
     );
   } else {
     body = (
@@ -111,7 +128,11 @@ export default function StockScreen() {
             ) : null}
           </View>
         }
-        ListEmptyComponent={hasData ? <StateView state="empty" message={tab === 'batches' ? t('stock.emptyBatches') : undefined} /> : undefined}
+        ListEmptyComponent={
+          hasData ? (
+            <StateView state="empty" message={tab === 'batches' ? t('stock.emptyBatches') : undefined} />
+          ) : undefined
+        }
         ListFooterComponent={
           <View>
             {active.isFetchingNextPage ? <Text style={s.foot}>{t('common.loading')}</Text> : null}
@@ -165,17 +186,34 @@ export default function StockScreen() {
 
       {tab === 'batches' ? (
         <View style={s.row}>
-          <Chip label={t('stock.viewWithStock')} on={view === 'withStock'} onPress={() => setView('withStock')} />
-          <Chip label={t('stock.viewExpiring')} on={view === 'expiring'} onPress={() => setView('expiring')} />
+          <Chip
+            label={t('stock.viewWithStock')}
+            on={view === 'withStock'}
+            onPress={() => setView('withStock')}
+          />
+          <Chip
+            label={t('stock.viewExpiring')}
+            on={view === 'expiring'}
+            onPress={() => setView('expiring')}
+          />
           <Chip label={t('stock.viewExpired')} on={view === 'expired'} onPress={() => setView('expired')} />
         </View>
       ) : null}
 
       {tab === 'stock' && branches.data && branches.data.length > 1 ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.row}>
-          <Chip label={t('stock.allBranches')} on={!branch} onPress={() => (setBranch(undefined), setWarehouse(undefined))} />
+          <Chip
+            label={t('stock.allBranches')}
+            on={!branch}
+            onPress={() => (setBranch(undefined), setWarehouse(undefined))}
+          />
           {branches.data.map((b) => (
-            <Chip key={b.id} label={b.name} on={branch === b.id} onPress={() => (setBranch(b.id), setWarehouse(undefined))} />
+            <Chip
+              key={b.id}
+              label={b.name}
+              on={branch === b.id}
+              onPress={() => (setBranch(b.id), setWarehouse(undefined))}
+            />
           ))}
         </ScrollView>
       ) : null}
@@ -190,7 +228,11 @@ export default function StockScreen() {
 
       <View style={s.body}>{body}</View>
 
-      <BarcodeScanner visible={scanning} onScanned={(c) => void onScanned(c)} onClose={() => setScanning(false)} />
+      <BarcodeScanner
+        visible={scanning}
+        onScanned={(c) => void onScanned(c)}
+        onClose={() => setScanning(false)}
+      />
     </View>
   );
 }
@@ -200,8 +242,26 @@ const s = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '700', color: colors.ink },
   row: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
   searchRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
-  input: { flex: 1, minHeight: 48, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', paddingHorizontal: 14, fontSize: 16, color: colors.ink },
-  chip: { minHeight: 44, paddingHorizontal: 14, justifyContent: 'center', borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card },
+  input: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: '#fff',
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: colors.ink,
+  },
+  chip: {
+    minHeight: 44,
+    paddingHorizontal: 14,
+    justifyContent: 'center',
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { color: colors.ink, fontSize: 15 },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },

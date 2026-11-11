@@ -20,10 +20,21 @@ jest.mock('expo-web-browser', () => ({
   openAuthSessionAsync: (...a: unknown[]) => mockOpenAuth(...(a as [])),
 }));
 jest.mock('../src/config', () => ({
-  config: { env: 'dev', apiBaseUrl: 'https://api.test/api/v1', oidcIssuer: 'https://kc.test/realms/agro360', oidcClientId: 'agro360-mobile', redirectScheme: 'agro360' },
+  config: {
+    env: 'dev',
+    apiBaseUrl: 'https://api.test/api/v1',
+    oidcIssuer: 'https://kc.test/realms/agro360',
+    oidcClientId: 'agro360-mobile',
+    redirectScheme: 'agro360',
+  },
 }));
 
-const resp = (access: string, refresh = 'r2', expiresIn = 300) => ({ accessToken: access, refreshToken: refresh, idToken: 'id1', expiresIn });
+const resp = (access: string, refresh = 'r2', expiresIn = 300) => ({
+  accessToken: access,
+  refreshToken: refresh,
+  idToken: 'id1',
+  expiresIn,
+});
 
 async function signedIn() {
   mockPrompt.mockResolvedValueOnce({ type: 'success', params: { code: 'abc' } });
@@ -39,7 +50,9 @@ beforeEach(async () => {
 describe('auth', () => {
   it('signs in with PKCE, passes the code verifier and keeps tokens only in secure storage', async () => {
     await signedIn();
-    const call = mockExchange.mock.calls[0] as [{ code: string; extraParams: Record<string, string>; clientId: string }];
+    const call = mockExchange.mock.calls[0] as [
+      { code: string; extraParams: Record<string, string>; clientId: string },
+    ];
     expect(call[0].code).toBe('abc');
     expect(call[0].extraParams.code_verifier).toBe('verifier');
     expect(call[0].clientId).toBe('agro360-mobile');

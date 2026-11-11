@@ -1,6 +1,7 @@
 
 *.aab
 *.apk
+.claude/
 coverage/
 dist/
 .DS_Store

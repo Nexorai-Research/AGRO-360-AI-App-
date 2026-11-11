@@ -6,7 +6,8 @@ import { fetchBatches, fetchBranches, fetchStock, fetchWarehouses, type StockFil
 import type { BatchView, Page } from './types';
 
 // A 4xx answer (no permission, not found) will not get better by asking again; only a network or server fault is retried, once.
-const retry = (n: number, e: unknown) => !(e instanceof ApiError && e.status >= 400 && e.status < 500) && n < 1;
+const retry = (n: number, e: unknown) =>
+  !(e instanceof ApiError && e.status >= 400 && e.status < 500) && n < 1;
 
 const nextOffset = <T>(last: Page<T>, all: Page<T>[]) => {
   const loaded = all.reduce((n, p) => n + p.items.length, 0);

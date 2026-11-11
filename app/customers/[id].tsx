@@ -52,19 +52,33 @@ function Header({
         <Field label={t('customers.code')} value={p.code} />
         <Field label={t('customers.mobile')} value={p.mobile} />
         <Field label={t('customers.altMobile')} value={p.altMobile} />
-        <Field label={t('customers.village')} value={[p.village, p.taluka, p.district].filter(Boolean).join(', ')} />
+        <Field
+          label={t('customers.village')}
+          value={[p.village, p.taluka, p.district].filter(Boolean).join(', ')}
+        />
         <Field label={t('customers.category')} value={p.categoryName} />
         <Field label={t('customers.gstin')} value={p.gstin} />
-        <Field label={t('customers.status.label')} value={t(`customers.status.${p.status}`, { defaultValue: p.status })} />
+        <Field
+          label={t('customers.status.label')}
+          value={t(`customers.status.${p.status}`, { defaultValue: p.status })}
+        />
         {p.mobile ? (
-          <Button label={`${t('customers.call')} ${p.mobile}`} onPress={() => void Linking.openURL(`tel:${p.mobile}`)} />
+          <Button
+            label={`${t('customers.call')} ${p.mobile}`}
+            onPress={() => void Linking.openURL(`tel:${p.mobile}`)}
+          />
         ) : null}
       </Card>
 
       <Card title={t('customers.credit')}>
         {cr ? (
           <>
-            {cr.hold ? <Text style={s.hold}>{t('customers.creditHold')}{cr.holdReason ? `: ${cr.holdReason}` : ''}</Text> : null}
+            {cr.hold ? (
+              <Text style={s.hold}>
+                {t('customers.creditHold')}
+                {cr.holdReason ? `: ${cr.holdReason}` : ''}
+              </Text>
+            ) : null}
             <Field label={t('customers.creditLimit')} value={formatINR(cr.creditLimit)} />
             <Field label={t('customers.outstanding')} value={formatINR(cr.outstanding)} />
             <Field label={t('customers.available')} value={formatINR(cr.available)} />
@@ -95,14 +109,20 @@ function Header({
             <Text style={s.muted}>
               {l.number} · {fmtDate(l.d)} · {l.qty} × {formatINR(l.unit_price)} = {formatINR(l.line_total)}
             </Text>
-            {!dec(l.returned).isZero() ? <Text style={s.warn}>{t('customers.returned', { qty: l.returned })}</Text> : null}
+            {!dec(l.returned).isZero() ? (
+              <Text style={s.warn}>{t('customers.returned', { qty: l.returned })}</Text>
+            ) : null}
           </View>
         ))}
       </Card>
 
       {canLedger ? (
         <Card title={t('customers.ledger')}>
-          {ledgerOpen ? ledgerState : <Button kind="ghost" label={t('customers.showLedger')} onPress={onShowLedger} />}
+          {ledgerOpen ? (
+            ledgerState
+          ) : (
+            <Button kind="ghost" label={t('customers.showLedger')} onPress={onShowLedger} />
+          )}
         </Card>
       ) : null}
     </View>
@@ -117,7 +137,9 @@ function LedgerRow({ e }: { e: LedgerEntry }) {
         <Text style={s.muted}>{e.purpose || e.sourceType}</Text>
       </View>
       <View style={s.ledgerR}>
-        <Text style={s.fv}>{dec(e.debit).isZero() ? `- ${formatINR(e.credit)}` : `+ ${formatINR(e.debit)}`}</Text>
+        <Text style={s.fv}>
+          {dec(e.debit).isZero() ? `- ${formatINR(e.credit)}` : `+ ${formatINR(e.debit)}`}
+        </Text>
         <Text style={s.muted}>{formatINR(e.balance)}</Text>
       </View>
     </View>
@@ -139,7 +161,8 @@ export default function Customer360Screen() {
   let body: React.ReactNode;
   if (!allowed || (q.isError && isDenied(q.error))) body = <StateView kind="denied" />;
   else if (q.isPending) body = <StateView kind="loading" />;
-  else if (q.isError && !q.data) body = <StateView kind="error" error={q.error} onRetry={() => void q.refetch()} />;
+  else if (q.isError && !q.data)
+    body = <StateView kind="error" error={q.error} onRetry={() => void q.refetch()} />;
   else if (q.data) {
     const ledgerState = ledger.isPending ? (
       <StateView kind="loading" />
@@ -190,7 +213,9 @@ export default function Customer360Screen() {
       <Stack.Screen options={{ headerShown: true, title }} />
       {body}
       {q.isFetching && q.data ? <Text style={s.refresh}>{t('common.loading')}</Text> : null}
-      {ledger.isError && !isDenied(ledger.error) && ledger.data ? <Text style={s.warn}>{errText(ledger.error)}</Text> : null}
+      {ledger.isError && !isDenied(ledger.error) && ledger.data ? (
+        <Text style={s.warn}>{errText(ledger.error)}</Text>
+      ) : null}
     </View>
   );
 }
@@ -199,7 +224,14 @@ const s = StyleSheet.create({
   wrap: { flex: 1, backgroundColor: colors.bg },
   list: { padding: 16, paddingBottom: 32 },
   header: { gap: 12, marginBottom: 12 },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 6 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 14,
+    gap: 6,
+  },
   h: { fontSize: 18, fontWeight: '700', color: colors.ink, marginBottom: 4 },
   field: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
   fl: { color: colors.muted, fontSize: 14 },
@@ -209,7 +241,15 @@ const s = StyleSheet.create({
   hold: { color: colors.danger, fontWeight: '600' },
   line: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 2 },
   purchase: { paddingVertical: 6, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line },
-  ledgerRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, paddingHorizontal: 14, backgroundColor: colors.card, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
+  ledgerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    backgroundColor: colors.card,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
+  },
   ledgerL: { flex: 1 },
   ledgerR: { alignItems: 'flex-end' },
   refresh: { position: 'absolute', bottom: 8, alignSelf: 'center', color: colors.muted, fontSize: 12 },

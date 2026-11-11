@@ -25,7 +25,9 @@ export const emptyDraft: ReceiptDraft = {
 
 export type DraftField = keyof ReceiptDraft;
 /** Error ids map to i18n keys `collections.v.<id>`. */
-export type DraftErrors = Partial<Record<DraftField, 'required' | 'amountFormat' | 'amountPositive' | 'amountTooBig' | 'chequeDate'>>;
+export type DraftErrors = Partial<
+  Record<DraftField, 'required' | 'amountFormat' | 'amountPositive' | 'amountTooBig' | 'chequeDate'>
+>;
 
 const MAX = '999999999999'; // same limit as the server (parseReceipt)
 const AMOUNT_RE = /^\d+(\.\d{1,2})?$/;

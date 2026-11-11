@@ -21,9 +21,7 @@ function Row({ c, onOpen }: { c: CustomerSummary; onOpen: () => void }) {
         style={s.rowMain}
       >
         <Text style={s.name}>{c.name}</Text>
-        <Text style={s.meta}>
-          {[c.code, c.village, c.categoryName].filter(Boolean).join(' · ')}
-        </Text>
+        <Text style={s.meta}>{[c.code, c.village, c.categoryName].filter(Boolean).join(' · ')}</Text>
         <View style={s.badges}>
           <Text style={[s.badge, c.status !== 'ACTIVE' && s.badgeOff]}>
             {t(`customers.status.${c.status}`, { defaultValue: c.status })}
@@ -56,39 +54,45 @@ export default function CustomersScreen() {
   const query = useCustomerSearch(q, limit, allowed);
 
   const data = query.data;
-  const body = !allowed || (query.isError && isDenied(query.error)) ? (
-    <StateView kind="denied" />
-  ) : query.isPending ? (
-    <StateView kind="loading" />
-  ) : query.isError && !data ? (
-    <StateView kind="error" error={query.error} onRetry={() => void query.refetch()} />
-  ) : (
-    <FlatList
-      data={data}
-      keyExtractor={(c) => c.id}
-      renderItem={({ item }) => (
-        <Row c={item} onOpen={() => router.push({ pathname: '/customers/[id]', params: { id: item.id } })} />
-      )}
-      initialNumToRender={12}
-      windowSize={7}
-      keyboardShouldPersistTaps="handled"
-      ListHeaderComponent={
-        query.isError && query.dataUpdatedAt ? <StaleBanner error={query.error} updatedAt={query.dataUpdatedAt} /> : undefined
-      }
-      ListEmptyComponent={<StateView kind="empty" />}
-      ListFooterComponent={
-        data && data.length >= limit && limit < MAX_LIMIT ? (
-          <Button
-            kind="ghost"
-            label={t('customers.loadMore')}
-            disabled={query.isFetching}
-            onPress={() => setLimit((l) => Math.min(l + PAGE, MAX_LIMIT))}
+  const body =
+    !allowed || (query.isError && isDenied(query.error)) ? (
+      <StateView kind="denied" />
+    ) : query.isPending ? (
+      <StateView kind="loading" />
+    ) : query.isError && !data ? (
+      <StateView kind="error" error={query.error} onRetry={() => void query.refetch()} />
+    ) : (
+      <FlatList
+        data={data}
+        keyExtractor={(c) => c.id}
+        renderItem={({ item }) => (
+          <Row
+            c={item}
+            onOpen={() => router.push({ pathname: '/customers/[id]', params: { id: item.id } })}
           />
-        ) : undefined
-      }
-      contentContainerStyle={s.list}
-    />
-  );
+        )}
+        initialNumToRender={12}
+        windowSize={7}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={
+          query.isError && query.dataUpdatedAt ? (
+            <StaleBanner error={query.error} updatedAt={query.dataUpdatedAt} />
+          ) : undefined
+        }
+        ListEmptyComponent={<StateView kind="empty" />}
+        ListFooterComponent={
+          data && data.length >= limit && limit < MAX_LIMIT ? (
+            <Button
+              kind="ghost"
+              label={t('customers.loadMore')}
+              disabled={query.isFetching}
+              onPress={() => setLimit((l) => Math.min(l + PAGE, MAX_LIMIT))}
+            />
+          ) : undefined
+        }
+        contentContainerStyle={s.list}
+      />
+    );
 
   return (
     <View style={s.wrap}>
@@ -113,16 +117,47 @@ export default function CustomersScreen() {
 
 const s = StyleSheet.create({
   wrap: { flex: 1, backgroundColor: colors.bg, padding: 16, gap: 12 },
-  input: { minHeight: 48, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', paddingHorizontal: 14, fontSize: 16, color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: '#fff',
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: colors.ink,
+  },
   list: { gap: 8, paddingBottom: 24 },
-  row: { flexDirection: 'row', alignItems: 'stretch', backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+  },
   rowMain: { flex: 1, minHeight: 64, padding: 12, gap: 2 },
   name: { fontSize: 17, fontWeight: '600', color: colors.ink },
   meta: { color: colors.muted, fontSize: 13 },
   badges: { flexDirection: 'row', gap: 6, marginTop: 4 },
-  badge: { fontSize: 12, color: colors.ok, backgroundColor: colors.brandSoft, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, overflow: 'hidden' },
+  badge: {
+    fontSize: 12,
+    color: colors.ok,
+    backgroundColor: colors.brandSoft,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    overflow: 'hidden',
+  },
   badgeOff: { color: colors.muted, backgroundColor: colors.line },
   badgeBad: { color: colors.danger, backgroundColor: 'rgba(180, 35, 42, 0.12)' },
-  call: { minWidth: 64, minHeight: 48, alignItems: 'center', justifyContent: 'center', borderLeftWidth: 1, borderLeftColor: colors.line },
+  call: {
+    minWidth: 64,
+    minHeight: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderLeftColor: colors.line,
+  },
   callTxt: { color: colors.brand, fontWeight: '600' },
 });

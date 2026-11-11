@@ -4,5 +4,5 @@ const prettier = require('eslint-config-prettier/flat');
 module.exports = [
   ...expo,
   prettier,
-  { ignores: ['dist/*', '.expo/*', 'node_modules/*', 'src/api/schema.d.ts', 'scripts/*'] },
+  { ignores: ['.claude/*', 'dist/*', '.expo/*', 'node_modules/*', 'src/api/schema.d.ts', 'scripts/*'] },
 ];

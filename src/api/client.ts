@@ -35,7 +35,14 @@ export function createClient(o: ClientOptions) {
     return `${o.baseUrl}${path}${qs}`;
   }
 
-  async function send(method: Method, path: string, opts: RequestOptions, token: string, key: string, corr: string) {
+  async function send(
+    method: Method,
+    path: string,
+    opts: RequestOptions,
+    token: string,
+    key: string,
+    corr: string,
+  ) {
     const headers: Record<string, string> = {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -87,7 +94,8 @@ export function createClient(o: ClientOptions) {
     } catch {
       data = null;
     }
-    if (!res.ok) throw new ApiError(res.status, data as Problem | null, res.headers.get('X-Correlation-Id') ?? corr);
+    if (!res.ok)
+      throw new ApiError(res.status, data as Problem | null, res.headers.get('X-Correlation-Id') ?? corr);
     return data as T;
   }
 

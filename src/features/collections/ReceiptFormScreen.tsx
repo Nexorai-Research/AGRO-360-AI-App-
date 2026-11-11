@@ -22,7 +22,16 @@ import {
   type CustomerLite,
   type ReceiptView,
 } from './api';
-import { createKeyKeeper, emptyDraft, todayIST, validateDraft, toBody, type DraftErrors, type DraftField, type ReceiptDraft } from './receipt';
+import {
+  createKeyKeeper,
+  emptyDraft,
+  todayIST,
+  validateDraft,
+  toBody,
+  type DraftErrors,
+  type DraftField,
+  type ReceiptDraft,
+} from './receipt';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
 
@@ -113,8 +122,12 @@ export default function ReceiptFormScreen() {
   });
 
   // The branch list needs a permission some collectors do not hold. If they have exactly one branch in their token, use that.
-  const scope = me && Array.isArray(me.branchScope) ? (me.branchScope as unknown[]).filter((x): x is string => typeof x === 'string') : [];
-  const branchChoices: Branch[] = branches.data ?? (scope.length === 1 ? [{ id: scope[0]!, name: t('collections.myBranch') }] : []);
+  const scope =
+    me && Array.isArray(me.branchScope)
+      ? (me.branchScope as unknown[]).filter((x): x is string => typeof x === 'string')
+      : [];
+  const branchChoices: Branch[] =
+    branches.data ?? (scope.length === 1 ? [{ id: scope[0]!, name: t('collections.myBranch') }] : []);
   // A single branch is chosen for the user (derived, not stored); with several, the user picks one.
   const soleBranch = branchChoices.length === 1 ? branchChoices[0]!.id : '';
   const effective: ReceiptDraft = { ...draft, branchId: draft.branchId || soleBranch };
@@ -182,9 +195,15 @@ export default function ReceiptFormScreen() {
       <ScrollView contentContainerStyle={s.page}>
         <View style={s.card} accessibilityRole="alert">
           <Text style={s.ok}>{t('collections.receipt.success', { number: done.number })}</Text>
-          <Text style={s.line}>{t('collections.receipt.amountLine', { amount: formatINR(done.amount) })}</Text>
-          <Text style={s.line}>{t('collections.receipt.allocatedLine', { amount: formatINR(done.allocated) })}</Text>
-          <Text style={s.line}>{t('collections.receipt.onAccountLine', { amount: formatINR(done.onAccount) })}</Text>
+          <Text style={s.line}>
+            {t('collections.receipt.amountLine', { amount: formatINR(done.amount) })}
+          </Text>
+          <Text style={s.line}>
+            {t('collections.receipt.allocatedLine', { amount: formatINR(done.allocated) })}
+          </Text>
+          <Text style={s.line}>
+            {t('collections.receipt.onAccountLine', { amount: formatINR(done.onAccount) })}
+          </Text>
         </View>
         <Button label={t('collections.receipt.another')} onPress={another} />
         <Button kind="ghost" label={t('collections.receipt.back')} onPress={() => router.back()} />
@@ -192,9 +211,12 @@ export default function ReceiptFormScreen() {
     );
   }
 
-  const loading = (modes.isPending && modes.fetchStatus !== 'idle') || (branches.isPending && branches.fetchStatus !== 'idle' && branchChoices.length === 0);
+  const loading =
+    (modes.isPending && modes.fetchStatus !== 'idle') ||
+    (branches.isPending && branches.fetchStatus !== 'idle' && branchChoices.length === 0);
   const modeOptions = (modes.data ?? []).map((m) => ({ id: m.code, label: m.code }));
-  const err = (k: DraftField) => (errors[k] ? <Text style={s.fieldError}>{t(`collections.v.${errors[k]}`)}</Text> : null);
+  const err = (k: DraftField) =>
+    errors[k] ? <Text style={s.fieldError}>{t(`collections.v.${errors[k]}`)}</Text> : null;
   const loadFailure = !offline && modes.error ? errorMessage(modes.error) : null;
 
   return (
@@ -224,7 +246,12 @@ export default function ReceiptFormScreen() {
 
       {loadFailure ? (
         <View style={s.card} accessibilityRole="alert">
-          <Text style={s.error}>{t(loadFailure.key, { ...loadFailure.params, correlationId: loadFailure.params.correlationId ?? '-' })}</Text>
+          <Text style={s.error}>
+            {t(loadFailure.key, {
+              ...loadFailure.params,
+              correlationId: loadFailure.params.correlationId ?? '-',
+            })}
+          </Text>
           <Button label={t('common.retry')} onPress={() => void modes.refetch()} />
         </View>
       ) : null}
@@ -257,9 +284,16 @@ export default function ReceiptFormScreen() {
           />
           {found.isFetching ? <ActivityIndicator color={colors.brand} /> : null}
           {found.error ? (
-            <Text style={s.error}>{t(errorMessage(found.error).key, { ...errorMessage(found.error).params, correlationId: errorMessage(found.error).params.correlationId ?? '-' })}</Text>
+            <Text style={s.error}>
+              {t(errorMessage(found.error).key, {
+                ...errorMessage(found.error).params,
+                correlationId: errorMessage(found.error).params.correlationId ?? '-',
+              })}
+            </Text>
           ) : null}
-          {q.length >= 2 && found.data && found.data.length === 0 ? <Text style={s.sub}>{t('collections.receipt.noCustomers')}</Text> : null}
+          {q.length >= 2 && found.data && found.data.length === 0 ? (
+            <Text style={s.sub}>{t('collections.receipt.noCustomers')}</Text>
+          ) : null}
           {(found.data ?? []).map((c) => (
             <Pressable
               key={c.id}
@@ -272,7 +306,9 @@ export default function ReceiptFormScreen() {
               style={s.result}
             >
               <Text style={s.name}>{c.name}</Text>
-              {c.village || c.mobile ? <Text style={s.sub}>{[c.village, c.mobile].filter(Boolean).join(' · ')}</Text> : null}
+              {c.village || c.mobile ? (
+                <Text style={s.sub}>{[c.village, c.mobile].filter(Boolean).join(' · ')}</Text>
+              ) : null}
             </Pressable>
           ))}
         </View>
@@ -282,13 +318,23 @@ export default function ReceiptFormScreen() {
       {branchChoices.length > 1 ? (
         <>
           <Text style={s.label}>{t('collections.receipt.branch')}</Text>
-          <Chips label={t('collections.receipt.branch')} options={branchChoices.map((b) => ({ id: b.id, label: b.name }))} value={draft.branchId} onChange={(v) => set('branchId', v)} />
+          <Chips
+            label={t('collections.receipt.branch')}
+            options={branchChoices.map((b) => ({ id: b.id, label: b.name }))}
+            value={draft.branchId}
+            onChange={(v) => set('branchId', v)}
+          />
         </>
       ) : null}
       {err('branchId')}
 
       <Text style={s.label}>{t('collections.receipt.mode')}</Text>
-      <Chips label={t('collections.receipt.mode')} options={modeOptions} value={draft.modeCode} onChange={(v) => set('modeCode', v)} />
+      <Chips
+        label={t('collections.receipt.mode')}
+        options={modeOptions}
+        value={draft.modeCode}
+        onChange={(v) => set('modeCode', v)}
+      />
       {err('modeCode')}
 
       <Text style={s.label}>{t('collections.receipt.amount')}</Text>
@@ -314,10 +360,20 @@ export default function ReceiptFormScreen() {
       {draft.modeCode === 'CHEQUE' ? (
         <>
           <Text style={s.label}>{t('collections.receipt.chequeNo')}</Text>
-          <TextInput value={draft.chequeNo} onChangeText={(v) => set('chequeNo', v)} accessibilityLabel={t('collections.receipt.chequeNo')} style={s.input} />
+          <TextInput
+            value={draft.chequeNo}
+            onChangeText={(v) => set('chequeNo', v)}
+            accessibilityLabel={t('collections.receipt.chequeNo')}
+            style={s.input}
+          />
           {err('chequeNo')}
           <Text style={s.label}>{t('collections.receipt.chequeBank')}</Text>
-          <TextInput value={draft.chequeBank} onChangeText={(v) => set('chequeBank', v)} accessibilityLabel={t('collections.receipt.chequeBank')} style={s.input} />
+          <TextInput
+            value={draft.chequeBank}
+            onChangeText={(v) => set('chequeBank', v)}
+            accessibilityLabel={t('collections.receipt.chequeBank')}
+            style={s.input}
+          />
           {err('chequeBank')}
           <Text style={s.label}>{t('collections.receipt.chequeDate')}</Text>
           <TextInput
@@ -334,7 +390,9 @@ export default function ReceiptFormScreen() {
 
       {failure ? (
         <View style={s.card} accessibilityRole="alert">
-          <Text style={s.error}>{t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}</Text>
+          <Text style={s.error}>
+            {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+          </Text>
           {lostAnswer ? <Text style={s.line}>{t('collections.receipt.lostAnswer')}</Text> : null}
         </View>
       ) : null}
@@ -359,16 +417,57 @@ const s = StyleSheet.create({
   fieldError: { color: colors.danger, fontSize: 13 },
   center: { alignItems: 'center', gap: 8, padding: 16 },
   gap: { gap: 8 },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 16, gap: 6 },
-  input: { minHeight: 48, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', paddingHorizontal: 14, fontSize: 16, color: colors.ink },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 16,
+    gap: 6,
+  },
+  input: {
+    minHeight: 48,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: '#fff',
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: colors.ink,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { minHeight: 44, paddingHorizontal: 16, justifyContent: 'center', borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card },
+  chip: {
+    minHeight: 44,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { color: colors.ink, fontSize: 15 },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },
-  selected: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12 },
+  selected: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 12,
+  },
   name: { color: colors.ink, fontWeight: '600', fontSize: 16 },
-  result: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12, minHeight: 48, justifyContent: 'center' },
+  result: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 12,
+    minHeight: 48,
+    justifyContent: 'center',
+  },
   link: { minHeight: 44, justifyContent: 'center' },
   linkTxt: { color: colors.info, fontWeight: '600' },
   offline: { backgroundColor: '#fff4dd', borderRadius: radius, padding: 12, gap: 8 },

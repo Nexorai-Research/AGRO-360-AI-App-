@@ -6,7 +6,14 @@ import { ApiError } from '../src/api/errors';
 import { setLanguage } from '../src/i18n';
 import CollectionsScreen, { byTotalDesc, overdueOf } from '../src/features/collections/CollectionsScreen';
 import ReceiptFormScreen from '../src/features/collections/ReceiptFormScreen';
-import { createKeyKeeper, emptyDraft, todayIST, toBody, validateAmount, validateDraft } from '../src/features/collections/receipt';
+import {
+  createKeyKeeper,
+  emptyDraft,
+  todayIST,
+  toBody,
+  validateAmount,
+  validateDraft,
+} from '../src/features/collections/receipt';
 import type { AgingReport, CollectionTask, ReceiptView } from '../src/features/collections/api';
 
 const mockGet = jest.fn();
@@ -17,7 +24,13 @@ let mockMe: { userId: string; roles: string[]; permissions?: string[]; branchSco
 let mockIdCounter = 0;
 
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: mockGet, post: mockPost }, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: mockGet, post: mockPost },
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('expo-router', () => ({ useRouter: () => ({ push: mockPush, back: mockBack }) }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockIdCounter}` }));
@@ -27,9 +40,27 @@ const ALL = ['reports.receivables', 'credit.followup', 'receipt.create'];
 const aging = (): AgingReport => ({
   asOn: '2026-11-11',
   rows: [
-    { customerId: 'c-1', customerName: 'Ramesh Patil', buckets: { NOT_DUE: '1000.0000', '0-30': '4000.0000' }, total: '5000.0000', onAccount: '0.0000' },
-    { customerId: 'c-2', customerName: 'Sunita Jadhav', buckets: { NOT_DUE: '0.0000', '61-90': '12500.5000' }, total: '12500.5000', onAccount: '300.0000' },
-    { customerId: 'c-3', customerName: 'Anil More', buckets: { NOT_DUE: '250.0000' }, total: '250.0000', onAccount: '0.0000' },
+    {
+      customerId: 'c-1',
+      customerName: 'Ramesh Patil',
+      buckets: { NOT_DUE: '1000.0000', '0-30': '4000.0000' },
+      total: '5000.0000',
+      onAccount: '0.0000',
+    },
+    {
+      customerId: 'c-2',
+      customerName: 'Sunita Jadhav',
+      buckets: { NOT_DUE: '0.0000', '61-90': '12500.5000' },
+      total: '12500.5000',
+      onAccount: '300.0000',
+    },
+    {
+      customerId: 'c-3',
+      customerName: 'Anil More',
+      buckets: { NOT_DUE: '250.0000' },
+      total: '250.0000',
+      onAccount: '0.0000',
+    },
   ],
   totals: {},
 });
@@ -52,7 +83,9 @@ const task = (over: Partial<CollectionTask> = {}): CollectionTask => ({
 });
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 
 beforeEach(async () => {
   mockGet.mockReset();
@@ -85,12 +118,29 @@ describe('receipt helpers', () => {
     expect(validateDraft(base)).toEqual({});
     const cheque = validateDraft({ ...base, modeCode: 'CHEQUE' });
     expect(cheque).toEqual({ chequeNo: 'required', chequeBank: 'required', chequeDate: 'required' });
-    expect(validateDraft({ ...base, modeCode: 'CHEQUE', chequeNo: '1', chequeBank: 'SBI', chequeDate: '11-11-2026' })).toEqual({ chequeDate: 'chequeDate' });
+    expect(
+      validateDraft({
+        ...base,
+        modeCode: 'CHEQUE',
+        chequeNo: '1',
+        chequeBank: 'SBI',
+        chequeDate: '11-11-2026',
+      }),
+    ).toEqual({ chequeDate: 'chequeDate' });
   });
 
   it('builds a body without blank optional fields and with a 2 decimal string amount', () => {
-    const body = toBody({ ...emptyDraft, customerId: 'c', branchId: 'b', modeCode: 'CASH', amount: '1500.5', chequeNo: 'x' }, '2026-11-11');
-    expect(body).toEqual({ customerId: 'c', branchId: 'b', receiptDate: '2026-11-11', modeCode: 'CASH', amount: '1500.50' });
+    const body = toBody(
+      { ...emptyDraft, customerId: 'c', branchId: 'b', modeCode: 'CASH', amount: '1500.5', chequeNo: 'x' },
+      '2026-11-11',
+    );
+    expect(body).toEqual({
+      customerId: 'c',
+      branchId: 'b',
+      receiptDate: '2026-11-11',
+      modeCode: 'CASH',
+      amount: '1500.50',
+    });
     expect(typeof body.amount).toBe('string');
   });
 
@@ -102,7 +152,10 @@ describe('receipt helpers', () => {
   it('keeps one idempotency key while the body is the same and makes a new one when it changes or after success', () => {
     let n = 0;
     const keeper = createKeyKeeper(() => `k${++n}`);
-    const a = toBody({ ...emptyDraft, customerId: 'c', branchId: 'b', modeCode: 'CASH', amount: '10' }, '2026-11-11');
+    const a = toBody(
+      { ...emptyDraft, customerId: 'c', branchId: 'b', modeCode: 'CASH', amount: '10' },
+      '2026-11-11',
+    );
     expect(keeper.keyFor(a)).toBe('k1');
     expect(keeper.keyFor({ ...a })).toBe('k1');
     expect(keeper.keyFor({ ...a, amount: '11.00' })).toBe('k2');
@@ -197,7 +250,10 @@ describe('collections screen', () => {
     const open = jest.spyOn(Linking, 'openURL').mockResolvedValue(undefined);
     await show();
     expect(await screen.findByText('Ramesh Patil')).toBeTruthy();
-    expect(mockGet).toHaveBeenCalledWith('/credit/tasks', expect.objectContaining({ query: { status: 'OPEN', limit: 200 } }));
+    expect(mockGet).toHaveBeenCalledWith(
+      '/credit/tasks',
+      expect.objectContaining({ query: { status: 'OPEN', limit: 200 } }),
+    );
     expect(mockGet).not.toHaveBeenCalledWith('/reports/receivables/aging', expect.anything());
     expect(screen.getByText('Overdue ₹4,000.00, oldest 45 days')).toBeTruthy();
     expect(screen.queryByText('Outstanding')).toBeNull(); // no tab bar: only one tab is allowed
@@ -242,9 +298,18 @@ describe('receipt form', () => {
     mockGet.mockImplementation(async (path: string) => {
       if (over[path]) return over[path]!();
       if (path === '/settings/payment-modes')
-        return { items: [{ code: 'CASH', enabled: true }, { code: 'UPI', enabled: true }, { code: 'CHEQUE', enabled: true }, { code: 'CARD', enabled: false }, { code: 'CREDIT', enabled: true }] };
+        return {
+          items: [
+            { code: 'CASH', enabled: true },
+            { code: 'UPI', enabled: true },
+            { code: 'CHEQUE', enabled: true },
+            { code: 'CARD', enabled: false },
+            { code: 'CREDIT', enabled: true },
+          ],
+        };
       if (path === '/branches') return { items: [{ id: 'b-1', name: 'Main branch' }] };
-      if (path === '/customers') return { items: [{ id: 'c-1', name: 'Ramesh Patil', mobile: '9876543210', village: 'Baramati' }] };
+      if (path === '/customers')
+        return { items: [{ id: 'c-1', name: 'Ramesh Patil', mobile: '9876543210', village: 'Baramati' }] };
       throw new Error(`unexpected GET ${path}`);
     });
 
@@ -277,7 +342,13 @@ describe('receipt form', () => {
     expect(mockPost).toHaveBeenCalledTimes(1);
     const [path, opts] = mockPost.mock.calls[0]!;
     expect(path).toBe('/receipts');
-    expect(opts.body).toEqual({ customerId: 'c-1', branchId: 'b-1', receiptDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/), modeCode: 'CASH', amount: '1500.50' });
+    expect(opts.body).toEqual({
+      customerId: 'c-1',
+      branchId: 'b-1',
+      receiptDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      modeCode: 'CASH',
+      amount: '1500.50',
+    });
     expect(typeof opts.body.amount).toBe('string');
     expect(opts.idempotencyKey).toBe('key-1');
     expect(screen.getByText('Applied to dues ₹1,000.00')).toBeTruthy();
@@ -331,9 +402,14 @@ describe('receipt form', () => {
   });
 
   it('blocks the save with a clear message when the phone is offline, and sends nothing', async () => {
-    route({ '/settings/payment-modes': () => Promise.reject(new ApiError(0, null)), '/branches': () => Promise.reject(new ApiError(0, null)) });
+    route({
+      '/settings/payment-modes': () => Promise.reject(new ApiError(0, null)),
+      '/branches': () => Promise.reject(new ApiError(0, null)),
+    });
     await show();
-    expect(await screen.findByText('You are offline. A receipt moves money, so it can only be saved online.')).toBeTruthy();
+    expect(
+      await screen.findByText('You are offline. A receipt moves money, so it can only be saved online.'),
+    ).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     expect(mockPost).not.toHaveBeenCalled();
   });
@@ -341,8 +417,10 @@ describe('receipt form', () => {
   it('can check again after being offline and then saves', async () => {
     let online = false;
     route({
-      '/settings/payment-modes': () => (online ? { items: [{ code: 'CASH', enabled: true }] } : Promise.reject(new ApiError(0, null))),
-      '/branches': () => (online ? { items: [{ id: 'b-1', name: 'Main branch' }] } : Promise.reject(new ApiError(0, null))),
+      '/settings/payment-modes': () =>
+        online ? { items: [{ code: 'CASH', enabled: true }] } : Promise.reject(new ApiError(0, null)),
+      '/branches': () =>
+        online ? { items: [{ id: 'b-1', name: 'Main branch' }] } : Promise.reject(new ApiError(0, null)),
     });
     await show();
     await screen.findByText(/You are offline/);
@@ -357,7 +435,9 @@ describe('receipt form', () => {
     await show();
     await fill('1.234');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
-    expect(await screen.findByText('Enter an amount like 1500 or 1500.50 (at most 2 decimals).')).toBeTruthy();
+    expect(
+      await screen.findByText('Enter an amount like 1500 or 1500.50 (at most 2 decimals).'),
+    ).toBeTruthy();
     await fireEvent.changeText(screen.getByLabelText('Amount (₹)'), '0');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     expect(await screen.findByText('The amount must be more than zero.')).toBeTruthy();
@@ -392,7 +472,13 @@ describe('receipt form', () => {
     await fireEvent.changeText(screen.getByLabelText('Cheque date'), '2026-11-11');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     await screen.findByText('Receipt RCT/26-27/0001 recorded');
-    expect(mockPost.mock.calls[0]![1].body).toMatchObject({ modeCode: 'CHEQUE', chequeNo: '123456', chequeBank: 'SBI', chequeDate: '2026-11-11', amount: '2000.00' });
+    expect(mockPost.mock.calls[0]![1].body).toMatchObject({
+      modeCode: 'CHEQUE',
+      chequeNo: '123456',
+      chequeBank: 'SBI',
+      chequeDate: '2026-11-11',
+      amount: '2000.00',
+    });
   });
 
   it('shows the translated server error code (credit rules, closed period and so on fall back to the generic text with the reference)', async () => {
@@ -401,7 +487,9 @@ describe('receipt form', () => {
     await show();
     await fill();
     await fireEvent.press(screen.getByLabelText('Save receipt'));
-    expect(await screen.findByText('Something went wrong. Code PERIOD_CLOSED, reference corr-3.')).toBeTruthy();
+    expect(
+      await screen.findByText('Something went wrong. Code PERIOD_CLOSED, reference corr-3.'),
+    ).toBeTruthy();
     expect(screen.queryByText(/we do not know if it was saved/)).toBeNull(); // a real answer, not a lost one
   });
 
@@ -424,7 +512,14 @@ describe('receipt form', () => {
   });
 
   it('asks which branch when the user has several', async () => {
-    route({ '/branches': () => ({ items: [{ id: 'b-1', name: 'Main branch' }, { id: 'b-2', name: 'Market branch' }] }) });
+    route({
+      '/branches': () => ({
+        items: [
+          { id: 'b-1', name: 'Main branch' },
+          { id: 'b-2', name: 'Market branch' },
+        ],
+      }),
+    });
     await show();
     await fireEvent.changeText(await screen.findByLabelText('Search customer by name or mobile'), 'ram');
     await fireEvent.press(await screen.findByLabelText('Ramesh Patil'));

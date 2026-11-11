@@ -5,7 +5,8 @@ import { Button } from '../../ui/Button';
 import { colors, radius } from '../../ui/theme';
 
 /** 403 means "not allowed" (except a request for a fresh password, which is a different message). */
-export const isDenied = (e: unknown) => e instanceof ApiError && e.status === 403 && e.code !== 'FRESH_AUTH_REQUIRED';
+export const isDenied = (e: unknown) =>
+  e instanceof ApiError && e.status === 403 && e.code !== 'FRESH_AUTH_REQUIRED';
 export const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
 
 export function useErrorText() {
@@ -35,11 +36,14 @@ export function StateView({
       </View>
     );
   }
-  const msg = kind === 'empty' ? t('customers.empty') : kind === 'denied' ? t('customers.denied') : text(error);
+  const msg =
+    kind === 'empty' ? t('customers.empty') : kind === 'denied' ? t('customers.denied') : text(error);
   return (
     <View style={s.box} accessibilityLiveRegion="polite">
       <Text style={[s.txt, kind === 'error' && s.err]}>{msg}</Text>
-      {kind === 'error' && onRetry ? <Button kind="ghost" label={t('common.retry')} onPress={onRetry} /> : null}
+      {kind === 'error' && onRetry ? (
+        <Button kind="ghost" label={t('common.retry')} onPress={onRetry} />
+      ) : null}
     </View>
   );
 }
@@ -57,18 +61,28 @@ export function StaleBanner({ error, updatedAt }: { error: unknown; updatedAt: n
   return (
     <View style={s.banner} accessibilityRole="alert">
       <Text style={s.bannerTxt}>
-        {isNetwork(error) ? t('customers.offline', { time }) : `${text(error)} ${t('customers.asOf', { time })}`}
+        {isNetwork(error)
+          ? t('customers.offline', { time })
+          : `${text(error)} ${t('customers.asOf', { time })}`}
       </Text>
     </View>
   );
 }
 
-export const fmtDate = (d: string) => (/^\d{4}-\d{2}-\d{2}$/.test(d) ? `${d.slice(8)}-${d.slice(5, 7)}-${d.slice(0, 4)}` : d);
+export const fmtDate = (d: string) =>
+  /^\d{4}-\d{2}-\d{2}$/.test(d) ? `${d.slice(8)}-${d.slice(5, 7)}-${d.slice(0, 4)}` : d;
 
 const s = StyleSheet.create({
   box: { padding: 24, alignItems: 'center', gap: 12 },
   txt: { color: colors.muted, fontSize: 16, textAlign: 'center' },
   err: { color: colors.danger },
-  banner: { backgroundColor: '#fff4d6', borderRadius: radius, padding: 10, marginBottom: 8, borderWidth: 1, borderColor: colors.warn },
+  banner: {
+    backgroundColor: '#fff4d6',
+    borderRadius: radius,
+    padding: 10,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: colors.warn,
+  },
   bannerTxt: { color: colors.warn, fontSize: 14 },
 });

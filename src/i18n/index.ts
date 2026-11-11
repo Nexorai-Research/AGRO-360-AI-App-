@@ -60,5 +60,7 @@ export async function setLanguage(lang: LangCode): Promise<void> {
 /** Translate a web-app phrase by its English text and fill {0}, {1}. Falls back to English. */
 export function tw(phrase: string, ...args: (string | number)[]): string {
   const text = WEB[currentLanguage()]?.[phrase] ?? phrase;
-  return text.replace(/\{(\d+)\}/g, (m, i: string) => (args[Number(i)] === undefined ? m : String(args[Number(i)])));
+  return text.replace(/\{(\d+)\}/g, (m, i: string) =>
+    args[Number(i)] === undefined ? m : String(args[Number(i)]),
+  );
 }

@@ -105,7 +105,11 @@
     "CREDIT_LIMIT_EXCEEDED": "Credit limit exceeded for this customer.",
     "INSUFFICIENT_STOCK": "Not enough stock.",
     "BATCH_REQUIRED": "A batch is required for this item.",
-    "EXPIRY_REQUIRED": "An expiry date is required for this item."
+    "EXPIRY_REQUIRED": "An expiry date is required for this item.",
+    "EMPLOYEE_EXITED": "An exited employee cannot check in.",
+    "ALREADY_CHECKED_IN": "You have already checked in today.",
+    "NOT_CHECKED_IN": "You have not checked in today.",
+    "ALREADY_CHECKED_OUT": "You have already checked out today."
   },
   "customers": {
     "title": "Customers",
@@ -186,5 +190,45 @@
     "grantCamera": "Allow camera",
     "barcodeNotFound": "No product has the barcode {{code}}.",
     "close": "Close"
+  },
+  "attendance": {
+    "title": "My attendance",
+    "updated": "Updated {{time}}",
+    "notCheckedIn": "You have not checked in today.",
+    "working": "Checked in at {{time}}",
+    "done": "Checked in {{in}}, checked out {{out}}. Worked {{worked}} h.",
+    "checkIn": "Check in",
+    "checkOut": "Check out",
+    "finished": "Done for today",
+    "sending": "Please wait...",
+    "recent": "Last 30 days",
+    "emptyRecent": "No attendance recorded in the last 30 days.",
+    "denied": "Your login cannot mark attendance. Ask your manager to link it to your employee record.",
+    "offline": "No connection. Check in and check out need the internet, so nothing was sent. Connect and try again.",
+    "offlineSaved": "Showing saved data from {{time}}.",
+    "retrySame": "Try again",
+    "outsideFence": "Outside the branch area (recorded, not blocked)",
+    "autoClosed": "Closed automatically",
+    "locationNotSaved": "Your location was not saved because location sharing is off.",
+    "consentTitle": "Share your location?",
+    "consentBody": "Your company can save your location only at the moment you check in and check out, to confirm you are at the branch. It is never tracked in between. You can change this at any time.",
+    "consentAllow": "Allow",
+    "consentLater": "Not now",
+    "consentOn": "Location is shared at check in and out.",
+    "consentStop": "Stop sharing",
+    "consentSaving": "Saving...",
+    "workedShort": "{{worked}} h",
+    "status": {
+      "PRESENT": "Present",
+      "ABSENT": "Absent",
+      "HALF_DAY": "Half day",
+      "LEAVE": "Leave"
+    }
+  },
+  "nav": {
+    "stock": "Stock check",
+    "customers": "Customers",
+    "collections": "Collections",
+    "attendance": "Attendance"
   }
 }

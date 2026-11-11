@@ -97,10 +97,14 @@ export const modesKey = (userId: string) => ['collections', 'modes', userId] as 
 export const branchesKey = (userId: string) => ['collections', 'branches', userId] as const;
 export const customersKey = (userId: string, q: string) => ['collections', 'customers', userId, q] as const;
 
-export const fetchAging = (c: ApiClient, signal?: AbortSignal) => c.get<AgingReport>('/reports/receivables/aging', { signal });
+export const fetchAging = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<AgingReport>('/reports/receivables/aging', { signal });
 
 export async function fetchOpenTasks(c: ApiClient, signal?: AbortSignal): Promise<CollectionTask[]> {
-  const r = await c.get<{ items: CollectionTask[] }>('/credit/tasks', { query: { status: 'OPEN', limit: 200 }, signal });
+  const r = await c.get<{ items: CollectionTask[] }>('/credit/tasks', {
+    query: { status: 'OPEN', limit: 200 },
+    signal,
+  });
   return r.items;
 }
 
@@ -115,8 +119,15 @@ export async function fetchBranches(c: ApiClient, signal?: AbortSignal): Promise
   return r.items;
 }
 
-export async function searchCustomers(c: ApiClient, q: string, signal?: AbortSignal): Promise<CustomerLite[]> {
-  const r = await c.get<{ items: CustomerLite[] }>('/customers', { query: { q, status: 'ACTIVE', limit: 20 }, signal });
+export async function searchCustomers(
+  c: ApiClient,
+  q: string,
+  signal?: AbortSignal,
+): Promise<CustomerLite[]> {
+  const r = await c.get<{ items: CustomerLite[] }>('/customers', {
+    query: { q, status: 'ACTIVE', limit: 20 },
+    signal,
+  });
   return r.items;
 }
 

@@ -5,7 +5,9 @@ import { ApiError } from '../src/api/errors';
 import StockScreen from '../app/stock';
 
 const mockClient = { get: jest.fn() };
-jest.mock('../src/auth/AuthProvider', () => ({ useAuth: () => ({ client: mockClient, status: 'signedIn', me: null }) }));
+jest.mock('../src/auth/AuthProvider', () => ({
+  useAuth: () => ({ client: mockClient, status: 'signedIn', me: null }),
+}));
 // expo-camera is a native module; the scanner is replaced by a button that "reads" a barcode.
 jest.mock('../src/features/stock/BarcodeScanner', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- jest.mock factories may only load modules lazily
@@ -90,7 +92,21 @@ beforeEach(() => mockClient.get.mockReset());
 describe('stock check screen', () => {
   it('shows rows with quantities as trimmed decimals, hides value when the API sends none, and shows an as-of time', async () => {
     answer({
-      '/inventory/stock': { items: [row(), row({ skuId: 's2', skuName: 'DAP 50 kg', batchId: null, batchNo: null, value: '1234567.50', onHand: '3.000000', available: '3.000000' })], total: 2 },
+      '/inventory/stock': {
+        items: [
+          row(),
+          row({
+            skuId: 's2',
+            skuName: 'DAP 50 kg',
+            batchId: null,
+            batchNo: null,
+            value: '1234567.50',
+            onHand: '3.000000',
+            available: '3.000000',
+          }),
+        ],
+        total: 2,
+      },
       '/branches': { items: [] },
     });
     await renderScreen();
@@ -117,7 +133,10 @@ describe('stock check screen', () => {
   it('highlights expired and soon-to-expire batches in words and colour', async () => {
     answer({
       '/inventory/stock': {
-        items: [row({ daysToExpiry: -3, expiryDate: '2026-11-08' }), row({ skuId: 's2', warehouseId: 'w2', daysToExpiry: 10, expiryDate: '2026-11-21' })],
+        items: [
+          row({ daysToExpiry: -3, expiryDate: '2026-11-08' }),
+          row({ skuId: 's2', warehouseId: 'w2', daysToExpiry: 10, expiryDate: '2026-11-21' }),
+        ],
         total: 2,
       },
       '/branches': { items: [] },
@@ -136,7 +155,10 @@ describe('stock check screen', () => {
   });
 
   it('shows permission denied on a 403 and offers no retry', async () => {
-    answer({ '/inventory/stock': new ApiError(403, { title: 'FORBIDDEN' }), '/branches': new ApiError(403, { title: 'FORBIDDEN' }) });
+    answer({
+      '/inventory/stock': new ApiError(403, { title: 'FORBIDDEN' }),
+      '/branches': new ApiError(403, { title: 'FORBIDDEN' }),
+    });
     await renderScreen();
     expect(await screen.findByTestId('state-denied')).toBeTruthy();
     expect(screen.getByText('You do not have permission to see stock.')).toBeTruthy();
@@ -150,7 +172,10 @@ describe('stock check screen', () => {
   });
 
   it('shows a generic error with the correlation id for an unknown server error', async () => {
-    answer({ '/inventory/stock': new ApiError(500, { title: 'INTERNAL', correlationId: 'corr-9' }), '/branches': { items: [] } });
+    answer({
+      '/inventory/stock': new ApiError(500, { title: 'INTERNAL', correlationId: 'corr-9' }),
+      '/branches': { items: [] },
+    });
     await renderScreen();
     const el = await screen.findByTestId('state-error');
     expect(el).toBeTruthy();
@@ -181,7 +206,12 @@ describe('stock check screen', () => {
   it('filters by branch when the user can list branches', async () => {
     answer({
       '/inventory/stock': { items: [row()], total: 1 },
-      '/branches': { items: [{ id: 'b1', name: 'Main' }, { id: 'b2', name: 'North' }] },
+      '/branches': {
+        items: [
+          { id: 'b1', name: 'Main' },
+          { id: 'b2', name: 'North' },
+        ],
+      },
       '/warehouses': { items: [] },
     });
     await renderScreen();
@@ -193,7 +223,12 @@ describe('stock check screen', () => {
     answer({
       '/inventory/stock': { items: [row()], total: 1 },
       '/branches': { items: [] },
-      '/products/by-barcode/8901234567890': { id: 'sku-77', code: 'DAP-50', name: 'DAP 50 kg', status: 'ACTIVE' },
+      '/products/by-barcode/8901234567890': {
+        id: 'sku-77',
+        code: 'DAP-50',
+        name: 'DAP 50 kg',
+        status: 'ACTIVE',
+      },
     });
     await renderScreen();
     await screen.findByText('Urea 50 kg');

@@ -1,5 +1,14 @@
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Linking, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Linking,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +37,8 @@ const retryNetworkOnce = (n: number, e: unknown) => e instanceof ApiError && e.c
 export const overdueOf = (r: AgingRow): string => sub(r.total, r.buckets.NOT_DUE ?? '0');
 
 /** Biggest dues first: that is the order a collector works in. Compared as decimals, never as floats. */
-export const byTotalDesc = (rows: AgingRow[]): AgingRow[] => [...rows].sort((a, b) => dec(b.total).comparedTo(dec(a.total)));
+export const byTotalDesc = (rows: AgingRow[]): AgingRow[] =>
+  [...rows].sort((a, b) => dec(b.total).comparedTo(dec(a.total)));
 
 function Banner({ text }: { text: string }) {
   return (
@@ -38,7 +48,15 @@ function Banner({ text }: { text: string }) {
   );
 }
 
-function StateBlock({ q, empty, isEmpty }: { q: UseQueryResult<unknown, Error>; empty: string; isEmpty: boolean }) {
+function StateBlock({
+  q,
+  empty,
+  isEmpty,
+}: {
+  q: UseQueryResult<unknown, Error>;
+  empty: string;
+  isEmpty: boolean;
+}) {
   const { t } = useTranslation();
   const err = q.error ? errorMessage(q.error) : null;
   if (q.isPending && q.fetchStatus !== 'idle') {
@@ -52,7 +70,9 @@ function StateBlock({ q, empty, isEmpty }: { q: UseQueryResult<unknown, Error>; 
   if (err && q.data === undefined) {
     return (
       <View style={s.card} accessibilityRole="alert">
-        <Text style={s.error}>{t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })}</Text>
+        <Text style={s.error}>
+          {t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })}
+        </Text>
         <Button label={t('common.retry')} onPress={() => void q.refetch()} />
       </View>
     );
@@ -75,8 +95,12 @@ function AgingItem({ row }: { row: AgingRow }) {
     <View style={s.row} accessible accessibilityLabel={`${row.customerName}: ${formatINR(row.total)}`}>
       <View style={s.rowMain}>
         <Text style={s.name}>{row.customerName}</Text>
-        {dec(overdue).gt(0) ? <Text style={s.overdue}>{t('collections.overdueAmount', { amount: formatINR(overdue) })}</Text> : null}
-        {hasAdvance ? <Text style={s.sub}>{t('collections.onAccount', { amount: formatINR(row.onAccount) })}</Text> : null}
+        {dec(overdue).gt(0) ? (
+          <Text style={s.overdue}>{t('collections.overdueAmount', { amount: formatINR(overdue) })}</Text>
+        ) : null}
+        {hasAdvance ? (
+          <Text style={s.sub}>{t('collections.onAccount', { amount: formatINR(row.onAccount) })}</Text>
+        ) : null}
       </View>
       <Text style={s.amount}>{formatINR(row.total)}</Text>
     </View>
@@ -90,7 +114,9 @@ function TaskItem({ task }: { task: CollectionTask }) {
       <View style={s.rowMain}>
         <Text style={s.name}>{task.customerName}</Text>
         {task.village ? <Text style={s.sub}>{task.village}</Text> : null}
-        <Text style={s.overdue}>{t('collections.taskOverdue', { amount: formatINR(task.overdueAmount), days: task.oldestDays })}</Text>
+        <Text style={s.overdue}>
+          {t('collections.taskOverdue', { amount: formatINR(task.overdueAmount), days: task.oldestDays })}
+        </Text>
         {task.mobile ? (
           <Pressable
             accessibilityRole="link"
@@ -120,7 +146,8 @@ export default function CollectionsScreen() {
   const canReceipt = can(PERM.receipt);
   const denied = !canAging && !canTasks && !canReceipt;
   const [chosen, setChosen] = useState<Tab>('aging');
-  const tab: Tab = chosen === 'aging' && !canAging ? 'tasks' : chosen === 'tasks' && !canTasks ? 'aging' : chosen;
+  const tab: Tab =
+    chosen === 'aging' && !canAging ? 'tasks' : chosen === 'tasks' && !canTasks ? 'aging' : chosen;
 
   const aging = useQuery({
     queryKey: agingKey(userId),
@@ -155,19 +182,25 @@ export default function CollectionsScreen() {
   const header = (
     <View style={s.head}>
       <Text style={s.title}>{t('collections.title')}</Text>
-      {canReceipt ? <Button label={t('collections.newReceipt')} onPress={() => router.push('/collections/receipt-new')} /> : null}
+      {canReceipt ? (
+        <Button label={t('collections.newReceipt')} onPress={() => router.push('/collections/receipt-new')} />
+      ) : null}
       {canAging && canTasks ? (
         <View style={s.tabs} accessibilityRole="tablist">
           {(['aging', 'tasks'] as const).map((k) => (
             <Pressable
               key={k}
               accessibilityRole="tab"
-              accessibilityLabel={t(k === 'aging' ? 'collections.tabOutstanding' : 'collections.tabFollowUps')}
+              accessibilityLabel={t(
+                k === 'aging' ? 'collections.tabOutstanding' : 'collections.tabFollowUps',
+              )}
               accessibilityState={{ selected: tab === k }}
               onPress={() => setChosen(k)}
               style={[s.tab, tab === k && s.tabOn]}
             >
-              <Text style={[s.tabTxt, tab === k && s.tabTxtOn]}>{t(k === 'aging' ? 'collections.tabOutstanding' : 'collections.tabFollowUps')}</Text>
+              <Text style={[s.tabTxt, tab === k && s.tabTxtOn]}>
+                {t(k === 'aging' ? 'collections.tabOutstanding' : 'collections.tabFollowUps')}
+              </Text>
             </Pressable>
           ))}
         </View>
@@ -178,7 +211,9 @@ export default function CollectionsScreen() {
           <Text style={s.sub}>{t('collections.asOn', { date: aging.data?.asOn ?? '' })}</Text>
           <Text style={s.sub}>{t('collections.totalOutstanding')}</Text>
           <Text style={s.big}>{formatINR(totals.all)}</Text>
-          <Text style={s.overdue}>{t('collections.overdueAmount', { amount: formatINR(totals.overdue) })}</Text>
+          <Text style={s.overdue}>
+            {t('collections.overdueAmount', { amount: formatINR(totals.overdue) })}
+          </Text>
         </View>
       ) : null}
       {showDenied ? (
@@ -195,7 +230,9 @@ export default function CollectionsScreen() {
     </View>
   );
 
-  const refresh = <RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} colors={[colors.brand]} />;
+  const refresh = (
+    <RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} colors={[colors.brand]} />
+  );
 
   if (tab === 'tasks') {
     return (
@@ -232,16 +269,41 @@ const s = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '700', color: colors.ink },
   sub: { color: colors.muted, fontSize: 13 },
   center: { alignItems: 'center', gap: 8, padding: 24 },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 16, gap: 6 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 16,
+    gap: 6,
+  },
   line: { color: colors.ink },
   error: { color: colors.danger },
   big: { fontSize: 28, fontWeight: '700', color: colors.ink },
   tabs: { flexDirection: 'row', gap: 8 },
-  tab: { flex: 1, minHeight: 44, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
+  tab: {
+    flex: 1,
+    minHeight: 44,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   tabOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   tabTxt: { color: colors.ink, fontSize: 15 },
   tabTxtOn: { color: colors.brandInk, fontWeight: '600' },
-  row: { flexDirection: 'row', gap: 12, backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 14, alignItems: 'flex-start' },
+  row: {
+    flexDirection: 'row',
+    gap: 12,
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 14,
+    alignItems: 'flex-start',
+  },
   rowMain: { flex: 1, gap: 2 },
   name: { color: colors.ink, fontWeight: '600', fontSize: 16 },
   amount: { color: colors.ink, fontWeight: '700', fontSize: 16 },

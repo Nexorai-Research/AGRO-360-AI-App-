@@ -12,10 +12,21 @@ const mockSignOut = jest.fn(async () => {});
 let mockMe: { userId: string; roles: string[]; permissions?: string[] } | null;
 
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: mockGet }, signIn: jest.fn(), signOut: mockSignOut }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: mockGet },
+    signIn: jest.fn(),
+    signOut: mockSignOut,
+  }),
 }));
 
-const tile = (id: string, value: string | null, unit: Tile['unit'] = 'money', extra: Partial<Tile> = {}): Tile => ({
+const tile = (
+  id: string,
+  value: string | null,
+  unit: Tile['unit'] = 'money',
+  extra: Partial<Tile> = {},
+): Tile => ({
   id,
   label: id,
   state: value === null ? 'INSUFFICIENT_DATA' : 'OK',
@@ -54,7 +65,9 @@ const dashboard = (over: Partial<OwnerDashboard> = {}): OwnerDashboard => ({
 });
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 const show = () => render(<HomeScreen />, { wrapper });
 
 beforeEach(async () => {
@@ -70,7 +83,10 @@ describe('home dashboard', () => {
     mockGet.mockResolvedValue(dashboard());
     await show();
     expect(await screen.findByText('₹12.35 L')).toBeTruthy();
-    expect(mockGet).toHaveBeenCalledWith('/reports/dashboard/owner', expect.objectContaining({ query: { period: 'today' } }));
+    expect(mockGet).toHaveBeenCalledWith(
+      '/reports/dashboard/owner',
+      expect.objectContaining({ query: { period: 'today' } }),
+    );
     expect(screen.getByText("Today's sales")).toBeTruthy();
     expect(screen.getByText('42')).toBeTruthy();
     expect(screen.getByText('₹87,500')).toBeTruthy();
@@ -104,7 +120,9 @@ describe('home dashboard', () => {
   it('shows an empty message when the server sends no tiles', async () => {
     mockGet.mockResolvedValue(dashboard({ tiles: [], trend: [] }));
     await show();
-    expect(await screen.findByText('Nothing to show yet. Numbers appear after your first bill.')).toBeTruthy();
+    expect(
+      await screen.findByText('Nothing to show yet. Numbers appear after your first bill.'),
+    ).toBeTruthy();
   });
 
   it('shows a translated error with the correlation id and retries on tap', async () => {
@@ -191,6 +209,12 @@ describe('home helpers', () => {
   });
 
   it('picks only the phone tiles, in order', () => {
-    expect(pickHomeTiles(dashboard()).map((t) => t.id)).toEqual(['net_sales', 'bills', 'receivables_outstanding', 'low_stock_count', 'stock_value']);
+    expect(pickHomeTiles(dashboard()).map((t) => t.id)).toEqual([
+      'net_sales',
+      'bills',
+      'receivables_outstanding',
+      'low_stock_count',
+      'stock_value',
+    ]);
   });
 });

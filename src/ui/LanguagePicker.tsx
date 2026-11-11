@@ -33,7 +33,15 @@ export function LanguagePicker() {
 
 const s = StyleSheet.create({
   row: { flexDirection: 'row', gap: 8, justifyContent: 'center' },
-  chip: { minHeight: 44, paddingHorizontal: 16, justifyContent: 'center', borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card },
+  chip: {
+    minHeight: 44,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   txt: { color: colors.ink, fontSize: 16 },
   txtOn: { color: colors.brandInk, fontWeight: '600' },

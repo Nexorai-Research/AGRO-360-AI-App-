@@ -25,7 +25,9 @@ describe('i18n', () => {
   });
 
   it('puts the error code and correlation id into the generic message', () => {
-    expect(i18n.t('errors.generic', { code: 'E1', correlationId: 'c-9' })).toBe('Something went wrong. Code E1, reference c-9.');
+    expect(i18n.t('errors.generic', { code: 'E1', correlationId: 'c-9' })).toBe(
+      'Something went wrong. Code E1, reference c-9.',
+    );
   });
 
   it('has every error key in all three languages', async () => {
@@ -40,6 +42,8 @@ describe('i18n', () => {
     expect(tw('{0} ({1} days)', 'Ravi', 5)).toBe('Ravi (5 days)');
     await setLanguage('hi');
     expect(tw('{0} - ledger', 'Ravi')).toBe('Ravi - बही');
-    expect(tw('A phrase that is not in the web dictionary {0}', 1)).toBe('A phrase that is not in the web dictionary 1');
+    expect(tw('A phrase that is not in the web dictionary {0}', 1)).toBe(
+      'A phrase that is not in the web dictionary 1',
+    );
   });
 });

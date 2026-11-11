@@ -5,7 +5,9 @@ describe('errorMessage', () => {
     const m = errorMessage(new ApiError(409, { title: 'STOCK_FROZEN', correlationId: 'c1' }));
     expect(m.key).toBe('errors.STOCK_FROZEN');
     expect(m.params.correlationId).toBe('c1');
-    expect(errorMessage(new ApiError(422, { title: 'CREDIT_LIMIT_EXCEEDED' })).key).toBe('errors.CREDIT_LIMIT_EXCEEDED');
+    expect(errorMessage(new ApiError(422, { title: 'CREDIT_LIMIT_EXCEEDED' })).key).toBe(
+      'errors.CREDIT_LIMIT_EXCEEDED',
+    );
     expect(errorMessage(new ApiError(422, { title: 'PRICE_LOCKED' })).key).toBe('errors.PRICE_LOCKED');
   });
 
@@ -16,7 +18,9 @@ describe('errorMessage', () => {
 
   it('an unknown 403 becomes FORBIDDEN, a known 403 code keeps its message', () => {
     expect(errorMessage(new ApiError(403, { title: 'NO_PERMISSION' })).key).toBe('errors.FORBIDDEN');
-    expect(errorMessage(new ApiError(403, { title: 'FRESH_AUTH_REQUIRED' })).key).toBe('errors.FRESH_AUTH_REQUIRED');
+    expect(errorMessage(new ApiError(403, { title: 'FRESH_AUTH_REQUIRED' })).key).toBe(
+      'errors.FRESH_AUTH_REQUIRED',
+    );
   });
 
   it('unknown codes get the generic message with the code and correlation id', () => {

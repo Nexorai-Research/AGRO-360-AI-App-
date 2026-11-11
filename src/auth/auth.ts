@@ -78,7 +78,10 @@ export function refresh(): Promise<string | null> {
       return null;
     }
     try {
-      const response = await AuthSession.refreshAsync({ clientId: config.oidcClientId, refreshToken: current.refreshToken }, discovery());
+      const response = await AuthSession.refreshAsync(
+        { clientId: config.oidcClientId, refreshToken: current.refreshToken },
+        discovery(),
+      );
       tokens = fromResponse(response, current);
       await saveTokens(tokens);
       return tokens.accessToken;
@@ -110,7 +113,10 @@ export async function signOut(): Promise<void> {
   const idToken = tokens?.idToken;
   await signOutLocal();
   try {
-    const q = new URLSearchParams({ client_id: config.oidcClientId, post_logout_redirect_uri: redirectUri() });
+    const q = new URLSearchParams({
+      client_id: config.oidcClientId,
+      post_logout_redirect_uri: redirectUri(),
+    });
     if (idToken) q.set('id_token_hint', idToken);
     await WebBrowser.openAuthSessionAsync(`${discovery().endSessionEndpoint}?${q.toString()}`, redirectUri());
   } catch {

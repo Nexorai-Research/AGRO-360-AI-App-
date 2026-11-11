@@ -45,6 +45,10 @@ const KNOWN = new Set([
   'INSUFFICIENT_STOCK',
   'BATCH_REQUIRED',
   'EXPIRY_REQUIRED',
+  'EMPLOYEE_EXITED',
+  'ALREADY_CHECKED_IN',
+  'NOT_CHECKED_IN',
+  'ALREADY_CHECKED_OUT',
 ]);
 
 export interface ErrorMessage {
@@ -54,7 +58,8 @@ export interface ErrorMessage {
 
 export function errorMessage(e: unknown): ErrorMessage {
   if (e instanceof ApiError) {
-    const code = e.status === 401 ? 'UNAUTHENTICATED' : e.status === 403 && !KNOWN.has(e.code) ? 'FORBIDDEN' : e.code;
+    const code =
+      e.status === 401 ? 'UNAUTHENTICATED' : e.status === 403 && !KNOWN.has(e.code) ? 'FORBIDDEN' : e.code;
     const params = { code: e.code, correlationId: e.correlationId };
     return KNOWN.has(code) ? { key: `errors.${code}`, params } : { key: 'errors.generic', params };
   }

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage } from '@/api/errors';
 import { dec } from '@/money';
+import { QuickLinks } from './QuickLinks';
 import { Button } from '@/ui/Button';
 import { LanguagePicker } from '@/ui/LanguagePicker';
 import { colors, radius } from '@/ui/theme';
@@ -40,9 +41,14 @@ function tileValue(t: Tile): string {
 function TileCard({ tile }: { tile: Tile }) {
   const { t } = useTranslation();
   const label = t(`home.tile.${tile.id}`, { defaultValue: tile.label });
-  const change = tile.changePct !== null ? `${Number(tile.changePct) > 0 ? '+' : ''}${tile.changePct}%` : null;
+  const change =
+    tile.changePct !== null ? `${Number(tile.changePct) > 0 ? '+' : ''}${tile.changePct}%` : null;
   return (
-    <View style={[s.tile, { borderLeftColor: TONE[tile.id] ?? colors.brand }]} accessible accessibilityLabel={`${label}: ${tileValue(tile)}`}>
+    <View
+      style={[s.tile, { borderLeftColor: TONE[tile.id] ?? colors.brand }]}
+      accessible
+      accessibilityLabel={`${label}: ${tileValue(tile)}`}
+    >
       <Text style={s.tileLabel}>{label}</Text>
       <Text style={s.tileValue}>{tileValue(tile)}</Text>
       {tile.state === 'INSUFFICIENT_DATA' ? <Text style={s.note}>{t('home.noData')}</Text> : null}
@@ -62,7 +68,12 @@ function Trend({ data }: { data: OwnerDashboard['trend'] }) {
         // the bar width is layout only; the money shown next to it stays a string through formatINRShort
         const pct = max.isZero() ? 0 : dec(d.netSales).div(max).times(100).toNumber();
         return (
-          <View key={d.day} style={s.trendRow} accessible accessibilityLabel={`${d.day}: ${formatINRShort(d.netSales)}`}>
+          <View
+            key={d.day}
+            style={s.trendRow}
+            accessible
+            accessibilityLabel={`${d.day}: ${formatINRShort(d.netSales)}`}
+          >
             <Text style={s.trendDay}>{d.day.slice(5)}</Text>
             <View style={s.trendTrack}>
               <View style={[s.trendBar, { width: `${Math.max(pct > 0 ? 2 : 0, pct)}%` }]} />
@@ -92,7 +103,13 @@ function Profile() {
       <Text style={s.line}>
         {t('home.permissions')}: {perms.length}
       </Text>
-      {perms.length > 0 ? <Button kind="ghost" label={open ? t('home.hidePermissions') : t('home.showPermissions')} onPress={() => setOpen(!open)} /> : null}
+      {perms.length > 0 ? (
+        <Button
+          kind="ghost"
+          label={open ? t('home.hidePermissions') : t('home.showPermissions')}
+          onPress={() => setOpen(!open)}
+        />
+      ) : null}
       {open ? <Text style={s.perms}>{perms.join('\n')}</Text> : null}
       <LanguagePicker />
       <Button
@@ -126,7 +143,9 @@ export default function HomeScreen() {
   const header = (
     <View style={s.head}>
       <Text style={s.title}>{t('home.title')}</Text>
-      {q.data ? <Text style={s.sub}>{t('home.updated', { time: formatClock(q.data.asOf, i18n.language) })}</Text> : null}
+      {q.data ? (
+        <Text style={s.sub}>{t('home.updated', { time: formatClock(q.data.asOf, i18n.language) })}</Text>
+      ) : null}
     </View>
   );
 
@@ -152,7 +171,9 @@ export default function HomeScreen() {
   } else if (err && !q.data) {
     top = (
       <View style={s.card} accessibilityRole="alert">
-        <Text style={s.error}>{t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })}</Text>
+        <Text style={s.error}>
+          {t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })}
+        </Text>
         <Button label={t('common.retry')} onPress={() => void q.refetch()} />
       </View>
     );
@@ -167,7 +188,9 @@ export default function HomeScreen() {
   const banner =
     offline && q.data ? (
       <View style={s.offline} accessibilityRole="alert">
-        <Text style={s.offlineTxt}>{t('home.offline', { time: formatClock(q.data.asOf, i18n.language) })}</Text>
+        <Text style={s.offlineTxt}>
+          {t('home.offline', { time: formatClock(q.data.asOf, i18n.language) })}
+        </Text>
       </View>
     ) : null;
 
@@ -181,11 +204,18 @@ export default function HomeScreen() {
       numColumns={2}
       columnWrapperStyle={s.col}
       renderItem={({ item }) => <TileCard tile={item} />}
-      refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} colors={[colors.brand]} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => void q.refetch()}
+          colors={[colors.brand]}
+        />
+      }
       ListHeaderComponent={
         <View>
           {header}
           {banner}
+          <QuickLinks />
           {top}
         </View>
       }
@@ -207,11 +237,29 @@ const s = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '700', color: colors.ink },
   sub: { color: colors.muted },
   center: { alignItems: 'center', gap: 8, padding: 24 },
-  tile: { flex: 1, backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, borderLeftWidth: 4, padding: 12, gap: 4, minHeight: 92 },
+  tile: {
+    flex: 1,
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderLeftWidth: 4,
+    padding: 12,
+    gap: 4,
+    minHeight: 92,
+  },
   tileLabel: { color: colors.muted, fontSize: 13 },
   tileValue: { color: colors.ink, fontSize: 22, fontWeight: '700' },
   note: { color: colors.muted, fontSize: 12 },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 16, gap: 8, marginTop: 4 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 16,
+    gap: 8,
+    marginTop: 4,
+  },
   h: { fontWeight: '600', color: colors.ink, fontSize: 16 },
   line: { color: colors.ink },
   perms: { color: colors.muted, fontSize: 12 },

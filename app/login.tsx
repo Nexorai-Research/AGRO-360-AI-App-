@@ -13,7 +13,12 @@ export default function Login() {
   const [hint, setHint] = useState('');
   return (
     <ScrollView contentContainerStyle={s.wrap} keyboardShouldPersistTaps="handled">
-      <Image source={require('../assets/brand/medhavya-logo.jpg')} accessibilityLabel="Medhavya Systems" style={s.logo} resizeMode="contain" />
+      <Image
+        source={require('../assets/brand/medhavya-logo.jpg')}
+        accessibilityLabel="Medhavya Systems"
+        style={s.logo}
+        resizeMode="contain"
+      />
       <Text style={s.title}>{t('app.name')}</Text>
       <Text style={s.sub}>{t('login.title')}</Text>
       <TextInput
@@ -26,7 +31,11 @@ export default function Login() {
         style={s.input}
       />
       {!isConfigured() && <Text style={s.warn}>{t('login.notConfigured')}</Text>}
-      <Button label={t('login.button')} disabled={!isConfigured()} onPress={() => void signIn(hint.trim() || undefined)} />
+      <Button
+        label={t('login.button')}
+        disabled={!isConfigured()}
+        onPress={() => void signIn(hint.trim() || undefined)}
+      />
       <LanguagePicker />
     </ScrollView>
   );
@@ -37,6 +46,15 @@ const s = StyleSheet.create({
   logo: { width: '100%', height: 120 },
   title: { fontSize: 28, fontWeight: '700', color: colors.ink, textAlign: 'center' },
   sub: { fontSize: 16, color: colors.muted, textAlign: 'center' },
-  input: { minHeight: 48, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', paddingHorizontal: 14, fontSize: 16, color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: '#fff',
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: colors.ink,
+  },
   warn: { color: colors.warn, textAlign: 'center' },
 });

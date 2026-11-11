@@ -22,7 +22,10 @@ export function formatClock(iso: string, lang: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
   try {
-    return d.toLocaleTimeString(lang === 'en' ? 'en-IN' : `${lang}-IN-u-nu-latn`, { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleTimeString(lang === 'en' ? 'en-IN' : `${lang}-IN-u-nu-latn`, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   } catch {
     return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
   }
