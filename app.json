@@ -12,6 +12,7 @@
       "expo-secure-store",
       "expo-web-browser",
       "expo-localization",
+      ["expo-location", { "locationWhenInUsePermission": "AGRO 360 AI uses your location only when you check in or out, and only if you agree." }],
       ["expo-splash-screen", { "image": "./assets/splash-icon.png", "imageWidth": 220, "backgroundColor": "#ffffff" }]
     ],
     "experiments": { "typedRoutes": true },

@@ -45,6 +45,10 @@ const KNOWN = new Set([
   'INSUFFICIENT_STOCK',
   'BATCH_REQUIRED',
   'EXPIRY_REQUIRED',
+  'EMPLOYEE_EXITED',
+  'ALREADY_CHECKED_IN',
+  'NOT_CHECKED_IN',
+  'ALREADY_CHECKED_OUT',
 ]);
 
 export interface ErrorMessage {
