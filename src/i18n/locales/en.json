@@ -1,13 +1,44 @@
 {
-  "app": { "name": "AGRO 360 AI" },
+  "app": {
+    "name": "AGRO 360 AI"
+  },
   "login": {
     "title": "Sign in",
     "button": "Sign in",
     "hint": "Use your login as <username>@<franchise code>",
     "notConfigured": "This build has no server address set. Ask your administrator."
   },
-  "home": { "hello": "Hello, {{name}}", "permissions": "Your permissions", "signOut": "Sign out" },
-  "common": { "loading": "Loading...", "retry": "Try again", "language": "Language" },
+  "home": {
+    "hello": "Hello, {{name}}",
+    "permissions": "Your permissions",
+    "signOut": "Sign out",
+    "title": "Today at your shop",
+    "updated": "Updated {{time}}",
+    "offline": "You are offline. Showing data as of {{time}}.",
+    "empty": "Nothing to show yet. Numbers appear after your first bill.",
+    "denied": "You do not have permission to see the dashboard.",
+    "trend": "Sales, last 14 days",
+    "profile": "Profile",
+    "roles": "Roles",
+    "showPermissions": "Show permissions",
+    "hidePermissions": "Hide permissions",
+    "noData": "Not enough data",
+    "change": "{{pct}} vs previous period",
+    "tile": {
+      "net_sales": "Today's sales",
+      "bills": "Bills today",
+      "receivables_outstanding": "To collect",
+      "receivables_overdue": "Overdue dues",
+      "low_stock_count": "Low-stock products",
+      "expiry_exposure": "Stock near expiry",
+      "stock_value": "Stock value"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "retry": "Try again",
+    "language": "Language"
+  },
   "errors": {
     "generic": "Something went wrong. Code {{code}}, reference {{correlationId}}.",
     "NETWORK": "No network. Check your connection and try again.",

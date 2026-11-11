@@ -1,13 +1,44 @@
 {
-  "app": { "name": "AGRO 360 AI" },
+  "app": {
+    "name": "AGRO 360 AI"
+  },
   "login": {
     "title": "साइन इन",
     "button": "साइन इन करें",
     "hint": "अपना लॉगिन <username>@<franchise code> के रूप में लिखें",
     "notConfigured": "इस ऐप में सर्वर का पता नहीं है। अपने एडमिन से पूछें।"
   },
-  "home": { "hello": "नमस्ते, {{name}}", "permissions": "आपकी अनुमतियाँ", "signOut": "साइन आउट" },
-  "common": { "loading": "लोड हो रहा है...", "retry": "फिर कोशिश करें", "language": "भाषा" },
+  "home": {
+    "hello": "नमस्ते, {{name}}",
+    "permissions": "आपकी अनुमतियाँ",
+    "signOut": "साइन आउट",
+    "title": "आज आपकी दुकान पर",
+    "updated": "अपडेट: {{time}}",
+    "offline": "आप ऑफलाइन हैं। {{time}} तक का डेटा दिख रहा है।",
+    "empty": "अभी दिखाने के लिए कुछ नहीं है। पहला बिल बनते ही आँकड़े दिखेंगे।",
+    "denied": "आपको डैशबोर्ड देखने की अनुमति नहीं है।",
+    "trend": "बिक्री, पिछले 14 दिन",
+    "profile": "प्रोफ़ाइल",
+    "roles": "भूमिकाएँ",
+    "showPermissions": "अनुमतियाँ दिखाएँ",
+    "hidePermissions": "अनुमतियाँ छिपाएँ",
+    "noData": "पर्याप्त डेटा नहीं",
+    "change": "पिछली अवधि से {{pct}}",
+    "tile": {
+      "net_sales": "आज की बिक्री",
+      "bills": "आज के बिल",
+      "receivables_outstanding": "वसूली बाकी",
+      "receivables_overdue": "देय तिथि निकली बकाया",
+      "low_stock_count": "कम स्टॉक वाले उत्पाद",
+      "expiry_exposure": "एक्सपायरी के पास का स्टॉक",
+      "stock_value": "स्टॉक मूल्य"
+    }
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "retry": "फिर कोशिश करें",
+    "language": "भाषा"
+  },
   "errors": {
     "generic": "कुछ गलत हो गया। कोड {{code}}, संदर्भ {{correlationId}}।",
     "NETWORK": "नेटवर्क नहीं है। कनेक्शन जाँचें और फिर कोशिश करें।",
