@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
@@ -27,6 +27,7 @@ import {
   type Preview,
   type ProductLite,
 } from './api';
+import { PERM2, dropHeld, fetchHeld, getHeld, holdBill, key2, quickCustomer, type HeldRow } from './api-more';
 import {
   addProduct,
   changeFor,
@@ -75,6 +76,14 @@ export default function PosScreen() {
   const [lostAnswer, setLostAnswer] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<InvoiceResult | null>(null);
+  const [holdLabel, setHoldLabel] = useState<string | null>(null);
+  const [quick, setQuick] = useState<{ name: string; mobile: string; village: string } | null>(null);
+  const qc = useQueryClient();
+  const sideKey = useRef<{ k: string; fp: string } | null>(null);
+  const sideKeyFor = (fp: string) => {
+    if (!sideKey.current || sideKey.current.fp !== fp) sideKey.current = { k: newId(), fp };
+    return sideKey.current.k;
+  };
 
   const keeper = useRef(createKeyKeeper(newId));
   const sending = useRef(false);
@@ -117,6 +126,13 @@ export default function PosScreen() {
     queryFn: ({ signal }) => searchCustomers(client!, cq, signal),
     enabled: ready && cq.length >= 2 && customer === null,
     staleTime: 30_000,
+    retry,
+  });
+
+  const held = useQuery({
+    queryKey: key2(userId, 'held'),
+    queryFn: ({ signal }) => fetchHeld(client!, cart.branchId || branches.data?.[0]?.id || '', signal),
+    enabled: ready && !!(cart.branchId || branches.data?.[0]?.id),
     retry,
   });
 
@@ -214,6 +230,78 @@ export default function PosScreen() {
     setFailure(null);
     setLostAnswer(false);
     setDone(null);
+  }
+
+  async function hold() {
+    if (!client || !holdLabel?.trim() || sending.current) return;
+    sending.current = true;
+    try {
+      const b = toInvoiceBody(effective, billDate);
+      await holdBill(client, branchId, holdLabel.trim(), b, sideKeyFor(JSON.stringify([holdLabel.trim(), b])));
+      sideKey.current = null;
+      void qc.invalidateQueries({ queryKey: key2(userId, 'held') });
+      setCart({ ...emptyCart, branchId });
+      setCustomer(null);
+      setHoldLabel(null);
+      setNote(t('pos.held'));
+    } catch (e) {
+      setFailure(errorMessage(e));
+    } finally {
+      sending.current = false;
+    }
+  }
+
+  async function resume(h: HeldRow) {
+    if (!client) return;
+    try {
+      const r = await getHeld(client, h.id);
+      const names = await client
+        .get<{ items: ProductLite[] }>('/products', { query: { limit: 500 } })
+        .then((x) => new Map(x.items.map((p) => [p.id, p])))
+        .catch(() => new Map<string, ProductLite>());
+      const lines = (r.cart.lines ?? []).map((l) => ({
+        skuId: l.skuId,
+        code: names.get(l.skuId)?.code ?? '',
+        name: names.get(l.skuId)?.name ?? l.skuId,
+        warehouseId: l.warehouseId,
+        qty: l.qty,
+        unitPrice: l.unitPrice ?? '',
+        discountPct: l.discountPct ?? '',
+      }));
+      // the customer and the bill discount belong to the held bill: a credit sale must not turn into a walk-in sale
+      let c: CustomerLite | null = null;
+      if (r.cart.customerId) {
+        c = await client
+          .get<CustomerLite>(`/customers/${r.cart.customerId}`)
+          .catch(() => ({ id: r.cart.customerId!, name: t('pos.customerFallback') }));
+      }
+      setCustomer(c);
+      setCart({ branchId, customerId: c?.id ?? '', billDiscountPct: r.cart.billDiscountPct ?? '', lines });
+      await dropHeld(client, h.id);
+      void qc.invalidateQueries({ queryKey: key2(userId, 'held') });
+      setNote(r.problem ?? null);
+      changed();
+    } catch (e) {
+      setFailure(errorMessage(e));
+    }
+  }
+
+  async function saveQuick() {
+    if (!client || !quick || sending.current) return;
+    sending.current = true;
+    try {
+      const b = { name: quick.name.trim(), mobile: quick.mobile.trim(), village: quick.village.trim() };
+      const c = await quickCustomer(client, b, sideKeyFor(JSON.stringify(b)));
+      sideKey.current = null;
+      setCustomer(c);
+      setCart({ ...effective, customerId: c.id });
+      setQuick(null);
+      changed();
+    } catch (e) {
+      setFailure(errorMessage(e));
+    } finally {
+      sending.current = false;
+    }
   }
 
   if (!allowed) return <StateView state="denied" message={t('pos.denied')} />;
@@ -428,8 +516,46 @@ export default function PosScreen() {
               {c.village || c.mobile ? <Text style={s.sub}>{[c.village, c.mobile].filter(Boolean).join(' · ')}</Text> : null}
             </Pressable>
           ))}
+          {cq.length >= 2 && customers.data && customers.data.length === 0 && !quick && me?.permissions?.includes(PERM2.quickCustomer) !== false ? (
+            <Button kind="ghost" label={t('pos.quickAdd')} onPress={() => setQuick({ name: custSearch.trim(), mobile: '', village: '' })} />
+          ) : null}
+          {quick ? (
+            <View style={s.card}>
+              {(['name', 'mobile', 'village'] as const).map((f) => (
+                <TextInput key={f} value={quick[f]} onChangeText={(v) => setQuick({ ...quick, [f]: v })} placeholder={t(`pos.quick.${f}`)} accessibilityLabel={t(`pos.quick.${f}`)} keyboardType={f === 'mobile' ? 'number-pad' : 'default'} style={s.input} />
+              ))}
+              {quick.mobile !== '' && !/^[6-9]\d{9}$/.test(quick.mobile.trim()) ? <Text style={s.fieldError}>{t('pos.quick.badMobile')}</Text> : null}
+              <Button
+                label={t('pos.quick.save')}
+                disabled={!quick.name.trim() || !quick.village.trim() || !/^[6-9]\d{9}$/.test(quick.mobile.trim())}
+                onPress={() => void saveQuick()}
+              />
+            </View>
+          ) : null}
         </>
       )}
+
+      {effective.lines.length > 0 && me?.permissions?.includes(PERM2.pos) !== false ? (
+        holdLabel === null ? (
+          <Button kind="ghost" label={t('pos.hold')} onPress={() => setHoldLabel('')} />
+        ) : (
+          <View style={s.card}>
+            <TextInput value={holdLabel} onChangeText={setHoldLabel} placeholder={t('pos.holdLabel')} accessibilityLabel={t('pos.holdLabel')} style={s.input} />
+            <Button label={t('pos.holdNow')} disabled={!holdLabel.trim()} onPress={() => void hold()} />
+          </View>
+        )
+      ) : null}
+      {(held.data ?? []).length > 0 ? (
+        <View style={s.card}>
+          <Text style={s.label}>{t('pos.heldBills')}</Text>
+          {held.data!.map((h) => (
+            <View key={h.id} style={s.row}>
+              <Text style={[s.name, s.grow]}>{h.label}</Text>
+              <Button kind="ghost" label={t('pos.resume')} onPress={() => void resume(h)} />
+            </View>
+          ))}
+        </View>
+      ) : null}
 
       {!paying ? (
         <Button

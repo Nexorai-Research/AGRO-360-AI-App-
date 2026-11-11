@@ -56,3 +56,18 @@ Backend used (all DONE in `docs/modules/M05-status.md`, UC-068): `GET /inventory
 
 # Tracker: Phase 1, POS billing (`app/pos.tsx`, `src/features/pos/`)
 | POS billing counter | DONE for the component logic, NOT RUN against the real backend or on a phone | `__tests__/pos.test.tsx`, 13 tests passed with a mocked API client: product search, add and merge lines, qty/price/discount checked as decimal strings, the server prices the bill (`POST /sales/invoices/preview`, only the newest answer is shown), customer or walk-in, split tenders by enabled mode (never CREDIT), walk-in must pay in full, change on cash, ONE Idempotency-Key per bill reused after a lost answer (new key if the bill changes), no double submit, offline message, no permission (`sales.pos.use`) makes no API call, English and Hindi. Uses `GET /branches`, `/warehouses`, `/settings/payment-modes`, `/products`, `/products/by-barcode/:code`, `/customers`, `POST /sales/invoices/preview`, `POST /sales/invoices`. Types are written by hand from the backend source. Limits NOT built: hold and resume bill, invoice list, returns and cancel, invoice print/share/PDF, shifts and day-end, quick-add customer, batch pick and FEFO override, crop-protection capture, wholesale. The real barcode camera is not run on a device. Offline is recognised only after a failed call (no NetInfo). No Maestro flow yet. Hindi and Marathi texts need a native speaker review. |
+
+# Tracker: Phase 1, POS step 1 rest (branch `pos-invoices-shifts`)
+Last run: `npx jest __tests__/pos` 2 suites, 29 tests passed (mocked API client; nothing here was run against the real backend or on a phone).
+| Item | Status | Evidence / limit |
+| --- | --- | --- |
+| Hold and resume a bill (`GET/POST /sales/held`, `GET/DELETE /sales/held/:id`) | DONE (mocked client) | `__tests__/pos-more.test.tsx`: resume restores lines, customer and bill discount, then drops the held bill; hold sends label and cart with a key. Held bills are on the server, not on the phone. |
+| Quick-add customer (`POST /customers/quick`) | DONE (mocked client) | Mobile checked 10 digits starting 6-9; hidden without `customer.create`. |
+| Invoice list (`app/invoices.tsx`) | DONE (mocked client) | Last 100 only; no paging, search or filter. |
+| Return (credit note) and cancel | DONE (mocked client) | Quantity checked as a decimal against what is left; one Idempotency-Key kept across a lost-answer retry. One line per credit note (the web does the same). Buttons hidden without `sales.return` / `sales.invoice.cancel`. |
+| Invoice share link / send to customer | DONE (mocked client) | Opens the phone share sheet with the server link (`POST /sales/invoices/:id/share`). Send to customer only queues it; the WhatsApp provider is a mock on the backend. |
+| Print, PDF | NOT BUILT | The print and PDF endpoints need the bearer token and return HTML/PDF bytes; the API client reads JSON only. Needs a file download and a viewer (decision: `expo-print` or `expo-sharing`). Bluetooth thermal printing is out of scope. |
+| Shifts: open, close, day-end (`app/shifts.tsx`) | DONE (mocked client) | Cash as decimal strings; difference shown before closing; day-end only with `pos.dayend`. Cash movements in a shift and a day-end history are NOT built. |
+| Sales register report, accounting entries of an invoice | NOT BUILT | Web Sales "Reports" tab and the "Entries" button. |
+| Links | DONE | Home quick links to Invoices and Shifts. |
+| Maestro flows, real phone, staging | NOT DONE | Needs staging URL, Keycloak client and test users. |

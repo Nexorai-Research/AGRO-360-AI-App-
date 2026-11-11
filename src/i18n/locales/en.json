@@ -230,7 +230,9 @@
     "customers": "Customers",
     "collections": "Collections",
     "attendance": "Attendance",
-    "pos": "New bill (POS)"
+    "pos": "New bill (POS)",
+    "invoices": "Invoices",
+    "shifts": "Shifts and day-end"
   },
   "pos": {
     "title": "New bill",
@@ -283,6 +285,74 @@
       "discount": "Discount must be between 0 and 100.",
       "payNone": "Enter an amount to be paid.",
       "payShort": "A walk-in sale must be paid in full."
+    },
+    "held": "Bill held. Find it under Held bills.",
+    "heldBills": "Held bills",
+    "hold": "Hold this bill",
+    "holdLabel": "Label (for example the customer name)",
+    "holdNow": "Hold",
+    "resume": "Resume",
+    "customerFallback": "Customer",
+    "quickAdd": "Not found: add a quick customer",
+    "quick": {
+      "name": "Name",
+      "mobile": "Mobile (10 digits, starts 6-9)",
+      "village": "Village",
+      "badMobile": "Mobile must be 10 digits and start with 6, 7, 8 or 9.",
+      "save": "Save customer"
     }
+  },
+  "invoices": {
+    "title": "Invoices",
+    "denied": "You do not have permission to see invoices.",
+    "offline": "You are offline. Invoices load only online.",
+    "empty": "No invoices yet.",
+    "walkIn": "Walk-in",
+    "credit": "on credit {{amount}}",
+    "share": "Share link",
+    "sendWhatsapp": "Send to customer",
+    "sent": "Invoice link queued for the customer.",
+    "shareText": "Invoice {{number}}: {{url}}",
+    "return": "Return",
+    "cancel": "Cancel",
+    "cancelHint": "The number is kept with status CANCELLED; stock and accounts are reversed.",
+    "reason": "Reason",
+    "cancelNow": "Cancel invoice",
+    "cancelled": "Invoice {{number}} cancelled.",
+    "lineText": "{{code}} x {{qty}} (returned {{returned}})",
+    "qty": "Quantity to return",
+    "toAccount": "Credit to account",
+    "damaged": "Goods are damaged (damaged warehouse)",
+    "returnNow": "Issue credit note",
+    "returned": "Credit note issued against {{number}}.",
+    "v": {
+      "format": "Quantity must be more than 0 with at most 3 decimals.",
+      "tooMany": "More than what is left to return."
+    }
+  },
+  "shifts": {
+    "title": "Shifts and day-end",
+    "denied": "You do not have permission to use shifts.",
+    "offline": "You are offline. Shifts load only online.",
+    "empty": "No shifts yet.",
+    "open": "Open shift",
+    "dayEnd": "Day-end",
+    "dayEndHint": "All shifts of the branch must be closed. After this, invoices dated {{date}} need the day-end override right.",
+    "openingCash": "Opening cash",
+    "countedCash": "Counted cash",
+    "badCash": "Enter an amount with at most 2 decimals.",
+    "expected": "Expected cash {{amount}}",
+    "difference": "Difference {{amount}}: add a note.",
+    "note": "Note (needed when there is a difference)",
+    "openNow": "Open shift",
+    "closeNow": "Close shift",
+    "dayEndNow": "Close the day",
+    "opened": "Shift opened.",
+    "closed": "Shift closed.",
+    "dayClosed": "Day closed.",
+    "close": "Close",
+    "line": "Opening {{opening}} · expected {{expected}}",
+    "counted": "counted {{amount}}",
+    "diff": "difference {{amount}}"
   }
 }
