@@ -201,7 +201,7 @@ export function ActionForm({
         if (f.kind === 'choice')
           return (
             <View key={f.name}>
-              <Chips label={f.label} options={f.options ?? []} value={String(v[f.name] ?? '')} onChange={(id) => set(f.name, id)} />
+              <Chips label={f.label} options={f.options ?? []} value={String(v[f.name] ?? '')} onChange={(id) => set(f.name, !f.required && v[f.name] === id ? '' : id)} />
               {err ? <Text style={s.err}>{err}</Text> : null}
             </View>
           );
@@ -267,7 +267,8 @@ export function useOneShot(onDone: () => void) {
       setBusy(true);
       setFailure(null);
       try {
-        await call(ak.keyFor(fp));
+        // a call may answer false to say "not finished" (it asked the user something); then nothing is reported as done
+        if ((await call(ak.keyFor(fp))) === false) return;
         ak.reset();
         onDone();
       } catch (x) {

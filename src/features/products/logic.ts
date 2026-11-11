@@ -20,23 +20,31 @@ export interface ProductDraft {
   expiryTracked: boolean;
   sellable: boolean;
   purchasable: boolean;
+  packSize: string;
+  packUomId: string;
+  grade: string;
+  crop: string;
+  variety: string;
+  hsnConfirmed: boolean;
 }
 export const emptyDraft: ProductDraft = {
   name: '', localName: '', categoryId: '', brandId: '', baseUomId: '', code: '', hsnCode: '', taxCode: '', mrp: '',
   sellingPrice: '', purchasePrice: '', reorderLevel: '', shelfLifeMonths: '',
   mrpControlled: true, batchTracked: false, expiryTracked: false, sellable: true, purchasable: true,
+  packSize: '', packUomId: '', grade: '', crop: '', variety: '', hsnConfirmed: false,
 };
 export const draftOf = (p: Product): ProductDraft => ({
   ...emptyDraft,
   name: p.name, localName: p.localName ?? '', categoryId: p.categoryId ?? '', brandId: p.brandId ?? '', baseUomId: p.baseUomId,
   reorderLevel: p.reorderLevel ?? '', shelfLifeMonths: p.shelfLifeMonths === null ? '' : String(p.shelfLifeMonths),
   mrpControlled: p.mrpControlled, batchTracked: p.batchTracked, expiryTracked: p.expiryTracked, sellable: p.sellable, purchasable: p.purchasable,
+  packSize: p.packSize ?? '', packUomId: p.packUomId ?? '', grade: p.grade ?? '', crop: p.crop ?? '', variety: p.variety ?? '',
 });
 
 const PRICE_RE = /^\d+(\.\d{1,4})?$/;
 const QTY_RE = /^\d+(\.\d{1,3})?$/;
 const INT_RE = /^\d{1,3}$/;
-export type DraftError = 'required' | 'price' | 'qty' | 'int' | 'mrpRequired' | 'aboveMrp';
+export type DraftError = 'required' | 'price' | 'qty' | 'int' | 'mrpRequired' | 'aboveMrp' | 'packPair';
 export type DraftErrors = Partial<Record<keyof ProductDraft, DraftError>>;
 
 /** Prices are decimal strings (at most 4 places), compared as decimals. The server stays the authority on every rule. */
@@ -47,6 +55,8 @@ export function validateDraft(d: ProductDraft, creating: boolean, canCost: boole
   if (!d.baseUomId) e.baseUomId = 'required';
   if (d.reorderLevel.trim() && !QTY_RE.test(d.reorderLevel.trim())) e.reorderLevel = 'qty';
   if (d.shelfLifeMonths.trim() && !INT_RE.test(d.shelfLifeMonths.trim())) e.shelfLifeMonths = 'int';
+  if (d.packSize.trim() && !QTY_RE.test(d.packSize.trim())) e.packSize = 'qty';
+  else if (!!d.packSize.trim() !== !!d.packUomId) e.packSize = 'packPair';
   if (creating) {
     if (!d.sellingPrice.trim()) e.sellingPrice = 'required';
     else if (!PRICE_RE.test(d.sellingPrice.trim())) e.sellingPrice = 'price';
@@ -69,11 +79,17 @@ export function toBody(d: ProductDraft, creating: boolean, canCost: boolean): Re
   opt('brandId', d.brandId);
   opt('reorderLevel', d.reorderLevel);
   opt('shelfLifeMonths', d.shelfLifeMonths, Number);
+  opt('packSize', d.packSize);
+  opt('packUomId', d.packUomId);
+  opt('grade', d.grade);
+  opt('crop', d.crop);
+  opt('variety', d.variety);
   Object.assign(o, { mrpControlled: d.mrpControlled, batchTracked: d.batchTracked, expiryTracked: d.expiryTracked, sellable: d.sellable, purchasable: d.purchasable });
   if (creating) {
     if (d.code.trim()) o.code = d.code.trim();
     if (d.hsnCode.trim()) o.hsnCode = d.hsnCode.trim();
     if (d.taxCode.trim()) o.taxCode = d.taxCode.trim();
+    if (d.hsnCode.trim() && d.hsnConfirmed) o.hsnConfirmed = true;
     o.sellingPrice = d.sellingPrice.trim();
     if (d.mrpControlled && d.mrp.trim()) o.mrp = d.mrp.trim();
     if (canCost && d.purchasePrice.trim()) o.purchasePrice = d.purchasePrice.trim();

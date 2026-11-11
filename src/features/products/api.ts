@@ -25,6 +25,13 @@ export interface Product {
   brandName: string | null;
   baseUomId: string;
   baseUomCode: string;
+  packSize: string | null;
+  packUomId: string | null;
+  packUomCode: string | null;
+  grade: string | null;
+  crop: string | null;
+  variety: string | null;
+  regulatedType?: string;
   batchTracked: boolean;
   expiryTracked: boolean;
   shelfLifeMonths: number | null;
