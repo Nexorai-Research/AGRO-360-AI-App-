@@ -71,3 +71,107 @@ Last run: `npx jest __tests__/pos` 2 suites, 29 tests passed (mocked API client;
 | Sales register report, accounting entries of an invoice | NOT BUILT | Web Sales "Reports" tab and the "Entries" button. |
 | Links | DONE | Home quick links to Invoices and Shifts. |
 | Maestro flows, real phone, staging | NOT DONE | Needs staging URL, Keycloak client and test users. |
+
+# Tracker: Step 2, Products and Inventory (branch `products-inventory`)
+Last run: `npx jest __tests__/products-inventory` 1 suite, 17 tests passed (mocked API client; nothing here was run against the real backend or on a phone).
+| Item | Status | Evidence / limit |
+| --- | --- | --- |
+| Product list with search and status filter (`app/products/index.tsx`) | DONE (mocked client) | First 100 only, no paging. Needs `product.view`. |
+| Product detail: prices, status, activate / deactivate / archive | DONE (mocked client) | Stock-on-hand warning from the server needs a second deliberate tap (`confirmStock`). |
+| Product create and edit (`app/products/form.tsx`) | DONE (mocked client) | Decimal checks; MRP rule; edit sends `If-Match` version and clears blank optional fields; duplicate warning asks then resends with `confirmDuplicate`. NOT built: pack size and pack unit, HSN-not-in-library confirm, grade, crop, variety, composition and units tabs, regulated flags. |
+| Barcodes: list, generate internal EAN-13, add, remove | DONE (mocked client) | Hidden without `product.barcode`. The barcode picture is not drawn, only the number. |
+| Price history and set price | DONE (mocked client) | Cost shown only with `inventory.value.view`; loss warning when cost is above selling price. |
+| Stock adjustments: create draft, submit, cancel, approve, reject (`app/adjustments.tsx`) | DONE (mocked client) | One line per adjustment (the web does the same). A decrease above stock on hand is refused on screen. Approve and reject follow the server's maker-checker rule; the app only hides buttons. |
+| Transfers inside a branch and move to damaged stock (`app/transfers.tsx`) | DONE (mocked client) | Between branches is not available in the backend either. NOT built: write-off. |
+| Batches with stock: block and release (`app/batches.tsx`) | DONE (mocked client) | NOT built: expiry extension request and approval, expired and expiring tabs (the Stock check screen shows expiry). |
+| NOT built | | Categories, brands, units, price lists, tax mapping, import / export, labels, opening stock, stock ledger, reorder rules and alerts, valuation. |
+| Real data, real phone, Maestro flows | NOT DONE | Needs staging URL, Keycloak client and test users. Hindi and Marathi texts need a native speaker review. |
+
+## Step 4: HR self-service, owner reports, accounts and compliance (view)
+
+All lines below: mocked API, not run against the real backend. Tests: `__tests__/hr-screens.test.tsx` (27 passing), `__tests__/reports-accounts.test.tsx` (24 passing). tsc and eslint clean. No device run was done.
+
+DONE (screen plus passing test)
+- Leave (`/leave`, `src/features/hr/LeaveScreen.tsx`): balances, my requests, apply (date checks, one Idempotency-Key reused on retry, new key when the body changes), cancel, and for hr.leave.approve a team tab with approve and reject (reject needs a reason of 3 or more letters). Endpoints: GET /hr/leaves, /hr/leave-balances, /hr/leave-types; POST /hr/leaves, /hr/leaves/:id/cancel, /approve, /reject.
+- My payslips (`/payslips`): list and expandable detail, money by formatINR from strings. GET /hr/payslips.
+- Field visits and beat plans (`/visits`): planned beats, last 7 days of visits, record a visit (offlineRef equals the Idempotency-Key, so a lost answer cannot store it twice), plan a beat, cancel a beat. GET /hr/beat-plans, /hr/field-visits; POST /hr/field-visits, /hr/beat-plans, /hr/beat-plans/:id/cancel.
+- Advances (`/advances`): list with open and outstanding totals, request (amount validated as a decimal string, 2 places, max 1,00,00,000; installments 1 to 60; sent as strings). GET /hr/advances, /hr/me; POST /hr/advances.
+- Reports (`/reports`): sales analysis, profitability, collection efficiency (with ageing), tax summary, losses; 7/30/90 days; group by; plain View bars. Only reports the user has permission for are offered (reports.sales, reports.financial, reports.receivables). GET /reports/sales/analysis, /profitability, /collections/efficiency, /tax/summary, /losses.
+- Accounts (`/accounts`, view only): day book, trial balance, ledger balances. GET /reports/day-book, /reports/trial-balance, /finance/accounts?balances=true.
+- Compliance (`/compliance`, view only): GST summary (GSTR-3B figures), HSN summary, input credit register, this month or last. GET /gst/gstr3b, /gst/hsn-summary, /gst/itc-register.
+- Each screen has loading, empty, error, offline and permission-denied states, and English, Hindi, Marathi texts (`i18n-parts/step4.json`, to be merged into the locale files).
+
+NOT built
+- Beat plan creation for another employee, mark-missed, visit summary (planned vs actual), field visit location (no GPS captured), photo on a visit.
+- Advance approve, cancel, repay (payroll and cash roles, web only). Advance request is for the logged-in employee only.
+- Payslip print or HTML download or share; payslip PDF.
+- Leave: leave type and balance admin, applying on behalf of another employee, attachments.
+- Payroll runs, salary structures, incentives, performance, employee master (web only).
+- Reports: purchase analysis, inventory reports, staff productivity, customer analytics, branch comparison, audit, saved views, custom reports, CSV/Excel/PDF export, branch filter, custom date range.
+- Accounts: cash book, bank book, general ledger of one account, profit and loss, balance sheet, vouchers, journals, expenses, petty cash, bank reconciliation, budgets, any posting.
+- Compliance: GSTR-1 tables, snapshots and freeze, GSTR-2B import and reconciliation, ITC block rules, RCM, TDS, e-invoice, agri registers (compliance-agri).
+
+Limits
+- Day book shows the first 200 entries. Reports show the top 30 rows.
+- Dates are typed as YYYY-MM-DD (no date picker). Month pickers are fixed to this month and last month.
+- Percentages from the server are used only for bar width; displayed numbers stay strings. The "per installment" hint rounds up to match the server.
+- Reports, accounts and compliance have no cache-age banner; pull to retry on error only.
+- `src/features/hr/kit.tsx` adds useAction, Gate, Bar, Line on top of `src/ui/kit.tsx` (which is untouched).
+- Jest in a `.claude/worktrees` folder needs `--testPathIgnorePatterns=/node_modules/` because package.json ignores `/.claude/`.
+- Home QuickLinks, locale files and `app/_layout.tsx` are not edited; the nav texts (`nav.leave`, `nav.payslips`, `nav.visits`, `nav.advances`, `nav.reports`, `nav.accounts`, `nav.compliance`) are in the parts file for the integrator to wire to routes /leave, /payslips, /visits, /advances, /reports, /accounts, /compliance.
+
+## Step 5: account and admin screens
+
+All lines below: mocked API, not run against the real backend. Evidence: `__tests__/step5-account.test.tsx` and `__tests__/step5-admin.test.tsx` (51 tests passing).
+
+DONE (each covered by loading / empty / error / offline / permission-denied tests where it applies):
+- My account (`/account`, needs `identity.session.view`): display name and language (`GET/PUT /me/preferences`, only changed fields sent), sign-ins list (`GET /auth/sessions`, address already masked by the server), end one sign-in (`DELETE /auth/sessions/:id`), sign out everywhere with a confirm step (`POST /auth/logout-all`, then this phone signs out), own devices (`GET /devices`) and revoke with a reason of 5+ characters (`POST /devices/:id:revoke`). Idempotency-Key is reused on a lost-answer retry and renewed when the body changes. No device key, token or password is shown.
+- Users (`/users`, needs `identity.user.manage`): list with search, status filter, load more (`GET /users`), details, deactivate with a 10+ character reason (`POST /users/:id:deactivate`), activate again (`POST /users/:id:reactivate`). Role names come from `GET /roles` only when the person also holds `identity.role.manage`; otherwise a count is shown.
+- Roles (`/roles`, `identity.role.manage`): view only, permissions grouped by area, approval limits (`GET /roles`).
+- Audit trail (`/audit`, `identity.security.manage`): read only list with action, entity, user id, from and to filters, validated before sending, load more (`GET /audit`). India-day range, `to` is exclusive.
+- Documents (`/documents`, `org.document.view`): list with search, status and category filters, load more (`GET /documents`); deactivate and restore only with `org.document.manage` (`POST /documents/:id:deactivate|restore`).
+- Settings (`/settings`): view only. Company (`org.company.manage`, bank account number masked to the last 4), branches, payment modes, business rules (`org.config.view`). Each part fails on its own.
+
+NOT built:
+- Change password, two-factor sign-in setup, registering a new device (the device key is shown once, so it is left to the web app).
+- Add or edit user, unlock, reset 2FA, user sessions of other people.
+- Create, edit or delete roles; change permissions or limits.
+- Document upload, replace, versions list and file download (file content is base64 in the API; not done on the phone).
+- Editing any setting; tax, number series, print templates, field and menu configuration (`configuration.js`), import history, Security centre (`security.js`).
+- Platform-owner screens (Franchises, Plans, platform audit) skipped on purpose.
+- Nav entries exist only as texts (`nav.*` in `i18n-parts/step5.json`); the Home quick links and locale files are not edited here, so merge the texts and links in a later step.
+
+Limits: shapes are hand-copied from the backend source and not checked against a running server. The `/.claude/` path is ignored by the jest config, so in a worktree run jest with `--testPathIgnorePatterns=/node_modules/`.
+
+## Step 3: purchases, complaints, collection follow-up
+
+All lines below: mocked API, not run against the real backend, not run on a phone or emulator. Evidence is Jest only (`__tests__/purchase.test.tsx` 24 tests, `__tests__/complaints-followup.test.tsx` 22 tests). Shapes were copied by hand from the backend source (no OpenAPI file exists yet).
+
+### Done (with passing test)
+
+| Feature | Screen | Endpoints used | Test evidence |
+|---|---|---|---|
+| Purchase order list with status filter, approvals tab, supplier list, goods-receipt list | `/purchase` | GET `/procurement/purchase-orders`, `/procurement/purchase-orders/approvals`, `/procurement/suppliers`, `/procurement/goods-receipts` | list, loading, empty, offline, error, 403 denied, no permission, view-only hides buttons |
+| Purchase order detail, submit, approve, reject, cancel | `/purchase/[id]` | GET `/procurement/purchase-orders/:id`; POST `.../submit`, `.../approve`, `.../reject`, `.../cancel` (If-Match = version read) | approve sends version and one key, lost answer reuses the key, changed reason gets a new key, reason of 5 letters, own order has no approve button, hidden without permission |
+| New purchase order (supplier, branch, warehouse, lines by search or barcode scan) | `/purchase/order-new` | POST `/procurement/purchase-orders`; GET `/branches`, `/warehouses`, `/products`, `/products/by-barcode/:code` | empty form refused, decimal checks (qty 6 places, rate 4, discount 0..100), scan adds line, same body same key after lost answer |
+| Goods receipt against an order, barcode scan counts one unit, reject reason, batch and expiry | `/purchase/receive/[id]` | POST `/procurement/goods-receipts`, POST `.../:id/receive` | scan counts as decimal, product not on order reported, nothing entered refused, receipt saved then post retried with the same key without creating a second receipt, over-receipt answer shown |
+| Complaints list, new complaint, status change with resolution text, comment | `/complaints`, `/complaints/new`, `/complaints/[id]` | GET `/complaints`, `/complaints/:id`; POST `/complaints`, `/complaints/:id/transition` (If-Match), `/complaints/:id/comments`; GET `/customers` | list states, resolve needs text, version sent, retry same key, changed body new key, controls hidden without `customer.complaint` / `customer.complaint.resolve` |
+| Collection follow-up: record task outcome, promise to pay (create, cancel, list), receipt list | `/collections/follow-up` | POST `/credit/tasks/:id/outcome`, `/customers/:id/promises`, `/credit/promises/:id/cancel`; GET `/credit/promises`, `/receipts` | promise needs amount (2 places) and a date after today, dispute needs a note, same key on retry, tabs follow permissions |
+
+Texts: `i18n-parts/step3.json` (en, hi, mr; namespaces purchase, complaints, followup, nav). Not yet merged into `src/i18n/locales/*.json`; a test checks the three languages have the same keys. Hindi and Marathi wording has not been reviewed by a native speaker.
+
+### Not built
+- Supplier create or edit, supplier bank accounts, ledger, block or activate.
+- Purchase order edit of a draft (PATCH), revise, send to supplier, close.
+- Goods receipt: discard of a saved draft, approve over-receipt, reverse, receipt without an order, free quantity, per-line damaged quantity.
+- Purchase bills, three-way match, supplier returns and claims, payments, payables ageing, purchase register, requisitions, RFQs, schemes, landed cost.
+- Complaints: photos, assign or claim, rating, reopen window message, trends, SLA policy.
+- Customers screens beyond the existing list and detail, villages and territories, customer tools, engagement (admin screens, skipped).
+- Collections: reassigning tasks, reminders, cheques, write-offs, settlements.
+- Offline queue: all of these are online only; nothing is saved on the phone.
+- Links from the home quick links and menu: the shared `QuickLinks.tsx` and `_layout.tsx` were not edited, so the new routes are reachable only by path until the owner adds them.
+
+### Limits
+- Order totals and GST on the new-order form are an estimate for the screen only (quantity x rate less discount); the server computes the real totals.
+- If a receipt is saved but posting fails, the saved receipt id is kept only while the screen is open. Leaving the screen leaves a draft receipt that has to be posted or discarded from the web app.
+- Jest needs `--testPathIgnorePatterns /node_modules/` when run from inside a `.claude` worktree, because the project config ignores paths containing `/.claude/`.
