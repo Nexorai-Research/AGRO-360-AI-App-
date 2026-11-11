@@ -4,13 +4,15 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 
 const langs = ['en', 'hi', 'mr'];
 const files = readdirSync('i18n-parts').filter((f) => /^step\d+\.json$/.test(f)).sort();
-const routeOf = JSON.parse(readFileSync('scripts/nav-routes.json', 'utf8'));
+const routeOf = Object.assign({}, ...readdirSync('scripts').filter((f) => /^nav-routes.*\.json$/.test(f)).sort().map((f) => JSON.parse(readFileSync(`scripts/${f}`, 'utf8'))));
+const isObj = (x) => x && typeof x === 'object' && !Array.isArray(x);
+const deep = (a, b) => { const o = { ...a }; for (const [k, v] of Object.entries(b)) o[k] = isObj(v) && isObj(a?.[k]) ? deep(a[k], v) : v; return o; };
 for (const l of langs) {
   const p = `src/i18n/locales/${l}.json`;
   const d = JSON.parse(readFileSync(p, 'utf8'));
   for (const f of files) {
     const part = JSON.parse(readFileSync(`i18n-parts/${f}`, 'utf8'))[l] ?? {};
-    for (const [k, v] of Object.entries(part)) d[k] = k === 'nav' ? { ...d.nav, ...v } : v;
+    for (const [k, v] of Object.entries(part)) d[k] = deep(d[k] ?? {}, v);
   }
   writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
 }
