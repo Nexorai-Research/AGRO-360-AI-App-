@@ -28,6 +28,9 @@ const LINKS = [
   ['nav.audit', '/audit'],
   ['nav.documents', '/documents'],
   ['nav.settings', '/settings'],
+  ['nav.purchase', '/purchase'],
+  ['nav.complaints', '/complaints'],
+  ['nav.followup', '/collections/follow-up'],
 ] as const;
 
 /** One tap to each screen. The server still decides what the user may open; a denied screen shows its own message. */
