@@ -15,6 +15,13 @@ const LINKS = [
   ['nav.customers', '/customers'],
   ['nav.collections', '/collections'],
   ['nav.attendance', '/attendance'],
+  ['nav.leave', '/leave'],
+  ['nav.payslips', '/payslips'],
+  ['nav.visits', '/visits'],
+  ['nav.advances', '/advances'],
+  ['nav.reports', '/reports'],
+  ['nav.accounts', '/accounts'],
+  ['nav.compliance', '/compliance'],
 ] as const;
 
 /** One tap to each screen. The server still decides what the user may open; a denied screen shows its own message. */
