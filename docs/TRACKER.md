@@ -71,3 +71,18 @@ Last run: `npx jest __tests__/pos` 2 suites, 29 tests passed (mocked API client;
 | Sales register report, accounting entries of an invoice | NOT BUILT | Web Sales "Reports" tab and the "Entries" button. |
 | Links | DONE | Home quick links to Invoices and Shifts. |
 | Maestro flows, real phone, staging | NOT DONE | Needs staging URL, Keycloak client and test users. |
+
+# Tracker: Step 2, Products and Inventory (branch `products-inventory`)
+Last run: `npx jest __tests__/products-inventory` 1 suite, 17 tests passed (mocked API client; nothing here was run against the real backend or on a phone).
+| Item | Status | Evidence / limit |
+| --- | --- | --- |
+| Product list with search and status filter (`app/products/index.tsx`) | DONE (mocked client) | First 100 only, no paging. Needs `product.view`. |
+| Product detail: prices, status, activate / deactivate / archive | DONE (mocked client) | Stock-on-hand warning from the server needs a second deliberate tap (`confirmStock`). |
+| Product create and edit (`app/products/form.tsx`) | DONE (mocked client) | Decimal checks; MRP rule; edit sends `If-Match` version and clears blank optional fields; duplicate warning asks then resends with `confirmDuplicate`. NOT built: pack size and pack unit, HSN-not-in-library confirm, grade, crop, variety, composition and units tabs, regulated flags. |
+| Barcodes: list, generate internal EAN-13, add, remove | DONE (mocked client) | Hidden without `product.barcode`. The barcode picture is not drawn, only the number. |
+| Price history and set price | DONE (mocked client) | Cost shown only with `inventory.value.view`; loss warning when cost is above selling price. |
+| Stock adjustments: create draft, submit, cancel, approve, reject (`app/adjustments.tsx`) | DONE (mocked client) | One line per adjustment (the web does the same). A decrease above stock on hand is refused on screen. Approve and reject follow the server's maker-checker rule; the app only hides buttons. |
+| Transfers inside a branch and move to damaged stock (`app/transfers.tsx`) | DONE (mocked client) | Between branches is not available in the backend either. NOT built: write-off. |
+| Batches with stock: block and release (`app/batches.tsx`) | DONE (mocked client) | NOT built: expiry extension request and approval, expired and expiring tabs (the Stock check screen shows expiry). |
+| NOT built | | Categories, brands, units, price lists, tax mapping, import / export, labels, opening stock, stock ledger, reorder rules and alerts, valuation. |
+| Real data, real phone, Maestro flows | NOT DONE | Needs staging URL, Keycloak client and test users. Hindi and Marathi texts need a native speaker review. |
