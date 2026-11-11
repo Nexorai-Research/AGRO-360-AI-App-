@@ -1,13 +1,23 @@
 {
-  "app": { "name": "AGRO 360 AI" },
+  "app": {
+    "name": "AGRO 360 AI"
+  },
   "login": {
     "title": "Sign in",
     "button": "Sign in",
     "hint": "Use your login as <username>@<franchise code>",
     "notConfigured": "This build has no server address set. Ask your administrator."
   },
-  "home": { "hello": "Hello, {{name}}", "permissions": "Your permissions", "signOut": "Sign out" },
-  "common": { "loading": "Loading...", "retry": "Try again", "language": "Language" },
+  "home": {
+    "hello": "Hello, {{name}}",
+    "permissions": "Your permissions",
+    "signOut": "Sign out"
+  },
+  "common": {
+    "loading": "Loading...",
+    "retry": "Try again",
+    "language": "Language"
+  },
   "errors": {
     "generic": "Something went wrong. Code {{code}}, reference {{correlationId}}.",
     "NETWORK": "No network. Check your connection and try again.",
@@ -24,5 +34,49 @@
     "INSUFFICIENT_STOCK": "Not enough stock.",
     "BATCH_REQUIRED": "A batch is required for this item.",
     "EXPIRY_REQUIRED": "An expiry date is required for this item."
+  },
+  "customers": {
+    "title": "Customers",
+    "search": "Search name, mobile, village, code",
+    "empty": "No customers match.",
+    "denied": "You do not have permission to see this.",
+    "loadMore": "Load more",
+    "call": "Call",
+    "creditHold": "Credit hold",
+    "offline": "No network. Showing saved data as of {{time}}.",
+    "asOf": "Showing saved data as of {{time}}.",
+    "code": "Code",
+    "mobile": "Mobile",
+    "altMobile": "Alternate mobile",
+    "village": "Village",
+    "category": "Category",
+    "gstin": "GSTIN",
+    "credit": "Credit",
+    "creditLimit": "Credit limit",
+    "outstanding": "Outstanding",
+    "available": "Available",
+    "creditHidden": "Credit details are not available to your role.",
+    "seasons": "Purchases by season",
+    "recent": "Recent purchases",
+    "noPurchases": "No purchases yet.",
+    "returned": "Returned {{qty}}",
+    "ledger": "Ledger",
+    "showLedger": "Show ledger",
+    "opening": "Opening balance",
+    "closing": "Closing balance",
+    "noLedger": "No ledger entries.",
+    "status": {
+      "label": "Status",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "MERGED": "Merged",
+      "ANONYMIZED": "Anonymised"
+    },
+    "season": {
+      "KHARIF": "Kharif",
+      "RABI": "Rabi",
+      "ZAID": "Zaid",
+      "PERENNIAL": "Perennial"
+    }
   }
 }

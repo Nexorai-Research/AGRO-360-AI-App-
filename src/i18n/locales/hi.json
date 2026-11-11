@@ -1,13 +1,23 @@
 {
-  "app": { "name": "AGRO 360 AI" },
+  "app": {
+    "name": "AGRO 360 AI"
+  },
   "login": {
     "title": "साइन इन",
     "button": "साइन इन करें",
     "hint": "अपना लॉगिन <username>@<franchise code> के रूप में लिखें",
     "notConfigured": "इस ऐप में सर्वर का पता नहीं है। अपने एडमिन से पूछें।"
   },
-  "home": { "hello": "नमस्ते, {{name}}", "permissions": "आपकी अनुमतियाँ", "signOut": "साइन आउट" },
-  "common": { "loading": "लोड हो रहा है...", "retry": "फिर कोशिश करें", "language": "भाषा" },
+  "home": {
+    "hello": "नमस्ते, {{name}}",
+    "permissions": "आपकी अनुमतियाँ",
+    "signOut": "साइन आउट"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "retry": "फिर कोशिश करें",
+    "language": "भाषा"
+  },
   "errors": {
     "generic": "कुछ गलत हो गया। कोड {{code}}, संदर्भ {{correlationId}}।",
     "NETWORK": "नेटवर्क नहीं है। कनेक्शन जाँचें और फिर कोशिश करें।",
@@ -24,5 +34,49 @@
     "INSUFFICIENT_STOCK": "पर्याप्त स्टॉक नहीं है।",
     "BATCH_REQUIRED": "इस आइटम के लिए बैच ज़रूरी है।",
     "EXPIRY_REQUIRED": "इस आइटम के लिए एक्सपायरी तारीख ज़रूरी है।"
+  },
+  "customers": {
+    "title": "ग्राहक",
+    "search": "नाम, मोबाइल, गाँव, कोड से खोजें",
+    "empty": "कोई ग्राहक नहीं मिला।",
+    "denied": "आपको इसे देखने की अनुमति नहीं है।",
+    "loadMore": "और दिखाएँ",
+    "call": "कॉल करें",
+    "creditHold": "उधार रोका गया",
+    "offline": "नेटवर्क नहीं है। {{time}} तक का सहेजा हुआ डेटा दिख रहा है।",
+    "asOf": "{{time}} तक का सहेजा हुआ डेटा दिख रहा है।",
+    "code": "कोड",
+    "mobile": "मोबाइल",
+    "altMobile": "दूसरा मोबाइल",
+    "village": "गाँव",
+    "category": "श्रेणी",
+    "gstin": "जीएसटीआईएन",
+    "credit": "उधार",
+    "creditLimit": "उधार सीमा",
+    "outstanding": "बकाया",
+    "available": "उपलब्ध",
+    "creditHidden": "आपकी भूमिका के लिए उधार का विवरण उपलब्ध नहीं है।",
+    "seasons": "मौसम के अनुसार खरीद",
+    "recent": "हाल की खरीद",
+    "noPurchases": "अभी तक कोई खरीद नहीं।",
+    "returned": "{{qty}} वापस",
+    "ledger": "खाता बही",
+    "showLedger": "खाता बही दिखाएँ",
+    "opening": "प्रारंभिक शेष",
+    "closing": "अंतिम शेष",
+    "noLedger": "कोई प्रविष्टि नहीं।",
+    "status": {
+      "label": "स्थिति",
+      "ACTIVE": "सक्रिय",
+      "INACTIVE": "निष्क्रिय",
+      "MERGED": "मिलाया गया",
+      "ANONYMIZED": "गुमनाम किया गया"
+    },
+    "season": {
+      "KHARIF": "खरीफ",
+      "RABI": "रबी",
+      "ZAID": "जायद",
+      "PERENNIAL": "बारहमासी"
+    }
   }
 }
