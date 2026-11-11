@@ -1,0 +1,25 @@
+# Collections and receipt main flow. NOT RUN: needs a build on a device or emulator, the staging backend and a signed-in test user
+# who holds reports.receivables, credit.followup and receipt.create, and a customer called "Ramesh" with dues.
+# Start with the app already signed in (sign in once by hand; the Keycloak page is in the system browser and is not scripted here).
+appId: com.agro360.app
+---
+- launchApp
+- openLink: agro360://collections
+- assertVisible: "Collections"
+- assertVisible: "Total outstanding"
+# the follow-up tab
+- tapOn: "Follow-ups"
+- tapOn: "Outstanding"
+# record a cash receipt
+- tapOn: "Receive payment"
+- tapOn: "Search customer by name or mobile"
+- inputText: "Ramesh"
+- tapOn: "Ramesh.*"
+- tapOn: "CASH"
+- tapOn: "Amount (₹)"
+- inputText: "100"
+- tapOn: "Save receipt"
+- assertVisible: "Receipt .* recorded"
+# a second receipt starts a new action
+- tapOn: "Record another"
+- assertVisible: "Receive payment"
