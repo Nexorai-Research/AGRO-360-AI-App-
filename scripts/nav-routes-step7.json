@@ -1,0 +1,10 @@
+{
+ "products": "/products",
+ "adjustments": "/adjustments",
+ "transfers": "/transfers",
+ "batches": "/batches",
+ "ledger": "/ledger",
+ "reorder": "/reorder",
+ "valuation": "/valuation",
+ "openingStock": "/opening-stock"
+}
