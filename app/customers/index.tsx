@@ -110,6 +110,9 @@ export default function CustomersScreen() {
         returnKeyType="search"
         style={s.input}
       />
+      {!me?.permissions || me.permissions.includes('customer.create') ? (
+        <Button label={t('customers.form.new')} onPress={() => router.push('/customers/form' as never)} />
+      ) : null}
       {body}
     </View>
   );

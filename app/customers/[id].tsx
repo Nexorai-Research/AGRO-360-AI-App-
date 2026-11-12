@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FlatList, Linking, StyleSheet, Text, View } from 'react-native';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../src/auth/AuthProvider';
 import { useCustomer360, useCustomerLedger } from '../../src/features/customers/hooks';
@@ -32,18 +32,21 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 
 function Header({
   d,
+  canEdit,
   canLedger,
   ledgerOpen,
   onShowLedger,
   ledgerState,
 }: {
   d: Customer360;
+  canEdit: boolean;
   canLedger: boolean;
   ledgerOpen: boolean;
   onShowLedger: () => void;
   ledgerState: React.ReactNode;
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const p = d.profile;
   const cr = d.credit;
   const seasons = [d.purchases.thisSeason, d.purchases.lastSeason];
@@ -63,6 +66,13 @@ function Header({
           label={t('customers.status.label')}
           value={t(`customers.status.${p.status}`, { defaultValue: p.status })}
         />
+        {canEdit ? (
+          <Button
+            kind="ghost"
+            label={t('customers.form.edit')}
+            onPress={() => router.push({ pathname: '/customers/form', params: { id: p.id } } as never)}
+          />
+        ) : null}
         {p.mobile ? (
           <Button
             label={`${t('customers.call')} ${p.mobile}`}
@@ -157,6 +167,7 @@ export default function Customer360Screen() {
   const [showLedger, setShowLedger] = useState(false);
   const allowed = !me?.permissions || me.permissions.includes('customer.view');
   const canLedger = !me?.permissions || me.permissions.includes('customer.ledger.view');
+  const canEdit = !me?.permissions || me.permissions.includes('customer.update');
   const q = useCustomer360(allowed ? id : '');
   const ledger = useCustomerLedger(id, showLedger && canLedger);
 
@@ -200,6 +211,7 @@ export default function Customer360Screen() {
             {q.isError ? <StaleBanner error={q.error} updatedAt={q.dataUpdatedAt} /> : null}
             <Header
               d={q.data}
+              canEdit={canEdit}
               canLedger={canLedger}
               ledgerOpen={showLedger}
               onShowLedger={() => setShowLedger(true)}

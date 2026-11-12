@@ -114,7 +114,8 @@
     "SHIFT_ALREADY_OPEN": "You already have an open shift on this terminal.",
     "OPEN_SHIFTS": "Some shifts are still open. Close them before the day-end.",
     "DAY_ALREADY_CLOSED": "This day is already closed.",
-    "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note."
+    "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note.",
+    "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box."
   },
   "customers": {
     "title": "Customers",
@@ -193,6 +194,40 @@
       "issue": "Crop issue: {{text}}",
       "advice": "Advice: {{text}}",
       "followUp": "Follow up on {{date}}"
+    },
+    "form": {
+      "new": "New customer",
+      "edit": "Edit customer",
+      "name": "Name",
+      "sharedMobile": "This mobile is a shared family phone",
+      "taluka": "Taluka",
+      "district": "District",
+      "stateCode": "State code (2 digits, like 27)",
+      "pin": "PIN code",
+      "language": "Language",
+      "lang": {
+        "en": "English",
+        "hi": "Hindi",
+        "mr": "Marathi"
+      },
+      "save": "Save customer",
+      "created": "Customer {{name}} created.",
+      "saved": "Customer {{name}} saved.",
+      "open": "Open customer",
+      "backToList": "Back to customers",
+      "duplicate": "A customer with the same name already exists in this village. Create this one anyway?",
+      "createAnyway": "Create anyway",
+      "nothingChanged": "Nothing was changed.",
+      "v": {
+        "required": "This is required.",
+        "name": "Use 2 to 120 letters.",
+        "mobile": "Enter a 10 digit mobile starting with 6, 7, 8 or 9.",
+        "pin": "Enter a 6 digit PIN code.",
+        "state": "Enter a 2 digit state code.",
+        "gstin": "This is not a valid GSTIN.",
+        "gstinState": "The first two digits of the GSTIN must match the state code.",
+        "long": "Use at most 80 letters."
+      }
     }
   },
   "stock": {
