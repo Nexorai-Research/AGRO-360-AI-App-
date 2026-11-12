@@ -400,7 +400,10 @@
     "advanceDesk": "Advances desk",
     "fieldReview": "Field team",
     "incentives": "Incentives and performance",
-    "reportsMore": "More reports"
+    "reportsMore": "More reports",
+    "creditInterest": "Credit interest",
+    "creditReminders": "Payment reminders",
+    "creditSettings": "Credit settings"
   },
   "pos": {
     "title": "New bill",
@@ -1716,7 +1719,10 @@
     "advanceDesk": "Approve and track staff advances",
     "fieldReview": "Plan visits and review the field team",
     "incentives": "Incentive rules, monthly figures, performance",
-    "reportsMore": "Purchases, customers, staff, branches, seasons, saved reports"
+    "reportsMore": "Purchases, customers, staff, branches, seasons, saved reports",
+    "creditInterest": "Calculate, review, waive and post interest on overdue dues",
+    "creditReminders": "Reminder rules, send now and the delivery log",
+    "creditSettings": "Interest, automatic credit hold, bounce charge and settlement limit"
   },
   "modules": {
     "account": {
@@ -3884,5 +3890,117 @@
     "goalChange": "Change goal",
     "goalField": "Daily goal (rupees)",
     "goalBad": "The goal must be between 1,000 and 10,00,00,000."
+  },
+  "crx": {
+    "on": "On",
+    "off": "Off",
+    "noLimit": "No limit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back to the list",
+    "reason": "Reason (3 to 500 letters)",
+    "v": {
+      "date": "Enter a real date as YYYY-MM-DD.",
+      "reason": "Give a reason of 3 to 500 letters."
+    },
+    "settings": {
+      "title": "Credit settings",
+      "denied": "You do not have permission to see credit settings.",
+      "offline": "No network. Check your connection and try again.",
+      "saved": "Credit settings saved.",
+      "passDone": "Daily pass done.",
+      "interest": "Interest on overdue dues",
+      "rateLine": "{{rate}}% a year, {{days}} grace days",
+      "interestFirst": "Receipts pay interest notes first",
+      "autoHold": "Automatic credit hold",
+      "moreThanDays": "more than {{n}} days overdue",
+      "moreThanAmount": "more than {{amount}} overdue",
+      "holdOnBounce": "Hold when a cheque bounces",
+      "bounceCharge": "Bounce charge",
+      "settlementLimit": "Settlement discount limit",
+      "change": "Change settings",
+      "runPass": "Run the daily pass now",
+      "intro": "Interest and automatic holds stay off until you switch them on. Rates and limits are your own decision.",
+      "interestLabel": "Charge interest on overdue dues",
+      "rateLabel": "Interest rate (% a year, up to 100)",
+      "graceLabel": "Grace days after the due date (0 to 365)",
+      "interestFirstLabel": "Receipts pay interest notes before invoices",
+      "autoHoldLabel": "Put overdue customers on credit hold automatically",
+      "holdDaysLabel": "Hold when overdue more than (days, blank for none)",
+      "holdAmountLabel": "Hold when the overdue amount is more than (blank for none)",
+      "holdOnBounceLabel": "Hold a customer whose cheque bounces",
+      "bounceChargeLabel": "Bounce charge",
+      "settlementLimitLabel": "Settlement discount above this needs the franchise admin (blank for no limit)",
+      "v": {
+        "rate": "Rate must be 0 to 100 with up to 4 places.",
+        "grace": "Grace days must be a whole number from 0 to 365.",
+        "holdDays": "Days must be a whole number from 1 to 3650.",
+        "holdAmount": "Amount must be more than 0 with up to 4 places.",
+        "bounceCharge": "Charge must be 0 or more with up to 4 places.",
+        "settlementLimit": "Limit must be 0 or more with up to 4 places."
+      }
+    },
+    "interest": {
+      "title": "Interest on overdue dues",
+      "intro": "A run drafts the interest of a period for your review. Nothing reaches a customer account until you post it.",
+      "denied": "You do not have permission to see interest runs.",
+      "offline": "No network. Check your connection and try again.",
+      "empty": "No interest runs yet.",
+      "drafted": "Interest run drafted.",
+      "posted": "Interest posted as debit notes.",
+      "cancelled": "Interest run cancelled.",
+      "waived": "Interest waived for this customer.",
+      "periodTo": "Charge up to (YYYY-MM-DD)",
+      "calculate": "Calculate interest",
+      "new": "Calculate interest for a period",
+      "period": "{{from}} to {{to}} at {{rate}}% a year",
+      "status": {
+        "DRAFT": "Draft",
+        "POSTED": "Posted",
+        "CANCELLED": "Cancelled"
+      },
+      "open": "Open",
+      "post": "Post (approve)",
+      "cancelRun": "Cancel the run",
+      "confirmCancel": "Confirm cancel",
+      "item": "item",
+      "days": "{{n}} days",
+      "line": {
+        "INCLUDED": "Included",
+        "WAIVED": "Waived"
+      },
+      "debitNote": "debit note",
+      "waive": "Waive",
+      "confirmWaive": "Confirm waive"
+    },
+    "rem": {
+      "title": "Payment reminders",
+      "denied": "You do not have permission to see reminders.",
+      "offline": "No network. Check your connection and try again.",
+      "empty": "No reminder rules yet. Add one to remind customers politely before and after the due date.",
+      "logEmpty": "No reminders sent yet.",
+      "saved": "Reminder rules saved.",
+      "runDone": "Reminders run.",
+      "intro": "Use {name}, {amount}, {invoice} and {due_date} in the message. Nothing is sent between 9 PM and 8 AM.",
+      "name": "Name (2 to 60 letters)",
+      "offset": "Days from the due date (negative is before, -30 to 365)",
+      "bodyEn": "Message (English, 5 to 500 letters)",
+      "bodyHi": "Message (Hindi, optional)",
+      "bodyMr": "Message (Marathi, optional)",
+      "add": "Add a reminder",
+      "runNow": "Send due reminders now",
+      "edit": "Edit",
+      "logTitle": "Delivery log",
+      "before": "{{n}} days before",
+      "onDue": "on the due date",
+      "after": "{{n}} days after",
+      "v": {
+        "name": "Name must be 2 to 60 letters.",
+        "offset": "Enter a whole number from -30 to 365.",
+        "bodyEn": "The English message must be 5 to 500 letters.",
+        "bodyHi": "The Hindi message can be 500 letters at most.",
+        "bodyMr": "The Marathi message can be 500 letters at most."
+      }
+    }
   }
 }
