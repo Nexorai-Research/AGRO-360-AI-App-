@@ -44,7 +44,7 @@ export default function CreditScreen() {
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
       <Stack.Screen options={{ headerShown: true, title: t('nav.credit') }} />
-      <Text style={k.title}>{t('credit.title')}</Text>
+      <Text style={k.title}>{t('credit.scrTitle')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}
 
@@ -95,7 +95,7 @@ export default function CreditScreen() {
                     />
                     <Field label={t('credit.limitReason')} value={limitReason} onChange={setLimitReason} />
                     <Button
-                      label={t('credit.setLimit')}
+                      label={t('credit.scrSetLimit')}
                       disabled={s.busy}
                       onPress={() => {
                         setTried(true);
@@ -136,7 +136,7 @@ export default function CreditScreen() {
                         if (!validReason(holdReason)) return;
                         const r = holdReason.trim();
                         void s.act(
-                          t(a.hold ? 'credit.released' : 'credit.held'),
+                          t(a.hold ? 'credit.scrReleased' : 'credit.scrHeld'),
                           () =>
                             creditHold(
                               s.client!,

@@ -74,7 +74,6 @@
       "onAccount": "{{amount}} is on account, not applied to a bill"
     },
     "credit": {
-      "title": "Customer credit",
       "denied": "You do not have permission to see customer credit.",
       "offline": "No network. Check your connection and try again.",
       "find": "Find customer (name or mobile)",
@@ -87,17 +86,18 @@
       "guarantors": "Guarantors: {{count}}",
       "newLimit": "New credit limit (0 = cash only)",
       "limitReason": "Reason (optional)",
-      "setLimit": "Set limit",
       "limitSaved": "Credit limit saved.",
       "holdReason": "Reason for hold or release",
       "hold": "Put on hold",
       "release": "Release hold",
-      "held": "Customer put on hold.",
-      "released": "Hold released.",
       "v": {
         "limit": "Enter an amount like 50000 (0 or more, at most 4 decimals).",
         "reason": "Give a reason of 3 or more letters."
-      }
+      },
+      "scrTitle": "Customer credit",
+      "scrSetLimit": "Set limit",
+      "scrHeld": "Customer put on hold.",
+      "scrReleased": "Hold released."
     },
     "desk": {
       "title": "Collection desk",
@@ -258,7 +258,6 @@
       "onAccount": "{{amount}} खाते में है, किसी बिल में नहीं लगी"
     },
     "credit": {
-      "title": "ग्राहक उधार",
       "denied": "आपको ग्राहक उधार देखने की अनुमति नहीं है।",
       "offline": "नेटवर्क नहीं है। कनेक्शन जांचें और फिर कोशिश करें।",
       "find": "ग्राहक खोजें (नाम या मोबाइल)",
@@ -271,17 +270,18 @@
       "guarantors": "गारंटर: {{count}}",
       "newLimit": "नई उधार सीमा (0 = केवल नकद)",
       "limitReason": "कारण (वैकल्पिक)",
-      "setLimit": "सीमा तय करें",
       "limitSaved": "उधार सीमा सहेजी गई।",
       "holdReason": "होल्ड या रिलीज़ का कारण",
       "hold": "होल्ड पर रखें",
       "release": "होल्ड हटाएं",
-      "held": "ग्राहक होल्ड पर रखा गया।",
-      "released": "होल्ड हटाया गया।",
       "v": {
         "limit": "50000 जैसी राशि लिखें (0 या अधिक, अधिकतम 4 दशमलव)।",
         "reason": "3 या अधिक अक्षरों का कारण लिखें।"
-      }
+      },
+      "scrTitle": "ग्राहक उधार",
+      "scrSetLimit": "सीमा तय करें",
+      "scrHeld": "ग्राहक होल्ड पर रखा गया।",
+      "scrReleased": "होल्ड हटाया गया।"
     },
     "desk": {
       "title": "वसूली डेस्क",
@@ -442,7 +442,6 @@
       "onAccount": "{{amount}} खात्यावर आहे, कोणत्याही बिलाला लावलेले नाही"
     },
     "credit": {
-      "title": "ग्राहक उधारी",
       "denied": "तुम्हाला ग्राहक उधारी पाहण्याची परवानगी नाही.",
       "offline": "नेटवर्क नाही. कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.",
       "find": "ग्राहक शोधा (नाव किंवा मोबाइल)",
@@ -455,17 +454,18 @@
       "guarantors": "जामीनदार: {{count}}",
       "newLimit": "नवी उधारी मर्यादा (0 = फक्त रोख)",
       "limitReason": "कारण (ऐच्छिक)",
-      "setLimit": "मर्यादा ठरवा",
       "limitSaved": "उधारी मर्यादा जतन केली.",
       "holdReason": "होल्ड किंवा रिलीजचे कारण",
       "hold": "होल्डवर ठेवा",
       "release": "होल्ड काढा",
-      "held": "ग्राहक होल्डवर ठेवला.",
-      "released": "होल्ड काढला.",
       "v": {
         "limit": "50000 अशी रक्कम लिहा (0 किंवा जास्त, कमाल 4 दशांश).",
         "reason": "3 किंवा जास्त अक्षरांचे कारण लिहा."
-      }
+      },
+      "scrTitle": "ग्राहक उधारी",
+      "scrSetLimit": "मर्यादा ठरवा",
+      "scrHeld": "ग्राहक होल्डवर ठेवला.",
+      "scrReleased": "होल्ड काढला."
     },
     "desk": {
       "title": "वसुली डेस्क",

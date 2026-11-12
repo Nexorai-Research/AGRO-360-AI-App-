@@ -279,7 +279,7 @@ describe('edit settings screen', () => {
     await screen.findByDisplayValue('Patil Agro Traders');
     await fireEvent.changeText(screen.getByLabelText('Trade name'), 'Patil Agro');
     await fireEvent.press(screen.getByLabelText('Save company profile'));
-    expect(await screen.findByText(/STALE_VERSION, reference c-6/)).toBeTruthy();
+    expect(await screen.findByText(/Someone else changed this/)).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Save company profile'));
     await screen.findByText('Company profile saved.');
     expect(mockPut.mock.calls[1]![1].idempotencyKey).toBe(mockPut.mock.calls[0]![1].idempotencyKey);
