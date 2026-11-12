@@ -191,3 +191,38 @@ DONE (read only; each section closed until opened, then one query; states: loadi
 
 NOT built here: adding or editing a farm, plot, crop plan or KYC document (no upload from the phone), changing consent, loyalty point adjustments, household edits, recording a new interaction, photos on interactions, service cases, purchase plans, crop plans, guarantors, hold history, customer statement, credit limit change and credit hold or release, creating or editing a customer (only quick-add exists), merge, anonymise. Interactions show the first answer the server sends (no paging).
 
+## Inventory: stock reports (branch `inventory-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/stock-reports.test.tsx` (12 tests). Screen `/stock-reports` (`app/stock-reports.tsx`, `src/features/inventory/`), linked from the Home quick links.
+
+DONE (read only; loading, empty, offline, error with retry, denied; English, Hindi, Marathi):
+- Expiry: batches with stock that are already expired, or expire within 30 / 60 / 90 days (`GET /inventory/batches` with `withStockOnly`, `expired` or `expiringWithinDays`), with days left and value at risk. Cost fields the server hides (null) are not shown.
+- Stock ledger: the latest 50 movements with movement name, quantity, balance after, batch, reason (`GET /inventory/ledger`).
+- Reorder rules: reorder level, minimum, maximum and order quantity per product and branch (`GET /inventory/reorder-rules`); the product default is labelled "All branches".
+- Valuation: total stock value and quantity, per product and branch, with the server's warning (`GET /inventory/valuation`, needs `inventory.value.view`; the server values at weighted average even when the franchise method is FIFO and says so).
+
+NOT built: filters (product, warehouse, branch, date range, movement type) and paging beyond the first 50 rows; reorder suggestions; creating or editing reorder rules; opening stock; stock counts and cycle plans; investigations; reservations; serial numbers; batch genealogy and trace; damage report; reconciliation and integrity reports; FIFO valuation; expiry extension request and approval; labels; import and export. Hindi and Marathi texts need a native speaker review.
+
+## Purchase: bills and payables view (branch `purchase-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/purchase-money.test.tsx` (11 tests). Screen `/purchase-money` (`app/purchase-money.tsx`, `src/features/purchase/`), linked from the Home quick links. `src/ui/ReadBox.tsx` is a small shared read-only query box; the stock reports screen now uses it too (its 12 tests still pass).
+
+DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi):
+- Purchase bills: unpaid (default) or all, with supplier, number, date, due date, match status, total, paid, outstanding (`GET /procurement/purchase-bills`, `open=true`, last 50).
+- Supplier payments: mode, reference, amount, TDS withheld, cash paid, advance not yet allocated (`GET /procurement/supplier-payments`, last 50).
+- Returns to suppliers: number, bill, reason, total (`GET /procurement/purchase-returns`, last 50).
+- Payables ageing: total payable and the five buckets (not due, 1-30, 31-60, 61-90, 90+), per supplier, with advance not yet allocated (`GET /procurement/reports/payables-aging`, needs `purchase.supplier.ledger.view`).
+
+NOT built: creating or posting a bill, three-way match actions and override, paying a supplier, supplier returns and claims, supplier create and edit, supplier ledger, bank accounts and contacts, requisitions, RFQs and comparison, schemes and free quantity, landed cost, purchase register, GRNI report, pending orders report, purchase order edit / revise / send / close, goods receipt discard / approve over-receipt / reverse. Bills, payments and returns show the first 50 only (the server gives no total, so the screen only says there may be more); no search or date filter. Hindi and Marathi texts need a native speaker review.
+
+## Accounts: financial statements view (branch `accounts-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/statements.test.tsx` (9 tests). Screen `/statements` (`app/statements.tsx`, `src/features/accounts/`), linked from the Home quick links. All need `reports.financial`.
+
+DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi):
+- Profit and loss for the last 7 / 30 / 90 days: net sales, cost of sales, gross profit, operating expenses, other income, net profit, and each section's accounts (`GET /reports/profit-loss`).
+- Balance sheet as of today: assets, liabilities, equity, totals, profit this year; a warning when the server says it does not balance (`GET /reports/balance-sheet`).
+- Cash book and bank book for the period: opening, receipts, payments, closing per ledger, with a note when the balance went below zero (`GET /reports/cash-book`, `/reports/bank-book`).
+
+NOT built: comparison with the previous period; custom dates, branch and cost-centre filters; branch-wise profit; the day-by-day lines of the cash and bank book; general ledger of one account; vouchers, journals, expenses, petty cash, bank reconciliation, budgets, opening balances, periods, year-end; exports (CSV, Excel, PDF); any posting. Hindi and Marathi texts need a native speaker review.
+

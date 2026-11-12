@@ -12,6 +12,7 @@ const LINKS = [
   ['nav.transfers', '/transfers'],
   ['nav.batches', '/batches'],
   ['nav.stock', '/stock'],
+  ['nav.stockReports', '/stock-reports'],
   ['nav.customers', '/customers'],
   ['nav.collections', '/collections'],
   ['nav.attendance', '/attendance'],
@@ -21,6 +22,7 @@ const LINKS = [
   ['nav.advances', '/advances'],
   ['nav.reports', '/reports'],
   ['nav.accounts', '/accounts'],
+  ['nav.statements', '/statements'],
   ['nav.compliance', '/compliance'],
   ['nav.account', '/account'],
   ['nav.users', '/users'],
@@ -29,6 +31,7 @@ const LINKS = [
   ['nav.documents', '/documents'],
   ['nav.settings', '/settings'],
   ['nav.purchase', '/purchase'],
+  ['nav.purchaseMoney', '/purchase-money'],
   ['nav.complaints', '/complaints'],
   ['nav.followup', '/collections/follow-up'],
 ] as const;
