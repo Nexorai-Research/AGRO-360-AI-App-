@@ -115,7 +115,9 @@
     "OPEN_SHIFTS": "Some shifts are still open. Close them before the day-end.",
     "DAY_ALREADY_CLOSED": "This day is already closed.",
     "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note.",
-    "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box."
+    "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box.",
+    "APPROVAL_REQUIRED": "This limit is above your approval limit. Ask someone with a higher limit.",
+    "STALE_VERSION": "Someone else changed this. Close and open it again, then retry."
   },
   "customers": {
     "title": "Customers",
@@ -1393,5 +1395,22 @@
     "payments": "Payments",
     "closing": "Closing",
     "negative": "The balance went below zero in this period."
+  },
+  "credit": {
+    "title": "Credit limit and hold",
+    "seasonLimit": "Season limit",
+    "limitChange": "{{date}}: limit {{from}} to {{to}}",
+    "holdChange": "{{date}}: {{action}} ({{source}})",
+    "setLimit": "Change limit",
+    "hold": "Put on hold",
+    "release": "Release hold",
+    "reason": "Reason",
+    "badAmount": "Enter an amount, up to 4 decimals.",
+    "saveLimit": "Save limit",
+    "holdNow": "Put on hold",
+    "releaseNow": "Release",
+    "limitSaved": "Credit limit saved.",
+    "held": "Credit is on hold.",
+    "released": "Credit hold released."
   }
 }

@@ -235,3 +235,10 @@ DONE: create (`POST /customers`) and edit (`PATCH /customers/:id`, version sent 
 
 Limits: the village is typed text; picking from the village and territory master (`villageId`) is not built. The GSTIN checksum is checked only by the server. Recording consent while creating, credit term, and the activate / deactivate action are not built here. Hindi and Marathi texts need a native speaker review.
 
+### Credit limit and hold (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/credit-panel.test.tsx` (11 tests). `src/features/customers/CreditPanel.tsx` and `credit-api.ts`, shown on Customer 360 for `customer.ledger.view`.
+
+DONE: credit review (`GET /customers/:id/credit`: account, last 5 limit changes, last 5 hold changes); change limit (`PUT /customers/:id/credit-limit`, needs `credit.limit.manage`, decimal strings up to 4 places, optional season limit and reason, account version as If-Match); put on hold and release (`POST .../credit-hold` and `.../credit-release`, need `credit.hold`, reason of 3 to 500 letters). One Idempotency-Key per action, kept on a retry. A limit above the approver's own limit (APPROVAL_REQUIRED) and a stale version (STALE_VERSION) are shown in words. English, Hindi, Marathi.
+
+Limits: credit term choice, guarantors and promises to pay (also in the same server answer) are not shown or edited. The override right for releasing an automatic hold is decided by the server only. Hindi and Marathi texts need a native speaker review.
+
