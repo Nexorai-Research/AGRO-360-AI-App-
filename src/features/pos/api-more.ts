@@ -93,6 +93,9 @@ export const cancelInvoice = (c: ApiClient, id: string, reason: string, idempote
 /** A secure link (valid 30 days) the app hands to the phone's share sheet. With send=true the server also queues it to the customer. */
 export const shareInvoice = (c: ApiClient, id: string, send: boolean, idempotencyKey: string) =>
   c.post<ShareLink>(`/sales/invoices/${id}/share`, { body: send ? { send: true } : {}, idempotencyKey });
+/** The printable invoice as HTML. A reprint is marked "Duplicate" by the server, so only call this when the user asks to print or save. */
+export const fetchInvoiceHtml = (c: ApiClient, id: string, paper: 'A4' | '80mm' = 'A4') =>
+  c.get<string>(`/sales/invoices/${id}/print`, { query: { paper }, as: 'text' });
 
 // ---- quick customer
 export const quickCustomer = (c: ApiClient, b: { name: string; mobile: string; village: string }, idempotencyKey: string) =>

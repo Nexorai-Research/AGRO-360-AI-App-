@@ -10,6 +10,7 @@ import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
 import { colors, radius } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
+import { printInvoice, shareInvoicePdf } from './print';
 import { todayIST } from '../collections/receipt';
 import { fetchPayModes } from './api';
 import {
@@ -129,6 +130,18 @@ export default function InvoicesScreen() {
     }
   }
 
+  async function printOrPdf(i: InvoiceRow, pdf: boolean) {
+    setFailure(null);
+    setMsg(null);
+    try {
+      if (pdf) {
+        if ((await shareInvoicePdf(client!, i.id)) === 'noSharing') setMsg(t('invoices.noSharing'));
+      } else await printInvoice(client!, i.id);
+    } catch (e) {
+      setFailure(errorMessage(e));
+    }
+  }
+
   if (!can(PERM2.view)) return <StateView state="denied" message={t('invoices.denied')} />;
   if (list.isPending && list.fetchStatus !== 'idle') return <StateView state="loading" />;
   if (list.error) {
@@ -161,6 +174,8 @@ export default function InvoicesScreen() {
           </Text>
           <View style={s.row}>
             {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.share')} onPress={() => void share(i, false)} /> : null}
+            {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.print')} onPress={() => void printOrPdf(i, false)} /> : null}
+            {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.pdf')} onPress={() => void printOrPdf(i, true)} /> : null}
             {can(PERM2.print) && i.customerName ? <Button kind="ghost" label={t('invoices.sendWhatsapp')} onPress={() => void share(i, true)} /> : null}
             {can(PERM2.ret) && i.status === 'FINALIZED' ? <Button kind="ghost" label={t('invoices.return')} onPress={() => void open(i, 'return')} /> : null}
             {can(PERM2.cancel) && i.status === 'FINALIZED' ? <Button kind="ghost" label={t('invoices.cancel')} onPress={() => void open(i, 'cancel')} /> : null}

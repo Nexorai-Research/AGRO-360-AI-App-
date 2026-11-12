@@ -22,6 +22,8 @@ export interface RequestOptions {
   /** One key per user action. Pass the same key again when the user retries the same action. */
   idempotencyKey?: string;
   signal?: AbortSignal;
+  /** Read the answer as text (for example the HTML of a printable invoice) instead of JSON. */
+  as?: 'text';
 }
 
 const isMutation = (m: Method) => m !== 'GET';
@@ -45,7 +47,7 @@ export function createClient(o: ClientOptions) {
   ) {
     const headers: Record<string, string> = {
       Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
+      Accept: opts.as === 'text' ? 'text/html' : 'application/json',
       'X-Correlation-Id': corr,
       'X-Device-Id': o.deviceId,
       'X-App-Version': o.appVersion,
@@ -88,6 +90,19 @@ export function createClient(o: ClientOptions) {
       }
     }
     if (res.status === 204) return null as T;
+    if (opts.as === 'text') {
+      const text = await res.text();
+      if (!res.ok) {
+        let problem: Problem | null = null;
+        try {
+          problem = JSON.parse(text) as Problem;
+        } catch {
+          problem = null;
+        }
+        throw new ApiError(res.status, problem, res.headers.get('X-Correlation-Id') ?? corr);
+      }
+      return text as T;
+    }
     let data: unknown = null;
     try {
       data = await res.json();

@@ -348,7 +348,10 @@
     "v": {
       "format": "Quantity must be more than 0 with at most 3 decimals.",
       "tooMany": "More than what is left to return."
-    }
+    },
+    "print": "Print",
+    "pdf": "Save or share PDF",
+    "noSharing": "This phone cannot share files."
   },
   "shifts": {
     "title": "Shifts and day-end",
