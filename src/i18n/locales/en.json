@@ -115,7 +115,10 @@
     "OPEN_SHIFTS": "Some shifts are still open. Close them before the day-end.",
     "DAY_ALREADY_CLOSED": "This day is already closed.",
     "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note.",
-    "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box."
+    "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box.",
+    "APPROVAL_REQUIRED": "This limit is above your approval limit. Ask someone with a higher limit.",
+    "STALE_VERSION": "Someone else changed this. Close and open it again, then retry.",
+    "INSUFFICIENT_POINTS": "The customer does not have enough points for this."
   },
   "customers": {
     "title": "Customers",
@@ -1393,5 +1396,141 @@
     "payments": "Payments",
     "closing": "Closing",
     "negative": "The balance went below zero in this period."
+  },
+  "credit": {
+    "title": "Credit limit and hold",
+    "seasonLimit": "Season limit",
+    "limitChange": "{{date}}: limit {{from}} to {{to}}",
+    "holdChange": "{{date}}: {{action}} ({{source}})",
+    "setLimit": "Change limit",
+    "hold": "Put on hold",
+    "release": "Release hold",
+    "reason": "Reason",
+    "badAmount": "Enter an amount, up to 4 decimals.",
+    "saveLimit": "Save limit",
+    "holdNow": "Put on hold",
+    "releaseNow": "Release",
+    "limitSaved": "Credit limit saved.",
+    "held": "Credit is on hold.",
+    "released": "Credit hold released."
+  },
+  "farm": {
+    "manage": "Farms and plots",
+    "addFarm": "Add farm",
+    "addPlot": "Add plot",
+    "archive": "Archive farm",
+    "name": "Farm name",
+    "ownership": "Ownership",
+    "area": "Area",
+    "unitLabel": "Unit",
+    "farm": "Farm",
+    "plotName": "Plot name",
+    "soil": "Soil",
+    "irrigation": "Irrigation",
+    "badArea": "Area must be more than 0, up to 4 decimals.",
+    "saveFarm": "Save farm",
+    "savePlot": "Save plot",
+    "archiveNow": "Archive",
+    "farmSaved": "Farm saved.",
+    "plotSaved": "Plot saved.",
+    "archived": "Farm archived.",
+    "unit": {
+      "ACRE": "Acre",
+      "HECTARE": "Hectare",
+      "GUNTHA": "Guntha"
+    },
+    "soilType": {
+      "ALLUVIAL": "Alluvial",
+      "BLACK": "Black",
+      "RED": "Red",
+      "LATERITE": "Laterite",
+      "SANDY": "Sandy",
+      "LOAMY": "Loamy",
+      "CLAY": "Clay",
+      "OTHER": "Other"
+    },
+    "irr": {
+      "RAINFED": "Rainfed",
+      "WELL": "Well",
+      "BOREWELL": "Borewell",
+      "CANAL": "Canal",
+      "DRIP": "Drip",
+      "SPRINKLER": "Sprinkler",
+      "RIVER_TANK": "River or tank",
+      "OTHER": "Other"
+    }
+  },
+  "crm": {
+    "title": "Consent and visits",
+    "recordConsent": "Record consent",
+    "logInteraction": "Log call or visit",
+    "purpose": "Purpose",
+    "channel": "Channel",
+    "answer": "Customer said",
+    "agreed": "Agreed",
+    "refused": "Refused",
+    "kind": "Type",
+    "kinds": {
+      "CALL": "Phone call",
+      "VISIT": "Field visit",
+      "SHOP_VISIT": "Shop visit"
+    },
+    "notes": "Notes",
+    "cropIssue": "Crop problem (optional)",
+    "advice": "Advice given (optional)",
+    "followUp": "Follow up on (YYYY-MM-DD, optional)",
+    "badDate": "Enter a real date like 2026-12-31.",
+    "saveConsent": "Save consent",
+    "saveInteraction": "Save entry",
+    "consentSaved": "Consent recorded.",
+    "interactionSaved": "Entry saved."
+  },
+  "loyaltyAdj": {
+    "open": "Adjust loyalty points",
+    "points": "Points (use - to take away)",
+    "reason": "Reason",
+    "badPoints": "Enter a whole number, not zero.",
+    "save": "Save points",
+    "saved": "Loyalty points updated."
+  },
+  "supplierForm": {
+    "new": "New supplier",
+    "edit": "Edit supplier",
+    "name": "Supplier name",
+    "type": "Type",
+    "types": {
+      "COMPANY": "Company",
+      "DISTRIBUTOR": "Distributor",
+      "WHOLESALER": "Wholesaler",
+      "LOCAL": "Local",
+      "OTHER": "Other"
+    },
+    "stateCode": "State code (2 digits, like 27)",
+    "address": "Address",
+    "creditDays": "Credit days",
+    "creditLimit": "Credit limit",
+    "leadTime": "Lead time in days (optional)",
+    "terms": "Payment terms (optional)",
+    "tds": "TDS applies",
+    "tcs": "TCS applies",
+    "save": "Save supplier",
+    "created": "Supplier {{name}} created.",
+    "saved": "Supplier {{name}} saved.",
+    "back": "Back to purchase",
+    "denied": "You do not have permission to manage suppliers.",
+    "duplicate": "A supplier with the same GSTIN or name already exists. Save this one anyway?",
+    "saveAnyway": "Save anyway",
+    "nothingChanged": "Nothing was changed.",
+    "v": {
+      "required": "This is required.",
+      "name": "Use 2 to 120 letters.",
+      "gstin": "This is not a valid GSTIN.",
+      "gstinState": "The first two digits of the GSTIN must match the state code.",
+      "pan": "This is not a valid PAN.",
+      "state": "Enter a 2 digit state code.",
+      "days": "Enter a whole number from 0 to 365.",
+      "amount": "Enter an amount, up to 4 decimals.",
+      "long": "This is too long."
+    }
   }
 }

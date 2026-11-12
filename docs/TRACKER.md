@@ -235,3 +235,38 @@ DONE: create (`POST /customers`) and edit (`PATCH /customers/:id`, version sent 
 
 Limits: the village is typed text; picking from the village and territory master (`villageId`) is not built. The GSTIN checksum is checked only by the server. Recording consent while creating, credit term, and the activate / deactivate action are not built here. Hindi and Marathi texts need a native speaker review.
 
+### Credit limit and hold (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/credit-panel.test.tsx` (11 tests). `src/features/customers/CreditPanel.tsx` and `credit-api.ts`, shown on Customer 360 for `customer.ledger.view`.
+
+DONE: credit review (`GET /customers/:id/credit`: account, last 5 limit changes, last 5 hold changes); change limit (`PUT /customers/:id/credit-limit`, needs `credit.limit.manage`, decimal strings up to 4 places, optional season limit and reason, account version as If-Match); put on hold and release (`POST .../credit-hold` and `.../credit-release`, need `credit.hold`, reason of 3 to 500 letters). One Idempotency-Key per action, kept on a retry. A limit above the approver's own limit (APPROVAL_REQUIRED) and a stale version (STALE_VERSION) are shown in words. English, Hindi, Marathi.
+
+Limits: credit term choice, guarantors and promises to pay (also in the same server answer) are not shown or edited. The override right for releasing an automatic hold is decided by the server only. Hindi and Marathi texts need a native speaker review.
+
+### Farm and plot add and archive (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/farm-editor.test.tsx` (9 tests). `src/features/customers/FarmEditor.tsx` and `farm-api.ts` on Customer 360, shown only with `customer.farm`.
+
+DONE: add farm (`POST /customers/:id/farms`: name, ownership, optional area with unit), add plot (`POST /customers/:id/plots`: farm, name, area and unit, optional soil and irrigation), archive farm (`PATCH .../farms/:farmId` with status ARCHIVED, farm version as If-Match). Area is a decimal string, more than 0, up to 4 places. One Idempotency-Key per action, kept on a retry. English, Hindi, Marathi.
+
+Limits: editing an existing farm or plot (rename, change area), survey number, location (geo) and geo consent, and plot archiving are not built. Crop plans are not built yet. Hindi and Marathi texts need a native speaker review.
+
+### Record consent and log a call or visit (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/crm-actions.test.tsx` (7 tests). `src/features/customers/CrmActions.tsx` and `crm-api.ts` on Customer 360; the consent button needs `customer.consent`, the visit button `customer.interaction`.
+
+DONE: record one consent answer (`PUT /customers/:id/consents`, purpose from `GET /crm/consent/purposes` with inactive ones hidden, channel, agreed or refused, source STAFF); log a call, field visit or shop visit (`POST /customers/:id/interactions`: type, notes, optional crop problem, advice and follow-up date). One Idempotency-Key per action, kept on a retry. English, Hindi, Marathi.
+
+Limits: the follow-up date is typed as YYYY-MM-DD (no date picker yet). Visit location, location consent and photos are not built. Evidence text for a consent and recording several answers at once are not built. Hindi and Marathi texts need a native speaker review.
+
+### Loyalty points adjust (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/loyalty-adjust.test.tsx` (4 tests). `src/features/customers/LoyaltyAdjust.tsx` and `loyalty-api.ts` on Customer 360, shown only with `crm.loyalty.manage`.
+
+DONE: add or take away points (`POST /customers/:id/loyalty/points`): a whole number, not zero, from -100000 to 100000, with a reason of 3 to 200 letters. One Idempotency-Key per action, kept on a retry. A result below zero (INSUFFICIENT_POINTS) is shown in words. English, Hindi, Marathi.
+
+Limits: the points ledger list (`GET .../loyalty/ledger`), tier management and recompute are not built. Hindi and Marathi texts need a native speaker review.
+
+### Supplier create and edit (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/supplier-form.test.tsx` (10 tests). Screen `/purchase/supplier-form` (`src/features/purchase/SupplierFormScreen.tsx`, `supplier-logic.ts`); a "New supplier" button and an edit button per supplier on the Purchase suppliers tab, shown only with `purchase.supplier.manage`.
+
+DONE: create (`POST /procurement/suppliers`) and edit (`PATCH /procurement/suppliers/:id`, version as If-Match, only changed fields, a cleared optional field as null, a changed GSTIN sent together with the state as the server asks). Checks copy the server shapes: name 2 to 120, state code 2 digits, GSTIN pattern and first two digits equal to the state, PAN pattern, credit days and lead time whole 0 to 365, credit limit decimal up to 4 places. One Idempotency-Key per action, kept on a retry. Same GSTIN or name (DUPLICATE_WARNING) asks, then sends `confirmDuplicate`. English, Hindi, Marathi.
+
+Limits: opening balance (needs a branch), brands, contacts, bank accounts (add, verify, retire) and active / inactive status are not built. The GSTIN check digit and whether the state code is a real GST state are checked only by the server. Hindi and Marathi texts need a native speaker review.
+

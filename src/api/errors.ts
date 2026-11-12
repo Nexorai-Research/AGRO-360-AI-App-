@@ -55,6 +55,9 @@ const KNOWN = new Set([
   'DAY_ALREADY_CLOSED',
   'CASH_DIFFERENCE_NEEDS_APPROVAL',
   'DUPLICATE_MOBILE',
+  'APPROVAL_REQUIRED',
+  'STALE_VERSION',
+  'INSUFFICIENT_POINTS',
 ]);
 
 export interface ErrorMessage {

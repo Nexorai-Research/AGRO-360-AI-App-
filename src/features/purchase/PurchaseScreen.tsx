@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
+import { SUPPLIER_PERM } from './supplier-logic';
 import { StateView } from '../stock/StateView';
 import { PERM, fetchApprovals, fetchOrders, fetchReceipts, fetchSuppliers, key, type OrderRow } from './api';
 import { Gate, retryNetworkOnce } from './Gate';
@@ -117,6 +118,7 @@ export default function PurchaseScreen() {
             accessibilityLabel={t('purchase.searchSuppliers')}
             style={k.input}
           />
+          {can(SUPPLIER_PERM) ? <Button label={t('supplierForm.new')} onPress={() => router.push('/purchase/supplier-form' as never)} /> : null}
           <Gate q={suppliers} ns="purchase" emptyKey="purchase.emptySuppliers" isEmpty={(suppliers.data ?? []).length === 0}>
             {(suppliers.data ?? []).map((s) => (
               <View key={s.id} style={k.card}>
@@ -124,6 +126,9 @@ export default function PurchaseScreen() {
                 <Text style={k.sub}>
                   {[s.code, s.gstin ?? t('purchase.noGstin'), t('purchase.creditDays', { days: s.creditDays }), s.status].join(' · ')}
                 </Text>
+                {can(SUPPLIER_PERM) ? (
+                  <Button kind="ghost" label={`${t('supplierForm.edit')} ${s.name}`} onPress={() => router.push({ pathname: '/purchase/supplier-form', params: { id: s.id } } as never)} />
+                ) : null}
               </View>
             ))}
           </Gate>
