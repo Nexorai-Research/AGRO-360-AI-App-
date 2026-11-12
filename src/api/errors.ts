@@ -54,6 +54,7 @@ const KNOWN = new Set([
   'OPEN_SHIFTS',
   'DAY_ALREADY_CLOSED',
   'CASH_DIFFERENCE_NEEDS_APPROVAL',
+  'DUPLICATE_MOBILE',
 ]);
 
 export interface ErrorMessage {

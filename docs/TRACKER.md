@@ -226,3 +226,12 @@ DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi
 
 NOT built: comparison with the previous period; custom dates, branch and cost-centre filters; branch-wise profit; the day-by-day lines of the cash and bank book; general ledger of one account; vouchers, journals, expenses, petty cash, bank reconciliation, budgets, opening balances, periods, year-end; exports (CSV, Excel, PDF); any posting. Hindi and Marathi texts need a native speaker review.
 
+## Parity with the web app (branch `parity-forms`, one item per commit)
+
+### Customer create and edit
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/customer-form.test.tsx` (14 tests). Screen `/customers/form` (`app/customers/form.tsx`, `src/features/customers/CustomerFormScreen.tsx`, `form-logic.ts`, `form-api.ts`); a "New customer" button on the customer list (needs `customer.create`) and an "Edit customer" button on Customer 360 (needs `customer.update`).
+
+DONE: create (`POST /customers`) and edit (`PATCH /customers/:id`, version sent as If-Match, only changed fields sent, a cleared optional field sent as null). Checks copy the server: name 2 to 120, mobile 10 digits starting 6 to 9, alternate mobile, state code 2 digits, PIN 6 digits, GSTIN pattern and its first two digits equal to the state code, 80 letters for village, taluka and district. One Idempotency-Key per action, kept on a retry after a lost answer, renewed when the body changes. A same name in the same village (DUPLICATE_WARNING) asks and then sends `confirmDuplicate`; a same mobile (DUPLICATE_MOBILE) is shown in words. Category chosen from active categories. English, Hindi, Marathi.
+
+Limits: the village is typed text; picking from the village and territory master (`villageId`) is not built. The GSTIN checksum is checked only by the server. Recording consent while creating, credit term, and the activate / deactivate action are not built here. Hindi and Marathi texts need a native speaker review.
+
