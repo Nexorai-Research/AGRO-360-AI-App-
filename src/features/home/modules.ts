@@ -136,6 +136,12 @@ export const MODULES: AppModule[] = [
     icon: '⚙️',
     color: '#475569',
     features: [
+      { key: 'setupBranches', href: '/setup-branches', icon: '🏬' },
+      { key: 'setupWarehouses', href: '/setup-warehouses', icon: '🏭' },
+      { key: 'setupYears', href: '/setup-years', icon: '📅' },
+      { key: 'setupTax', href: '/setup-tax', icon: '🧾' },
+      { key: 'setupNumbering', href: '/setup-numbering', icon: '🔢' },
+      { key: 'setupPrint', href: '/setup-print', icon: '🖨️' },
       { key: 'settings', href: '/settings', icon: '⚙️' },
       { key: 'importHistory', href: '/import-history', icon: '📥' },
       { key: 'configuration', href: '/configuration', icon: '🧩' },

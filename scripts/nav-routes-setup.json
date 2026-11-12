@@ -1,0 +1,8 @@
+{
+  "setupYears": "/setup-years",
+  "setupTax": "/setup-tax",
+  "setupNumbering": "/setup-numbering",
+  "setupPrint": "/setup-print",
+  "setupBranches": "/setup-branches",
+  "setupWarehouses": "/setup-warehouses"
+}
