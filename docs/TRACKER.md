@@ -263,3 +263,10 @@ DONE: add or take away points (`POST /customers/:id/loyalty/points`): a whole nu
 
 Limits: the points ledger list (`GET .../loyalty/ledger`), tier management and recompute are not built. Hindi and Marathi texts need a native speaker review.
 
+### Supplier create and edit (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/supplier-form.test.tsx` (10 tests). Screen `/purchase/supplier-form` (`src/features/purchase/SupplierFormScreen.tsx`, `supplier-logic.ts`); a "New supplier" button and an edit button per supplier on the Purchase suppliers tab, shown only with `purchase.supplier.manage`.
+
+DONE: create (`POST /procurement/suppliers`) and edit (`PATCH /procurement/suppliers/:id`, version as If-Match, only changed fields, a cleared optional field as null, a changed GSTIN sent together with the state as the server asks). Checks copy the server shapes: name 2 to 120, state code 2 digits, GSTIN pattern and first two digits equal to the state, PAN pattern, credit days and lead time whole 0 to 365, credit limit decimal up to 4 places. One Idempotency-Key per action, kept on a retry. Same GSTIN or name (DUPLICATE_WARNING) asks, then sends `confirmDuplicate`. English, Hindi, Marathi.
+
+Limits: opening balance (needs a branch), brands, contacts, bank accounts (add, verify, retire) and active / inactive status are not built. The GSTIN check digit and whether the state code is a real GST state are checked only by the server. Hindi and Marathi texts need a native speaker review.
+

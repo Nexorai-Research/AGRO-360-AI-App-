@@ -1492,5 +1492,45 @@
     "badPoints": "Enter a whole number, not zero.",
     "save": "Save points",
     "saved": "Loyalty points updated."
+  },
+  "supplierForm": {
+    "new": "New supplier",
+    "edit": "Edit supplier",
+    "name": "Supplier name",
+    "type": "Type",
+    "types": {
+      "COMPANY": "Company",
+      "DISTRIBUTOR": "Distributor",
+      "WHOLESALER": "Wholesaler",
+      "LOCAL": "Local",
+      "OTHER": "Other"
+    },
+    "stateCode": "State code (2 digits, like 27)",
+    "address": "Address",
+    "creditDays": "Credit days",
+    "creditLimit": "Credit limit",
+    "leadTime": "Lead time in days (optional)",
+    "terms": "Payment terms (optional)",
+    "tds": "TDS applies",
+    "tcs": "TCS applies",
+    "save": "Save supplier",
+    "created": "Supplier {{name}} created.",
+    "saved": "Supplier {{name}} saved.",
+    "back": "Back to purchase",
+    "denied": "You do not have permission to manage suppliers.",
+    "duplicate": "A supplier with the same GSTIN or name already exists. Save this one anyway?",
+    "saveAnyway": "Save anyway",
+    "nothingChanged": "Nothing was changed.",
+    "v": {
+      "required": "This is required.",
+      "name": "Use 2 to 120 letters.",
+      "gstin": "This is not a valid GSTIN.",
+      "gstinState": "The first two digits of the GSTIN must match the state code.",
+      "pan": "This is not a valid PAN.",
+      "state": "Enter a 2 digit state code.",
+      "days": "Enter a whole number from 0 to 365.",
+      "amount": "Enter an amount, up to 4 decimals.",
+      "long": "This is too long."
+    }
   }
 }
