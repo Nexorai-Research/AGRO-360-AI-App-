@@ -9,10 +9,14 @@ import { validPoints, validPointsReason } from '../src/features/customers/loyalt
 const mockPost = jest.fn();
 let mockMe: { userId: string; tenantId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
-jest.mock('../src/auth/AuthProvider', () => ({ useAuth: () => ({ me: mockMe, client: { post: (...a: unknown[]) => mockPost(...a) } }) }));
+jest.mock('../src/auth/AuthProvider', () => ({
+  useAuth: () => ({ me: mockMe, client: { post: (...a: unknown[]) => mockPost(...a) } }),
+}));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 
 beforeEach(async () => {
   mockPost.mockReset();
@@ -50,10 +54,15 @@ test('posts a number and the reason with one key; save stays off while invalid',
   await fireEvent.changeText(screen.getByLabelText('Points (use - to take away)'), '-20');
   await fireEvent.press(screen.getByLabelText('Save points'));
   expect(await screen.findByText('Loyalty points updated.')).toBeTruthy();
-  expect(mockPost).toHaveBeenCalledWith('/customers/c1/loyalty/points', { body: { points: -20, reason: 'goodwill' }, idempotencyKey: 'key-1' });
+  expect(mockPost).toHaveBeenCalledWith('/customers/c1/loyalty/points', {
+    body: { points: -20, reason: 'goodwill' },
+    idempotencyKey: 'key-1',
+  });
 });
 test('not enough points is explained; a retry reuses the key', async () => {
-  mockPost.mockRejectedValueOnce(new ApiError(0, null, 'c1')).mockRejectedValueOnce(new ApiError(409, { title: 'INSUFFICIENT_POINTS' }, 'c2'));
+  mockPost
+    .mockRejectedValueOnce(new ApiError(0, null, 'c1'))
+    .mockRejectedValueOnce(new ApiError(409, { title: 'INSUFFICIENT_POINTS' }, 'c2'));
   await render(<LoyaltyAdjust customerId="c1" />, { wrapper });
   await fireEvent.press(screen.getByLabelText('Adjust loyalty points'));
   await fireEvent.changeText(screen.getByLabelText('Points (use - to take away)'), '-500');

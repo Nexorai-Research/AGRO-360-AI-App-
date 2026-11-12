@@ -13,13 +13,83 @@ jest.mock('../src/auth/AuthProvider', () => ({
 }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const bill = (o: Record<string, unknown> = {}) => ({ id: 'b1', number: 'PB-9', supplierName: 'Agro Seeds', supplierInvoiceNo: 'S-44', invoiceDate: '2026-11-01', dueDate: '2026-11-30', status: 'POSTED', matchStatus: 'MATCHED', paymentStatus: 'PART_PAID', total: '11800.0000', paid: '5000.0000', returned: '0.0000', outstanding: '6800.0000', ...o });
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const bill = (o: Record<string, unknown> = {}) => ({
+  id: 'b1',
+  number: 'PB-9',
+  supplierName: 'Agro Seeds',
+  supplierInvoiceNo: 'S-44',
+  invoiceDate: '2026-11-01',
+  dueDate: '2026-11-30',
+  status: 'POSTED',
+  matchStatus: 'MATCHED',
+  paymentStatus: 'PART_PAID',
+  total: '11800.0000',
+  paid: '5000.0000',
+  returned: '0.0000',
+  outstanding: '6800.0000',
+  ...o,
+});
 const base: Record<string, unknown> = {
   '/procurement/purchase-bills': { items: [bill()] },
-  '/procurement/supplier-payments': { items: [{ id: 'p1', number: 'SP-3', supplierName: 'Agro Seeds', paymentDate: '2026-11-05', modeCode: 'BANK', reference: 'UTR123', amount: '5000.0000', allocated: '5000.0000', advance: '0.0000', tdsWithheld: '50.0000', cashPaid: '4950.0000' }] },
-  '/procurement/purchase-returns': { items: [{ id: 'r1', number: 'PR-1', supplierName: 'Agro Seeds', billNumber: 'PB-9', returnDate: '2026-11-08', reason: 'Damaged bags', total: '590.0000' }] },
-  '/procurement/reports/payables-aging': { asOf: '2026-11-12', rows: [{ supplierId: 's1', supplierName: 'Agro Seeds', buckets: { NOT_DUE: '6800.0000', '1-30': '0.0000', '31-60': '2000.0000', '61-90': '0.0000', '90+': '0.0000' }, total: '8800.0000', unallocatedAdvance: '300.0000' }], totals: { NOT_DUE: '6800.0000', '1-30': '0.0000', '31-60': '2000.0000', '61-90': '0.0000', '90+': '0.0000' }, total: '8800.0000' },
+  '/procurement/supplier-payments': {
+    items: [
+      {
+        id: 'p1',
+        number: 'SP-3',
+        supplierName: 'Agro Seeds',
+        paymentDate: '2026-11-05',
+        modeCode: 'BANK',
+        reference: 'UTR123',
+        amount: '5000.0000',
+        allocated: '5000.0000',
+        advance: '0.0000',
+        tdsWithheld: '50.0000',
+        cashPaid: '4950.0000',
+      },
+    ],
+  },
+  '/procurement/purchase-returns': {
+    items: [
+      {
+        id: 'r1',
+        number: 'PR-1',
+        supplierName: 'Agro Seeds',
+        billNumber: 'PB-9',
+        returnDate: '2026-11-08',
+        reason: 'Damaged bags',
+        total: '590.0000',
+      },
+    ],
+  },
+  '/procurement/reports/payables-aging': {
+    asOf: '2026-11-12',
+    rows: [
+      {
+        supplierId: 's1',
+        supplierName: 'Agro Seeds',
+        buckets: {
+          NOT_DUE: '6800.0000',
+          '1-30': '0.0000',
+          '31-60': '2000.0000',
+          '61-90': '0.0000',
+          '90+': '0.0000',
+        },
+        total: '8800.0000',
+        unallocatedAdvance: '300.0000',
+      },
+    ],
+    totals: {
+      NOT_DUE: '6800.0000',
+      '1-30': '0.0000',
+      '31-60': '2000.0000',
+      '61-90': '0.0000',
+      '90+': '0.0000',
+    },
+    total: '8800.0000',
+  },
 };
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
@@ -55,7 +125,9 @@ describe('purchase bills and payables', () => {
     expect(last[1].query).toEqual({ limit: 50 });
   });
   test('bills: 50 rows means there may be more and the screen says so', async () => {
-    answers({ '/procurement/purchase-bills': { items: Array.from({ length: 50 }, (_, i) => bill({ id: `b${i}` })) } });
+    answers({
+      '/procurement/purchase-bills': { items: Array.from({ length: 50 }, (_, i) => bill({ id: `b${i}` })) },
+    });
     await render(<PurchaseMoneyScreen />, { wrapper });
     expect(await screen.findByText('Showing the first 50. Use the web app for the full list.')).toBeTruthy();
   });

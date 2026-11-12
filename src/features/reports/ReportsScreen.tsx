@@ -59,7 +59,12 @@ function Box<T>({
     retry: (n, e) => isNetwork(e) && n < 1,
   });
   return (
-    <Gate query={q} denied={!props.enabled} deniedText={t('reports.denied')} offlineText={t('reports.offline')}>
+    <Gate
+      query={q}
+      denied={!props.enabled}
+      deniedText={t('reports.denied')}
+      offlineText={t('reports.offline')}
+    >
       {q.data ? children(q.data) : null}
     </Gate>
   );
@@ -74,9 +79,13 @@ function Sales(p: Props) {
           <Card>
             <Line label={t('reports.netSales')} value={formatINR(d.totals.netSales)} strong />
             <Line label={t('reports.bills')} value={String(d.totals.bills)} />
-            {d.totals.avgBill ? <Line label={t('reports.avgBill')} value={formatINR(d.totals.avgBill)} /> : null}
+            {d.totals.avgBill ? (
+              <Line label={t('reports.avgBill')} value={formatINR(d.totals.avgBill)} />
+            ) : null}
             <Line label={t('reports.discount')} value={formatINR(d.totals.discount)} />
-            {d.totals.margin !== null ? <Line label={t('reports.margin')} value={formatINR(d.totals.margin)} /> : null}
+            {d.totals.margin !== null ? (
+              <Line label={t('reports.margin')} value={formatINR(d.totals.margin)} />
+            ) : null}
             {d.previous.changePct ? (
               <Text style={kit.sub}>{t('reports.vsPrevious', { change: signed(d.previous.changePct) })}</Text>
             ) : null}
@@ -113,7 +122,9 @@ function Profit(p: Props) {
             <Line label={t('reports.netSales')} value={formatINR(d.totals.netSales)} />
             <Line label={t('reports.cost')} value={formatINR(d.totals.cost)} />
             <Line label={t('reports.margin')} value={formatINR(d.totals.margin)} strong />
-            {d.totals.marginPct ? <Line label={t('reports.marginPct')} value={`${d.totals.marginPct}%`} /> : null}
+            {d.totals.marginPct ? (
+              <Line label={t('reports.marginPct')} value={`${d.totals.marginPct}%`} />
+            ) : null}
           </Card>
           {d.rows.length === 0 ? <StateView state="empty" message={t('reports.empty')} /> : null}
           {d.rows.map((r) => (
@@ -156,7 +167,9 @@ function Collections(p: Props) {
           <Card>
             <Line label={t('reports.due')} value={formatINR(d.totals.due)} />
             <Line label={t('reports.collected')} value={formatINR(d.totals.collected)} strong />
-            {d.totals.efficiencyPct ? <Line label={t('reports.efficiency')} value={`${d.totals.efficiencyPct}%`} /> : null}
+            {d.totals.efficiencyPct ? (
+              <Line label={t('reports.efficiency')} value={`${d.totals.efficiencyPct}%`} />
+            ) : null}
             <Text style={kit.name}>{t('reports.ageing')}</Text>
             <Line label={t('reports.notDue')} value={formatINR(d.ageing.notDue)} />
             <Line label={t('reports.d30')} value={formatINR(d.ageing.days1to30)} />
@@ -201,7 +214,10 @@ function Tax(p: Props) {
             <Card key={`o-${r.ratePct}`}>
               <Line label={t('reports.rate', { rate: r.ratePct })} value={formatINR(r.tax)} strong />
               <Line label={t('reports.taxable')} value={formatINR(r.taxable)} />
-              <Line label="CGST / SGST / IGST" value={`${formatINR(r.cgst)} / ${formatINR(r.sgst)} / ${formatINR(r.igst)}`} />
+              <Line
+                label="CGST / SGST / IGST"
+                value={`${formatINR(r.cgst)} / ${formatINR(r.sgst)} / ${formatINR(r.igst)}`}
+              />
             </Card>
           ))}
           <Text style={kit.name}>{t('reports.inputByRate')}</Text>
@@ -276,14 +292,18 @@ function Register(p: Props) {
                 {r.number} · {shortDate(r.date)}
               </Text>
               <Text style={kit.sub}>
-                {[t(`reports.regKind_${r.kind}`), r.customerName ?? t('reports.regWalkIn'), r.status].join(' · ')}
+                {[t(`reports.regKind_${r.kind}`), r.customerName ?? t('reports.regWalkIn'), r.status].join(
+                  ' · ',
+                )}
               </Text>
               <Line label={t('reports.regTaxable')} value={formatINR(r.taxable)} />
               <Line label={t('reports.regBillTotal')} value={formatINR(r.total)} strong />
             </Card>
           ))}
           {d.rows.length > REGISTER_ROWS ? (
-            <Text style={kit.sub}>{t('reports.regMore', { shown: REGISTER_ROWS, count: d.rows.length })}</Text>
+            <Text style={kit.sub}>
+              {t('reports.regMore', { shown: REGISTER_ROWS, count: d.rows.length })}
+            </Text>
           ) : null}
         </>
       )}

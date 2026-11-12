@@ -48,15 +48,46 @@ export function LoyaltyAdjust({ customerId }: { customerId: string }) {
   }
   return (
     <View style={s.card}>
-      {msg ? <Text style={s.ok} accessibilityRole="alert">{msg}</Text> : null}
+      {msg ? (
+        <Text style={s.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
       {!open ? (
-        <Button kind="ghost" label={t('loyaltyAdj.open')} onPress={() => { setOpen(true); setMsg(null); setFailure(null); }} />
+        <Button
+          kind="ghost"
+          label={t('loyaltyAdj.open')}
+          onPress={() => {
+            setOpen(true);
+            setMsg(null);
+            setFailure(null);
+          }}
+        />
       ) : (
         <View style={s.form}>
-          <TextInput value={points} onChangeText={setPoints} keyboardType="numbers-and-punctuation" placeholder={t('loyaltyAdj.points')} accessibilityLabel={t('loyaltyAdj.points')} style={s.input} />
-          {points !== '' && !validPoints(points) ? <Text style={s.error}>{t('loyaltyAdj.badPoints')}</Text> : null}
-          <TextInput value={reason} onChangeText={setReason} placeholder={t('loyaltyAdj.reason')} accessibilityLabel={t('loyaltyAdj.reason')} style={s.input} />
-          {failure ? <Text style={s.error} accessibilityRole="alert">{t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}</Text> : null}
+          <TextInput
+            value={points}
+            onChangeText={setPoints}
+            keyboardType="numbers-and-punctuation"
+            placeholder={t('loyaltyAdj.points')}
+            accessibilityLabel={t('loyaltyAdj.points')}
+            style={s.input}
+          />
+          {points !== '' && !validPoints(points) ? (
+            <Text style={s.error}>{t('loyaltyAdj.badPoints')}</Text>
+          ) : null}
+          <TextInput
+            value={reason}
+            onChangeText={setReason}
+            placeholder={t('loyaltyAdj.reason')}
+            accessibilityLabel={t('loyaltyAdj.reason')}
+            style={s.input}
+          />
+          {failure ? (
+            <Text style={s.error} accessibilityRole="alert">
+              {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+            </Text>
+          ) : null}
           <Button label={t('loyaltyAdj.save')} disabled={busy || !ok} onPress={() => void save()} />
           <Button kind="ghost" label={t('pos.back')} onPress={() => setOpen(false)} />
         </View>
@@ -66,9 +97,25 @@ export function LoyaltyAdjust({ customerId }: { customerId: string }) {
 }
 
 const s = StyleSheet.create({
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 8, gap: 6 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 8,
+    gap: 6,
+  },
   form: { gap: 8 },
   ok: { color: colors.ok, fontWeight: '600' },
   error: { color: colors.danger, fontSize: 14 },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: colors.ink,
+  },
 });

@@ -85,9 +85,18 @@ export function Ask({
   const bad = text.trim().length > 0 && text.trim().length < min;
   return (
     <Card>
-      <Field label={label} value={text} onChange={setText} error={bad ? t('fin.reasonShort', { count: min }) : null} />
+      <Field
+        label={label}
+        value={text}
+        onChange={setText}
+        error={bad ? t('fin.reasonShort', { count: min }) : null}
+      />
       <View style={kit.row}>
-        <Button label={confirm} disabled={busy || text.trim().length < min} onPress={() => onConfirm(text.trim())} />
+        <Button
+          label={confirm}
+          disabled={busy || text.trim().length < min}
+          onPress={() => onConfirm(text.trim())}
+        />
         <Button kind="ghost" label={t('fin.cancel')} onPress={onCancel} />
       </View>
     </Card>
@@ -99,7 +108,19 @@ export interface Opt {
   label: string;
 }
 /** Choose one item from a long list: a search box and the first matches. The chosen item always stays visible. */
-export function Picker({ label, options, value, onChange, blank }: { label: string; options: Opt[]; value: string; onChange: (id: string) => void; blank?: string }) {
+export function Picker({
+  label,
+  options,
+  value,
+  onChange,
+  blank,
+}: {
+  label: string;
+  options: Opt[];
+  value: string;
+  onChange: (id: string) => void;
+  blank?: string;
+}) {
   const { t } = useTranslation();
   const [q, setQ] = useState('');
   const long = options.length > 8;
@@ -118,7 +139,15 @@ export function Picker({ label, options, value, onChange, blank }: { label: stri
 }
 
 /** A tappable card. */
-export function Tap({ label, onPress, children }: { label: string; onPress: () => void; children: ReactNode }) {
+export function Tap({
+  label,
+  onPress,
+  children,
+}: {
+  label: string;
+  onPress: () => void;
+  children: ReactNode;
+}) {
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}>
       <Card>{children}</Card>

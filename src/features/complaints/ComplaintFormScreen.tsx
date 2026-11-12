@@ -20,7 +20,13 @@ export default function ComplaintFormScreen() {
   const can = (p: string) => me?.permissions === undefined || me.permissions.includes(p);
   const actionKey = useActionKey();
 
-  const [d, setD] = useState<ComplaintDraft>({ customerId: '', category: '', severity: 'MEDIUM', description: '', batchNo: '' });
+  const [d, setD] = useState<ComplaintDraft>({
+    customerId: '',
+    category: '',
+    severity: 'MEDIUM',
+    description: '',
+    batchNo: '',
+  });
   const [term, setTerm] = useState('');
   const [picked, setPicked] = useState('');
   const [tried, setTried] = useState(false);
@@ -75,14 +81,34 @@ export default function ComplaintFormScreen() {
       {has('customer') ? <Text style={k.error}>{t('complaints.v.customer')}</Text> : null}
 
       <Text style={k.label}>{t('complaints.categoryLabel')}</Text>
-      <Chips options={CATEGORIES.map((c) => ({ value: c, label: t(`complaints.category.${c}`) }))} value={d.category} onChange={(v) => setD({ ...d, category: v })} />
+      <Chips
+        options={CATEGORIES.map((c) => ({ value: c, label: t(`complaints.category.${c}`) }))}
+        value={d.category}
+        onChange={(v) => setD({ ...d, category: v })}
+      />
       {has('category') ? <Text style={k.error}>{t('complaints.v.category')}</Text> : null}
 
       <Text style={k.label}>{t('complaints.severityLabel')}</Text>
-      <Chips options={SEVERITIES.map((c) => ({ value: c, label: t(`complaints.severity.${c}`) }))} value={d.severity} onChange={(v) => setD({ ...d, severity: v })} />
+      <Chips
+        options={SEVERITIES.map((c) => ({ value: c, label: t(`complaints.severity.${c}`) }))}
+        value={d.severity}
+        onChange={(v) => setD({ ...d, severity: v })}
+      />
 
-      <Field label={t('complaints.description')} value={d.description} onChange={(v) => setD({ ...d, description: v })} multiline error={has('description') ? t('complaints.v.description') : null} />
-      <Field label={t('complaints.batch')} value={d.batchNo} onChange={(v) => setD({ ...d, batchNo: v })} autoCapitalize="characters" error={has('batch') ? t('complaints.v.batch') : null} />
+      <Field
+        label={t('complaints.description')}
+        value={d.description}
+        onChange={(v) => setD({ ...d, description: v })}
+        multiline
+        error={has('description') ? t('complaints.v.description') : null}
+      />
+      <Field
+        label={t('complaints.batch')}
+        value={d.batchNo}
+        onChange={(v) => setD({ ...d, batchNo: v })}
+        autoCapitalize="characters"
+        error={has('batch') ? t('complaints.v.batch') : null}
+      />
 
       {failure ? <Notice tone="error" text={failure} /> : null}
       <Button label={t('complaints.save')} disabled={busy} onPress={() => void save()} />

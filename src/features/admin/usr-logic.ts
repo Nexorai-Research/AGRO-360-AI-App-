@@ -19,10 +19,13 @@ export const validMobile = (v: string) => {
   const m = normalizeMobile(v);
   return /^[6-9]\d{9}$/.test(m) && !/^(\d)\1{9}$/.test(m);
 };
-export const validEmail = (v: string) => v.trim() === '' || (v.trim().length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim()));
+export const validEmail = (v: string) =>
+  v.trim() === '' || (v.trim().length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim()));
 
-export const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
-export const toggleId = (list: readonly string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
+export const sameSet = (a: readonly string[], b: readonly string[]) =>
+  a.length === b.length && a.every((x) => b.includes(x));
+export const toggleId = (list: readonly string[], id: string) =>
+  list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 
 export const LIMIT_KEYS = [
   'line_discount_pct',
@@ -63,7 +66,8 @@ export const canGrant = (p: PermissionView, held: (code: string) => boolean) => 
 
 export const DOC_EXTENSIONS = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'jpg', 'jpeg', 'png'] as const;
 export const DOC_MAX_BYTES = 4 * 1024 * 1024;
-export const extensionOk = (name: string) => (DOC_EXTENSIONS as readonly string[]).includes((name.split('.').pop() ?? '').toLowerCase());
+export const extensionOk = (name: string) =>
+  (DOC_EXTENSIONS as readonly string[]).includes((name.split('.').pop() ?? '').toLowerCase());
 export const validDocTitle = (v: string) => v.trim().length >= 1 && v.trim().length <= 200;
 export const validExpiry = (v: string) => {
   if (v === '') return true;

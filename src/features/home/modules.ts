@@ -75,6 +75,12 @@ export const MODULES: AppModule[] = [
       { key: 'compliance', href: '/compliance', icon: '✅' },
       { key: 'receipts', href: '/receipts', icon: '💵' },
       { key: 'taxRecords', href: '/tax-records', icon: '🧮' },
+      { key: 'finVouchers', href: '/finance-vouchers', icon: '🧾' },
+      { key: 'finChart', href: '/finance-chart', icon: '📒' },
+      { key: 'finExpenses', href: '/finance-expenses', icon: '💸' },
+      { key: 'finBank', href: '/finance-bank', icon: '🏦' },
+      { key: 'finPetty', href: '/finance-petty', icon: '👛' },
+      { key: 'finControl', href: '/finance-control', icon: '🔒' },
     ],
   },
   {

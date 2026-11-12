@@ -120,7 +120,11 @@ export async function searchProducts(c: ApiClient, q: string, signal?: AbortSign
 }
 export const productByBarcode = (c: ApiClient, code: string, signal?: AbortSignal) =>
   c.get<ProductLite>(`/products/by-barcode/${encodeURIComponent(code)}`, { signal });
-export async function searchCustomers(c: ApiClient, q: string, signal?: AbortSignal): Promise<CustomerLite[]> {
+export async function searchCustomers(
+  c: ApiClient,
+  q: string,
+  signal?: AbortSignal,
+): Promise<CustomerLite[]> {
   const r = await c.get<{ items: CustomerLite[] }>('/customers', {
     query: { q, status: 'ACTIVE', limit: 8 },
     signal,

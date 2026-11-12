@@ -10,7 +10,11 @@ export interface PickedFile {
 
 /** The phone's file picker. Returns null when the person cancelled. The file content is read as base64 by the picker. */
 export async function pickFile(): Promise<PickedFile | null> {
-  const r = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true, base64: true, multiple: false });
+  const r = await DocumentPicker.getDocumentAsync({
+    copyToCacheDirectory: true,
+    base64: true,
+    multiple: false,
+  });
   if (r.canceled) return null;
   const a = r.assets[0];
   if (!a || !a.base64) return null;

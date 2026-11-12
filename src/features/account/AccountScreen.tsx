@@ -114,8 +114,16 @@ export default function AccountScreen() {
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
       <Text style={k.title}>{t('account.title')}</Text>
-      {msg ? <Text style={k.ok} accessibilityRole="alert">{msg}</Text> : null}
-      {failure ? <Text style={k.error} accessibilityRole="alert">{failText(t, failure)}</Text> : null}
+      {msg ? (
+        <Text style={k.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
+      {failure ? (
+        <Text style={k.error} accessibilityRole="alert">
+          {failText(t, failure)}
+        </Text>
+      ) : null}
 
       <Card>
         <Text style={k.h2}>{t('account.profile')}</Text>
@@ -139,22 +147,36 @@ export default function AccountScreen() {
       {sessions.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}
       {sessions.error ? (
         <Card>
-          <Text style={k.sub}>{isNetwork(sessions.error) ? t('account.offline') : t('account.sessionsUnavailable')}</Text>
+          <Text style={k.sub}>
+            {isNetwork(sessions.error) ? t('account.offline') : t('account.sessionsUnavailable')}
+          </Text>
           <Button kind="ghost" label={t('common.retry')} onPress={() => void sessions.refetch()} />
         </Card>
       ) : null}
-      {sessions.data && sessions.data.items.length === 0 ? <Text style={k.sub}>{t('account.noSessions')}</Text> : null}
+      {sessions.data && sessions.data.items.length === 0 ? (
+        <Text style={k.sub}>{t('account.noSessions')}</Text>
+      ) : null}
       {sessions.data?.items.map((s) => (
         <Card key={s.id}>
           <Text style={k.name}>{s.browser ?? t('account.unknownBrowser')}</Text>
           <Text style={k.sub}>
-            {t('account.sessionLine', { started: fmtWhen(s.startedAt), last: fmtWhen(s.lastAccessAt), ip: s.ip ?? '-' })}
+            {t('account.sessionLine', {
+              started: fmtWhen(s.startedAt),
+              last: fmtWhen(s.lastAccessAt),
+              ip: s.ip ?? '-',
+            })}
           </Text>
           <Button
             kind="ghost"
             label={t('account.endSession')}
             disabled={busy}
-            onPress={() => void run(() => endSession(client!, s.id, idem.keyFor(`end|${s.id}`)), t('account.sessionEnded'), ['sessions'])}
+            onPress={() =>
+              void run(
+                () => endSession(client!, s.id, idem.keyFor(`end|${s.id}`)),
+                t('account.sessionEnded'),
+                ['sessions'],
+              )
+            }
           />
         </Card>
       ))}
@@ -165,10 +187,14 @@ export default function AccountScreen() {
             label={t('account.logoutAllNow')}
             disabled={busy}
             onPress={() =>
-              void run(async () => {
-                await logoutAll(client!, idem.keyFor('logout-all'));
-                await signOut();
-              }, t('account.loggedOut'), [])
+              void run(
+                async () => {
+                  await logoutAll(client!, idem.keyFor('logout-all'));
+                  await signOut();
+                },
+                t('account.loggedOut'),
+                [],
+              )
             }
           />
           <Button kind="ghost" label={t('account.cancel')} onPress={() => setConfirmAll(false)} />
@@ -181,21 +207,31 @@ export default function AccountScreen() {
       {devices.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}
       {devices.error ? (
         <Card>
-          <Text style={k.sub}>{isNetwork(devices.error) ? t('account.offline') : t('account.devicesUnavailable')}</Text>
+          <Text style={k.sub}>
+            {isNetwork(devices.error) ? t('account.offline') : t('account.devicesUnavailable')}
+          </Text>
           <Button kind="ghost" label={t('common.retry')} onPress={() => void devices.refetch()} />
         </Card>
       ) : null}
-      {devices.data && devices.data.items.length === 0 ? <Text style={k.sub}>{t('account.noDevices')}</Text> : null}
+      {devices.data && devices.data.items.length === 0 ? (
+        <Text style={k.sub}>{t('account.noDevices')}</Text>
+      ) : null}
       {devices.data?.items.map((d) => (
         <Card key={d.id}>
-          <Text style={k.name}>{d.name} · {d.platform}</Text>
+          <Text style={k.name}>
+            {d.name} · {d.platform}
+          </Text>
           <Text style={k.sub}>
             {t(d.status === 'REGISTERED' ? 'account.deviceActive' : 'account.deviceRevoked')}
             {' · '}
             {t('account.deviceLine', { registered: fmtWhen(d.registeredAt), seen: fmtWhen(d.lastSeenAt) })}
           </Text>
           {d.status === 'REGISTERED' && revoking?.id !== d.id ? (
-            <Button kind="ghost" label={t('account.revoke')} onPress={() => setRevoking({ id: d.id, reason: '' })} />
+            <Button
+              kind="ghost"
+              label={t('account.revoke')}
+              onPress={() => setRevoking({ id: d.id, reason: '' })}
+            />
           ) : null}
           {revoking?.id === d.id ? (
             <View style={{ gap: 8 }}>
@@ -214,7 +250,12 @@ export default function AccountScreen() {
                 onPress={() =>
                   void run(
                     async () => {
-                      await revokeDevice(client!, d.id, revoking.reason.trim(), idem.keyFor(`revoke|${d.id}|${revoking.reason.trim()}`));
+                      await revokeDevice(
+                        client!,
+                        d.id,
+                        revoking.reason.trim(),
+                        idem.keyFor(`revoke|${d.id}|${revoking.reason.trim()}`),
+                      );
                       setRevoking(null);
                     },
                     t('account.revoked'),

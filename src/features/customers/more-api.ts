@@ -75,7 +75,8 @@ export const fetchFarms = async (c: ApiClient, id: string, signal?: AbortSignal)
 /** Listing documents is written to the KYC access log by the server, so call this only when the user opens the section. */
 export const fetchKyc = async (c: ApiClient, id: string, signal?: AbortSignal) =>
   (await c.get<{ items: KycView[] }>(`${base(id)}/documents`, { signal })).items;
-export const fetchLoyalty = (c: ApiClient, id: string, signal?: AbortSignal) => c.get<LoyaltyView>(`${base(id)}/loyalty`, { signal });
+export const fetchLoyalty = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  c.get<LoyaltyView>(`${base(id)}/loyalty`, { signal });
 export const fetchHousehold = async (c: ApiClient, id: string, signal?: AbortSignal) =>
   (await c.get<{ household: HouseholdView | null }>(`${base(id)}/household`, { signal })).household;
 export const fetchConsents = async (c: ApiClient, id: string, signal?: AbortSignal) =>

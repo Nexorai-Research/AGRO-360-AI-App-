@@ -9,12 +9,28 @@ import { DOC_CATEGORIES, type DocumentView } from './api';
 import { Card, Chips, isNetwork, k } from './kit';
 import { fmtWhen, formatBytes } from './logic';
 import { Result, useRunner } from './usr-run';
-import { fetchDocContent, fetchDocDashboard, fetchDocVersions, replaceDocument, uploadDocument } from './usr-api';
+import {
+  fetchDocContent,
+  fetchDocDashboard,
+  fetchDocVersions,
+  replaceDocument,
+  uploadDocument,
+} from './usr-api';
 import { DOC_MAX_BYTES, extensionOk, validDocTitle, validExpiry } from './usr-logic';
 import { pickFile, saveAndShare, type PickedFile } from './usr-files';
 
 /** Counts by status (GET /documents/dashboard). A failure here never hides the list. */
-export function DocDashboard({ client, userId, status, onPick }: { client: ApiClient; userId: string; status: string; onPick: (s: string) => void }) {
+export function DocDashboard({
+  client,
+  userId,
+  status,
+  onPick,
+}: {
+  client: ApiClient;
+  userId: string;
+  status: string;
+  onPick: (s: string) => void;
+}) {
   const { t } = useTranslation();
   const d = useQuery({
     queryKey: ['admin', userId, 'doc-dash'],
@@ -23,7 +39,12 @@ export function DocDashboard({ client, userId, status, onPick }: { client: ApiCl
   });
   if (!d.data?.byStatus) return null;
   const tile = (label: string, n: number, s: string) => (
-    <Button key={s} kind={status === s ? 'primary' : 'ghost'} label={`${label}: ${n}`} onPress={() => onPick(s)} />
+    <Button
+      key={s}
+      kind={status === s ? 'primary' : 'ghost'}
+      label={`${label}: ${n}`}
+      onPress={() => onPick(s)}
+    />
   );
   return (
     <View style={{ gap: 6 }}>
@@ -70,7 +91,15 @@ function FilePick({ file, onPick }: { file: PickedFile | null; onPick: (f: Picke
   );
 }
 
-export function UploadForm({ client, onDone, onCancel }: { client: ApiClient; onDone: (m: string) => void; onCancel: () => void }) {
+export function UploadForm({
+  client,
+  onDone,
+  onCancel,
+}: {
+  client: ApiClient;
+  onDone: (m: string) => void;
+  onCancel: () => void;
+}) {
   const { t } = useTranslation();
   const r = useRunner();
   const [file, setFile] = useState<PickedFile | null>(null);
@@ -81,7 +110,8 @@ export function UploadForm({ client, onDone, onCancel }: { client: ApiClient; on
   const [touched, setTouched] = useState(false);
 
   const shownTitle = title.trim() || (file?.name ?? '');
-  const bad = !file || fileProblem(file) !== null || !validDocTitle(shownTitle) || !validExpiry(expiresOn.trim());
+  const bad =
+    !file || fileProblem(file) !== null || !validDocTitle(shownTitle) || !validExpiry(expiresOn.trim());
   const submit = () => {
     setTouched(true);
     if (bad || !file) return;
@@ -95,7 +125,9 @@ export function UploadForm({ client, onDone, onCancel }: { client: ApiClient; on
     };
     // the content is part of the action: a different file is a different action with a new key
     const fp = `doc-up|${body.title}|${category}|${body.expiresOn}|${body.notes}|${file.name}|${file.base64.length}`;
-    void r.run(() => uploadDocument(client, body, r.idem.keyFor(fp)), t('dcm.uploaded')).then((ok) => ok && onDone(t('dcm.uploaded')));
+    void r
+      .run(() => uploadDocument(client, body, r.idem.keyFor(fp)), t('dcm.uploaded'))
+      .then((ok) => ok && onDone(t('dcm.uploaded')));
   };
   return (
     <Card>
@@ -104,14 +136,26 @@ export function UploadForm({ client, onDone, onCancel }: { client: ApiClient; on
       <Result msg={r.msg} failure={r.failure} />
       <FilePick file={file} onPick={setFile} />
       {touched && !file ? <Text style={k.error}>{t('dcm.needFile')}</Text> : null}
-      <Field label={t('dcm.titleLabel')} value={title} onChange={setTitle} placeholder={file?.name} error={touched && !validDocTitle(shownTitle) ? t('dcm.badTitle') : null} />
+      <Field
+        label={t('dcm.titleLabel')}
+        value={title}
+        onChange={setTitle}
+        placeholder={file?.name}
+        error={touched && !validDocTitle(shownTitle) ? t('dcm.badTitle') : null}
+      />
       <Chips
         value={category}
         label={t('documents.categoryFilter')}
         onChange={setCategory}
         options={DOC_CATEGORIES.map((c): [string, string] => [c, t(`documents.category.${c}`)])}
       />
-      <Field label={t('dcm.expiry')} value={expiresOn} onChange={setExpiresOn} placeholder="YYYY-MM-DD" error={touched && !validExpiry(expiresOn.trim()) ? t('dcm.badExpiry') : null} />
+      <Field
+        label={t('dcm.expiry')}
+        value={expiresOn}
+        onChange={setExpiresOn}
+        placeholder="YYYY-MM-DD"
+        error={touched && !validExpiry(expiresOn.trim()) ? t('dcm.badExpiry') : null}
+      />
       <TextInput
         value={notes}
         onChangeText={setNotes}
@@ -165,15 +209,23 @@ export function DocActions({
       <Result msg={r.msg} failure={r.failure} />
       {noShare ? <Text style={k.sub}>{t('dcm.noShare')}</Text> : null}
       <Button kind="ghost" label={t('dcm.download')} disabled={r.busy} onPress={() => void download()} />
-      <Button kind="ghost" label={showVersions ? t('dcm.hideVersions') : t('dcm.versions')} onPress={() => setShowVersions(!showVersions)} />
+      <Button
+        kind="ghost"
+        label={showVersions ? t('dcm.hideVersions') : t('dcm.versions')}
+        onPress={() => setShowVersions(!showVersions)}
+      />
       {showVersions && versions.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}
       {showVersions && versions.error ? (
         <>
-          <Text style={k.sub}>{isNetwork(versions.error) ? t('documents.offline') : t('dcm.versionsUnavailable')}</Text>
+          <Text style={k.sub}>
+            {isNetwork(versions.error) ? t('documents.offline') : t('dcm.versionsUnavailable')}
+          </Text>
           <Button kind="ghost" label={t('common.retry')} onPress={() => void versions.refetch()} />
         </>
       ) : null}
-      {showVersions && versions.data && versions.data.items.length === 0 ? <Text style={k.sub}>{t('dcm.noVersions')}</Text> : null}
+      {showVersions && versions.data && versions.data.items.length === 0 ? (
+        <Text style={k.sub}>{t('dcm.noVersions')}</Text>
+      ) : null}
       {showVersions
         ? versions.data?.items.map((v) => (
             <View key={v.version} style={{ gap: 4 }}>
@@ -184,11 +236,18 @@ export function DocActions({
               <Text style={k.sub}>
                 {v.filename} · {formatBytes(v.sizeBytes)} · {fmtWhen(v.uploadedAt)}
               </Text>
-              <Button kind="ghost" label={t('dcm.downloadVersion', { n: v.version })} disabled={r.busy} onPress={() => void download(v.version)} />
+              <Button
+                kind="ghost"
+                label={t('dcm.downloadVersion', { n: v.version })}
+                disabled={r.busy}
+                onPress={() => void download(v.version)}
+              />
             </View>
           ))
         : null}
-      {canManage && !replacing ? <Button kind="ghost" label={t('dcm.replace')} onPress={() => (setReplacing(true), r.clear())} /> : null}
+      {canManage && !replacing ? (
+        <Button kind="ghost" label={t('dcm.replace')} onPress={() => (setReplacing(true), r.clear())} />
+      ) : null}
       {canManage && replacing ? (
         <View style={{ gap: 8 }}>
           <Text style={k.sub}>{t('dcm.replaceHint', { n: doc.currentVersion })}</Text>
@@ -201,7 +260,13 @@ export function DocActions({
               const body = { filename: file.name, contentBase64: file.base64 };
               void r
                 .run(
-                  () => replaceDocument(client, doc.id, body, r.idem.keyFor(`doc-rep|${doc.id}|${file.name}|${file.base64.length}`)),
+                  () =>
+                    replaceDocument(
+                      client,
+                      doc.id,
+                      body,
+                      r.idem.keyFor(`doc-rep|${doc.id}|${file.name}|${file.base64.length}`),
+                    ),
                   t('dcm.replaced'),
                 )
                 .then((ok) => {

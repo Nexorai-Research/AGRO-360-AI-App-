@@ -68,7 +68,11 @@ export default function PosScreen() {
   const [custSearch, setCustSearch] = useState('');
   const [scan, setScan] = useState(false);
   const [note, setNote] = useState<string | null>(null);
-  const [priced, setPriced] = useState<{ body: string; preview: Preview | null; err: ErrorMessage | null } | null>(null);
+  const [priced, setPriced] = useState<{
+    body: string;
+    preview: Preview | null;
+    err: ErrorMessage | null;
+  } | null>(null);
   const [billDate, setBillDate] = useState(() => todayIST());
   const [paying, setPaying] = useState(false);
   const [tender, setTender] = useState<TenderInputs>({});
@@ -159,7 +163,8 @@ export default function PosScreen() {
         if (mine === seq.current) setPriced({ body, preview: p, err: null });
       })
       .catch((e) => {
-        if (mine === seq.current && !ctl.signal.aborted) setPriced({ body, preview: null, err: errorMessage(e) });
+        if (mine === seq.current && !ctl.signal.aborted)
+          setPriced({ body, preview: null, err: errorMessage(e) });
       });
     return () => ctl.abort();
   }, [body, client, priceable]);
@@ -188,7 +193,14 @@ export default function PosScreen() {
     try {
       add(await productByBarcode(client!, code));
     } catch (e) {
-      setNote(e instanceof ApiError && e.status === 404 ? t('pos.barcodeNotFound', { code }) : t(errorMessage(e).key, { ...errorMessage(e).params, correlationId: errorMessage(e).params.correlationId ?? '-' }));
+      setNote(
+        e instanceof ApiError && e.status === 404
+          ? t('pos.barcodeNotFound', { code })
+          : t(errorMessage(e).key, {
+              ...errorMessage(e).params,
+              correlationId: errorMessage(e).params.correlationId ?? '-',
+            }),
+      );
     }
   }
 
@@ -238,7 +250,13 @@ export default function PosScreen() {
     sending.current = true;
     try {
       const b = toInvoiceBody(effective, billDate);
-      await holdBill(client, branchId, holdLabel.trim(), b, sideKeyFor(JSON.stringify([holdLabel.trim(), b])));
+      await holdBill(
+        client,
+        branchId,
+        holdLabel.trim(),
+        b,
+        sideKeyFor(JSON.stringify([holdLabel.trim(), b])),
+      );
       sideKey.current = null;
       void qc.invalidateQueries({ queryKey: key2(userId, 'held') });
       setCart({ ...emptyCart, branchId });
@@ -269,7 +287,9 @@ export default function PosScreen() {
         unitPrice: l.unitPrice ?? '',
         discountPct: l.discountPct ?? '',
         ...(l.crop ? { crop: l.crop, targetPest: l.targetPest ?? '', dose: l.dose ?? '' } : {}),
-        ...(l.batchId ? { batchId: l.batchId, batchNo: '', fefoOverrideReason: l.fefoOverrideReason ?? '' } : {}),
+        ...(l.batchId
+          ? { batchId: l.batchId, batchNo: '', fefoOverrideReason: l.fefoOverrideReason ?? '' }
+          : {}),
       }));
       // the customer and the bill discount belong to the held bill: a credit sale must not turn into a walk-in sale
       let c: CustomerLite | null = null;
@@ -279,7 +299,13 @@ export default function PosScreen() {
           .catch(() => ({ id: r.cart.customerId!, name: t('pos.customerFallback') }));
       }
       setCustomer(c);
-      setCart({ branchId, customerId: c?.id ?? '', billDiscountPct: r.cart.billDiscountPct ?? '', lines, wholesale: !!r.cart.wholesale });
+      setCart({
+        branchId,
+        customerId: c?.id ?? '',
+        billDiscountPct: r.cart.billDiscountPct ?? '',
+        lines,
+        wholesale: !!r.cart.wholesale,
+      });
       await dropHeld(client, h.id);
       void qc.invalidateQueries({ queryKey: key2(userId, 'held') });
       setNote(r.problem ?? null);
@@ -397,9 +423,17 @@ export default function PosScreen() {
         <Text style={s.sub}>{t('pos.noProducts')}</Text>
       ) : null}
       {(products.data ?? []).map((p) => (
-        <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={p.name} onPress={() => add(p)} style={s.result}>
+        <Pressable
+          key={p.id}
+          accessibilityRole="button"
+          accessibilityLabel={p.name}
+          onPress={() => add(p)}
+          style={s.result}
+        >
           <Text style={s.name}>{p.name}</Text>
-          <Text style={s.sub}>{[p.code, p.sellingPrice ? formatINR(p.sellingPrice) : null].filter(Boolean).join(' · ')}</Text>
+          <Text style={s.sub}>
+            {[p.code, p.sellingPrice ? formatINR(p.sellingPrice) : null].filter(Boolean).join(' · ')}
+          </Text>
         </Pressable>
       ))}
 
@@ -464,7 +498,10 @@ export default function PosScreen() {
         <View style={s.card} accessibilityLiveRegion="polite">
           {previewErr ? (
             <Text style={s.error}>
-              {t(previewErr.key, { ...previewErr.params, correlationId: previewErr.params.correlationId ?? '-' })}
+              {t(previewErr.key, {
+                ...previewErr.params,
+                correlationId: previewErr.params.correlationId ?? '-',
+              })}
             </Text>
           ) : preview ? (
             <>
@@ -538,21 +575,43 @@ export default function PosScreen() {
               style={s.result}
             >
               <Text style={s.name}>{c.name}</Text>
-              {c.village || c.mobile ? <Text style={s.sub}>{[c.village, c.mobile].filter(Boolean).join(' · ')}</Text> : null}
+              {c.village || c.mobile ? (
+                <Text style={s.sub}>{[c.village, c.mobile].filter(Boolean).join(' · ')}</Text>
+              ) : null}
             </Pressable>
           ))}
-          {cq.length >= 2 && customers.data && customers.data.length === 0 && !quick && me?.permissions?.includes(PERM2.quickCustomer) !== false ? (
-            <Button kind="ghost" label={t('pos.quickAdd')} onPress={() => setQuick({ name: custSearch.trim(), mobile: '', village: '' })} />
+          {cq.length >= 2 &&
+          customers.data &&
+          customers.data.length === 0 &&
+          !quick &&
+          me?.permissions?.includes(PERM2.quickCustomer) !== false ? (
+            <Button
+              kind="ghost"
+              label={t('pos.quickAdd')}
+              onPress={() => setQuick({ name: custSearch.trim(), mobile: '', village: '' })}
+            />
           ) : null}
           {quick ? (
             <View style={s.card}>
               {(['name', 'mobile', 'village'] as const).map((f) => (
-                <TextInput key={f} value={quick[f]} onChangeText={(v) => setQuick({ ...quick, [f]: v })} placeholder={t(`pos.quick.${f}`)} accessibilityLabel={t(`pos.quick.${f}`)} keyboardType={f === 'mobile' ? 'number-pad' : 'default'} style={s.input} />
+                <TextInput
+                  key={f}
+                  value={quick[f]}
+                  onChangeText={(v) => setQuick({ ...quick, [f]: v })}
+                  placeholder={t(`pos.quick.${f}`)}
+                  accessibilityLabel={t(`pos.quick.${f}`)}
+                  keyboardType={f === 'mobile' ? 'number-pad' : 'default'}
+                  style={s.input}
+                />
               ))}
-              {quick.mobile !== '' && !/^[6-9]\d{9}$/.test(quick.mobile.trim()) ? <Text style={s.fieldError}>{t('pos.quick.badMobile')}</Text> : null}
+              {quick.mobile !== '' && !/^[6-9]\d{9}$/.test(quick.mobile.trim()) ? (
+                <Text style={s.fieldError}>{t('pos.quick.badMobile')}</Text>
+              ) : null}
               <Button
                 label={t('pos.quick.save')}
-                disabled={!quick.name.trim() || !quick.village.trim() || !/^[6-9]\d{9}$/.test(quick.mobile.trim())}
+                disabled={
+                  !quick.name.trim() || !quick.village.trim() || !/^[6-9]\d{9}$/.test(quick.mobile.trim())
+                }
                 onPress={() => void saveQuick()}
               />
             </View>
@@ -565,7 +624,13 @@ export default function PosScreen() {
           <Button kind="ghost" label={t('pos.hold')} onPress={() => setHoldLabel('')} />
         ) : (
           <View style={s.card}>
-            <TextInput value={holdLabel} onChangeText={setHoldLabel} placeholder={t('pos.holdLabel')} accessibilityLabel={t('pos.holdLabel')} style={s.input} />
+            <TextInput
+              value={holdLabel}
+              onChangeText={setHoldLabel}
+              placeholder={t('pos.holdLabel')}
+              accessibilityLabel={t('pos.holdLabel')}
+              style={s.input}
+            />
             <Button label={t('pos.holdNow')} disabled={!holdLabel.trim()} onPress={() => void hold()} />
           </View>
         )
@@ -616,7 +681,9 @@ export default function PosScreen() {
             autoCorrect={false}
             style={s.input}
           />
-          {Number(change) > 0 ? <Text style={s.line}>{t('pos.changeLine', { amount: formatINR(change) })}</Text> : null}
+          {Number(change) > 0 ? (
+            <Text style={s.line}>{t('pos.changeLine', { amount: formatINR(change) })}</Text>
+          ) : null}
           {payCheck === 'none' ? err('payNone') : null}
           {payCheck === 'short' ? err('payShort') : null}
           {failure ? (
@@ -627,7 +694,11 @@ export default function PosScreen() {
               {lostAnswer ? <Text style={s.line}>{t('pos.lostAnswer')}</Text> : null}
             </View>
           ) : null}
-          <Button label={busy ? t('common.loading') : t('pos.finalize')} disabled={busy || payCheck !== 'ok'} onPress={() => void finalize()} />
+          <Button
+            label={busy ? t('common.loading') : t('pos.finalize')}
+            disabled={busy || payCheck !== 'ok'}
+            onPress={() => void finalize()}
+          />
           <Button kind="ghost" label={t('pos.back')} onPress={() => setPaying(false)} />
         </View>
       )}
@@ -640,11 +711,27 @@ export default function PosScreen() {
 const s = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
   title: { fontSize: 22, fontWeight: '700', color: colors.ink },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12, gap: 8 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 12,
+    gap: 8,
+  },
   row: { flexDirection: 'row', gap: 8, alignItems: 'flex-end' },
   grow: { flex: 1 },
   label: { fontSize: 14, color: colors.muted, fontWeight: '600' },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: colors.ink,
+  },
   name: { fontSize: 16, color: colors.ink, fontWeight: '600' },
   sub: { fontSize: 14, color: colors.muted },
   line: { fontSize: 16, color: colors.ink },
@@ -652,12 +739,27 @@ const s = StyleSheet.create({
   ok: { fontSize: 18, fontWeight: '700', color: colors.ok },
   error: { fontSize: 15, color: colors.danger },
   fieldError: { fontSize: 14, color: colors.danger },
-  result: { minHeight: 48, padding: 12, borderRadius: radius, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card },
+  result: {
+    minHeight: 48,
+    padding: 12,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+  },
   selected: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 48 },
   link: { minHeight: 48, minWidth: 48, justifyContent: 'center', paddingHorizontal: 8 },
   linkTxt: { color: colors.info, fontSize: 15, fontWeight: '600' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { minHeight: 48, paddingHorizontal: 16, borderRadius: radius, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.card },
+  chip: {
+    minHeight: 48,
+    paddingHorizontal: 16,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    justifyContent: 'center',
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { fontSize: 15, color: colors.ink },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },

@@ -18,7 +18,15 @@ import {
   updateUser,
   type UserInput,
 } from './usr-api';
-import { normalizeMobile, sameSet, toggleId, validEmail, validFullName, validMobile, validUsername } from './usr-logic';
+import {
+  normalizeMobile,
+  sameSet,
+  toggleId,
+  validEmail,
+  validFullName,
+  validMobile,
+  validUsername,
+} from './usr-logic';
 
 /**
  * Add or edit a user. roles is null when the person may not read roles (identity.role.manage), branches is null when the list
@@ -91,13 +99,18 @@ export function UserForm({
   const submit = () => {
     setTouched(true);
     if (bad || nothing) return;
-    const key = r.idem.keyFor(`${edit ? `edit|${user.id}|${user.version}` : 'create'}|${JSON.stringify(body)}`);
+    const key = r.idem.keyFor(
+      `${edit ? `edit|${user.id}|${user.version}` : 'create'}|${JSON.stringify(body)}`,
+    );
     void r
       .run(
         () => (edit ? updateUser(client, user.id, user.version, body, key) : createUser(client, body, key)),
         edit ? t('usr.updated') : email.trim() ? t('usr.created') : t('usr.createdNoEmail'),
       )
-      .then((ok) => ok && onDone(edit ? t('usr.updated') : email.trim() ? t('usr.created') : t('usr.createdNoEmail')));
+      .then(
+        (ok) =>
+          ok && onDone(edit ? t('usr.updated') : email.trim() ? t('usr.created') : t('usr.createdNoEmail')),
+      );
   };
 
   return (
@@ -105,12 +118,34 @@ export function UserForm({
       <Text style={k.h2}>{edit ? t('usr.editTitle', { name: user.username }) : t('usr.addTitle')}</Text>
       {!edit ? <Text style={k.sub}>{t('usr.addHint')}</Text> : null}
       <Result msg={r.msg} failure={r.failure} />
-      <Field label={t('usr.fullName')} value={fullName} onChange={setFullName} error={touched && errs.fullName ? t('usr.badFullName') : null} />
+      <Field
+        label={t('usr.fullName')}
+        value={fullName}
+        onChange={setFullName}
+        error={touched && errs.fullName ? t('usr.badFullName') : null}
+      />
       {!edit ? (
-        <Field label={t('usr.username')} value={username} onChange={setUsername} error={touched && errs.username ? t('usr.badUsername') : null} />
+        <Field
+          label={t('usr.username')}
+          value={username}
+          onChange={setUsername}
+          error={touched && errs.username ? t('usr.badUsername') : null}
+        />
       ) : null}
-      <Field label={t('usr.mobileLabel')} value={mobile} onChange={setMobile} keyboard="phone-pad" error={touched && errs.mobile ? t('usr.badMobile') : null} />
-      <Field label={t('usr.emailLabel')} value={email} onChange={setEmail} keyboard="email-address" error={touched && errs.email ? t('usr.badEmail') : null} />
+      <Field
+        label={t('usr.mobileLabel')}
+        value={mobile}
+        onChange={setMobile}
+        keyboard="phone-pad"
+        error={touched && errs.mobile ? t('usr.badMobile') : null}
+      />
+      <Field
+        label={t('usr.emailLabel')}
+        value={email}
+        onChange={setEmail}
+        keyboard="email-address"
+        error={touched && errs.email ? t('usr.badEmail') : null}
+      />
       {!edit && email.trim() === '' ? <Text style={k.sub}>{t('usr.emailNeeded')}</Text> : null}
 
       <Text style={k.name}>{t('usr.rolesLabel')}</Text>
@@ -118,7 +153,12 @@ export function UserForm({
         <Text style={k.sub}>{edit ? t('usr.rolesUnavailableEdit') : t('usr.rolesUnavailable')}</Text>
       ) : (
         roles.map((ro) => (
-          <Check key={ro.id} label={ro.name} value={roleIds.includes(ro.id)} onChange={() => setRoleIds(toggleId(roleIds, ro.id))} />
+          <Check
+            key={ro.id}
+            label={ro.name}
+            value={roleIds.includes(ro.id)}
+            onChange={() => setRoleIds(toggleId(roleIds, ro.id))}
+          />
         ))
       )}
       {touched && errs.roles ? <Text style={k.error}>{t('usr.badRoles')}</Text> : null}
@@ -128,12 +168,21 @@ export function UserForm({
       {!allBranches && branches === null ? <Text style={k.sub}>{t('usr.branchesUnavailable')}</Text> : null}
       {!allBranches && branches !== null
         ? branches.map((b) => (
-            <Check key={b.id} label={b.name} value={branchIds.includes(b.id)} onChange={() => setBranchIds(toggleId(branchIds, b.id))} />
+            <Check
+              key={b.id}
+              label={b.name}
+              value={branchIds.includes(b.id)}
+              onChange={() => setBranchIds(toggleId(branchIds, b.id))}
+            />
           ))
         : null}
       {touched && errs.branches ? <Text style={k.error}>{t('usr.badBranches')}</Text> : null}
 
-      <Button label={edit ? t('usr.saveUser') : t('usr.createUser')} disabled={r.busy || nothing} onPress={submit} />
+      <Button
+        label={edit ? t('usr.saveUser') : t('usr.createUser')}
+        disabled={r.busy || nothing}
+        onPress={submit}
+      />
       <Button kind="ghost" label={t('usr.cancel')} onPress={onCancel} />
     </Card>
   );
@@ -142,7 +191,15 @@ export function UserForm({
 type Mode = 'unlock' | 'reset' | null;
 
 /** Unlock, reset two-factor and the sign-ins of another person (identity.user.manage). Reset two-factor needs a recent sign-in. */
-export function UserSecurity({ client, user, userId }: { client: ApiClient; user: UserView; userId: string }) {
+export function UserSecurity({
+  client,
+  user,
+  userId,
+}: {
+  client: ApiClient;
+  user: UserView;
+  userId: string;
+}) {
   const { t } = useTranslation();
   const r = useRunner();
   const [mode, setMode] = useState<Mode>(null);
@@ -160,7 +217,10 @@ export function UserSecurity({ client, user, userId }: { client: ApiClient; user
     const key = r.idem.keyFor(`${mode}|${user.id}|${reason.trim()}`);
     void r
       .run(
-        () => (mode === 'unlock' ? unlockUser(client, user.id, reason, key) : resetUser2fa(client, user.id, reason, key)),
+        () =>
+          mode === 'unlock'
+            ? unlockUser(client, user.id, reason, key)
+            : resetUser2fa(client, user.id, reason, key),
         mode === 'unlock' ? t('usr.unlocked') : t('usr.reset2faDone'),
       )
       .then((ok) => {
@@ -192,25 +252,41 @@ export function UserSecurity({ client, user, userId }: { client: ApiClient; user
             maxLength={500}
           />
           {reason !== '' && !validReason(reason) ? <Text style={k.error}>{t('users.badReason')}</Text> : null}
-          <Button label={mode === 'unlock' ? t('usr.unlockNow') : t('usr.reset2faNow')} disabled={r.busy || !validReason(reason)} onPress={go} />
+          <Button
+            label={mode === 'unlock' ? t('usr.unlockNow') : t('usr.reset2faNow')}
+            disabled={r.busy || !validReason(reason)}
+            onPress={go}
+          />
           <Button kind="ghost" label={t('usr.cancel')} onPress={() => (setMode(null), setReason(''))} />
         </>
       )}
-      <Button kind="ghost" label={showSessions ? t('usr.hideSessions') : t('usr.sessions')} onPress={() => setShowSessions(!showSessions)} />
+      <Button
+        kind="ghost"
+        label={showSessions ? t('usr.hideSessions') : t('usr.sessions')}
+        onPress={() => setShowSessions(!showSessions)}
+      />
       {showSessions && sessions.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}
       {showSessions && sessions.error ? (
         <>
-          <Text style={k.sub}>{isNetwork(sessions.error) ? t('users.offline') : t('usr.sessionsUnavailable')}</Text>
+          <Text style={k.sub}>
+            {isNetwork(sessions.error) ? t('users.offline') : t('usr.sessionsUnavailable')}
+          </Text>
           <Button kind="ghost" label={t('common.retry')} onPress={() => void sessions.refetch()} />
         </>
       ) : null}
-      {showSessions && sessions.data && sessions.data.items.length === 0 ? <Text style={k.sub}>{t('usr.noSessions')}</Text> : null}
+      {showSessions && sessions.data && sessions.data.items.length === 0 ? (
+        <Text style={k.sub}>{t('usr.noSessions')}</Text>
+      ) : null}
       {showSessions
         ? sessions.data?.items.map((s) => (
             <View key={s.id} style={{ gap: 4 }}>
               <Text style={k.name}>{s.browser ?? t('account.unknownBrowser')}</Text>
               <Text style={k.sub}>
-                {t('account.sessionLine', { started: fmtWhen(s.startedAt), last: fmtWhen(s.lastAccessAt), ip: s.ip ?? '-' })}
+                {t('account.sessionLine', {
+                  started: fmtWhen(s.startedAt),
+                  last: fmtWhen(s.lastAccessAt),
+                  ip: s.ip ?? '-',
+                })}
               </Text>
               <Button
                 kind="ghost"
@@ -218,7 +294,10 @@ export function UserSecurity({ client, user, userId }: { client: ApiClient; user
                 disabled={r.busy}
                 onPress={() =>
                   void r
-                    .run(() => endUserSession(client, user.id, s.id, r.idem.keyFor(`end|${user.id}|${s.id}`)), t('account.sessionEnded'))
+                    .run(
+                      () => endUserSession(client, user.id, s.id, r.idem.keyFor(`end|${user.id}|${s.id}`)),
+                      t('account.sessionEnded'),
+                    )
                     .then((ok) => ok && void sessions.refetch())
                 }
               />

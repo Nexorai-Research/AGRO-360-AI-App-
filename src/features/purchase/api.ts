@@ -130,11 +130,17 @@ export const key = (userId: string, what: string, extra = '') => ['purchase', wh
 
 // ---- reads
 export async function fetchSuppliers(c: ApiClient, q: string, signal?: AbortSignal) {
-  const r = await c.get<{ items: SupplierRow[] }>('/procurement/suppliers', { query: { q: q.trim() || undefined, limit: 200 }, signal });
+  const r = await c.get<{ items: SupplierRow[] }>('/procurement/suppliers', {
+    query: { q: q.trim() || undefined, limit: 200 },
+    signal,
+  });
   return r.items;
 }
 export async function fetchOrders(c: ApiClient, status: string, signal?: AbortSignal) {
-  const r = await c.get<{ items: OrderRow[] }>('/procurement/purchase-orders', { query: { status: status || undefined, limit: 100 }, signal });
+  const r = await c.get<{ items: OrderRow[] }>('/procurement/purchase-orders', {
+    query: { status: status || undefined, limit: 100 },
+    signal,
+  });
   return r.items;
 }
 export async function fetchApprovals(c: ApiClient, signal?: AbortSignal) {
@@ -144,7 +150,10 @@ export async function fetchApprovals(c: ApiClient, signal?: AbortSignal) {
 export const getOrder = (c: ApiClient, id: string, signal?: AbortSignal) =>
   c.get<OrderDetail>(`/procurement/purchase-orders/${encodeURIComponent(id)}`, { signal });
 export async function fetchReceipts(c: ApiClient, signal?: AbortSignal) {
-  const r = await c.get<{ items: GrnRow[] }>('/procurement/goods-receipts', { query: { limit: 100 }, signal });
+  const r = await c.get<{ items: GrnRow[] }>('/procurement/goods-receipts', {
+    query: { limit: 100 },
+    signal,
+  });
   return r.items;
 }
 export async function fetchBranches(c: ApiClient, signal?: AbortSignal) {
@@ -156,7 +165,10 @@ export async function fetchWarehouses(c: ApiClient, signal?: AbortSignal) {
   return r.items.filter((w) => w.status === undefined || w.status === 'ACTIVE');
 }
 export async function searchProducts(c: ApiClient, q: string, signal?: AbortSignal) {
-  const r = await c.get<{ items: ProductLite[] }>('/products', { query: { q, status: 'ACTIVE', limit: 20 }, signal });
+  const r = await c.get<{ items: ProductLite[] }>('/products', {
+    query: { q, status: 'ACTIVE', limit: 20 },
+    signal,
+  });
   return r.items;
 }
 export const productByBarcode = (c: ApiClient, code: string, signal?: AbortSignal) =>
@@ -166,13 +178,29 @@ export const productByBarcode = (c: ApiClient, code: string, signal?: AbortSigna
 export const createOrder = (c: ApiClient, body: OrderBody, idempotencyKey: string) =>
   c.post<OrderDetail>('/procurement/purchase-orders', { body, idempotencyKey });
 export const submitOrder = (c: ApiClient, o: OrderRow, idempotencyKey: string) =>
-  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/submit`, { body: {}, version: o.version, idempotencyKey });
+  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/submit`, {
+    body: {},
+    version: o.version,
+    idempotencyKey,
+  });
 export const approveOrder = (c: ApiClient, o: OrderRow, idempotencyKey: string) =>
-  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/approve`, { body: {}, version: o.version, idempotencyKey });
+  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/approve`, {
+    body: {},
+    version: o.version,
+    idempotencyKey,
+  });
 export const rejectOrder = (c: ApiClient, o: OrderRow, reason: string, idempotencyKey: string) =>
-  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/reject`, { body: { reason }, version: o.version, idempotencyKey });
+  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/reject`, {
+    body: { reason },
+    version: o.version,
+    idempotencyKey,
+  });
 export const cancelOrder = (c: ApiClient, o: OrderRow, reason: string, idempotencyKey: string) =>
-  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/cancel`, { body: { reason }, version: o.version, idempotencyKey });
+  c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/cancel`, {
+    body: { reason },
+    version: o.version,
+    idempotencyKey,
+  });
 export const createGrn = (c: ApiClient, body: GrnBody, idempotencyKey: string) =>
   c.post<{ id: string; number: string | null }>('/procurement/goods-receipts', { body, idempotencyKey });
 export const receiveGrn = (c: ApiClient, id: string, idempotencyKey: string) =>

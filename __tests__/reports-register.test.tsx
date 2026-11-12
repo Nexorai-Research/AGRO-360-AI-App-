@@ -10,15 +10,24 @@ const mockGet = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: jest.fn() };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => 'key-x' }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 
 beforeAll(() => {
-  for (const lang of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lang, 'translation', (parts as Record<string, object>)[lang], true, true);
+  for (const lang of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lang, 'translation', (parts as Record<string, object>)[lang], true, true);
 });
 beforeEach(async () => {
   mockGet.mockReset();
@@ -28,27 +37,68 @@ beforeEach(async () => {
 });
 
 const row = (over: Record<string, unknown> = {}) => ({
-  kind: 'INVOICE', id: 'i-1', number: 'INV-1', date: '2026-11-10', customerName: 'Ramesh Patil', status: 'FINALIZED',
-  taxable: '1000.00', cgst: '90.00', sgst: '90.00', igst: '0.00', total: '1180.00', ...over,
+  kind: 'INVOICE',
+  id: 'i-1',
+  number: 'INV-1',
+  date: '2026-11-10',
+  customerName: 'Ramesh Patil',
+  status: 'FINALIZED',
+  taxable: '1000.00',
+  cgst: '90.00',
+  sgst: '90.00',
+  igst: '0.00',
+  total: '1180.00',
+  ...over,
 });
 const register = {
-  rows: [row(), row({ kind: 'CREDIT_NOTE', id: 'c-1', number: 'CN-1', customerName: null, status: 'POSTED', taxable: '100.00', total: '118.00' })],
+  rows: [
+    row(),
+    row({
+      kind: 'CREDIT_NOTE',
+      id: 'c-1',
+      number: 'CN-1',
+      customerName: null,
+      status: 'POSTED',
+      taxable: '100.00',
+      total: '118.00',
+    }),
+  ],
   totals: { taxable: '900.00', cgst: '81.00', sgst: '81.00', igst: '0.00', total: '1062.00' },
 };
 
 const salesStub = {
-  from: '2026-10-13', to: '2026-11-11', groupBy: 'product', truncated: false, rows: [],
-  totals: { quantity: '0', netSales: '0.00', discount: '0.00', bills: 0, avgBill: null, margin: null, marginPct: null },
+  from: '2026-10-13',
+  to: '2026-11-11',
+  groupBy: 'product',
+  truncated: false,
+  rows: [],
+  totals: {
+    quantity: '0',
+    netSales: '0.00',
+    discount: '0.00',
+    bills: 0,
+    avgBill: null,
+    margin: null,
+    marginPct: null,
+  },
   previous: { from: 'a', to: 'b', netSales: '0', changePct: null },
 };
 /** The screen opens on Sales; only the register path answers with the register. */
-const answer = (r: unknown) => mockGet.mockImplementation(async (path: string) => {
-  if (path === '/reports/profitability')
-    return { from: 'a', to: 'b', groupBy: 'product', rows: [], totals: { netSales: '0.00', cost: '0.00', margin: '0.00', marginPct: null }, leakage: { belowCost: [], heavyDiscount: [], returns: { returnedValue: '0.00', marginLost: '0.00' } } };
-  if (path !== '/reports/sales-register') return salesStub;
-  if (r instanceof Error) throw r;
-  return r;
-});
+const answer = (r: unknown) =>
+  mockGet.mockImplementation(async (path: string) => {
+    if (path === '/reports/profitability')
+      return {
+        from: 'a',
+        to: 'b',
+        groupBy: 'product',
+        rows: [],
+        totals: { netSales: '0.00', cost: '0.00', margin: '0.00', marginPct: null },
+        leakage: { belowCost: [], heavyDiscount: [], returns: { returnedValue: '0.00', marginLost: '0.00' } },
+      };
+    if (path !== '/reports/sales-register') return salesStub;
+    if (r instanceof Error) throw r;
+    return r;
+  });
 
 async function openRegister() {
   await render(<ReportsScreen />, { wrapper });
@@ -64,20 +114,30 @@ describe('sales register report', () => {
     expect(screen.getByText('Credit note · Walk-in · POSTED')).toBeTruthy();
     expect(screen.getByText('₹1,180.00')).toBeTruthy();
     const call = mockGet.mock.calls.find((c) => c[0] === '/reports/sales-register')!;
-    expect(call[1].query).toMatchObject({ from: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/), to: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/) });
+    expect(call[1].query).toMatchObject({
+      from: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      to: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+    });
   });
 
   test('only the first 100 rows are drawn and the screen says how many there are', async () => {
     const many = Array.from({ length: 130 }, (_, i) => row({ id: `i-${i}`, number: `INV-${i + 1}` }));
     answer({ rows: many, totals: register.totals });
     await openRegister();
-    expect(await screen.findByText('Showing the first 100 of 130 documents. Narrow the period, or use the web app for the full list.')).toBeTruthy();
+    expect(
+      await screen.findByText(
+        'Showing the first 100 of 130 documents. Narrow the period, or use the web app for the full list.',
+      ),
+    ).toBeTruthy();
     expect(screen.queryByText(/INV-101 ·/)).toBeNull();
     expect(screen.getByText(/INV-100 ·/)).toBeTruthy();
   });
 
   test('empty period', async () => {
-    answer({ rows: [], totals: { taxable: '0.00', cgst: '0.00', sgst: '0.00', igst: '0.00', total: '0.00' } });
+    answer({
+      rows: [],
+      totals: { taxable: '0.00', cgst: '0.00', sgst: '0.00', igst: '0.00', total: '0.00' },
+    });
     await openRegister();
     expect(await screen.findByText('No bills in this period.')).toBeTruthy();
   });

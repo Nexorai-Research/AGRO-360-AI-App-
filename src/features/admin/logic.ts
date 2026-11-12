@@ -4,7 +4,8 @@ export const REASON_MIN = 10;
 export const REASON_MAX = 500;
 
 /** The server needs a reason of 10 to 500 characters to deactivate a user (recorded in the audit trail). */
-export const validReason = (v: string, min = REASON_MIN) => v.trim().length >= min && v.trim().length <= REASON_MAX;
+export const validReason = (v: string, min = REASON_MIN) =>
+  v.trim().length >= min && v.trim().length <= REASON_MAX;
 
 /** Shows only the last 4 characters of an account number: "XXXX1234". Short values are fully hidden. */
 export function maskTail(v: string | null | undefined): string {

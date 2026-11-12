@@ -11,32 +11,111 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const ALL = ['finance.account.view', 'finance.voucher.create', 'finance.voucher.approve', 'finance.voucher.reverse'];
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const ALL = [
+  'finance.account.view',
+  'finance.voucher.create',
+  'finance.voucher.approve',
+  'finance.voucher.reverse',
+];
 const accounts = [
-  { id: 'a1', code: '1000', name: 'Cash in hand', type: 'ASSET', cashBank: 'CASH', isControl: false, isOpeningPlug: false, active: true },
-  { id: 'a2', code: '4000', name: 'Sales', type: 'INCOME', cashBank: null, isControl: false, isOpeningPlug: false, active: true },
-  { id: 'a3', code: '6000', name: 'Rent', type: 'EXPENSE', cashBank: null, isControl: false, isOpeningPlug: false, active: true },
+  {
+    id: 'a1',
+    code: '1000',
+    name: 'Cash in hand',
+    type: 'ASSET',
+    cashBank: 'CASH',
+    isControl: false,
+    isOpeningPlug: false,
+    active: true,
+  },
+  {
+    id: 'a2',
+    code: '4000',
+    name: 'Sales',
+    type: 'INCOME',
+    cashBank: null,
+    isControl: false,
+    isOpeningPlug: false,
+    active: true,
+  },
+  {
+    id: 'a3',
+    code: '6000',
+    name: 'Rent',
+    type: 'EXPENSE',
+    cashBank: null,
+    isControl: false,
+    isOpeningPlug: false,
+    active: true,
+  },
 ];
 const voucher = (o: Record<string, unknown> = {}) => ({
-  id: 'v1', voucherNo: 'JV-0001', kind: 'JOURNAL', status: 'DRAFT', voucherDate: '2026-11-10', narration: 'Rent for November', total: '12500.50', journalId: null,
-  createdBy: 'u9', decisionNote: null, reverseReason: null, version: 4, needsApproval: false,
-  lines: [{ lineNo: 1, accountId: 'a3', accountCode: '6000', accountName: 'Rent', debit: '12500.50', credit: '0.00', narration: null }, { lineNo: 2, accountId: 'a1', accountCode: '1000', accountName: 'Cash in hand', debit: '0.00', credit: '12500.50', narration: null }],
+  id: 'v1',
+  voucherNo: 'JV-0001',
+  kind: 'JOURNAL',
+  status: 'DRAFT',
+  voucherDate: '2026-11-10',
+  narration: 'Rent for November',
+  total: '12500.50',
+  journalId: null,
+  createdBy: 'u9',
+  decisionNote: null,
+  reverseReason: null,
+  version: 4,
+  needsApproval: false,
+  lines: [
+    {
+      lineNo: 1,
+      accountId: 'a3',
+      accountCode: '6000',
+      accountName: 'Rent',
+      debit: '12500.50',
+      credit: '0.00',
+      narration: null,
+    },
+    {
+      lineNo: 2,
+      accountId: 'a1',
+      accountCode: '1000',
+      accountName: 'Cash in hand',
+      debit: '0.00',
+      credit: '12500.50',
+      narration: null,
+    },
+  ],
   ...o,
 });
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
-    const v = path in o ? o[path] : ({ '/finance/vouchers': { items: [voucher()] }, '/finance/accounts': { items: accounts }, '/branches': { items: [{ id: 'b1', name: 'Main' }] }, '/finance/vouchers/v1': voucher() } as Record<string, unknown>)[path];
+    const v =
+      path in o
+        ? o[path]
+        : (
+            {
+              '/finance/vouchers': { items: [voucher()] },
+              '/finance/accounts': { items: accounts },
+              '/branches': { items: [{ id: 'b1', name: 'Main' }] },
+              '/finance/vouchers/v1': voucher(),
+            } as Record<string, unknown>
+          )[path];
     if (v instanceof Error) throw v;
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 const openDetail = async () => {
   await render(<VouchersScreen />, { wrapper });
   await press('JV-0001');
@@ -44,7 +123,8 @@ const openDetail = async () => {
 };
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost].forEach((m) => m.mockReset());
@@ -181,7 +261,15 @@ describe('new voucher', () => {
     await waitFor(() => expect(mockPost).toHaveBeenCalledTimes(2));
     const [path, opts] = mockPost.mock.calls[0]!;
     expect(path).toBe('/finance/vouchers/journal');
-    expect(opts.body).toEqual(expect.objectContaining({ narration: 'Rent for November', lines: [{ accountId: 'a3', debit: '12500.50' }, { accountId: 'a1', credit: '12500.50' }] }));
+    expect(opts.body).toEqual(
+      expect.objectContaining({
+        narration: 'Rent for November',
+        lines: [
+          { accountId: 'a3', debit: '12500.50' },
+          { accountId: 'a1', credit: '12500.50' },
+        ],
+      }),
+    );
     expect(JSON.stringify(opts)).not.toMatch(/tenant/i);
     expect(opts.idempotencyKey).toBe(mockPost.mock.calls[1]![1].idempotencyKey);
     expect(await screen.findByText('JV-0001')).toBeTruthy(); // moved to the saved voucher
@@ -216,7 +304,9 @@ describe('new voucher', () => {
     await press('Save as draft');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/vouchers/payment');
-    expect(mockPost.mock.calls[0]![1].body).toEqual(expect.objectContaining({ paidFromAccountId: 'a1', items: [{ accountId: 'a3', amount: '150' }] }));
+    expect(mockPost.mock.calls[0]![1].body).toEqual(
+      expect.objectContaining({ paidFromAccountId: 'a1', items: [{ accountId: 'a3', amount: '150' }] }),
+    );
   });
   test('a server rejection (locked period) is shown with its reference', async () => {
     await openNew();

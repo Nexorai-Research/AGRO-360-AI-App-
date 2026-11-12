@@ -14,14 +14,40 @@ let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), put: (...a: unknown[]) => mockPut(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const event = { id: 'e-1', at: '2026-11-10T08:30:00Z', actorId: '11111111-2222-3333-4444-555555555555', actorName: 'Asha Kulkarni', actorUsername: 'asha', action: 'identity.user.unlock', targetType: 'identity.user', targetId: '12345678-aaaa-bbbb-cccc-dddddddddddd', outcome: 'SUCCESS', correlationId: 'corr-1' };
-const prefs = { displayName: 'Asha Kulkarni', language: 'en', dateFormat: 'DD/MM/YYYY', theme: 'light', printer: null, defaultBranchId: null };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const event = {
+  id: 'e-1',
+  at: '2026-11-10T08:30:00Z',
+  actorId: '11111111-2222-3333-4444-555555555555',
+  actorName: 'Asha Kulkarni',
+  actorUsername: 'asha',
+  action: 'identity.user.unlock',
+  targetType: 'identity.user',
+  targetId: '12345678-aaaa-bbbb-cccc-dddddddddddd',
+  outcome: 'SUCCESS',
+  correlationId: 'corr-1',
+};
+const prefs = {
+  displayName: 'Asha Kulkarni',
+  language: 'en',
+  dateFormat: 'DD/MM/YYYY',
+  theme: 'light',
+  printer: null,
+  defaultBranchId: null,
+};
 
 beforeAll(() => {
   for (const l of ['en', 'hi', 'mr'] as const) {
@@ -100,7 +126,12 @@ describe('account preferences', () => {
   });
 
   test('sends only the changed date format, theme and printer, with a key', async () => {
-    mockPut.mockResolvedValue({ ...prefs, dateFormat: 'YYYY-MM-DD', theme: 'dark', printer: 'Counter-1 80mm' });
+    mockPut.mockResolvedValue({
+      ...prefs,
+      dateFormat: 'YYYY-MM-DD',
+      theme: 'dark',
+      printer: 'Counter-1 80mm',
+    });
     await render(<AccountScreen />, { wrapper });
     await screen.findByText('Preferences');
     expect(screen.getByLabelText('Save preferences').props.accessibilityState?.disabled).toBe(true);

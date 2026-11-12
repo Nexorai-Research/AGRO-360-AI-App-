@@ -12,7 +12,9 @@ for (const lang of ['hi', 'mr']) {
   const text = readFileSync(join(WEB, 'src', 'i18n', `${lang}.js`), 'utf8');
   const D = new Function(`${text.replace(/export\s+const\s+D\s*=/, 'const D =')}\nreturn D;`)();
   // Only phrases that exist in the English source and have a translation are kept.
-  const keep = Object.fromEntries(source.filter((k) => typeof D[k] === 'string' && D[k] !== '').map((k) => [k, D[k]]));
+  const keep = Object.fromEntries(
+    source.filter((k) => typeof D[k] === 'string' && D[k] !== '').map((k) => [k, D[k]]),
+  );
   writeFileSync(join(out, `web-${lang}.json`), `${JSON.stringify(keep, null, 1)}\n`);
   console.log(`${lang}: ${Object.keys(keep).length} of ${source.length} phrases`);
 }

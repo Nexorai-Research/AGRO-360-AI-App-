@@ -4,7 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApiError } from '../src/api/errors';
 import { setLanguage } from '../src/i18n';
 import { CrmActions } from '../src/features/customers/CrmActions';
-import { interactionBody, interactionOk, validDay, emptyInteraction } from '../src/features/customers/crm-api';
+import {
+  interactionBody,
+  interactionOk,
+  validDay,
+  emptyInteraction,
+} from '../src/features/customers/crm-api';
 
 const mockGet = jest.fn();
 const mockPut = jest.fn();
@@ -12,18 +17,37 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; tenantId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), put: (...a: unknown[]) => mockPut(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    me: mockMe,
+    client: {
+      get: (...a: unknown[]) => mockGet(...a),
+      put: (...a: unknown[]) => mockPut(...a),
+      post: (...a: unknown[]) => mockPost(...a),
+    },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 
 beforeEach(async () => {
   [mockGet, mockPut, mockPost].forEach((m) => m.mockReset());
   mockId = 0;
-  mockMe = { userId: 'u1', tenantId: 't1', roles: [], permissions: ['customer.view', 'customer.consent', 'customer.interaction'] };
-  mockGet.mockResolvedValue({ items: [{ code: 'PROMOTIONAL', name: 'Offers', status: 'ACTIVE' }, { code: 'OLD', name: 'Old purpose', status: 'INACTIVE' }] });
+  mockMe = {
+    userId: 'u1',
+    tenantId: 't1',
+    roles: [],
+    permissions: ['customer.view', 'customer.consent', 'customer.interaction'],
+  };
+  mockGet.mockResolvedValue({
+    items: [
+      { code: 'PROMOTIONAL', name: 'Offers', status: 'ACTIVE' },
+      { code: 'OLD', name: 'Old purpose', status: 'INACTIVE' },
+    ],
+  });
   qc = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity, retryDelay: 0 } } });
   await setLanguage('en');
 });
@@ -37,7 +61,10 @@ describe('crm checks', () => {
   test('entry needs notes; optional fields only sent when filled', () => {
     expect(interactionOk(emptyInteraction)).toBe(false);
     expect(interactionOk({ ...emptyInteraction, notes: 'x', followUpOn: '2026-13-01' })).toBe(false);
-    expect(interactionBody({ ...emptyInteraction, notes: ' Called ' })).toEqual({ kind: 'CALL', notes: 'Called' });
+    expect(interactionBody({ ...emptyInteraction, notes: ' Called ' })).toEqual({
+      kind: 'CALL',
+      notes: 'Called',
+    });
   });
 });
 
@@ -66,7 +93,10 @@ describe('crm actions', () => {
     await fireEvent.press(screen.getByLabelText('Refused'));
     await fireEvent.press(screen.getByLabelText('Save consent'));
     expect(await screen.findByText('Consent recorded.')).toBeTruthy();
-    expect(mockPut).toHaveBeenCalledWith('/customers/c1/consents', { body: { consents: [{ purpose: 'PROMOTIONAL', channel: 'SMS', granted: false, source: 'STAFF' }] }, idempotencyKey: 'key-1' });
+    expect(mockPut).toHaveBeenCalledWith('/customers/c1/consents', {
+      body: { consents: [{ purpose: 'PROMOTIONAL', channel: 'SMS', granted: false, source: 'STAFF' }] },
+      idempotencyKey: 'key-1',
+    });
   });
   test('interaction: posts the body; lost answer then retry keeps the key', async () => {
     mockPost.mockRejectedValueOnce(new ApiError(0, null, 'c1')).mockResolvedValueOnce({});
@@ -80,7 +110,11 @@ describe('crm actions', () => {
     await fireEvent.press(screen.getByLabelText('Save entry'));
     expect(await screen.findByText('Entry saved.')).toBeTruthy();
     expect(mockPost.mock.calls[1]![0]).toBe('/customers/c1/interactions');
-    expect(mockPost.mock.calls[1]![1].body).toEqual({ kind: 'VISIT', notes: 'Spoke about spray', followUpOn: '2026-12-01' });
+    expect(mockPost.mock.calls[1]![1].body).toEqual({
+      kind: 'VISIT',
+      notes: 'Spoke about spray',
+      followUpOn: '2026-12-01',
+    });
     expect(mockPost.mock.calls[0]![1].idempotencyKey).toBe(mockPost.mock.calls[1]![1].idempotencyKey);
   });
   test('a bad follow-up date is flagged and blocks saving', async () => {

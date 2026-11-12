@@ -8,7 +8,8 @@ const AMOUNT_RE = /^\d+(\.\d{1,2})?$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX = '999999999999';
 
-export const validAmount = (v: string): boolean => AMOUNT_RE.test(v.trim()) && dec(v.trim()).gt(0) && dec(v.trim()).lte(MAX);
+export const validAmount = (v: string): boolean =>
+  AMOUNT_RE.test(v.trim()) && dec(v.trim()).gt(0) && dec(v.trim()).lte(MAX);
 export const validFutureDate = (v: string, today: string = todayIST()): boolean => {
   const s = v.trim();
   if (!DATE_RE.test(s)) return false;
@@ -18,7 +19,11 @@ export const validFutureDate = (v: string, today: string = todayIST()): boolean 
 
 export type OutcomeError = 'amount' | 'date' | 'note' | 'noteLong';
 
-export function outcomeErrors(o: Outcome, f: { note: string; amount: string; date: string }, today?: string): OutcomeError[] {
+export function outcomeErrors(
+  o: Outcome,
+  f: { note: string; amount: string; date: string },
+  today?: string,
+): OutcomeError[] {
   const e: OutcomeError[] = [];
   if (f.note.trim().length > 500) e.push('noteLong');
   if (o === 'PROMISE') {
@@ -39,7 +44,10 @@ export function buildOutcome(o: Outcome, f: { note: string; amount: string; date
 }
 
 export type PromiseError = 'customer' | 'amount' | 'date' | 'noteLong';
-export function promiseErrors(f: { customerId: string; amount: string; date: string; note: string }, today?: string): PromiseError[] {
+export function promiseErrors(
+  f: { customerId: string; amount: string; date: string; note: string },
+  today?: string,
+): PromiseError[] {
   const e: PromiseError[] = [];
   if (!f.customerId) e.push('customer');
   if (!validAmount(f.amount)) e.push('amount');

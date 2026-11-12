@@ -15,7 +15,15 @@ import { acctKey, type Preferences } from './api';
  * Date format, theme and default printer (PUT /me/preferences, same endpoint as name and language). They are saved on the server for
  * this person. This app does not change its own look or date style from them yet: the web app does.
  */
-export function PrefsExtras({ client, userId, prefs }: { client: ApiClient; userId: string; prefs: Preferences }) {
+export function PrefsExtras({
+  client,
+  userId,
+  prefs,
+}: {
+  client: ApiClient;
+  userId: string;
+  prefs: Preferences;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const r = useRunner();
@@ -26,7 +34,8 @@ export function PrefsExtras({ client, userId, prefs }: { client: ApiClient; user
   const body: { dateFormat?: string; theme?: string; printer?: string | null } = {};
   if (dateFormat !== null && dateFormat !== prefs.dateFormat) body.dateFormat = dateFormat;
   if (theme !== null && theme !== prefs.theme) body.theme = theme;
-  if (printer !== null && printer.trim() !== (prefs.printer ?? '')) body.printer = printer.trim() === '' ? null : printer.trim();
+  if (printer !== null && printer.trim() !== (prefs.printer ?? ''))
+    body.printer = printer.trim() === '' ? null : printer.trim();
   const changed = Object.keys(body).length > 0;
   const printerBad = printer !== null && !validPrinter(printer);
 
@@ -58,7 +67,10 @@ export function PrefsExtras({ client, userId, prefs }: { client: ApiClient; user
         disabled={r.busy || !changed || printerBad}
         onPress={() =>
           void r
-            .run(() => savePrefsExtra(client, body, r.idem.keyFor(`prefs-x|${JSON.stringify(body)}`)), t('account.saved'))
+            .run(
+              () => savePrefsExtra(client, body, r.idem.keyFor(`prefs-x|${JSON.stringify(body)}`)),
+              t('account.saved'),
+            )
             .then((ok) => {
               if (ok) {
                 setDateFormat(null);

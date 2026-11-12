@@ -20,20 +20,75 @@ const mockClient = {
   delete: (...a: unknown[]) => mockDelete(...a),
 };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const user = { id: 'u-2', username: 'ramesh', fullName: 'Ramesh Patil', mobile: '9876543210', email: 'r@example.com', status: 'ACTIVE', allBranches: false, defaultBranchId: 'b-1', roleIds: ['r-1'], branchIds: ['b-1'], version: 3, createdAt: '2026-10-01T04:00:00Z' };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const user = {
+  id: 'u-2',
+  username: 'ramesh',
+  fullName: 'Ramesh Patil',
+  mobile: '9876543210',
+  email: 'r@example.com',
+  status: 'ACTIVE',
+  allBranches: false,
+  defaultBranchId: 'b-1',
+  roleIds: ['r-1'],
+  branchIds: ['b-1'],
+  version: 3,
+  createdAt: '2026-10-01T04:00:00Z',
+};
 const roles = [
-  { id: 'r-1', name: 'Counter staff', isSystem: false, systemKey: null, version: 1, permissions: [], assignedUsers: 4, limits: {} },
-  { id: 'r-2', name: 'Manager', isSystem: false, systemKey: null, version: 1, permissions: [], assignedUsers: 1, limits: {} },
+  {
+    id: 'r-1',
+    name: 'Counter staff',
+    isSystem: false,
+    systemKey: null,
+    version: 1,
+    permissions: [],
+    assignedUsers: 4,
+    limits: {},
+  },
+  {
+    id: 'r-2',
+    name: 'Manager',
+    isSystem: false,
+    systemKey: null,
+    version: 1,
+    permissions: [],
+    assignedUsers: 1,
+    limits: {},
+  },
 ];
 const branches = [
-  { id: 'b-1', code: 'HO', name: 'Head office', address: null, gstin: null, isHeadOffice: true, status: 'ACTIVE' },
-  { id: 'b-2', code: 'PN', name: 'Pune shop', address: null, gstin: null, isHeadOffice: false, status: 'ACTIVE' },
+  {
+    id: 'b-1',
+    code: 'HO',
+    name: 'Head office',
+    address: null,
+    gstin: null,
+    isHeadOffice: true,
+    status: 'ACTIVE',
+  },
+  {
+    id: 'b-2',
+    code: 'PN',
+    name: 'Pune shop',
+    address: null,
+    gstin: null,
+    isHeadOffice: false,
+    status: 'ACTIVE',
+  },
 ];
 
 beforeAll(() => {
@@ -52,7 +107,18 @@ beforeEach(async () => {
     if (path === '/users') return { items: [user], next_cursor: null };
     if (path === '/roles') return { items: roles };
     if (path === '/branches') return { items: branches };
-    if (path === '/users/u-2/sessions') return { items: [{ id: 's-1', ip: '10.0.x.x', browser: 'Chrome', startedAt: '2026-11-10T04:00:00Z', lastAccessAt: '2026-11-10T05:00:00Z' }] };
+    if (path === '/users/u-2/sessions')
+      return {
+        items: [
+          {
+            id: 's-1',
+            ip: '10.0.x.x',
+            browser: 'Chrome',
+            startedAt: '2026-11-10T04:00:00Z',
+            lastAccessAt: '2026-11-10T05:00:00Z',
+          },
+        ],
+      };
     throw new Error(`unexpected ${path}`);
   });
 });
@@ -126,7 +192,9 @@ describe('add user', () => {
     await fireEvent.press(screen.getByLabelText('Manager'));
     await fireEvent.press(screen.getByLabelText('Access to all branches'));
     await fireEvent.press(screen.getByLabelText('Create user'));
-    expect(await screen.findByText('User created, but no email was given so no invitation was sent.')).toBeTruthy();
+    expect(
+      await screen.findByText('User created, but no email was given so no invitation was sent.'),
+    ).toBeTruthy();
     expect(mockPost.mock.calls[0]![1].body).toMatchObject({ email: null, allBranches: true, branchIds: [] });
   });
 
@@ -163,7 +231,10 @@ describe('edit user', () => {
   test('sends only what changed, with the version in If-Match', async () => {
     mockPatch.mockResolvedValue({ ...user, version: 4 });
     await openEdit();
-    expect(screen.getByText('Save changes').props.accessibilityState?.disabled ?? screen.getByLabelText('Save changes').props.accessibilityState?.disabled).toBeTruthy();
+    expect(
+      screen.getByText('Save changes').props.accessibilityState?.disabled ??
+        screen.getByLabelText('Save changes').props.accessibilityState?.disabled,
+    ).toBeTruthy();
     await fireEvent.changeText(screen.getByLabelText('Full name'), 'Ramesh P Patil');
     await fireEvent.press(screen.getByLabelText('Manager'));
     await fireEvent.press(screen.getByLabelText('Pune shop'));
@@ -172,7 +243,12 @@ describe('edit user', () => {
     const [path, opts] = mockPatch.mock.calls[0]!;
     expect(path).toBe('/users/u-2');
     expect(opts.version).toBe(3);
-    expect(opts.body).toEqual({ fullName: 'Ramesh P Patil', roleIds: ['r-1', 'r-2'], allBranches: false, branchIds: ['b-1', 'b-2'] });
+    expect(opts.body).toEqual({
+      fullName: 'Ramesh P Patil',
+      roleIds: ['r-1', 'r-2'],
+      allBranches: false,
+      branchIds: ['b-1', 'b-2'],
+    });
     expect(opts.idempotencyKey).toBeTruthy();
   });
 
@@ -181,7 +257,7 @@ describe('edit user', () => {
     await openEdit();
     await fireEvent.changeText(screen.getByLabelText('Full name'), 'Ramesh P Patil');
     await fireEvent.press(screen.getByLabelText('Save changes'));
-    expect(await screen.findByText(/c-5/)).toBeTruthy();
+    expect(await screen.findByText(/Someone else changed this/)).toBeTruthy();
   });
 
   test('a deactivated user cannot be edited, only activated again', async () => {
@@ -210,7 +286,10 @@ describe('unlock, reset two-factor and sign-ins', () => {
     await fireEvent.press(screen.getByLabelText('Unlock account'));
     await fireEvent.changeText(screen.getAllByLabelText('Reason (10 to 500 characters)')[0]!, 'short');
     expect(screen.getByLabelText('Unlock now').props.accessibilityState?.disabled).toBe(true);
-    await fireEvent.changeText(screen.getAllByLabelText('Reason (10 to 500 characters)')[0]!, 'forgot the password');
+    await fireEvent.changeText(
+      screen.getAllByLabelText('Reason (10 to 500 characters)')[0]!,
+      'forgot the password',
+    );
     await fireEvent.press(screen.getByLabelText('Unlock now'));
     expect(await screen.findByText('Account unlocked.')).toBeTruthy();
     const [path, opts] = mockPost.mock.calls[0]!;
@@ -223,7 +302,10 @@ describe('unlock, reset two-factor and sign-ins', () => {
     mockPost.mockRejectedValue(new ApiError(403, { title: 'FRESH_AUTH_REQUIRED', correlationId: 'c-9' }));
     await openDetails();
     await fireEvent.press(screen.getByLabelText('Reset two-factor sign-in'));
-    await fireEvent.changeText(screen.getAllByLabelText('Reason (10 to 500 characters)')[0]!, 'phone was lost');
+    await fireEvent.changeText(
+      screen.getAllByLabelText('Reason (10 to 500 characters)')[0]!,
+      'phone was lost',
+    );
     await fireEvent.press(screen.getByLabelText('Reset now'));
     expect(await screen.findByText('Please enter your password again to continue.')).toBeTruthy();
     expect(mockPost.mock.calls[0]![0]).toBe('/users/u-2:reset-2fa');

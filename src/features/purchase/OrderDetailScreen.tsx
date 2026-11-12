@@ -7,7 +7,16 @@ import { useAuth } from '@/auth/AuthProvider';
 import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
-import { PERM, approveOrder, cancelOrder, getOrder, key, rejectOrder, submitOrder, type OrderDetail } from './api';
+import {
+  PERM,
+  approveOrder,
+  cancelOrder,
+  getOrder,
+  key,
+  rejectOrder,
+  submitOrder,
+  type OrderDetail,
+} from './api';
 import { Gate, retryNetworkOnce } from './Gate';
 import { orderActions, validReason } from './logic';
 import { Field, Notice, k, useActionKey, useErrorText } from './ui';
@@ -47,7 +56,12 @@ export default function OrderDetailScreen() {
     setMsg(null);
     try {
       // the key follows the action, the order and its version and the reason: a retry of the same thing reuses it
-      await fn(o, actionKey.keyFor(`${name}|${o.id}|${o.version}|${name === 'reject' || name === 'cancel' ? reason.trim() : ''}`));
+      await fn(
+        o,
+        actionKey.keyFor(
+          `${name}|${o.id}|${o.version}|${name === 'reject' || name === 'cancel' ? reason.trim() : ''}`,
+        ),
+      );
       actionKey.reset();
       setMsg(done);
       setAsk(null);
@@ -72,7 +86,11 @@ export default function OrderDetailScreen() {
           <>
             <Text style={k.title}>{o.number ?? t('purchase.draft')}</Text>
             <Text style={k.sub}>
-              {[o.supplierName, o.orderDate, t(`purchase.status.${o.status}`, { defaultValue: o.status })].join(' · ')}
+              {[
+                o.supplierName,
+                o.orderDate,
+                t(`purchase.status.${o.status}`, { defaultValue: o.status }),
+              ].join(' · ')}
             </Text>
             {o.reason ? <Text style={k.sub}>{t('purchase.reasonShown', { reason: o.reason })}</Text> : null}
             {o.lines.map((l) => (
@@ -88,7 +106,10 @@ export default function OrderDetailScreen() {
                   })}
                 </Text>
                 <Text style={k.sub}>
-                  {t('purchase.lineReceived', { received: dec(l.receivedQty).toString(), pending: dec(l.pendingQty).toString() })}
+                  {t('purchase.lineReceived', {
+                    received: dec(l.receivedQty).toString(),
+                    pending: dec(l.pendingQty).toString(),
+                  })}
                 </Text>
               </View>
             ))}
@@ -103,27 +124,45 @@ export default function OrderDetailScreen() {
                 <Button
                   label={t('purchase.submit')}
                   disabled={busy}
-                  onPress={() => void run('submit', t('purchase.submitted'), (x, key2) => submitOrder(client!, x, key2))}
+                  onPress={() =>
+                    void run('submit', t('purchase.submitted'), (x, key2) => submitOrder(client!, x, key2))
+                  }
                 />
               ) : null}
               {a.approve ? (
                 <Button
                   label={t('purchase.approve')}
                   disabled={busy}
-                  onPress={() => void run('approve', t('purchase.approved'), (x, key2) => approveOrder(client!, x, key2))}
+                  onPress={() =>
+                    void run('approve', t('purchase.approved'), (x, key2) => approveOrder(client!, x, key2))
+                  }
                 />
               ) : null}
-              {a.reject ? <Button kind="ghost" label={t('purchase.reject')} onPress={() => setAsk('reject')} /> : null}
-              {a.receive ? (
-                <Button kind="ghost" label={t('purchase.receive')} onPress={() => router.push({ pathname: '/purchase/receive/[id]', params: { id: o.id } })} />
+              {a.reject ? (
+                <Button kind="ghost" label={t('purchase.reject')} onPress={() => setAsk('reject')} />
               ) : null}
-              {a.cancel ? <Button kind="ghost" label={t('purchase.cancelOrder')} onPress={() => setAsk('cancel')} /> : null}
-              <Button kind="ghost" label={t('stkOrder.more')} onPress={() => router.push({ pathname: '/purchase/more', params: { id: o.id } } as never)} />
+              {a.receive ? (
+                <Button
+                  kind="ghost"
+                  label={t('purchase.receive')}
+                  onPress={() => router.push({ pathname: '/purchase/receive/[id]', params: { id: o.id } })}
+                />
+              ) : null}
+              {a.cancel ? (
+                <Button kind="ghost" label={t('purchase.cancelOrder')} onPress={() => setAsk('cancel')} />
+              ) : null}
+              <Button
+                kind="ghost"
+                label={t('stkOrder.more')}
+                onPress={() => router.push({ pathname: '/purchase/more', params: { id: o.id } } as never)}
+              />
             </View>
 
             {ask ? (
               <View style={k.card}>
-                <Text style={k.sub}>{t(ask === 'reject' ? 'purchase.rejectHint' : 'purchase.cancelHint')}</Text>
+                <Text style={k.sub}>
+                  {t(ask === 'reject' ? 'purchase.rejectHint' : 'purchase.cancelHint')}
+                </Text>
                 <Field
                   label={t('purchase.reason')}
                   value={reason}
@@ -137,7 +176,10 @@ export default function OrderDetailScreen() {
                     void run(
                       ask,
                       t(ask === 'reject' ? 'purchase.rejected' : 'purchase.cancelled'),
-                      (x, key2) => (ask === 'reject' ? rejectOrder(client!, x, reason.trim(), key2) : cancelOrder(client!, x, reason.trim(), key2)),
+                      (x, key2) =>
+                        ask === 'reject'
+                          ? rejectOrder(client!, x, reason.trim(), key2)
+                          : cancelOrder(client!, x, reason.trim(), key2),
                     )
                   }
                 />

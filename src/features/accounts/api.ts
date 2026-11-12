@@ -58,4 +58,7 @@ export const fetchDayBook = (c: ApiClient, from: string, to: string, signal?: Ab
 export const fetchTrialBalance = (c: ApiClient, asOn: string, signal?: AbortSignal) =>
   c.get<TrialBalance>('/reports/trial-balance', { query: { asOn }, signal });
 export const fetchLedgers = (c: ApiClient, signal?: AbortSignal) =>
-  c.get<{ items: LedgerAccount[] }>('/finance/accounts', { query: { balances: 'true', active: 'true' }, signal });
+  c.get<{ items: LedgerAccount[] }>('/finance/accounts', {
+    query: { balances: 'true', active: 'true' },
+    signal,
+  });

@@ -13,14 +13,83 @@ jest.mock('../src/auth/AuthProvider', () => ({
 }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 const data: Record<string, unknown> = {
-  '/customers/c1/farms': { items: [{ id: 'f1', name: 'North field', ownership: 'OWNED', areaAcres: '4.500', plotAcres: '4.500', status: 'ACTIVE', plots: [{ id: 'p1', name: 'Plot A', areaAcres: '2.250', soilType: 'Black', irrigationSource: 'Drip', status: 'ACTIVE' }] }] },
-  '/customers/c1/documents': { items: [{ id: 'k1', docType: 'AADHAAR', numberMasked: 'XXXX-XXXX-1234', expiresOn: '2025-01-31', expired: true, filename: 'a.pdf', status: 'VERIFIED' }] },
-  '/customers/c1/loyalty': { tier: { id: 't1', name: 'Silver', minSpend: '10000.00', minInvoices: 3, discountPct: '2.00' }, nextTier: { id: 't2', name: 'Gold', minSpend: '50000.00', minInvoices: 6, discountPct: '4.00' }, points: 120, spend: '32500.50', invoices: 5, why: 'x', eligible: true },
-  '/customers/c1/household': { household: { id: 'h1', name: 'Patil family', decisionMakerCustomerId: 'c1', payerCustomerId: 'c2', members: [{ customerId: 'c1', name: 'Ramesh Patil', code: 'CUS-1', mobile: '98xxxxxx10', relationship: 'SELF' }, { customerId: 'c2', name: 'Sunita Patil', code: 'CUS-2', mobile: null, relationship: 'SPOUSE' }] } },
-  '/customers/c1/consents': { current: [{ purpose: 'MARKETING', channel: 'SMS', granted: false, capturedAt: '2026-01-01' }], history: [] },
-  '/customers/c1/interactions': { items: [{ id: 'i1', kind: 'VISIT', occurredAt: '2026-11-05T09:00:00Z', notes: 'Checked the field', cropIssue: 'Yellow leaves', advice: 'Spray 19:19:19', followUpOn: '2026-11-20' }] },
+  '/customers/c1/farms': {
+    items: [
+      {
+        id: 'f1',
+        name: 'North field',
+        ownership: 'OWNED',
+        areaAcres: '4.500',
+        plotAcres: '4.500',
+        status: 'ACTIVE',
+        plots: [
+          {
+            id: 'p1',
+            name: 'Plot A',
+            areaAcres: '2.250',
+            soilType: 'Black',
+            irrigationSource: 'Drip',
+            status: 'ACTIVE',
+          },
+        ],
+      },
+    ],
+  },
+  '/customers/c1/documents': {
+    items: [
+      {
+        id: 'k1',
+        docType: 'AADHAAR',
+        numberMasked: 'XXXX-XXXX-1234',
+        expiresOn: '2025-01-31',
+        expired: true,
+        filename: 'a.pdf',
+        status: 'VERIFIED',
+      },
+    ],
+  },
+  '/customers/c1/loyalty': {
+    tier: { id: 't1', name: 'Silver', minSpend: '10000.00', minInvoices: 3, discountPct: '2.00' },
+    nextTier: { id: 't2', name: 'Gold', minSpend: '50000.00', minInvoices: 6, discountPct: '4.00' },
+    points: 120,
+    spend: '32500.50',
+    invoices: 5,
+    why: 'x',
+    eligible: true,
+  },
+  '/customers/c1/household': {
+    household: {
+      id: 'h1',
+      name: 'Patil family',
+      decisionMakerCustomerId: 'c1',
+      payerCustomerId: 'c2',
+      members: [
+        { customerId: 'c1', name: 'Ramesh Patil', code: 'CUS-1', mobile: '98xxxxxx10', relationship: 'SELF' },
+        { customerId: 'c2', name: 'Sunita Patil', code: 'CUS-2', mobile: null, relationship: 'SPOUSE' },
+      ],
+    },
+  },
+  '/customers/c1/consents': {
+    current: [{ purpose: 'MARKETING', channel: 'SMS', granted: false, capturedAt: '2026-01-01' }],
+    history: [],
+  },
+  '/customers/c1/interactions': {
+    items: [
+      {
+        id: 'i1',
+        kind: 'VISIT',
+        occurredAt: '2026-11-05T09:00:00Z',
+        notes: 'Checked the field',
+        cropIssue: 'Yellow leaves',
+        advice: 'Spray 19:19:19',
+        followUpOn: '2026-11-20',
+      },
+    ],
+  },
 };
 const calledPaths = () => mockGet.mock.calls.map((c) => c[0] as string);
 
@@ -118,7 +187,9 @@ describe('customer 360: more sections', () => {
   });
 
   test('permissions table: only KYC asks for its own permission', () => {
-    expect(Object.entries(SECTION_PERM).filter(([, p]) => p !== 'customer.view')).toEqual([['kyc', 'customer.kyc.view']]);
+    expect(Object.entries(SECTION_PERM).filter(([, p]) => p !== 'customer.view')).toEqual([
+      ['kyc', 'customer.kyc.view'],
+    ]);
   });
 
   test('Hindi titles', async () => {

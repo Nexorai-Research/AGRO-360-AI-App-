@@ -8,7 +8,19 @@ import { newId } from '../../device';
 import { Button } from '../../ui/Button';
 import { Chips } from '../../ui/kit';
 import { colors, radius } from '../../ui/theme';
-import { CHANNELS, CRM_PERM, KINDS, emptyInteraction, fetchPurposes, interactionBody, interactionOk, postInteraction, putConsent, validDay, type InteractionDraft } from './crm-api';
+import {
+  CHANNELS,
+  CRM_PERM,
+  KINDS,
+  emptyInteraction,
+  fetchPurposes,
+  interactionBody,
+  interactionOk,
+  postInteraction,
+  putConsent,
+  validDay,
+  type InteractionDraft,
+} from './crm-api';
 
 /** Record a consent answer and log a call or visit. Needs customer.consent / customer.interaction. One Idempotency-Key per action, kept on a retry. */
 export function CrmActions({ customerId }: { customerId: string }) {
@@ -66,7 +78,14 @@ export function CrmActions({ customerId }: { customerId: string }) {
     }
   }
   const field = (label: string, value: string, on: (v: string) => void, multi = false) => (
-    <TextInput value={value} onChangeText={on} placeholder={label} accessibilityLabel={label} multiline={multi} style={[s.input, multi && s.multi]} />
+    <TextInput
+      value={value}
+      onChangeText={on}
+      placeholder={label}
+      accessibilityLabel={label}
+      multiline={multi}
+      style={[s.input, multi && s.multi]}
+    />
   );
   const consentOk = purpose !== '' && channel !== '' && granted !== '';
   const ixOk = interactionOk(ix);
@@ -74,41 +93,84 @@ export function CrmActions({ customerId }: { customerId: string }) {
   return (
     <View style={s.card}>
       <Text style={s.title}>{t('crm.title')}</Text>
-      {msg ? <Text style={s.ok} accessibilityRole="alert">{msg}</Text> : null}
+      {msg ? (
+        <Text style={s.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
       {mode === null ? (
         <View style={s.row}>
-          {can(CRM_PERM.consent) ? <Button kind="ghost" label={t('crm.recordConsent')} onPress={() => open('consent')} /> : null}
-          {can(CRM_PERM.interaction) ? <Button kind="ghost" label={t('crm.logInteraction')} onPress={() => open('interaction')} /> : null}
+          {can(CRM_PERM.consent) ? (
+            <Button kind="ghost" label={t('crm.recordConsent')} onPress={() => open('consent')} />
+          ) : null}
+          {can(CRM_PERM.interaction) ? (
+            <Button kind="ghost" label={t('crm.logInteraction')} onPress={() => open('interaction')} />
+          ) : null}
         </View>
       ) : (
         <View style={s.form}>
           {mode === 'consent' ? (
             <>
-              <Chips label={t('crm.purpose')} options={(purposes.data ?? []).map((p) => ({ id: p.code, label: p.name || p.code }))} value={purpose} onChange={setPurpose} />
-              <Chips label={t('crm.channel')} options={CHANNELS.map((c) => ({ id: c as string, label: c }))} value={channel} onChange={setChannel} />
-              <Chips label={t('crm.answer')} options={[{ id: 'yes' as const, label: t('crm.agreed') }, { id: 'no' as const, label: t('crm.refused') }]} value={granted} onChange={setGranted} />
+              <Chips
+                label={t('crm.purpose')}
+                options={(purposes.data ?? []).map((p) => ({ id: p.code, label: p.name || p.code }))}
+                value={purpose}
+                onChange={setPurpose}
+              />
+              <Chips
+                label={t('crm.channel')}
+                options={CHANNELS.map((c) => ({ id: c as string, label: c }))}
+                value={channel}
+                onChange={setChannel}
+              />
+              <Chips
+                label={t('crm.answer')}
+                options={[
+                  { id: 'yes' as const, label: t('crm.agreed') },
+                  { id: 'no' as const, label: t('crm.refused') },
+                ]}
+                value={granted}
+                onChange={setGranted}
+              />
             </>
           ) : (
             <>
-              <Chips label={t('crm.kind')} options={KINDS.map((k) => ({ id: k as string, label: t(`crm.kinds.${k}`) }))} value={ix.kind} onChange={(v) => setIx({ ...ix, kind: v })} />
+              <Chips
+                label={t('crm.kind')}
+                options={KINDS.map((k) => ({ id: k as string, label: t(`crm.kinds.${k}`) }))}
+                value={ix.kind}
+                onChange={(v) => setIx({ ...ix, kind: v })}
+              />
               {field(t('crm.notes'), ix.notes, (v) => setIx({ ...ix, notes: v }), true)}
               {field(t('crm.cropIssue'), ix.cropIssue, (v) => setIx({ ...ix, cropIssue: v }))}
               {field(t('crm.advice'), ix.advice, (v) => setIx({ ...ix, advice: v }))}
               {field(t('crm.followUp'), ix.followUpOn, (v) => setIx({ ...ix, followUpOn: v }))}
-              {ix.followUpOn !== '' && !validDay(ix.followUpOn) ? <Text style={s.error}>{t('crm.badDate')}</Text> : null}
+              {ix.followUpOn !== '' && !validDay(ix.followUpOn) ? (
+                <Text style={s.error}>{t('crm.badDate')}</Text>
+              ) : null}
             </>
           )}
-          {failure ? <Text style={s.error} accessibilityRole="alert">{t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}</Text> : null}
+          {failure ? (
+            <Text style={s.error} accessibilityRole="alert">
+              {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+            </Text>
+          ) : null}
           <Button
             label={t(mode === 'consent' ? 'crm.saveConsent' : 'crm.saveInteraction')}
             disabled={busy || (mode === 'consent' ? !consentOk : !ixOk)}
             onPress={() => {
               if (mode === 'consent') {
                 const b = { purpose, channel, granted: granted === 'yes' };
-                void run(() => putConsent(client!, customerId, b, keyFor(`c|${JSON.stringify(b)}`)), t('crm.consentSaved'));
+                void run(
+                  () => putConsent(client!, customerId, b, keyFor(`c|${JSON.stringify(b)}`)),
+                  t('crm.consentSaved'),
+                );
               } else {
                 const b = interactionBody(ix);
-                void run(() => postInteraction(client!, customerId, b, keyFor(`i|${JSON.stringify(b)}`)), t('crm.interactionSaved'));
+                void run(
+                  () => postInteraction(client!, customerId, b, keyFor(`i|${JSON.stringify(b)}`)),
+                  t('crm.interactionSaved'),
+                );
               }
             }}
           />
@@ -120,12 +182,28 @@ export function CrmActions({ customerId }: { customerId: string }) {
 }
 
 const s = StyleSheet.create({
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 8, gap: 6 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 8,
+    gap: 6,
+  },
   title: { fontWeight: '700', color: colors.ink, fontSize: 16 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   form: { gap: 8 },
   ok: { color: colors.ok, fontWeight: '600' },
   error: { color: colors.danger, fontSize: 14 },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: colors.ink,
+  },
   multi: { minHeight: 96, textAlignVertical: 'top', paddingTop: 10 },
 });

@@ -75,11 +75,19 @@ export interface Valuation {
 
 export const fetchExpiry = (c: ApiClient, w: ExpiryWindow, signal?: AbortSignal) =>
   c.get<{ items: BatchRow[]; total: number }>('/inventory/batches', {
-    query: { withStockOnly: 'true', limit: PAGE_ROWS, ...(w === 'expired' ? { expired: 'true' } : { expiringWithinDays: w }) },
+    query: {
+      withStockOnly: 'true',
+      limit: PAGE_ROWS,
+      ...(w === 'expired' ? { expired: 'true' } : { expiringWithinDays: w }),
+    },
     signal,
   });
 export const fetchLedger = (c: ApiClient, signal?: AbortSignal) =>
   c.get<Ledger>('/inventory/ledger', { query: { limit: PAGE_ROWS }, signal });
 export const fetchReorderRules = (c: ApiClient, signal?: AbortSignal) =>
-  c.get<{ items: ReorderRule[]; total: number }>('/inventory/reorder-rules', { query: { limit: PAGE_ROWS }, signal });
-export const fetchValuation = (c: ApiClient, signal?: AbortSignal) => c.get<Valuation>('/inventory/valuation', { signal });
+  c.get<{ items: ReorderRule[]; total: number }>('/inventory/reorder-rules', {
+    query: { limit: PAGE_ROWS },
+    signal,
+  });
+export const fetchValuation = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<Valuation>('/inventory/valuation', { signal });

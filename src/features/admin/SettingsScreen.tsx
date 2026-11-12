@@ -16,19 +16,48 @@ export default function SettingsScreen() {
   const seeConfig = can(PERM.config);
   const opts = { retry: false as const };
 
-  const company = useQuery({ queryKey: adminKey(userId, 'company'), queryFn: ({ signal }) => fetchCompany(client!, signal), enabled: ready && seeCompany, ...opts });
-  const branches = useQuery({ queryKey: adminKey(userId, 'branches'), queryFn: ({ signal }) => fetchBranches(client!, signal), enabled: ready && seeConfig, ...opts });
-  const modes = useQuery({ queryKey: adminKey(userId, 'modes'), queryFn: ({ signal }) => fetchPaymentModes(client!, signal), enabled: ready && seeConfig, ...opts });
-  const policies = useQuery({ queryKey: adminKey(userId, 'policies'), queryFn: ({ signal }) => fetchPolicies(client!, signal), enabled: ready && seeConfig, ...opts });
+  const company = useQuery({
+    queryKey: adminKey(userId, 'company'),
+    queryFn: ({ signal }) => fetchCompany(client!, signal),
+    enabled: ready && seeCompany,
+    ...opts,
+  });
+  const branches = useQuery({
+    queryKey: adminKey(userId, 'branches'),
+    queryFn: ({ signal }) => fetchBranches(client!, signal),
+    enabled: ready && seeConfig,
+    ...opts,
+  });
+  const modes = useQuery({
+    queryKey: adminKey(userId, 'modes'),
+    queryFn: ({ signal }) => fetchPaymentModes(client!, signal),
+    enabled: ready && seeConfig,
+    ...opts,
+  });
+  const policies = useQuery({
+    queryKey: adminKey(userId, 'policies'),
+    queryFn: ({ signal }) => fetchPolicies(client!, signal),
+    enabled: ready && seeConfig,
+    ...opts,
+  });
 
   if (!seeCompany && !seeConfig) return <StateView state="denied" message={t('settings.denied')} />;
 
-  const all = [seeCompany ? company : null, seeConfig ? branches : null, seeConfig ? modes : null, seeConfig ? policies : null].filter(
-    (q): q is typeof company => q !== null,
-  );
+  const all = [
+    seeCompany ? company : null,
+    seeConfig ? branches : null,
+    seeConfig ? modes : null,
+    seeConfig ? policies : null,
+  ].filter((q): q is typeof company => q !== null);
   if (all.every((q) => q.isPending && q.fetchStatus !== 'idle')) return <StateView state="loading" />;
   if (all.every((q) => q.error) && all.some((q) => isNetwork(q.error)))
-    return <StateView state="offline" message={t('settings.offline')} onRetry={() => all.forEach((q) => void q.refetch())} />;
+    return (
+      <StateView
+        state="offline"
+        message={t('settings.offline')}
+        onRetry={() => all.forEach((q) => void q.refetch())}
+      />
+    );
 
   const failed = (q: { error: unknown; refetch: () => unknown }) => (
     <Card>
@@ -36,7 +65,12 @@ export default function SettingsScreen() {
       <Button kind="ghost" label={t('common.retry')} onPress={() => void q.refetch()} />
     </Card>
   );
-  const line = (label: string, v: string | null | undefined) => (v ? <Text key={label} style={k.sub}>{label}: {v}</Text> : null);
+  const line = (label: string, v: string | null | undefined) =>
+    v ? (
+      <Text key={label} style={k.sub}>
+        {label}: {v}
+      </Text>
+    ) : null;
   const c = company.data;
 
   return (
@@ -72,7 +106,9 @@ export default function SettingsScreen() {
           {branches.data?.items.length === 0 ? <Text style={k.sub}>{t('settings.none')}</Text> : null}
           {branches.data?.items.map((b) => (
             <Card key={b.id}>
-              <Text style={k.name}>{b.name} ({b.code})</Text>
+              <Text style={k.name}>
+                {b.name} ({b.code})
+              </Text>
               <Text style={k.sub}>
                 {t(b.status === 'ACTIVE' ? 'settings.active' : 'settings.inactive')}
                 {b.isHeadOffice ? ` · ${t('settings.headOffice')}` : ''}
@@ -87,7 +123,9 @@ export default function SettingsScreen() {
             <Card>
               {modes.data.items.length === 0 ? <Text style={k.sub}>{t('settings.none')}</Text> : null}
               {modes.data.items.map((m) => (
-                <Text key={m.code} style={k.sub}>{m.code}: {t(m.enabled ? 'settings.on' : 'settings.off')}</Text>
+                <Text key={m.code} style={k.sub}>
+                  {m.code}: {t(m.enabled ? 'settings.on' : 'settings.off')}
+                </Text>
               ))}
             </Card>
           ) : null}
@@ -96,7 +134,9 @@ export default function SettingsScreen() {
           {policies.error ? failed(policies) : null}
           {policies.data ? (
             <Card>
-              <Text style={k.sub}>{t('settings.costing', { value: policies.data.costingMethod.effective })}</Text>
+              <Text style={k.sub}>
+                {t('settings.costing', { value: policies.data.costingMethod.effective })}
+              </Text>
               {Object.entries(policies.data.settings).map(([key, s]) => (
                 <Text key={key} style={k.sub}>
                   {s.description || key}: {String(s.value)}

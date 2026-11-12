@@ -137,7 +137,13 @@ export default function FollowUpScreen() {
     const body = buildPromise({ amount: pAmount, date: pDate, note: pNote });
     void act(
       t('followup.promiseSaved'),
-      () => createPromise(client!, customer.id, body, promiseKey.keyFor(`${customer.id}|${JSON.stringify(body)}`)),
+      () =>
+        createPromise(
+          client!,
+          customer.id,
+          body,
+          promiseKey.keyFor(`${customer.id}|${JSON.stringify(body)}`),
+        ),
       () => {
         promiseKey.reset();
         setAdding(false);
@@ -154,7 +160,9 @@ export default function FollowUpScreen() {
     <ScrollView
       contentContainerStyle={k.page}
       keyboardShouldPersistTaps="handled"
-      refreshControl={<RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />}
+      refreshControl={
+        <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
+      }
     >
       <Stack.Screen options={{ headerShown: true, title: t('nav.followup') }} />
       <Text style={k.title}>{t('followup.title')}</Text>
@@ -163,22 +171,49 @@ export default function FollowUpScreen() {
       {failure ? <Notice tone="error" text={failure} /> : null}
 
       {shown === 'tasks' ? (
-        <Gate q={tasks} ns="followup" emptyKey="followup.emptyTasks" isEmpty={(tasks.data ?? []).length === 0}>
+        <Gate
+          q={tasks}
+          ns="followup"
+          emptyKey="followup.emptyTasks"
+          isEmpty={(tasks.data ?? []).length === 0}
+        >
           {(tasks.data ?? []).map((task) => (
             <View key={task.id} style={k.card}>
               <Text style={k.name}>
                 {task.customerName} · {formatINR(task.overdueAmount)}
               </Text>
-              <Text style={k.sub}>{[task.village, t('followup.days', { days: task.oldestDays })].filter(Boolean).join(' · ')}</Text>
+              <Text style={k.sub}>
+                {[task.village, t('followup.days', { days: task.oldestDays })].filter(Boolean).join(' · ')}
+              </Text>
               {taskId !== task.id ? (
-                <Button kind="ghost" label={`${t('followup.record')} ${task.customerName}`} onPress={() => (setTaskId(task.id), setOutcome(''), setTried(false), setMsg(null))} />
+                <Button
+                  kind="ghost"
+                  label={`${t('followup.record')} ${task.customerName}`}
+                  onPress={() => (setTaskId(task.id), setOutcome(''), setTried(false), setMsg(null))}
+                />
               ) : (
                 <>
-                  <Chips options={OUTCOMES.map((o) => ({ value: o, label: t(`followup.outcome.${o}`) }))} value={outcome} onChange={(v) => setOutcome(v as Outcome)} />
+                  <Chips
+                    options={OUTCOMES.map((o) => ({ value: o, label: t(`followup.outcome.${o}`) }))}
+                    value={outcome}
+                    onChange={(v) => setOutcome(v as Outcome)}
+                  />
                   {outcome === 'PROMISE' ? (
                     <>
-                      <Field label={t('followup.promiseAmount')} value={amount} onChange={setAmount} keyboard="decimal-pad" error={tried && oErr.includes('amount') ? t('followup.v.amount') : null} />
-                      <Field label={t('followup.promiseDate')} value={date} onChange={setDate} placeholder="YYYY-MM-DD" error={tried && oErr.includes('date') ? t('followup.v.date') : null} />
+                      <Field
+                        label={t('followup.promiseAmount')}
+                        value={amount}
+                        onChange={setAmount}
+                        keyboard="decimal-pad"
+                        error={tried && oErr.includes('amount') ? t('followup.v.amount') : null}
+                      />
+                      <Field
+                        label={t('followup.promiseDate')}
+                        value={date}
+                        onChange={setDate}
+                        placeholder="YYYY-MM-DD"
+                        error={tried && oErr.includes('date') ? t('followup.v.date') : null}
+                      />
                     </>
                   ) : null}
                   {outcome ? (
@@ -187,11 +222,21 @@ export default function FollowUpScreen() {
                       value={note}
                       onChange={setNote}
                       multiline
-                      error={tried && oErr.includes('note') ? t('followup.v.disputeNote') : tried && oErr.includes('noteLong') ? t('followup.v.noteLong') : null}
+                      error={
+                        tried && oErr.includes('note')
+                          ? t('followup.v.disputeNote')
+                          : tried && oErr.includes('noteLong')
+                            ? t('followup.v.noteLong')
+                            : null
+                      }
                     />
                   ) : null}
                   {tried && !outcome ? <Text style={k.error}>{t('followup.v.outcome')}</Text> : null}
-                  <Button label={t('followup.saveOutcome')} disabled={busy} onPress={() => saveOutcome(task)} />
+                  <Button
+                    label={t('followup.saveOutcome')}
+                    disabled={busy}
+                    onPress={() => saveOutcome(task)}
+                  />
                 </>
               )}
             </View>
@@ -201,16 +246,40 @@ export default function FollowUpScreen() {
 
       {shown === 'promises' ? (
         <>
-          {!adding ? <Button label={t('followup.newPromise')} onPress={() => (setAdding(true), setTried(false), setMsg(null))} /> : (
+          {!adding ? (
+            <Button
+              label={t('followup.newPromise')}
+              onPress={() => (setAdding(true), setTried(false), setMsg(null))}
+            />
+          ) : (
             <View style={k.card}>
               <Field label={t('followup.customer')} value={term} onChange={setTerm} />
               {customer ? <Text style={k.ok}>{t('followup.picked', { name: customer.name })}</Text> : null}
               {(found.data ?? []).map((c) => (
-                <Button key={c.id} kind="ghost" label={c.name} onPress={() => (setCustomer({ id: c.id, name: c.name }), setTerm(''))} />
+                <Button
+                  key={c.id}
+                  kind="ghost"
+                  label={c.name}
+                  onPress={() => (setCustomer({ id: c.id, name: c.name }), setTerm(''))}
+                />
               ))}
-              {tried && pErr.includes('customer') ? <Text style={k.error}>{t('followup.v.customer')}</Text> : null}
-              <Field label={t('followup.promiseAmount')} value={pAmount} onChange={setPAmount} keyboard="decimal-pad" error={tried && pErr.includes('amount') ? t('followup.v.amount') : null} />
-              <Field label={t('followup.promiseDate')} value={pDate} onChange={setPDate} placeholder="YYYY-MM-DD" error={tried && pErr.includes('date') ? t('followup.v.date') : null} />
+              {tried && pErr.includes('customer') ? (
+                <Text style={k.error}>{t('followup.v.customer')}</Text>
+              ) : null}
+              <Field
+                label={t('followup.promiseAmount')}
+                value={pAmount}
+                onChange={setPAmount}
+                keyboard="decimal-pad"
+                error={tried && pErr.includes('amount') ? t('followup.v.amount') : null}
+              />
+              <Field
+                label={t('followup.promiseDate')}
+                value={pDate}
+                onChange={setPDate}
+                placeholder="YYYY-MM-DD"
+                error={tried && pErr.includes('date') ? t('followup.v.date') : null}
+              />
               <Field label={t('followup.note')} value={pNote} onChange={setPNote} multiline />
               <View style={k.row}>
                 <Button label={t('followup.savePromise')} disabled={busy} onPress={savePromise} />
@@ -218,14 +287,23 @@ export default function FollowUpScreen() {
               </View>
             </View>
           )}
-          <Gate q={promises} ns="followup" emptyKey="followup.emptyPromises" isEmpty={(promises.data ?? []).length === 0}>
+          <Gate
+            q={promises}
+            ns="followup"
+            emptyKey="followup.emptyPromises"
+            isEmpty={(promises.data ?? []).length === 0}
+          >
             {(promises.data ?? []).map((p) => (
               <View key={p.id} style={k.card}>
                 <Text style={k.name}>
                   {p.customerName} · {formatINR(p.promisedAmount)}
                 </Text>
                 <Text style={k.sub}>
-                  {t('followup.promiseLine', { date: p.promiseDate, received: formatINR(p.receivedAmount), status: t(`followup.pstatus.${p.status}`, { defaultValue: p.status }) })}
+                  {t('followup.promiseLine', {
+                    date: p.promiseDate,
+                    received: formatINR(p.receivedAmount),
+                    status: t(`followup.pstatus.${p.status}`, { defaultValue: p.status }),
+                  })}
                 </Text>
                 {p.status === 'PENDING' ? (
                   <Button
@@ -233,7 +311,11 @@ export default function FollowUpScreen() {
                     label={`${t('followup.cancelPromise')} ${p.customerName}`}
                     disabled={busy}
                     onPress={() =>
-                      void act(t('followup.promiseCancelled'), () => cancelPromise(client!, p.id, cancelKey.keyFor(`cancel|${p.id}`)), () => cancelKey.reset())
+                      void act(
+                        t('followup.promiseCancelled'),
+                        () => cancelPromise(client!, p.id, cancelKey.keyFor(`cancel|${p.id}`)),
+                        () => cancelKey.reset(),
+                      )
                     }
                   />
                 ) : null}
@@ -244,14 +326,21 @@ export default function FollowUpScreen() {
       ) : null}
 
       {shown === 'receipts' ? (
-        <Gate q={receipts} ns="followup" emptyKey="followup.emptyReceipts" isEmpty={(receipts.data ?? []).length === 0}>
+        <Gate
+          q={receipts}
+          ns="followup"
+          emptyKey="followup.emptyReceipts"
+          isEmpty={(receipts.data ?? []).length === 0}
+        >
           {(receipts.data ?? []).map((r) => (
             <View key={r.id} style={k.card}>
               <Text style={k.name}>
                 {r.number} · {formatINR(r.amount)}
               </Text>
               <Text style={k.sub}>
-                {[r.receiptDate, r.modeCode, r.reference, r.status === 'VOID' ? t('followup.void') : null].filter(Boolean).join(' · ')}
+                {[r.receiptDate, r.modeCode, r.reference, r.status === 'VOID' ? t('followup.void') : null]
+                  .filter(Boolean)
+                  .join(' · ')}
               </Text>
             </View>
           ))}

@@ -25,19 +25,54 @@ export interface SupplierFull {
   version: number;
 }
 export interface SupplierDraft {
-  name: string; type: string; gstin: string; pan: string; stateCode: string; address: string;
-  creditDays: string; creditLimit: string; leadTimeDays: string; paymentTerms: string; tdsApplicable: boolean; tcsApplicable: boolean;
+  name: string;
+  type: string;
+  gstin: string;
+  pan: string;
+  stateCode: string;
+  address: string;
+  creditDays: string;
+  creditLimit: string;
+  leadTimeDays: string;
+  paymentTerms: string;
+  tdsApplicable: boolean;
+  tcsApplicable: boolean;
 }
 export const emptySupplier: SupplierDraft = {
-  name: '', type: 'COMPANY', gstin: '', pan: '', stateCode: '', address: '', creditDays: '0', creditLimit: '0', leadTimeDays: '', paymentTerms: '', tdsApplicable: false, tcsApplicable: false,
+  name: '',
+  type: 'COMPANY',
+  gstin: '',
+  pan: '',
+  stateCode: '',
+  address: '',
+  creditDays: '0',
+  creditLimit: '0',
+  leadTimeDays: '',
+  paymentTerms: '',
+  tdsApplicable: false,
+  tcsApplicable: false,
 };
 export const draftOfSupplier = (s: SupplierFull): SupplierDraft => ({
-  name: s.name, type: s.type, gstin: s.gstin ?? '', pan: s.pan ?? '', stateCode: s.stateCode, address: s.address ?? '',
-  creditDays: String(s.creditDays), creditLimit: dec(s.creditLimit).toFixed(2), leadTimeDays: s.leadTimeDays === null ? '' : String(s.leadTimeDays),
-  paymentTerms: s.paymentTerms ?? '', tdsApplicable: s.tdsApplicable, tcsApplicable: s.tcsApplicable,
+  name: s.name,
+  type: s.type,
+  gstin: s.gstin ?? '',
+  pan: s.pan ?? '',
+  stateCode: s.stateCode,
+  address: s.address ?? '',
+  creditDays: String(s.creditDays),
+  creditLimit: dec(s.creditLimit).toFixed(2),
+  leadTimeDays: s.leadTimeDays === null ? '' : String(s.leadTimeDays),
+  paymentTerms: s.paymentTerms ?? '',
+  tdsApplicable: s.tdsApplicable,
+  tcsApplicable: s.tcsApplicable,
 });
 
-export type SupplierErrors = Partial<Record<keyof SupplierDraft, 'required' | 'name' | 'gstin' | 'gstinState' | 'pan' | 'state' | 'days' | 'amount' | 'long'>>;
+export type SupplierErrors = Partial<
+  Record<
+    keyof SupplierDraft,
+    'required' | 'name' | 'gstin' | 'gstinState' | 'pan' | 'state' | 'days' | 'amount' | 'long'
+  >
+>;
 const GSTIN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 const PAN = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
 const whole = (v: string, max: number) => /^\d{1,3}$/.test(v.trim()) && Number(v) <= max;
@@ -89,8 +124,16 @@ export function supplierBody(d: SupplierDraft, original: SupplierFull | null): R
   return body;
 }
 
-const path = (id?: string) => (id ? `/procurement/suppliers/${encodeURIComponent(id)}` : '/procurement/suppliers');
-export const fetchSupplier = (c: ApiClient, id: string, signal?: AbortSignal) => c.get<SupplierFull>(path(id), { signal });
-export const createSupplier = (c: ApiClient, body: Record<string, unknown>, idempotencyKey: string) => c.post<SupplierFull>(path(), { body, idempotencyKey });
-export const updateSupplier = (c: ApiClient, id: string, version: number, body: Record<string, unknown>, idempotencyKey: string) =>
-  c.patch<SupplierFull>(path(id), { body, version, idempotencyKey });
+const path = (id?: string) =>
+  id ? `/procurement/suppliers/${encodeURIComponent(id)}` : '/procurement/suppliers';
+export const fetchSupplier = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  c.get<SupplierFull>(path(id), { signal });
+export const createSupplier = (c: ApiClient, body: Record<string, unknown>, idempotencyKey: string) =>
+  c.post<SupplierFull>(path(), { body, idempotencyKey });
+export const updateSupplier = (
+  c: ApiClient,
+  id: string,
+  version: number,
+  body: Record<string, unknown>,
+  idempotencyKey: string,
+) => c.patch<SupplierFull>(path(id), { body, version, idempotencyKey });

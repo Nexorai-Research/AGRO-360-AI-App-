@@ -8,11 +8,28 @@ import { Button } from '@/ui/Button';
 import type { RoleView } from './api';
 import { Card, Chips, isNetwork, k } from './kit';
 import { Result, useRunner } from './usr-run';
-import { createRole, deleteRole, fetchPermissions, renameRole, setRoleLimits, setRolePermissions } from './usr-api';
+import {
+  createRole,
+  deleteRole,
+  fetchPermissions,
+  renameRole,
+  setRoleLimits,
+  setRolePermissions,
+} from './usr-api';
 import { LIMIT_KEYS, canGrant, groupByArea, sameSet, toggleId, validLimit, validRoleName } from './usr-logic';
 
 /** New role: empty, or a copy of an existing role. */
-export function NewRole({ client, roles, onDone, onCancel }: { client: ApiClient; roles: RoleView[]; onDone: (m: string) => void; onCancel: () => void }) {
+export function NewRole({
+  client,
+  roles,
+  onDone,
+  onCancel,
+}: {
+  client: ApiClient;
+  roles: RoleView[];
+  onDone: (m: string) => void;
+  onCancel: () => void;
+}) {
   const { t } = useTranslation();
   const r = useRunner();
   const [name, setName] = useState('');
@@ -24,14 +41,22 @@ export function NewRole({ client, roles, onDone, onCancel }: { client: ApiClient
     if (bad) return;
     const body = from ? { name: name.trim(), cloneFromRoleId: from } : { name: name.trim() };
     void r
-      .run(() => createRole(client, body, r.idem.keyFor(`role-new|${JSON.stringify(body)}`)), t('rol.created'))
+      .run(
+        () => createRole(client, body, r.idem.keyFor(`role-new|${JSON.stringify(body)}`)),
+        t('rol.created'),
+      )
       .then((ok) => ok && onDone(t('rol.created')));
   };
   return (
     <Card>
       <Text style={k.h2}>{t('rol.newTitle')}</Text>
       <Result msg={r.msg} failure={r.failure} />
-      <Field label={t('rol.name')} value={name} onChange={setName} error={touched && bad ? t('rol.badName') : null} />
+      <Field
+        label={t('rol.name')}
+        value={name}
+        onChange={setName}
+        error={touched && bad ? t('rol.badName') : null}
+      />
       <Chips
         value={from}
         label={t('rol.startFrom')}
@@ -78,7 +103,11 @@ export function RoleEditor({
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const limitBad = LIMIT_KEYS.filter((key) => !validLimit(key, limits[key] ?? ''));
-  const limitBody = Object.fromEntries(LIMIT_KEYS.flatMap((key) => ((limits[key] ?? '').trim() === '' ? [] : [[key, (limits[key] ?? '').trim()]])));
+  const limitBody = Object.fromEntries(
+    LIMIT_KEYS.flatMap((key) =>
+      (limits[key] ?? '').trim() === '' ? [] : [[key, (limits[key] ?? '').trim()]],
+    ),
+  );
   const limitsChanged = JSON.stringify(limitBody) !== JSON.stringify(role.limits);
 
   const finish = (ok: boolean) => ok && onChanged();
@@ -88,14 +117,29 @@ export function RoleEditor({
       <Result msg={r.msg} failure={r.failure} />
 
       <Text style={k.name}>{t('rol.renameTitle')}</Text>
-      <Field label={t('rol.name')} value={name} onChange={setName} error={name !== '' && !validRoleName(name) ? t('rol.badName') : null} />
+      <Field
+        label={t('rol.name')}
+        value={name}
+        onChange={setName}
+        error={name !== '' && !validRoleName(name) ? t('rol.badName') : null}
+      />
       <Button
         kind="ghost"
         label={t('rol.rename')}
         disabled={r.busy || !validRoleName(name) || name.trim() === role.name}
         onPress={() =>
           void r
-            .run(() => renameRole(client, role.id, role.version, name, r.idem.keyFor(`rename|${role.id}|${role.version}|${name.trim()}`)), t('rol.renamed'))
+            .run(
+              () =>
+                renameRole(
+                  client,
+                  role.id,
+                  role.version,
+                  name,
+                  r.idem.keyFor(`rename|${role.id}|${role.version}|${name.trim()}`),
+                ),
+              t('rol.renamed'),
+            )
             .then(finish)
         }
       />
@@ -129,7 +173,12 @@ export function RoleEditor({
                           {p.code} - {p.enabled ? t('rol.notHeld') : t('rol.notInPlan')}
                         </Text>
                       ) : (
-                        <Check key={p.code} label={p.code} value={has} onChange={() => setCodes(toggleId(codes, p.code))} />
+                        <Check
+                          key={p.code}
+                          label={p.code}
+                          value={has}
+                          onChange={() => setCodes(toggleId(codes, p.code))}
+                        />
                       );
                     })
                   : null}
@@ -143,7 +192,14 @@ export function RoleEditor({
         onPress={() =>
           void r
             .run(
-              () => setRolePermissions(client, role.id, role.version, codes, r.idem.keyFor(`perms|${role.id}|${role.version}|${[...codes].sort().join(',')}`)),
+              () =>
+                setRolePermissions(
+                  client,
+                  role.id,
+                  role.version,
+                  codes,
+                  r.idem.keyFor(`perms|${role.id}|${role.version}|${[...codes].sort().join(',')}`),
+                ),
               t('rol.permsSaved'),
             )
             .then(finish)
@@ -169,14 +225,23 @@ export function RoleEditor({
         onPress={() =>
           void r
             .run(
-              () => setRoleLimits(client, role.id, role.version, limitBody, r.idem.keyFor(`limits|${role.id}|${role.version}|${JSON.stringify(limitBody)}`)),
+              () =>
+                setRoleLimits(
+                  client,
+                  role.id,
+                  role.version,
+                  limitBody,
+                  r.idem.keyFor(`limits|${role.id}|${role.version}|${JSON.stringify(limitBody)}`),
+                ),
               t('rol.limitsSaved'),
             )
             .then(finish)
         }
       />
 
-      {role.assignedUsers > 0 ? <Text style={k.sub}>{t('rol.deleteBlocked', { count: role.assignedUsers })}</Text> : null}
+      {role.assignedUsers > 0 ? (
+        <Text style={k.sub}>{t('rol.deleteBlocked', { count: role.assignedUsers })}</Text>
+      ) : null}
       {confirmDelete ? (
         <>
           <Text style={k.error}>{t('rol.deleteWarn', { name: role.name })}</Text>
@@ -184,13 +249,23 @@ export function RoleEditor({
             label={t('rol.deleteNow')}
             disabled={r.busy}
             onPress={() =>
-              void r.run(() => deleteRole(client, role.id, r.idem.keyFor(`role-del|${role.id}`)), t('rol.deleted')).then((ok) => ok && onDeleted())
+              void r
+                .run(
+                  () => deleteRole(client, role.id, r.idem.keyFor(`role-del|${role.id}`)),
+                  t('rol.deleted'),
+                )
+                .then((ok) => ok && onDeleted())
             }
           />
           <Button kind="ghost" label={t('usr.cancel')} onPress={() => setConfirmDelete(false)} />
         </>
       ) : (
-        <Button kind="ghost" label={t('rol.delete')} disabled={role.assignedUsers > 0} onPress={() => setConfirmDelete(true)} />
+        <Button
+          kind="ghost"
+          label={t('rol.delete')}
+          disabled={role.assignedUsers > 0}
+          onPress={() => setConfirmDelete(true)}
+        />
       )}
     </View>
   );

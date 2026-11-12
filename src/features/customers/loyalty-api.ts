@@ -10,5 +10,9 @@ export function validPoints(v: string): boolean {
   return n !== 0 && n >= -100000 && n <= 100000;
 }
 export const validPointsReason = (v: string) => v.trim().length >= 3 && v.trim().length <= 200;
-export const adjustPoints = (c: ApiClient, id: string, b: { points: number; reason: string }, idempotencyKey: string) =>
-  c.post<unknown>(`/customers/${encodeURIComponent(id)}/loyalty/points`, { body: b, idempotencyKey });
+export const adjustPoints = (
+  c: ApiClient,
+  id: string,
+  b: { points: number; reason: string },
+  idempotencyKey: string,
+) => c.post<unknown>(`/customers/${encodeURIComponent(id)}/loyalty/points`, { body: b, idempotencyKey });

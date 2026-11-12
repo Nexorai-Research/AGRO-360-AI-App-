@@ -26,11 +26,13 @@ export default function AccountsScreen() {
   const can = useCan();
   const userId = me?.userId ?? '';
   const today = todayIST();
-  const tabs = ([
-    ['day', ACCOUNT_PERM.reports],
-    ['trial', ACCOUNT_PERM.reports],
-    ['ledgers', ACCOUNT_PERM.accounts],
-  ] as const).filter(([, p]) => can(p));
+  const tabs = (
+    [
+      ['day', ACCOUNT_PERM.reports],
+      ['trial', ACCOUNT_PERM.reports],
+      ['ledgers', ACCOUNT_PERM.accounts],
+    ] as const
+  ).filter(([, p]) => can(p));
   const [pick, setPick] = useState<Tab>('day');
   const tab: Tab = tabs.some(([k]) => k === pick) ? pick : (tabs[0]?.[0] ?? 'day');
   const [days, setDays] = useState<(typeof DAYS)[number]>('1');
@@ -78,7 +80,10 @@ export default function AccountsScreen() {
             <>
               <Chips
                 label={t('accounts.period')}
-                options={DAYS.map((d) => ({ id: d, label: t(d === '1' ? 'accounts.today' : 'accounts.lastDays', { count: Number(d) }) }))}
+                options={DAYS.map((d) => ({
+                  id: d,
+                  label: t(d === '1' ? 'accounts.today' : 'accounts.lastDays', { count: Number(d) }),
+                }))}
                 value={days}
                 onChange={setDays}
               />
@@ -90,7 +95,9 @@ export default function AccountsScreen() {
                       <Line label={t('accounts.credit')} value={formatINR(day.data.totals.credit)} />
                     </Card>
                     {!day.data.balanced ? <Notice tone="error" text={t('accounts.notBalanced')} /> : null}
-                    {day.data.journals.length === 0 ? <StateView state="empty" message={t('accounts.emptyDay')} /> : null}
+                    {day.data.journals.length === 0 ? (
+                      <StateView state="empty" message={t('accounts.emptyDay')} />
+                    ) : null}
                     {day.data.journals.map((j) => (
                       <Card key={j.id}>
                         <Text style={kit.name}>
@@ -115,17 +122,27 @@ export default function AccountsScreen() {
                   <Card>
                     <Text style={kit.sub}>{t('accounts.asOn', { date: shortDate(trial.data.to) })}</Text>
                     <Line label={t('accounts.debit')} value={formatINR(trial.data.totals.closingDr)} strong />
-                    <Line label={t('accounts.credit')} value={formatINR(trial.data.totals.closingCr)} strong />
+                    <Line
+                      label={t('accounts.credit')}
+                      value={formatINR(trial.data.totals.closingCr)}
+                      strong
+                    />
                   </Card>
                   {!trial.data.balanced ? <Notice tone="error" text={t('accounts.notBalanced')} /> : null}
-                  {trial.data.rows.length === 0 ? <StateView state="empty" message={t('accounts.emptyTrial')} /> : null}
+                  {trial.data.rows.length === 0 ? (
+                    <StateView state="empty" message={t('accounts.emptyTrial')} />
+                  ) : null}
                   {trial.data.rows.map((r) => (
                     <Card key={r.accountId}>
                       <Text style={kit.name}>
                         {r.code} · {r.name}
                       </Text>
-                      {dec(r.closingDr).isZero() ? null : <Line label={t('accounts.debit')} value={formatINR(r.closingDr)} />}
-                      {dec(r.closingCr).isZero() ? null : <Line label={t('accounts.credit')} value={formatINR(r.closingCr)} />}
+                      {dec(r.closingDr).isZero() ? null : (
+                        <Line label={t('accounts.debit')} value={formatINR(r.closingDr)} />
+                      )}
+                      {dec(r.closingCr).isZero() ? null : (
+                        <Line label={t('accounts.credit')} value={formatINR(r.closingCr)} />
+                      )}
                     </Card>
                   ))}
                 </>
@@ -135,14 +152,18 @@ export default function AccountsScreen() {
 
           {tab === 'ledgers' ? (
             <Gate query={ledgers} denied={false} {...gate}>
-              {(ledgers.data?.items ?? []).length === 0 ? <StateView state="empty" message={t('accounts.emptyLedgers')} /> : null}
+              {(ledgers.data?.items ?? []).length === 0 ? (
+                <StateView state="empty" message={t('accounts.emptyLedgers')} />
+              ) : null}
               {(ledgers.data?.items ?? []).map((a) => (
                 <Card key={a.id}>
                   <Text style={kit.name}>
                     {a.code} · {a.name}
                   </Text>
                   <Text style={kit.sub}>{a.groupName ?? a.type}</Text>
-                  {a.balance !== undefined ? <Line label={t('accounts.balance')} value={drCr(a.balance)} strong /> : null}
+                  {a.balance !== undefined ? (
+                    <Line label={t('accounts.balance')} value={drCr(a.balance)} strong />
+                  ) : null}
                 </Card>
               ))}
             </Gate>

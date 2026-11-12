@@ -61,7 +61,14 @@ export interface DayEndRow {
   id: string;
   business_date: string;
   note: string | null;
-  summary: { invoices?: string; sales?: string; cancelled?: string; returns?: string; cash_difference?: string; cashDeposited?: string };
+  summary: {
+    invoices?: string;
+    sales?: string;
+    cancelled?: string;
+    returns?: string;
+    cash_difference?: string;
+    cashDeposited?: string;
+  };
 }
 export interface ShareLink {
   token: string;
@@ -84,8 +91,13 @@ export async function fetchHeld(c: ApiClient, branchId: string, signal?: AbortSi
   const r = await c.get<{ items: HeldRow[] }>('/sales/held', { query: { branchId }, signal });
   return r.items;
 }
-export const holdBill = (c: ApiClient, branchId: string, label: string, cart: InvoiceBody, idempotencyKey: string) =>
-  c.post<{ id: string }>('/sales/held', { body: { branchId, label, cart }, idempotencyKey });
+export const holdBill = (
+  c: ApiClient,
+  branchId: string,
+  label: string,
+  cart: InvoiceBody,
+  idempotencyKey: string,
+) => c.post<{ id: string }>('/sales/held', { body: { branchId, label, cart }, idempotencyKey });
 export const getHeld = (c: ApiClient, id: string) => c.get<HeldBill>(`/sales/held/${id}`);
 export const dropHeld = (c: ApiClient, id: string) => c.delete<null>(`/sales/held/${id}`);
 
@@ -107,21 +119,35 @@ export const fetchInvoiceHtml = (c: ApiClient, id: string, paper: 'A4' | '80mm' 
   c.get<string>(`/sales/invoices/${id}/print`, { query: { paper }, as: 'text' });
 
 // ---- quick customer
-export const quickCustomer = (c: ApiClient, b: { name: string; mobile: string; village: string }, idempotencyKey: string) =>
-  c.post<CustomerLite>('/customers/quick', { body: b, idempotencyKey });
+export const quickCustomer = (
+  c: ApiClient,
+  b: { name: string; mobile: string; village: string },
+  idempotencyKey: string,
+) => c.post<CustomerLite>('/customers/quick', { body: b, idempotencyKey });
 
 // ---- shifts
 export async function fetchShifts(c: ApiClient, signal?: AbortSignal) {
   const r = await c.get<{ items: Shift[] }>('/pos/shifts', { signal });
   return r.items;
 }
-export const openShift = (c: ApiClient, b: { branchId: string; openingCash: string }, idempotencyKey: string) =>
-  c.post<unknown>('/pos/shifts/open', { body: b, idempotencyKey });
-export const closeShift = (c: ApiClient, id: string, b: { countedCash: string; note?: string }, idempotencyKey: string) =>
-  c.post<unknown>(`/pos/shifts/${id}/close`, { body: b, idempotencyKey });
+export const openShift = (
+  c: ApiClient,
+  b: { branchId: string; openingCash: string },
+  idempotencyKey: string,
+) => c.post<unknown>('/pos/shifts/open', { body: b, idempotencyKey });
+export const closeShift = (
+  c: ApiClient,
+  id: string,
+  b: { countedCash: string; note?: string },
+  idempotencyKey: string,
+) => c.post<unknown>(`/pos/shifts/${id}/close`, { body: b, idempotencyKey });
 export type CashKind = 'CASH_IN' | 'CASH_OUT';
-export const addCashMovement = (c: ApiClient, shiftId: string, b: { kind: CashKind; amount: string; reason: string }, idempotencyKey: string) =>
-  c.post<unknown>(`/pos/shifts/${shiftId}/cash-movements`, { body: b, idempotencyKey });
+export const addCashMovement = (
+  c: ApiClient,
+  shiftId: string,
+  b: { kind: CashKind; amount: string; reason: string },
+  idempotencyKey: string,
+) => c.post<unknown>(`/pos/shifts/${shiftId}/cash-movements`, { body: b, idempotencyKey });
 /** Closed days, newest first (the server returns the last 100). Needs pos.dayend. */
 export async function fetchDayEnds(c: ApiClient, signal?: AbortSignal) {
   const r = await c.get<{ items: DayEndRow[] }>('/pos/day-end', { signal });

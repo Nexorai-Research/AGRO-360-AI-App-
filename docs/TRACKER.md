@@ -414,3 +414,63 @@ All lines below: mocked API client, not run against the real backend, not run on
 | Purchase reports: pending order quantities, purchase register | `/purchase-reports` | DONE (mocked client) | `stk-purchase`. No date range on the register. Payables ageing is on the earlier Bills and payables screen. |
 | Order actions: send to supplier, revise, close the rest | `/purchase/more?id=` (button on order detail) | DONE (mocked client) | `stk-purchase`. Editing a draft order (PATCH) is NOT built. |
 | NOT built: purchase requisitions, quotation requests (RFQ) and comparison, supplier claims, supplier return lifecycle (acknowledge, dispatch, settle, replacement), schemes and scheme claims, landed cost, supplier performance, goods receipt by barcode scan on the new screens | | NOT built | The web purchase page does not offer them (the backend has them). The existing receive screen already counts by barcode. |
+
+## Finance: vouchers, chart, expenses, bank, petty cash, periods, budgets, checks (branch `worktree-agent-a6d2d2e787b430b65`)
+
+All lines below: mocked API, not run against the real backend, not run on a phone or emulator. Shapes were copied by hand from `modules/finance/src/application/*` and `apps/api/src/finance*.controller.ts`. Texts are in `i18n-parts/fin.json` (en, hi, mr; namespace `fin`, plus `nav.fin*` and `featureDesc.fin*`), not yet merged into the locale files; `__tests__/fin-logic.test.ts` checks the three languages have the same keys. Hindi and Marathi wording needs a native speaker review. Every write sends one Idempotency-Key per user action (reused on a retry of the same request, renewed when the body changes) and edits send the version as If-Match. No tenant id is sent.
+
+| Feature | Route | Status and evidence |
+| --- | --- | --- |
+| Vouchers list with status filter; voucher detail with lines; post, submit for approval, approve, reject (reason), cancel, reverse (reason) | `/finance-vouchers` | DONE (mocked client). `__tests__/fin-vouchers.test.tsx` (19 tests). Buttons follow status, the server's `needsApproval` flag and permissions. |
+| New journal, payment, receipt and contra voucher (saved as a draft, then Post from the detail) | `/finance-vouchers` | DONE (mocked client). `__tests__/fin-vouchers.test.tsx`, `__tests__/fin-logic.test.ts` (10 tests: decimal balance check, bodies, buttons). Unbalanced journal refused on the phone; lost answer retried with the same key. |
+| Accounting entries (journals of the last 30 days, expand to see lines) | `/finance-vouchers` tab | DONE (mocked client), shown in the screen code; covered only by the list tests, no dedicated test. |
+| Chart of accounts: list with balance, search, type filter; ledger of one account (last 90 days, running balance); add account; edit name, description, active (If-Match); add group; cost centres (view) | `/finance-chart` | DONE (mocked client). `__tests__/fin-chart.test.tsx` (12 tests). System accounts cannot be switched off from the phone. |
+| Expenses: list with status filter, detail, new expense (with duplicate warning and "record anyway"), submit, approve, reject, pay (cash or bank ledger and date), reverse | `/finance-expenses` | DONE (mocked client). `__tests__/fin-expenses.test.tsx` (16 tests). |
+| Bank accounts: list (masked number), add, edit holder, UPI and active (If-Match) | `/finance-bank` | DONE (mocked client). `__tests__/fin-bank.test.tsx` (20 tests, with reconciliation). The account number goes to the server once and is not kept or logged. |
+| Bank reconciliation: book against bank, statement lines by status, accept a suggestion, manual match to a book entry of the same direction and amount, unmatch, run matching again, enter the statement balance and sign | `/finance-bank` tab | DONE (mocked client). `__tests__/fin-bank.test.tsx`. A refusal from the server on signing is shown in the server's words (English). |
+| Petty cash: funds, new fund, spend, replenish, count the box, counts list, approve or reject a count | `/finance-petty` | DONE (mocked client). `__tests__/fin-petty.test.tsx` (16 tests). |
+| Financial year periods: view, lock a month, reopen the latest locked month (reason of 10+ characters) | `/finance-control` | DONE (mocked client). `__tests__/fin-control.test.tsx` (19 tests, with budgets and checks). |
+| Budgets: list, view lines, against actual (variance), submit, approve, reject, new version | `/finance-control` tab | DONE (mocked client). `__tests__/fin-control.test.tsx`. |
+| Exception queue (accounting checks): list by status, run the checks, acknowledge, resolve with a written resolution | `/finance-control` tab | DONE (mocked client). `__tests__/fin-control.test.tsx`. |
+
+NOT built, and why:
+- Editing a draft voucher or expense (PUT with If-Match): the phone can cancel and re-enter a draft voucher; a draft expense cannot be edited from the phone (Reject path exists for approvers only). Not built to keep the forms small.
+- Save-and-post in one step: the phone saves a draft, then the user presses Post (two real user actions, two keys).
+- Opening balances (view and save), posting rules, ineligible input tax entry, gateway fee posting, finance settings, cost centre create and edit, expense templates and generate, petty cash fund edit.
+- Creating or revising a budget (the web form enters monthly figures per account), year-end closing, accounting export (Tally and others), consolidation, inter-branch entries, cash flow, forecast, working capital, tax reconciliation, expenses report, profit and loss by branch, general ledger CSV and other exports, control-account reconciliation, GRNI report.
+- Bank statement import (needs picking a CSV file and mapping its columns), posting a bank charge or interest from a statement line, reopening a signed reconciliation.
+- Printable voucher.
+- Filters by date, branch and cost centre on lists; lists show the latest 100 only (the server gives no total).
+- Trial balance, day book, cash book, bank book, profit and loss and balance sheet already exist in `/accounts` and `/statements` (earlier steps) and were not changed.
+- Hindi and Marathi texts need a native speaker review.
+
+## Users, roles, documents, audit and account extras
+
+All rows: mocked API, not run against the real backend or a phone. Paths, bodies and permissions were copied from `apps/api/src/{identity,security,org}.controller.ts` and the web pages `users.js`, `roles.js`, `documents.js`, `audit.js`, `account.js`. No new routes: these extend `/users`, `/roles`, `/documents`, `/audit` and `/account`. Texts are in `i18n-parts/usr.json` (English, Hindi, Marathi) and must be merged into the locale files.
+
+| Feature | State | Test |
+|---|---|---|
+| Add user (`POST /users`): name, username, mobile (+91 and spaces accepted), email, roles, all-branches or chosen branches, warning when no email | DONE | `__tests__/usr-users.test.tsx`, `__tests__/usr-logic.test.ts` |
+| Edit user (`PATCH /users/:id` with `If-Match` version, only changed fields): name, mobile, email, roles, branch scope | DONE | `__tests__/usr-users.test.tsx` |
+| Deactivate and activate again (already built in Step 5) | DONE | `__tests__/step5-admin.test.tsx` |
+| Unlock account, reset two-factor (reason of 10+ characters; the server needs a sign-in within 15 minutes for the reset and the screen shows its refusal) | DONE | `__tests__/usr-users.test.tsx` |
+| Sign-ins of another user: list and end one (`GET/DELETE /users/:id/sessions`) | DONE | `__tests__/usr-users.test.tsx` |
+| Invite: the server sends the invitation in the background when a user with an email is created. There is no separate resend endpoint in the backend, so none in the app | DONE as far as the backend goes | `__tests__/usr-users.test.tsx` |
+| Create role, or copy of a role (`POST /roles`) | DONE | `__tests__/usr-roles.test.tsx` |
+| Rename role (`PATCH /roles/:id`, version) and delete role (`DELETE /roles/:id`, confirm step, blocked while users hold it) | DONE | `__tests__/usr-roles.test.tsx` |
+| Permission matrix (`GET /permissions`, `PUT /roles/:id/permissions`): grouped by area, locked when the module is not in the plan or you do not hold the permission | DONE | `__tests__/usr-roles.test.tsx` |
+| Approval limits (`PUT /roles/:id/limits`): 8 limits, decimals as strings, percentages up to 100, empty means not set | DONE | `__tests__/usr-roles.test.tsx`, `__tests__/usr-logic.test.ts` |
+| System roles stay read only | DONE | `__tests__/usr-roles.test.tsx` |
+| Documents: status counts (`GET /documents/dashboard`), tap to filter | DONE | `__tests__/usr-docs.test.tsx` |
+| Documents: upload with the phone file picker (`POST /documents`, base64 body, 4 MB and file type checked first) | DONE (mocked) | `__tests__/usr-docs.test.tsx` |
+| Documents: replace file (`POST /documents/:id/versions`), versions list, download of any version through the share sheet | DONE (mocked) | `__tests__/usr-docs.test.tsx` |
+| Audit trail: detail per row (full ids, username, outcome), "only this user" and "only this action" shortcuts, Today and Last 7 days ranges (existing text filters and date range kept) | DONE | `__tests__/usr-audit-account.test.tsx` |
+| Account: date format, theme, default printer (`PUT /me/preferences`, only changed fields). Display name and language were already built | DONE | `__tests__/usr-audit-account.test.tsx` |
+
+NOT built or limits:
+- Document storage: the backend keeps files inside the database (4 MB limit) while the storage decision M02-OD-14 is open. The endpoints exist and are coded, but nothing here was run against a server, a real picker or a real share sheet. If the owner picks object storage the upload body may change.
+- Account: the date format and theme are saved on the server but this app does not change its own look or dates from them yet. The default branch of the preferences is not offered (needs the branch list for every role).
+- The audit trail has no before and after values: the server leaves the detail field out of `GET /audit`. Nothing to show.
+- Users: no resend-invitation action (no such endpoint). The user form does not set a default branch (the server picks the first branch).
+- Branch names and role names appear in the user form only when the person may read them (`GET /branches`, `GET /roles` with `identity.role.manage`); otherwise that part is left out of the request and a line says so.
+- Prettier is not installed in this checkout, so the new files were not run through it; eslint and tsc are clean.

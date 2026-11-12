@@ -40,7 +40,18 @@ export interface CustomerDraft {
   gstin: string;
 }
 export const emptyDraft: CustomerDraft = {
-  name: '', mobile: '', altMobile: '', sharedMobile: false, village: '', taluka: '', district: '', stateCode: '', pin: '', categoryId: '', language: 'mr', gstin: '',
+  name: '',
+  mobile: '',
+  altMobile: '',
+  sharedMobile: false,
+  village: '',
+  taluka: '',
+  district: '',
+  stateCode: '',
+  pin: '',
+  categoryId: '',
+  language: 'mr',
+  gstin: '',
 };
 export const draftOf = (c: CustomerFull): CustomerDraft => ({
   name: c.name,
@@ -58,7 +69,9 @@ export const draftOf = (c: CustomerFull): CustomerDraft => ({
 });
 
 export type FieldKey = keyof CustomerDraft;
-export type DraftErrors = Partial<Record<FieldKey, 'required' | 'name' | 'mobile' | 'pin' | 'state' | 'gstin' | 'gstinState' | 'long'>>;
+export type DraftErrors = Partial<
+  Record<FieldKey, 'required' | 'name' | 'mobile' | 'pin' | 'state' | 'gstin' | 'gstinState' | 'long'>
+>;
 
 const MOBILE = /^[6-9]\d{9}$/;
 const GSTIN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
@@ -82,7 +95,16 @@ export function validateDraft(d: CustomerDraft): DraftErrors {
   return e;
 }
 
-const NULLABLE = ['altMobile', 'village', 'taluka', 'district', 'stateCode', 'pin', 'categoryId', 'gstin'] as const;
+const NULLABLE = [
+  'altMobile',
+  'village',
+  'taluka',
+  'district',
+  'stateCode',
+  'pin',
+  'categoryId',
+  'gstin',
+] as const;
 const val = (d: CustomerDraft, k: FieldKey): string | boolean => {
   const v = d[k];
   if (typeof v === 'boolean') return v;

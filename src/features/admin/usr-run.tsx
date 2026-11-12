@@ -41,8 +41,16 @@ export function Result({ msg, failure }: { msg: string | null; failure: ErrorMes
   const { t } = useTranslation();
   return (
     <>
-      {msg ? <Text style={k.ok} accessibilityRole="alert">{msg}</Text> : null}
-      {failure ? <Text style={k.error} accessibilityRole="alert">{failText(t, failure)}</Text> : null}
+      {msg ? (
+        <Text style={k.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
+      {failure ? (
+        <Text style={k.error} accessibilityRole="alert">
+          {failText(t, failure)}
+        </Text>
+      ) : null}
     </>
   );
 }

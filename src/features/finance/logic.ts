@@ -16,9 +16,16 @@ export interface DraftLine {
   amount: string;
   narration: string;
 }
-export const emptyLine = (): DraftLine => ({ accountId: '', debit: '', credit: '', amount: '', narration: '' });
+export const emptyLine = (): DraftLine => ({
+  accountId: '',
+  debit: '',
+  credit: '',
+  amount: '',
+  narration: '',
+});
 
-export type VoucherError = 'date' | 'narration' | 'lines' | 'amount' | 'account' | 'balance' | 'bank' | 'contra' | 'same';
+export type VoucherError =
+  'date' | 'narration' | 'lines' | 'amount' | 'account' | 'balance' | 'bank' | 'contra' | 'same';
 export interface VoucherDraft {
   kind: VoucherKind;
   date: string;
@@ -76,7 +83,8 @@ export function buildVoucher(v: VoucherDraft): Record<string, unknown> {
     ...(v.ref.trim() ? { attachmentRef: v.ref.trim() } : {}),
   };
   const nar = (l: DraftLine) => (l.narration.trim() ? { narration: l.narration.trim() } : {});
-  if (v.kind === 'CONTRA') return { ...head, fromAccountId: v.fromAccountId, toAccountId: v.toAccountId, amount: v.amount.trim() };
+  if (v.kind === 'CONTRA')
+    return { ...head, fromAccountId: v.fromAccountId, toAccountId: v.toAccountId, amount: v.amount.trim() };
   if (v.kind === 'JOURNAL')
     return {
       ...head,
@@ -153,6 +161,8 @@ export function checkExpense(f: ExpenseDraft): ExpenseError | null {
   return null;
 }
 
-export const expenseAccounts = (xs: Account[]) => xs.filter((a) => a.type === 'EXPENSE' && !a.isControl && !a.cashBank && a.active);
+export const expenseAccounts = (xs: Account[]) =>
+  xs.filter((a) => a.type === 'EXPENSE' && !a.isControl && !a.cashBank && a.active);
 export const cashBankAccounts = (xs: Account[]) => xs.filter((a) => a.cashBank && a.active);
-export const postableAccounts = (xs: Account[]) => xs.filter((a) => a.active && !a.isControl && !a.isOpeningPlug);
+export const postableAccounts = (xs: Account[]) =>
+  xs.filter((a) => a.active && !a.isControl && !a.isOpeningPlug);

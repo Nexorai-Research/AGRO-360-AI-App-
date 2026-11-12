@@ -8,7 +8,20 @@ import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { Card, Check, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { StateView } from '../stock/StateView';
-import { SUPPLIER_PERM, SUPPLIER_TYPES, createSupplier, draftOfSupplier, emptySupplier, fetchSupplier, supplierBody, updateSupplier, validateSupplier, type SupplierDraft, type SupplierErrors, type SupplierFull } from './supplier-logic';
+import {
+  SUPPLIER_PERM,
+  SUPPLIER_TYPES,
+  createSupplier,
+  draftOfSupplier,
+  emptySupplier,
+  fetchSupplier,
+  supplierBody,
+  updateSupplier,
+  validateSupplier,
+  type SupplierDraft,
+  type SupplierErrors,
+  type SupplierFull,
+} from './supplier-logic';
 
 /** Waits for the supplier when editing, then mounts the form with it as the starting values. */
 export default function SupplierFormScreen() {
@@ -20,7 +33,10 @@ export default function SupplierFormScreen() {
     enabled: client !== null && me !== null && !!id,
   });
   if (id && cur.isPending && cur.fetchStatus !== 'idle') return <StateView state="loading" />;
-  if (id && !cur.data && cur.error) return <StateView state="error" message={errorMessage(cur.error).key} onRetry={() => void cur.refetch()} />;
+  if (id && !cur.data && cur.error)
+    return (
+      <StateView state="error" message={errorMessage(cur.error).key} onRetry={() => void cur.refetch()} />
+    );
   return <SupplierForm key={id ?? 'new'} supplier={cur.data ?? null} />;
 }
 
@@ -62,7 +78,13 @@ function SupplierForm({ supplier }: { supplier: SupplierFull | null }) {
     try {
       const r = creating
         ? await createSupplier(client, body, ak.keyFor(JSON.stringify(body)))
-        : await updateSupplier(client, supplier.id, supplier.version, body, ak.keyFor(`${supplier.id}|${supplier.version}|${JSON.stringify(body)}`));
+        : await updateSupplier(
+            client,
+            supplier.id,
+            supplier.version,
+            body,
+            ak.keyFor(`${supplier.id}|${supplier.version}|${JSON.stringify(body)}`),
+          );
       ak.reset();
       void qc.invalidateQueries({ queryKey: ['purchase'] });
       setSaved(r?.name ?? d.name.trim());
@@ -78,33 +100,97 @@ function SupplierForm({ supplier }: { supplier: SupplierFull | null }) {
   if (saved)
     return (
       <ScrollView contentContainerStyle={kit.page}>
-        <Notice tone="ok" text={t(creating ? 'supplierForm.created' : 'supplierForm.saved', { name: saved })} />
+        <Notice
+          tone="ok"
+          text={t(creating ? 'supplierForm.created' : 'supplierForm.saved', { name: saved })}
+        />
         <Button label={t('supplierForm.back')} onPress={() => router.replace('/purchase' as never)} />
       </ScrollView>
     );
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
       <Text style={kit.title}>{t(creating ? 'supplierForm.new' : 'supplierForm.edit')}</Text>
-      <Field label={t('supplierForm.name')} value={d.name} onChange={(v) => set('name', v)} error={err('name')} />
-      <Chips label={t('supplierForm.type')} options={SUPPLIER_TYPES.map((x) => ({ id: x as string, label: t(`supplierForm.types.${x}`) }))} value={d.type} onChange={(v) => set('type', v)} />
-      <Field label={t('supplierForm.stateCode')} value={d.stateCode} onChange={(v) => set('stateCode', v)} keyboard="number-pad" error={err('stateCode')} />
+      <Field
+        label={t('supplierForm.name')}
+        value={d.name}
+        onChange={(v) => set('name', v)}
+        error={err('name')}
+      />
+      <Chips
+        label={t('supplierForm.type')}
+        options={SUPPLIER_TYPES.map((x) => ({ id: x as string, label: t(`supplierForm.types.${x}`) }))}
+        value={d.type}
+        onChange={(v) => set('type', v)}
+      />
+      <Field
+        label={t('supplierForm.stateCode')}
+        value={d.stateCode}
+        onChange={(v) => set('stateCode', v)}
+        keyboard="number-pad"
+        error={err('stateCode')}
+      />
       <Field label="GSTIN" value={d.gstin} onChange={(v) => set('gstin', v)} error={err('gstin')} />
       <Field label="PAN" value={d.pan} onChange={(v) => set('pan', v)} error={err('pan')} />
-      <Field label={t('supplierForm.address')} value={d.address} onChange={(v) => set('address', v)} error={err('address')} />
-      <Field label={t('supplierForm.creditDays')} value={d.creditDays} onChange={(v) => set('creditDays', v)} keyboard="number-pad" error={err('creditDays')} />
-      <Field label={t('supplierForm.creditLimit')} value={d.creditLimit} onChange={(v) => set('creditLimit', v)} keyboard="decimal-pad" error={err('creditLimit')} />
-      <Field label={t('supplierForm.leadTime')} value={d.leadTimeDays} onChange={(v) => set('leadTimeDays', v)} keyboard="number-pad" error={err('leadTimeDays')} />
-      <Field label={t('supplierForm.terms')} value={d.paymentTerms} onChange={(v) => set('paymentTerms', v)} error={err('paymentTerms')} />
-      <Check label={t('supplierForm.tds')} value={d.tdsApplicable} onChange={(v) => set('tdsApplicable', v)} />
-      <Check label={t('supplierForm.tcs')} value={d.tcsApplicable} onChange={(v) => set('tcsApplicable', v)} />
-      {failure ? <Notice tone="error" text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })} /> : null}
+      <Field
+        label={t('supplierForm.address')}
+        value={d.address}
+        onChange={(v) => set('address', v)}
+        error={err('address')}
+      />
+      <Field
+        label={t('supplierForm.creditDays')}
+        value={d.creditDays}
+        onChange={(v) => set('creditDays', v)}
+        keyboard="number-pad"
+        error={err('creditDays')}
+      />
+      <Field
+        label={t('supplierForm.creditLimit')}
+        value={d.creditLimit}
+        onChange={(v) => set('creditLimit', v)}
+        keyboard="decimal-pad"
+        error={err('creditLimit')}
+      />
+      <Field
+        label={t('supplierForm.leadTime')}
+        value={d.leadTimeDays}
+        onChange={(v) => set('leadTimeDays', v)}
+        keyboard="number-pad"
+        error={err('leadTimeDays')}
+      />
+      <Field
+        label={t('supplierForm.terms')}
+        value={d.paymentTerms}
+        onChange={(v) => set('paymentTerms', v)}
+        error={err('paymentTerms')}
+      />
+      <Check
+        label={t('supplierForm.tds')}
+        value={d.tdsApplicable}
+        onChange={(v) => set('tdsApplicable', v)}
+      />
+      <Check
+        label={t('supplierForm.tcs')}
+        value={d.tcsApplicable}
+        onChange={(v) => set('tcsApplicable', v)}
+      />
+      {failure ? (
+        <Notice
+          tone="error"
+          text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+        />
+      ) : null}
       {dup ? (
         <Card>
           <Notice tone="warn" text={t('supplierForm.duplicate')} />
           <Button label={t('supplierForm.saveAnyway')} disabled={busy} onPress={() => void save(true)} />
         </Card>
       ) : null}
-      <Button label={busy ? t('common.loading') : t('supplierForm.save')} disabled={busy} onPress={() => void save()} />
+      <Button
+        label={busy ? t('common.loading') : t('supplierForm.save')}
+        disabled={busy}
+        onPress={() => void save()}
+      />
     </ScrollView>
   );
 }

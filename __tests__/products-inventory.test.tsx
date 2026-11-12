@@ -9,7 +9,13 @@ import ProductFormScreen from '../src/features/products/ProductFormScreen';
 import AdjustmentsScreen from '../src/features/inventory/AdjustmentsScreen';
 import TransfersScreen from '../src/features/inventory/TransfersScreen';
 import BatchesScreen from '../src/features/inventory/BatchesScreen';
-import { costAboveSelling, emptyDraft, priceBody, toBody, validateDraft } from '../src/features/products/logic';
+import {
+  costAboveSelling,
+  emptyDraft,
+  priceBody,
+  toBody,
+  validateDraft,
+} from '../src/features/products/logic';
 import { checkDelta, checkQty } from '../src/features/inventory/logic';
 
 const mockGet = jest.fn();
@@ -27,7 +33,13 @@ const mockClient = {
   delete: (...a: unknown[]) => mockDelete(...a),
 };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('expo-router', () => ({
   useRouter: () => ({ push: mockPush, replace: mockPush, back: jest.fn() }),
@@ -36,13 +48,36 @@ jest.mock('expo-router', () => ({
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 
 const product = {
-  id: 'p-1', version: 3, code: 'URE-50', name: 'Urea 50kg', localName: null, status: 'ACTIVE', categoryId: 'cat-1', categoryName: 'Fertiliser',
-  brandId: null, brandName: null, baseUomId: 'u-1', baseUomCode: 'BAG', batchTracked: false, expiryTracked: false, shelfLifeMonths: null,
-  reorderLevel: null, sellable: true, purchasable: true, mrpControlled: true, hsnCode: '3102', taxCode: 'GST5', mrp: '300.00', sellingPrice: '280.00',
-  purchasePrice: '240.00', primaryBarcode: null,
+  id: 'p-1',
+  version: 3,
+  code: 'URE-50',
+  name: 'Urea 50kg',
+  localName: null,
+  status: 'ACTIVE',
+  categoryId: 'cat-1',
+  categoryName: 'Fertiliser',
+  brandId: null,
+  brandName: null,
+  baseUomId: 'u-1',
+  baseUomCode: 'BAG',
+  batchTracked: false,
+  expiryTracked: false,
+  shelfLifeMonths: null,
+  reorderLevel: null,
+  sellable: true,
+  purchasable: true,
+  mrpControlled: true,
+  hsnCode: '3102',
+  taxCode: 'GST5',
+  mrp: '300.00',
+  sellingPrice: '280.00',
+  purchasePrice: '240.00',
+  primaryBarcode: null,
 };
 
 beforeEach(async () => {
@@ -56,7 +91,13 @@ beforeEach(async () => {
 
 describe('product logic', () => {
   test('create needs name, category, unit, selling price; MRP item needs MRP and price may not exceed it', () => {
-    expect(Object.keys(validateDraft(emptyDraft, true, false)).sort()).toEqual(['baseUomId', 'categoryId', 'mrp', 'name', 'sellingPrice']);
+    expect(Object.keys(validateDraft(emptyDraft, true, false)).sort()).toEqual([
+      'baseUomId',
+      'categoryId',
+      'mrp',
+      'name',
+      'sellingPrice',
+    ]);
     const ok = { ...emptyDraft, name: 'A', categoryId: 'c', baseUomId: 'u', mrp: '100', sellingPrice: '90' };
     expect(validateDraft(ok, true, false)).toEqual({});
     expect(validateDraft({ ...ok, sellingPrice: '100.01' }, true, false).sellingPrice).toBe('aboveMrp');
@@ -64,7 +105,15 @@ describe('product logic', () => {
     expect(validateDraft({ ...ok, mrpControlled: false, mrp: '' }, true, false)).toEqual({});
   });
   test('body: blanks left out on create, cleared (null) on edit; cost only with the cost right', () => {
-    const d = { ...emptyDraft, name: ' A ', categoryId: 'c', baseUomId: 'u', mrp: '100', sellingPrice: '90', purchasePrice: '70' };
+    const d = {
+      ...emptyDraft,
+      name: ' A ',
+      categoryId: 'c',
+      baseUomId: 'u',
+      mrp: '100',
+      sellingPrice: '90',
+      purchasePrice: '70',
+    };
     const c = toBody(d, true, true);
     expect(c).toMatchObject({ name: 'A', mrp: '100', sellingPrice: '90', purchasePrice: '70' });
     expect(c).not.toHaveProperty('brandId');
@@ -73,7 +122,9 @@ describe('product logic', () => {
     expect(JSON.stringify(c)).not.toMatch(/tenant|franchise/i);
   });
   test('price body keeps only filled boxes; loss warning is decimal based', () => {
-    expect(priceBody({ effectiveFrom: '2026-11-11', mrp: '', sellingPrice: '95', purchasePrice: '', reason: '' })).toEqual({ effectiveFrom: '2026-11-11', sellingPrice: '95' });
+    expect(
+      priceBody({ effectiveFrom: '2026-11-11', mrp: '', sellingPrice: '95', purchasePrice: '', reason: '' }),
+    ).toEqual({ effectiveFrom: '2026-11-11', sellingPrice: '95' });
     expect(costAboveSelling('100.10', '100.1')).toBe(false);
     expect(costAboveSelling('100.11', '100.1')).toBe(true);
   });
@@ -123,7 +174,10 @@ describe('products screens', () => {
     await fireEvent.changeText(screen.getByLabelText('Selling'), '280');
     let first = true;
     mockPost.mockImplementation(async () => {
-      if (first) { first = false; throw new ApiError(0, null); }
+      if (first) {
+        first = false;
+        throw new ApiError(0, null);
+      }
       return { ...product };
     });
     await fireEvent.press(screen.getByLabelText('Save'));
@@ -132,7 +186,13 @@ describe('products screens', () => {
     const keys = mockPost.mock.calls.map((c) => c[1].idempotencyKey);
     expect(keys).toEqual(['key-1', 'key-1']);
     expect(mockPost.mock.calls[0]![0]).toBe('/products');
-    expect(mockPost.mock.calls[0]![1].body).toMatchObject({ name: 'Urea 50kg', categoryId: 'cat-1', baseUomId: 'u-1', mrp: '300', sellingPrice: '280' });
+    expect(mockPost.mock.calls[0]![1].body).toMatchObject({
+      name: 'Urea 50kg',
+      categoryId: 'cat-1',
+      baseUomId: 'u-1',
+      mrp: '300',
+      sellingPrice: '280',
+    });
   });
 
   test('duplicate warning asks first, then resends with confirmDuplicate', async () => {
@@ -141,7 +201,9 @@ describe('products screens', () => {
       if (p === '/uoms') return { items: [{ id: 'u-1', name: 'Bag', code: 'BAG' }] };
       return { items: [] };
     });
-    mockPost.mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING' })).mockResolvedValue({ ...product });
+    mockPost
+      .mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING' }))
+      .mockResolvedValue({ ...product });
     await render(<ProductFormScreen />, { wrapper });
     await fireEvent.changeText(await screen.findByLabelText('Name'), 'Urea 50kg');
     await fireEvent.press(await screen.findByLabelText('Fertiliser'));
@@ -180,7 +242,9 @@ describe('products screens', () => {
       if (p === '/products/p-1') return product;
       return { items: [] };
     });
-    mockPost.mockRejectedValueOnce(new ApiError(409, { title: 'STOCK_ON_HAND_WARNING' })).mockResolvedValue({});
+    mockPost
+      .mockRejectedValueOnce(new ApiError(409, { title: 'STOCK_ON_HAND_WARNING' }))
+      .mockResolvedValue({});
     await render(<ProductDetailScreen />, { wrapper });
     expect(await screen.findByText('MRP ₹300.00 · Selling ₹280.00')).toBeTruthy();
     expect(screen.queryByText(/Cost ₹240/)).toBeNull();
@@ -200,7 +264,19 @@ describe('products screens', () => {
 });
 
 describe('inventory screens', () => {
-  const adj = (over = {}) => ({ id: 'a-1', number: 'ADJ-1', branchId: 'b-1', reasonCode: 'DAMAGE', remarks: null, status: 'DRAFT', adjustmentDate: '2026-11-11', totalValue: '500.00', decisionNote: null, version: 1, ...over });
+  const adj = (over = {}) => ({
+    id: 'a-1',
+    number: 'ADJ-1',
+    branchId: 'b-1',
+    reasonCode: 'DAMAGE',
+    remarks: null,
+    status: 'DRAFT',
+    adjustmentDate: '2026-11-11',
+    totalValue: '500.00',
+    decisionNote: null,
+    version: 1,
+    ...over,
+  });
 
   test('adjustment: draft can be submitted with a key; approve is hidden without the right; reject needs a reason', async () => {
     mockMe = { userId: 'u-1', roles: [], permissions: ['inventory.view', 'inventory.adjust.create'] };
@@ -211,7 +287,10 @@ describe('inventory screens', () => {
     expect(screen.queryByLabelText('Approve')).toBeNull();
     await fireEvent.press(screen.getByLabelText('Submit'));
     expect(await screen.findByText('ADJ-1 submitted for approval.')).toBeTruthy();
-    expect(mockPost.mock.calls[0]).toEqual(['/inventory/adjustments/a-1/submit', { idempotencyKey: 'key-1' }]);
+    expect(mockPost.mock.calls[0]).toEqual([
+      '/inventory/adjustments/a-1/submit',
+      { idempotencyKey: 'key-1' },
+    ]);
   });
 
   test('adjustment approver can approve and must give a reason to reject', async () => {
@@ -230,8 +309,24 @@ describe('inventory screens', () => {
     mockGet.mockImplementation(async (p: string) => {
       if (p === '/inventory/adjustments') return { items: [] };
       if (p === '/branches') return { items: [{ id: 'b-1', name: 'Main', status: 'ACTIVE' }] };
-      if (p === '/warehouses') return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE' }] };
-      if (p === '/inventory/batches') return { items: [{ id: 'bt-1', skuId: 'p-1', skuCode: 'URE', skuName: 'Urea', batchNo: 'B1', expiryDate: null, status: 'ACTIVE', onHand: '2.000', available: '2.000' }] };
+      if (p === '/warehouses')
+        return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE' }] };
+      if (p === '/inventory/batches')
+        return {
+          items: [
+            {
+              id: 'bt-1',
+              skuId: 'p-1',
+              skuCode: 'URE',
+              skuName: 'Urea',
+              batchNo: 'B1',
+              expiryDate: null,
+              status: 'ACTIVE',
+              onHand: '2.000',
+              available: '2.000',
+            },
+          ],
+        };
       return { items: [] };
     });
     await render(<AdjustmentsScreen />, { wrapper });
@@ -246,14 +341,42 @@ describe('inventory screens', () => {
     mockPost.mockResolvedValue({});
     await fireEvent.press(screen.getByLabelText('Save draft'));
     expect(await screen.findByText('Draft saved. Submit it for approval.')).toBeTruthy();
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ branchId: 'b-1', reasonCode: 'DAMAGE', lines: [{ warehouseId: 'w-1', skuId: 'p-1', batchId: 'bt-1', qtyDelta: '-1' }] });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      branchId: 'b-1',
+      reasonCode: 'DAMAGE',
+      lines: [{ warehouseId: 'w-1', skuId: 'p-1', batchId: 'bt-1', qtyDelta: '-1' }],
+    });
   });
 
   test('transfer: posts between two warehouses of one branch with one key', async () => {
     mockGet.mockImplementation(async (p: string) => {
       if (p === '/inventory/transfers') return { items: [] };
-      if (p === '/warehouses') return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true }, { id: 'w-2', branchId: 'b-1', name: 'Godown', status: 'ACTIVE', sellable: true }, { id: 'w-3', branchId: 'b-2', name: 'Other', status: 'ACTIVE', sellable: true }] };
-      if (p === '/products') return { items: [{ id: 'p-1', code: 'URE', name: 'Urea 50kg', status: 'ACTIVE', sellable: true, saleBlocked: false, banned: false, mrp: null, sellingPrice: null, baseUomCode: 'BAG', primaryBarcode: null }] };
+      if (p === '/warehouses')
+        return {
+          items: [
+            { id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true },
+            { id: 'w-2', branchId: 'b-1', name: 'Godown', status: 'ACTIVE', sellable: true },
+            { id: 'w-3', branchId: 'b-2', name: 'Other', status: 'ACTIVE', sellable: true },
+          ],
+        };
+      if (p === '/products')
+        return {
+          items: [
+            {
+              id: 'p-1',
+              code: 'URE',
+              name: 'Urea 50kg',
+              status: 'ACTIVE',
+              sellable: true,
+              saleBlocked: false,
+              banned: false,
+              mrp: null,
+              sellingPrice: null,
+              baseUomCode: 'BAG',
+              primaryBarcode: null,
+            },
+          ],
+        };
       return { items: [] };
     });
     mockPost.mockResolvedValue({});
@@ -268,21 +391,50 @@ describe('inventory screens', () => {
     await fireEvent.press(screen.getByLabelText('Post transfer'));
     expect(await screen.findByText('Transfer posted.')).toBeTruthy();
     expect(mockPost.mock.calls[0]![0]).toBe('/inventory/transfers/internal');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ fromWarehouseId: 'w-1', toWarehouseId: 'w-2', lines: [{ skuId: 'p-1', qty: '4' }] });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      fromWarehouseId: 'w-1',
+      toWarehouseId: 'w-2',
+      lines: [{ skuId: 'p-1', qty: '4' }],
+    });
   });
 
   test('batches: block needs a reason; release only for a quarantined batch', async () => {
-    mockGet.mockResolvedValue({ items: [
-      { id: 'bt-1', skuId: 'p-1', skuCode: 'URE', skuName: 'Urea', batchNo: 'B1', expiryDate: '2027-01-01', status: 'ACTIVE', onHand: '5.000', available: '5.000' },
-      { id: 'bt-2', skuId: 'p-1', skuCode: 'URE', skuName: 'Urea', batchNo: 'B2', expiryDate: null, status: 'QUARANTINED', onHand: '1.000', available: '0.000' },
-    ] });
+    mockGet.mockResolvedValue({
+      items: [
+        {
+          id: 'bt-1',
+          skuId: 'p-1',
+          skuCode: 'URE',
+          skuName: 'Urea',
+          batchNo: 'B1',
+          expiryDate: '2027-01-01',
+          status: 'ACTIVE',
+          onHand: '5.000',
+          available: '5.000',
+        },
+        {
+          id: 'bt-2',
+          skuId: 'p-1',
+          skuCode: 'URE',
+          skuName: 'Urea',
+          batchNo: 'B2',
+          expiryDate: null,
+          status: 'QUARANTINED',
+          onHand: '1.000',
+          available: '0.000',
+        },
+      ],
+    });
     mockPost.mockResolvedValue({});
     await render(<BatchesScreen />, { wrapper });
     await fireEvent.press(await screen.findByLabelText('Block'));
     await fireEvent.changeText(screen.getByLabelText('Reason'), 'wet');
     await fireEvent.press(screen.getAllByLabelText('Block').at(-1)!);
     expect(await screen.findByText('Batch B1 blocked.')).toBeTruthy();
-    expect(mockPost.mock.calls[0]).toEqual(['/inventory/batches/bt-1/block', { body: { reason: 'wet' }, idempotencyKey: 'key-1' }]);
+    expect(mockPost.mock.calls[0]).toEqual([
+      '/inventory/batches/bt-1/block',
+      { body: { reason: 'wet' }, idempotencyKey: 'key-1' },
+    ]);
     expect(screen.getByLabelText('Release')).toBeTruthy();
   });
 
@@ -293,7 +445,9 @@ describe('inventory screens', () => {
     mockGet.mockClear();
     mockMe = { userId: 'u-3', roles: [], permissions: [] };
     await render(<BatchesScreen />, { wrapper });
-    expect((await screen.findAllByText('You do not have permission to see stock.')).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText('You do not have permission to see stock.')).length).toBeGreaterThan(
+      0,
+    );
     expect(mockGet).not.toHaveBeenCalled();
   });
 });

@@ -11,23 +11,80 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const ALL = ['finance.account.view', 'finance.expense.create', 'finance.expense.approve', 'finance.expense.pay', 'finance.voucher.reverse'];
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const ALL = [
+  'finance.account.view',
+  'finance.expense.create',
+  'finance.expense.approve',
+  'finance.expense.pay',
+  'finance.voucher.reverse',
+];
 const exp = (o: Record<string, unknown> = {}) => ({
-  id: 'e1', expenseNo: 'EX-0001', expenseDate: '2026-11-10', accountId: 'x1', accountCode: '6100', accountName: 'Electricity', payee: 'MSEB', amount: '1000.00', taxAmount: '180.00',
-  inputTaxEligible: true, total: '1180.00', documentNo: 'B-77', status: 'DRAFT', needsApproval: false, decisionNote: null, reverseReason: null, version: 2, ...o,
+  id: 'e1',
+  expenseNo: 'EX-0001',
+  expenseDate: '2026-11-10',
+  accountId: 'x1',
+  accountCode: '6100',
+  accountName: 'Electricity',
+  payee: 'MSEB',
+  amount: '1000.00',
+  taxAmount: '180.00',
+  inputTaxEligible: true,
+  total: '1180.00',
+  documentNo: 'B-77',
+  status: 'DRAFT',
+  needsApproval: false,
+  decisionNote: null,
+  reverseReason: null,
+  version: 2,
+  ...o,
 });
 const accounts = [
-  { id: 'x1', code: '6100', name: 'Electricity', type: 'EXPENSE', cashBank: null, isControl: false, active: true },
-  { id: 'c1', code: '1000', name: 'Cash in hand', type: 'ASSET', cashBank: 'CASH', isControl: false, active: true },
-  { id: 'c2', code: '1010', name: 'SBI current', type: 'ASSET', cashBank: 'BANK', isControl: false, active: true },
+  {
+    id: 'x1',
+    code: '6100',
+    name: 'Electricity',
+    type: 'EXPENSE',
+    cashBank: null,
+    isControl: false,
+    active: true,
+  },
+  {
+    id: 'c1',
+    code: '1000',
+    name: 'Cash in hand',
+    type: 'ASSET',
+    cashBank: 'CASH',
+    isControl: false,
+    active: true,
+  },
+  {
+    id: 'c2',
+    code: '1010',
+    name: 'SBI current',
+    type: 'ASSET',
+    cashBank: 'BANK',
+    isControl: false,
+    active: true,
+  },
 ];
-const base: Record<string, unknown> = { '/finance/expenses': { items: [exp()] }, '/finance/expenses/e1': exp(), '/finance/accounts': { items: accounts }, '/branches': { items: [{ id: 'b1', name: 'Main' }] } };
+const base: Record<string, unknown> = {
+  '/finance/expenses': { items: [exp()] },
+  '/finance/expenses/e1': exp(),
+  '/finance/accounts': { items: accounts },
+  '/branches': { items: [{ id: 'b1', name: 'Main' }] },
+};
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
     const v = path in o ? o[path] : base[path];
@@ -35,7 +92,8 @@ const answers = (o: Record<string, unknown> = {}) =>
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 const openDetail = async () => {
   await render(<ExpensesScreen />, { wrapper });
   await press('EX-0001');
@@ -43,7 +101,8 @@ const openDetail = async () => {
 };
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost].forEach((m) => m.mockReset());
@@ -60,7 +119,11 @@ describe('expenses list', () => {
     expect(await screen.findByText('EX-0001 · MSEB')).toBeTruthy();
     expect(screen.getByText('₹1,180.00')).toBeTruthy();
     await press('Paid');
-    await waitFor(() => expect(mockGet.mock.calls.some((c) => c[0] === '/finance/expenses' && c[1].query.status === 'PAID')).toBe(true));
+    await waitFor(() =>
+      expect(
+        mockGet.mock.calls.some((c) => c[0] === '/finance/expenses' && c[1].query.status === 'PAID'),
+      ).toBe(true),
+    );
   });
   test('empty', async () => {
     answers({ '/finance/expenses': { items: [] } });
@@ -161,7 +224,15 @@ describe('new expense', () => {
     await press('Save expense');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/expenses');
-    expect(mockPost.mock.calls[0]![1].body).toEqual(expect.objectContaining({ accountId: 'x1', payee: 'MSEB', amount: '1000', taxAmount: '180', inputTaxEligible: false }));
+    expect(mockPost.mock.calls[0]![1].body).toEqual(
+      expect.objectContaining({
+        accountId: 'x1',
+        payee: 'MSEB',
+        amount: '1000',
+        taxAmount: '180',
+        inputTaxEligible: false,
+      }),
+    );
     expect(JSON.stringify(mockPost.mock.calls[0]![1])).not.toMatch(/tenant/i);
     expect(await screen.findByText('₹1,180.00')).toBeTruthy();
   });
@@ -176,7 +247,9 @@ describe('new expense', () => {
   test('a possible duplicate asks, then records with confirmDuplicate and a new key', async () => {
     await render(<ExpensesScreen />, { wrapper });
     await fill();
-    mockPost.mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING', correlationId: 'corr-d' })).mockResolvedValue(exp());
+    mockPost
+      .mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING', correlationId: 'corr-d' }))
+      .mockResolvedValue(exp());
     await press('Save expense');
     expect(await screen.findByText(/This looks like an expense already recorded/)).toBeTruthy();
     await press('Record anyway');

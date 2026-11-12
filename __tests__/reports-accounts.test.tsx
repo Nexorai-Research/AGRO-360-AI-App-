@@ -15,12 +15,20 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => 'key-x' }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 
 beforeAll(() => {
   for (const lang of ['en', 'hi', 'mr'] as const)
@@ -34,9 +42,32 @@ beforeEach(async () => {
 });
 
 const sales = {
-  from: '2026-10-13', to: '2026-11-11', groupBy: 'product', truncated: false,
-  rows: [{ key: 'k1', label: 'Urea 50kg', quantity: '120.000', netSales: '1234567.50', discount: '0.00', bills: 4, sharePct: '60.5', margin: null, marginPct: null }],
-  totals: { quantity: '120.000', netSales: '2040000.00', discount: '10.00', bills: 40, avgBill: '51000.00', margin: null, marginPct: null },
+  from: '2026-10-13',
+  to: '2026-11-11',
+  groupBy: 'product',
+  truncated: false,
+  rows: [
+    {
+      key: 'k1',
+      label: 'Urea 50kg',
+      quantity: '120.000',
+      netSales: '1234567.50',
+      discount: '0.00',
+      bills: 4,
+      sharePct: '60.5',
+      margin: null,
+      marginPct: null,
+    },
+  ],
+  totals: {
+    quantity: '120.000',
+    netSales: '2040000.00',
+    discount: '10.00',
+    bills: 40,
+    avgBill: '51000.00',
+    margin: null,
+    marginPct: null,
+  },
   previous: { from: 'a', to: 'b', netSales: '1', changePct: '-3.2' },
 };
 
@@ -77,7 +108,9 @@ describe('reports', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<ReportsScreen />, { wrapper });
-    expect(await screen.findByText('No network. The report cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. The report cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('error', async () => {
     mockGet.mockRejectedValue(new ApiError(500, { title: 'BOOM', correlationId: 'c-1' }));
@@ -108,11 +141,21 @@ describe('reports', () => {
     mockGet.mockImplementation(async (path: string) =>
       path === '/reports/tax/summary'
         ? {
-            from: 'a', to: 'b',
-            output: [{ ratePct: '5', taxable: '1000.00', cgst: '25.00', sgst: '25.00', igst: '0.00', tax: '50.00' }],
+            from: 'a',
+            to: 'b',
+            output: [
+              { ratePct: '5', taxable: '1000.00', cgst: '25.00', sgst: '25.00', igst: '0.00', tax: '50.00' },
+            ],
             input: [{ ratePct: '18', taxable: '500.00', tax: '90.00' }],
-            months: [], notes: [],
-            totals: { outputTaxable: '1000.00', outputTax: '50.00', inputTaxable: '500.00', inputTax: '90.00', netPayable: '-40.00' },
+            months: [],
+            notes: [],
+            totals: {
+              outputTaxable: '1000.00',
+              outputTax: '50.00',
+              inputTaxable: '500.00',
+              inputTax: '90.00',
+              netPayable: '-40.00',
+            },
           }
         : sales,
     );
@@ -126,10 +169,29 @@ describe('reports', () => {
     mockGet.mockImplementation(async (path: string) =>
       path === '/reports/collections/efficiency'
         ? {
-            from: 'a', to: 'b', groupBy: 'branch',
-            rows: [{ key: 'b1', label: 'Main', due: '100.00', collected: '80.00', adjusted: '0.00', efficiencyPct: '80.0', outstanding: '20.00', documents: 2 }],
+            from: 'a',
+            to: 'b',
+            groupBy: 'branch',
+            rows: [
+              {
+                key: 'b1',
+                label: 'Main',
+                due: '100.00',
+                collected: '80.00',
+                adjusted: '0.00',
+                efficiencyPct: '80.0',
+                outstanding: '20.00',
+                documents: 2,
+              },
+            ],
             totals: { due: '100.00', collected: '80.00', adjusted: '0.00', efficiencyPct: '80.0' },
-            ageing: { notDue: '1.00', days1to30: '2.00', days31to60: '3.00', days61to90: '4.00', over90: '12345.00' },
+            ageing: {
+              notDue: '1.00',
+              days1to30: '2.00',
+              days31to60: '3.00',
+              days61to90: '4.00',
+              over90: '12345.00',
+            },
           }
         : sales,
     );
@@ -149,8 +211,22 @@ describe('reports', () => {
 
 describe('accounts', () => {
   const day = {
-    from: 'a', to: 'b', balanced: true,
-    journals: [{ id: 'j1', date: '2026-11-11', sourceType: 'SALES', purpose: 'SALE', narration: 'Cash sale', voucherNo: 'V-1', voucherKind: 'RECEIPT', debit: '2500.00', credit: '2500.00' }],
+    from: 'a',
+    to: 'b',
+    balanced: true,
+    journals: [
+      {
+        id: 'j1',
+        date: '2026-11-11',
+        sourceType: 'SALES',
+        purpose: 'SALE',
+        narration: 'Cash sale',
+        voucherNo: 'V-1',
+        voucherKind: 'RECEIPT',
+        debit: '2500.00',
+        credit: '2500.00',
+      },
+    ],
     totals: { debit: '2500.00', credit: '2500.00' },
   };
   test('day book in rupees', async () => {
@@ -172,7 +248,9 @@ describe('accounts', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<AccountsScreen />, { wrapper });
-    expect(await screen.findByText('No network. Accounts cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Accounts cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('no permission', async () => {
     mockMe = { userId: 'u-1', roles: [], permissions: [] };
@@ -182,7 +260,20 @@ describe('accounts', () => {
   });
   test('only finance.account.view: ledger tab shown, day book hidden', async () => {
     mockMe = { userId: 'u-1', roles: [], permissions: ['finance.account.view'] };
-    mockGet.mockResolvedValue({ items: [{ id: 'a1', code: '1010', name: 'Cash', type: 'ASSET', groupName: 'Cash', cashBank: 'CASH', active: true, balance: '-50.00' }] });
+    mockGet.mockResolvedValue({
+      items: [
+        {
+          id: 'a1',
+          code: '1010',
+          name: 'Cash',
+          type: 'ASSET',
+          groupName: 'Cash',
+          cashBank: 'CASH',
+          active: true,
+          balance: '-50.00',
+        },
+      ],
+    });
     await render(<AccountsScreen />, { wrapper });
     expect(await screen.findByText('₹50.00 Cr')).toBeTruthy();
     expect(screen.queryByLabelText('Day book')).toBeNull();
@@ -192,8 +283,18 @@ describe('accounts', () => {
     mockGet.mockImplementation(async (path: string) =>
       path === '/reports/trial-balance'
         ? {
-            to: '2026-11-11', balanced: true,
-            rows: [{ accountId: 'a1', code: '1010', name: 'Cash', groupName: null, closingDr: '99999.00', closingCr: '0.00' }],
+            to: '2026-11-11',
+            balanced: true,
+            rows: [
+              {
+                accountId: 'a1',
+                code: '1010',
+                name: 'Cash',
+                groupName: null,
+                closingDr: '99999.00',
+                closingCr: '0.00',
+              },
+            ],
             totals: { closingDr: '99999.00', closingCr: '99999.00' },
           }
         : day,
@@ -208,16 +309,24 @@ describe('accounts', () => {
 
 describe('compliance', () => {
   const g3b = {
-    period: '2026-11', from: 'a', to: 'b',
+    period: '2026-11',
+    from: 'a',
+    to: 'b',
     outward: { taxable: '100000.00', igst: '0.00', cgst: '2500.00', sgst: '2500.00' },
-    exempt: { taxable: '0.00' }, reverseCharge: { taxable: '0.00', igst: '0.00', cgst: '0.00', sgst: '0.00' },
+    exempt: { taxable: '0.00' },
+    reverseCharge: { taxable: '0.00', igst: '0.00', cgst: '0.00', sgst: '0.00' },
     itc: {
-      eligible: { igst: '0.00', cgst: '0.00', sgst: '0.00' }, blocked: { igst: '0.00', cgst: '0.00', sgst: '0.00' },
-      reversed: { igst: '0.00', cgst: '0.00', sgst: '0.00' }, net: { igst: '0.00', cgst: '1000.00', sgst: '1000.00' },
+      eligible: { igst: '0.00', cgst: '0.00', sgst: '0.00' },
+      blocked: { igst: '0.00', cgst: '0.00', sgst: '0.00' },
+      reversed: { igst: '0.00', cgst: '0.00', sgst: '0.00' },
+      net: { igst: '0.00', cgst: '1000.00', sgst: '1000.00' },
     },
     liability: { igst: '0.00', cgst: '2500.00', sgst: '2500.00' },
     payable: { igst: '0.00', cgst: '1500.00', sgst: '1500.00', total: '3000.00' },
-    creditCarried: { igst: '0.00', cgst: '0.00', sgst: '0.00' }, matchesGstr1: true, notes: [], snapshot: null,
+    creditCarried: { igst: '0.00', cgst: '0.00', sgst: '0.00' },
+    matchesGstr1: true,
+    notes: [],
+    snapshot: null,
   };
   test('GST summary read only, with month sent as period', async () => {
     mockGet.mockResolvedValue(g3b);
@@ -238,14 +347,29 @@ describe('compliance', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<ComplianceScreen />, { wrapper });
-    expect(await screen.findByText('No network. Tax data cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Tax data cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('input credit register: empty and rows', async () => {
     mockGet.mockImplementation(async (path: string) =>
       path === '/gst/itc-register'
         ? {
             period: 'p',
-            rows: [{ billId: 'b1', number: 'PB-1', supplierInvoiceNo: 'S1', date: '2026-11-03', supplierName: 'Agro Ltd', tax: '180.00', eligible: {}, blocked: {}, status: 'NO_GSTIN', reason: null }],
+            rows: [
+              {
+                billId: 'b1',
+                number: 'PB-1',
+                supplierInvoiceNo: 'S1',
+                date: '2026-11-03',
+                supplierName: 'Agro Ltd',
+                tax: '180.00',
+                eligible: {},
+                blocked: {},
+                status: 'NO_GSTIN',
+                reason: null,
+              },
+            ],
             totals: { tax: '180.00', eligible: '0.00', blocked: '0.00' },
           }
         : g3b,
@@ -258,7 +382,15 @@ describe('compliance', () => {
   });
   test('hsn empty', async () => {
     mockGet.mockImplementation(async (path: string) =>
-      path === '/gst/hsn-summary' ? { from: 'a', to: 'b', hsnDigits: 4, rows: [], totals: { taxable: '0.00', tax: '0.00', value: '0.00' } } : g3b,
+      path === '/gst/hsn-summary'
+        ? {
+            from: 'a',
+            to: 'b',
+            hsnDigits: 4,
+            rows: [],
+            totals: { taxable: '0.00', tax: '0.00', value: '0.00' },
+          }
+        : g3b,
     );
     await render(<ComplianceScreen />, { wrapper });
     await screen.findByText('₹3,000.00');

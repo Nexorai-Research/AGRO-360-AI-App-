@@ -10,7 +10,16 @@ import { BarcodeScanner } from '../stock/BarcodeScanner';
 import { StateView } from '../stock/StateView';
 import { PERM, createGrn, fetchWarehouses, getOrder, key, productByBarcode, receiveGrn } from './api';
 import { Gate, retryNetworkOnce } from './Gate';
-import { REJECT_REASONS, buildGrnBody, countScan, isOverReceipt, receiveDraftFor, receiveErrors, type ReceiveDraft, type ReceiveLineDraft } from './logic';
+import {
+  REJECT_REASONS,
+  buildGrnBody,
+  countScan,
+  isOverReceipt,
+  receiveDraftFor,
+  receiveErrors,
+  type ReceiveDraft,
+  type ReceiveLineDraft,
+} from './logic';
 import { Chips, Field, Notice, k, useActionKey, useErrorText } from './ui';
 
 export default function ReceiveScreen() {
@@ -41,7 +50,12 @@ export default function ReceiveScreen() {
     enabled: ready && id !== '',
     retry: retryNetworkOnce,
   });
-  const warehouses = useQuery({ queryKey: key(userId, 'warehouses'), queryFn: ({ signal }) => fetchWarehouses(client!, signal), enabled: ready, staleTime: 5 * 60_000 });
+  const warehouses = useQuery({
+    queryKey: key(userId, 'warehouses'),
+    queryFn: ({ signal }) => fetchWarehouses(client!, signal),
+    enabled: ready,
+    staleTime: 5 * 60_000,
+  });
 
   const order = q.data;
   // the form starts from the order's open lines and keeps the user's edits once there are any
@@ -59,7 +73,9 @@ export default function ReceiveScreen() {
       if (!next) setNote(t('purchase.scanNotOnOrder', { name: p.name }));
       else setD(next);
     } catch (e) {
-      setNote(e instanceof ApiError && e.status === 404 ? t('purchase.barcodeNotFound', { code }) : errText(e));
+      setNote(
+        e instanceof ApiError && e.status === 404 ? t('purchase.barcodeNotFound', { code }) : errText(e),
+      );
     }
   }
 
@@ -103,8 +119,18 @@ export default function ReceiveScreen() {
           <>
             <Text style={k.title}>{t('purchase.receiveFor', { number: order.number ?? '' })}</Text>
             <Text style={k.sub}>{t('purchase.receiveHint')}</Text>
-            <Field label={t('purchase.receiptDate')} value={cur.receiptDate} onChange={(v) => setD({ ...cur, receiptDate: v })} placeholder="YYYY-MM-DD" error={has('date') ? t('purchase.v.date') : null} />
-            <Field label={t('purchase.challan')} value={cur.challanNo} onChange={(v) => setD({ ...cur, challanNo: v })} />
+            <Field
+              label={t('purchase.receiptDate')}
+              value={cur.receiptDate}
+              onChange={(v) => setD({ ...cur, receiptDate: v })}
+              placeholder="YYYY-MM-DD"
+              error={has('date') ? t('purchase.v.date') : null}
+            />
+            <Field
+              label={t('purchase.challan')}
+              value={cur.challanNo}
+              onChange={(v) => setD({ ...cur, challanNo: v })}
+            />
             <Text style={k.label}>{t('purchase.rejectTo')}</Text>
             <Chips
               options={(warehouses.data ?? []).map((w) => ({ value: w.id, label: w.name }))}
@@ -119,9 +145,19 @@ export default function ReceiveScreen() {
               <View key={l.poLineId} style={k.card}>
                 <Text style={k.name}>{l.label}</Text>
                 <Text style={k.sub}>{t('purchase.pending', { qty: l.pending })}</Text>
-                <Field label={`${t('purchase.receivedQty')} ${i + 1}`} value={l.received} onChange={(v) => setLine(i, { received: v })} keyboard="decimal-pad" />
+                <Field
+                  label={`${t('purchase.receivedQty')} ${i + 1}`}
+                  value={l.received}
+                  onChange={(v) => setLine(i, { received: v })}
+                  keyboard="decimal-pad"
+                />
                 {isOverReceipt(l) ? <Notice tone="warn" text={t('purchase.overWarn')} /> : null}
-                <Field label={`${t('purchase.rejectedQty')} ${i + 1}`} value={l.rejected} onChange={(v) => setLine(i, { rejected: v })} keyboard="decimal-pad" />
+                <Field
+                  label={`${t('purchase.rejectedQty')} ${i + 1}`}
+                  value={l.rejected}
+                  onChange={(v) => setLine(i, { rejected: v })}
+                  keyboard="decimal-pad"
+                />
                 {l.rejected.trim() !== '' && l.rejected.trim() !== '0' ? (
                   <Chips
                     options={REJECT_REASONS.map((r) => ({ value: r, label: t(`purchase.reasons.${r}`) }))}
@@ -129,9 +165,24 @@ export default function ReceiveScreen() {
                     onChange={(v) => setLine(i, { reason: v })}
                   />
                 ) : null}
-                <Field label={`${t('purchase.batch')} ${i + 1}`} value={l.batchNo} onChange={(v) => setLine(i, { batchNo: v })} autoCapitalize="characters" />
-                <Field label={`${t('purchase.mfg')} ${i + 1}`} value={l.mfgDate} onChange={(v) => setLine(i, { mfgDate: v })} placeholder="YYYY-MM-DD" />
-                <Field label={`${t('purchase.expiry')} ${i + 1}`} value={l.expiryDate} onChange={(v) => setLine(i, { expiryDate: v })} placeholder="YYYY-MM-DD" />
+                <Field
+                  label={`${t('purchase.batch')} ${i + 1}`}
+                  value={l.batchNo}
+                  onChange={(v) => setLine(i, { batchNo: v })}
+                  autoCapitalize="characters"
+                />
+                <Field
+                  label={`${t('purchase.mfg')} ${i + 1}`}
+                  value={l.mfgDate}
+                  onChange={(v) => setLine(i, { mfgDate: v })}
+                  placeholder="YYYY-MM-DD"
+                />
+                <Field
+                  label={`${t('purchase.expiry')} ${i + 1}`}
+                  value={l.expiryDate}
+                  onChange={(v) => setLine(i, { expiryDate: v })}
+                  placeholder="YYYY-MM-DD"
+                />
               </View>
             ))}
             {has('qty') ? <Text style={k.error}>{t('purchase.v.qty')}</Text> : null}
@@ -143,7 +194,13 @@ export default function ReceiveScreen() {
             {msg ? <Notice tone="ok" text={msg} /> : null}
             {failure ? <Notice tone="error" text={failure} /> : null}
             {grnId && !msg ? <Notice tone="warn" text={t('purchase.savedNotPosted')} /> : null}
-            {!msg ? <Button label={grnId ? t('purchase.postAgain') : t('purchase.receiveNow')} disabled={busy} onPress={() => void save()} /> : null}
+            {!msg ? (
+              <Button
+                label={grnId ? t('purchase.postAgain') : t('purchase.receiveNow')}
+                disabled={busy}
+                onPress={() => void save()}
+              />
+            ) : null}
           </>
         ) : null}
       </Gate>

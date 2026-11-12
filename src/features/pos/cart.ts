@@ -63,7 +63,12 @@ export function addProduct(c: Cart, p: ProductLite, warehouseId: string): Cart {
   const i = c.lines.findIndex((l) => l.skuId === p.id && l.warehouseId === warehouseId);
   if (i >= 0) {
     const lines = c.lines.slice();
-    lines[i] = { ...lines[i]!, qty: dec(lines[i]!.qty || '0').plus(1).toString() };
+    lines[i] = {
+      ...lines[i]!,
+      qty: dec(lines[i]!.qty || '0')
+        .plus(1)
+        .toString(),
+    };
     return { ...c, lines };
   }
   const line: CartLine = {
@@ -95,7 +100,9 @@ export function toInvoiceBody(c: Cart, invoiceDate: string, tenders?: TenderBody
     qty: l.qty.trim(),
     ...(l.unitPrice.trim() ? { unitPrice: l.unitPrice.trim() } : {}),
     ...(l.discountPct.trim() ? { discountPct: l.discountPct.trim() } : {}),
-    ...(l.crop?.trim() ? { crop: l.crop.trim(), targetPest: (l.targetPest ?? '').trim(), dose: (l.dose ?? '').trim() } : {}),
+    ...(l.crop?.trim()
+      ? { crop: l.crop.trim(), targetPest: (l.targetPest ?? '').trim(), dose: (l.dose ?? '').trim() }
+      : {}),
     ...(l.batchId ? { batchId: l.batchId } : {}),
     ...(l.batchId && l.fefoOverrideReason?.trim() ? { fefoOverrideReason: l.fefoOverrideReason.trim() } : {}),
   }));
@@ -122,7 +129,11 @@ export function toTenders(inputs: TenderInputs, reference: string): TenderBody[]
   for (const [mode, raw] of Object.entries(inputs)) {
     const v = raw.trim();
     if (v === '' || !PRICE_RE.test(v) || !dec(v).gt(0)) continue;
-    out.push({ mode, amount: dec(v).toFixed(2), ...(mode !== 'CASH' && reference.trim() ? { reference: reference.trim() } : {}) });
+    out.push({
+      mode,
+      amount: dec(v).toFixed(2),
+      ...(mode !== 'CASH' && reference.trim() ? { reference: reference.trim() } : {}),
+    });
   }
   return out;
 }

@@ -9,11 +9,22 @@ import { Gate, Line } from '../hr/kit';
 import { shortDate } from '../hr/logic';
 import { todayIST } from '../collections/receipt';
 import { StateView } from '../stock/StateView';
-import { FP, createAccount, createGroup, generalLedger, listAccounts, listCostCentres, listGroups, patchAccount, type Account } from './api';
+import {
+  FP,
+  createAccount,
+  createGroup,
+  generalLedger,
+  listAccounts,
+  listCostCentres,
+  listGroups,
+  patchAccount,
+  type Account,
+} from './api';
 import { Button, Card, Chips, Field, Notice, Page, Picker, Result, Tap, kit, useFin, useWrite } from './kit';
 
 const TYPES = ['ASSET', 'LIABILITY', 'EQUITY', 'INCOME', 'EXPENSE'] as const;
-type Mode = { m: 'list' } | { m: 'ledger'; a: Account } | { m: 'edit'; a: Account } | { m: 'add' } | { m: 'group' };
+type Mode =
+  { m: 'list' } | { m: 'ledger'; a: Account } | { m: 'edit'; a: Account } | { m: 'add' } | { m: 'group' };
 
 function Ledger({ a, onBack }: { a: Account; onBack: () => void }) {
   const { t } = useTranslation();
@@ -25,7 +36,14 @@ function Ledger({ a, onBack }: { a: Account; onBack: () => void }) {
       <Button kind="ghost" label={t('fin.back')} onPress={onBack} />
       <Text style={kit.name}>{`${a.code} ${a.name}`}</Text>
       <Text style={kit.sub}>{`${shortDate(from)} - ${shortDate(to)}`}</Text>
-      <ReadBox queryKey={['fin', uid, 'gl', a.id, from, to]} client={client} enabled load={(c, s) => generalLedger(c, a.id, from, to, s)} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
+      <ReadBox
+        queryKey={['fin', uid, 'gl', a.id, from, to]}
+        client={client}
+        enabled
+        load={(c, s) => generalLedger(c, a.id, from, to, s)}
+        deniedText={t('fin.denied')}
+        offlineText={t('fin.offline')}
+      >
         {(d) => (
           <>
             <Card>
@@ -62,7 +80,12 @@ function Edit({ a, onBack }: { a: Account; onBack: () => void }) {
       <Button kind="ghost" label={t('fin.back')} onPress={onBack} />
       <Text style={kit.name}>{`${a.code} ${a.name}`}</Text>
       {a.isSystem ? <Notice tone="warn" text={t('fin.chart.systemNote')} /> : null}
-      <Field label={t('fin.name')} value={name} onChange={setName} error={bad ? t('fin.chart.badName') : null} />
+      <Field
+        label={t('fin.name')}
+        value={name}
+        onChange={setName}
+        error={bad ? t('fin.chart.badName') : null}
+      />
       <Field label={t('fin.description')} value={description} onChange={setDescription} />
       {a.isSystem ? null : <Check label={t('fin.active')} value={active} onChange={setActive} />}
       <Result w={w} />
@@ -70,8 +93,14 @@ function Edit({ a, onBack }: { a: Account; onBack: () => void }) {
         label={t('fin.save')}
         disabled={w.busy || bad}
         onPress={() => {
-          const body = { name: name.trim(), description: description.trim() || null, ...(a.isSystem ? {} : { active }) };
-          void w.go(`edit|${a.id}|${a.version}|${JSON.stringify(body)}`, t('fin.saved'), (c, k) => patchAccount(c, k, a, body));
+          const body = {
+            name: name.trim(),
+            description: description.trim() || null,
+            ...(a.isSystem ? {} : { active }),
+          };
+          void w.go(`edit|${a.id}|${a.version}|${JSON.stringify(body)}`, t('fin.saved'), (c, k) =>
+            patchAccount(c, k, a, body),
+          );
         }}
       />
     </>
@@ -82,7 +111,11 @@ function Add({ onBack }: { onBack: () => void }) {
   const { t } = useTranslation();
   const { client, uid } = useFin();
   const w = useWrite();
-  const groups = useQuery({ queryKey: ['fin', uid, 'groups'], queryFn: ({ signal }) => listGroups(client!, signal), enabled: client !== null });
+  const groups = useQuery({
+    queryKey: ['fin', uid, 'groups'],
+    queryFn: ({ signal }) => listGroups(client!, signal),
+    enabled: client !== null,
+  });
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState<string>('EXPENSE');
@@ -95,8 +128,21 @@ function Add({ onBack }: { onBack: () => void }) {
       <Gate query={groups} denied={false} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
         <Field label={t('fin.chart.code')} value={code} onChange={setCode} keyboard="numeric" />
         <Field label={t('fin.name')} value={name} onChange={setName} />
-        <Chips label={t('fin.chart.type')} options={TYPES.map((x) => ({ id: x, label: t(`fin.chart.type_${x}`) }))} value={type} onChange={setType} />
-        <Picker label={t('fin.chart.group')} blank={t('fin.chart.byCode')} options={(groups.data?.items ?? []).filter((g) => g.type === type).map((g) => ({ id: g.id, label: g.name }))} value={groupId} onChange={setGroupId} />
+        <Chips
+          label={t('fin.chart.type')}
+          options={TYPES.map((x) => ({ id: x, label: t(`fin.chart.type_${x}`) }))}
+          value={type}
+          onChange={setType}
+        />
+        <Picker
+          label={t('fin.chart.group')}
+          blank={t('fin.chart.byCode')}
+          options={(groups.data?.items ?? [])
+            .filter((g) => g.type === type)
+            .map((g) => ({ id: g.id, label: g.name }))}
+          value={groupId}
+          onChange={setGroupId}
+        />
         <Field label={t('fin.description')} value={description} onChange={setDescription} />
         {bad && (code || name) ? <Notice tone="error" text={t('fin.chart.badAccount')} /> : null}
         <Result w={w} />
@@ -104,8 +150,16 @@ function Add({ onBack }: { onBack: () => void }) {
           label={t('fin.chart.addAccount')}
           disabled={w.busy || bad}
           onPress={() => {
-            const body = { code: code.trim(), name: name.trim(), type, ...(groupId ? { groupId } : {}), ...(description.trim() ? { description: description.trim() } : {}) };
-            void w.go(`add|${JSON.stringify(body)}`, t('fin.chart.added'), (c, k) => createAccount(c, k, body));
+            const body = {
+              code: code.trim(),
+              name: name.trim(),
+              type,
+              ...(groupId ? { groupId } : {}),
+              ...(description.trim() ? { description: description.trim() } : {}),
+            };
+            void w.go(`add|${JSON.stringify(body)}`, t('fin.chart.added'), (c, k) =>
+              createAccount(c, k, body),
+            );
           }}
         />
       </Gate>
@@ -117,7 +171,11 @@ function AddGroup({ onBack }: { onBack: () => void }) {
   const { t } = useTranslation();
   const { client, uid } = useFin();
   const w = useWrite();
-  const groups = useQuery({ queryKey: ['fin', uid, 'groups'], queryFn: ({ signal }) => listGroups(client!, signal), enabled: client !== null });
+  const groups = useQuery({
+    queryKey: ['fin', uid, 'groups'],
+    queryFn: ({ signal }) => listGroups(client!, signal),
+    enabled: client !== null,
+  });
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [parentId, setParentId] = useState('');
@@ -128,14 +186,21 @@ function AddGroup({ onBack }: { onBack: () => void }) {
       <Gate query={groups} denied={false} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
         <Field label={t('fin.chart.code')} value={code} onChange={setCode} />
         <Field label={t('fin.name')} value={name} onChange={setName} />
-        <Picker label={t('fin.chart.under')} options={(groups.data?.items ?? []).map((g) => ({ id: g.id, label: g.name }))} value={parentId} onChange={setParentId} />
+        <Picker
+          label={t('fin.chart.under')}
+          options={(groups.data?.items ?? []).map((g) => ({ id: g.id, label: g.name }))}
+          value={parentId}
+          onChange={setParentId}
+        />
         <Result w={w} />
         <Button
           label={t('fin.chart.addGroup')}
           disabled={w.busy || bad}
           onPress={() => {
             const body = { code: code.trim(), name: name.trim(), parentId };
-            void w.go(`group|${JSON.stringify(body)}`, t('fin.chart.groupAdded'), (c, k) => createGroup(c, k, body));
+            void w.go(`group|${JSON.stringify(body)}`, t('fin.chart.groupAdded'), (c, k) =>
+              createGroup(c, k, body),
+            );
           }}
         />
       </Gate>
@@ -147,7 +212,14 @@ function CostCentres() {
   const { t } = useTranslation();
   const { client, uid } = useFin();
   return (
-    <ReadBox queryKey={['fin', uid, 'cc']} client={client} enabled load={(c, s) => listCostCentres(c, s)} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
+    <ReadBox
+      queryKey={['fin', uid, 'cc']}
+      client={client}
+      enabled
+      load={(c, s) => listCostCentres(c, s)}
+      deniedText={t('fin.denied')}
+      offlineText={t('fin.offline')}
+    >
       {(d) => (
         <>
           {d.items.length === 0 ? <StateView state="empty" message={t('fin.chart.noCostCentres')} /> : null}
@@ -184,7 +256,15 @@ export default function ChartScreen() {
         <AddGroup onBack={back} />
       ) : (
         <>
-          <Chips label={t('fin.vouchers.show')} options={[{ id: 'accounts', label: t('fin.chart.tabAccounts') }, { id: 'cc', label: t('fin.chart.tabCostCentres') }]} value={tab} onChange={setTab} />
+          <Chips
+            label={t('fin.vouchers.show')}
+            options={[
+              { id: 'accounts', label: t('fin.chart.tabAccounts') },
+              { id: 'cc', label: t('fin.chart.tabCostCentres') },
+            ]}
+            value={tab}
+            onChange={setTab}
+          />
           {tab === 'cc' ? (
             <CostCentres />
           ) : (
@@ -192,27 +272,66 @@ export default function ChartScreen() {
               {manage ? (
                 <View style={kit.row}>
                   <Button label={t('fin.chart.addAccount')} onPress={() => setMode({ m: 'add' })} />
-                  <Button kind="ghost" label={t('fin.chart.addGroup')} onPress={() => setMode({ m: 'group' })} />
+                  <Button
+                    kind="ghost"
+                    label={t('fin.chart.addGroup')}
+                    onPress={() => setMode({ m: 'group' })}
+                  />
                 </View>
               ) : null}
               <Field label={t('fin.chart.search')} value={q} onChange={setQ} />
-              <Chips label={t('fin.chart.type')} options={[{ id: '', label: t('fin.all') }, ...TYPES.map((x) => ({ id: x as string, label: t(`fin.chart.type_${x}`) }))]} value={type} onChange={setType} />
-              <ReadBox queryKey={['fin', uid, 'accounts', 'bal']} client={client} enabled load={(c, s) => listAccounts(c, true, s)} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
+              <Chips
+                label={t('fin.chart.type')}
+                options={[
+                  { id: '', label: t('fin.all') },
+                  ...TYPES.map((x) => ({ id: x as string, label: t(`fin.chart.type_${x}`) })),
+                ]}
+                value={type}
+                onChange={setType}
+              />
+              <ReadBox
+                queryKey={['fin', uid, 'accounts', 'bal']}
+                client={client}
+                enabled
+                load={(c, s) => listAccounts(c, true, s)}
+                deniedText={t('fin.denied')}
+                offlineText={t('fin.offline')}
+              >
                 {(d) => {
                   const f = q.trim().toLowerCase();
-                  const rows = d.items.filter((a) => (!type || a.type === type) && (!f || `${a.code} ${a.name}`.toLowerCase().includes(f)));
+                  const rows = d.items.filter(
+                    (a) =>
+                      (!type || a.type === type) && (!f || `${a.code} ${a.name}`.toLowerCase().includes(f)),
+                  );
                   return rows.length === 0 ? (
                     <StateView state="empty" message={t('fin.chart.empty')} />
                   ) : (
                     <>
                       {rows.map((a) => (
-                        <Tap key={a.id} label={`${a.code} ${a.name}`} onPress={() => setMode({ m: 'ledger', a })}>
+                        <Tap
+                          key={a.id}
+                          label={`${a.code} ${a.name}`}
+                          onPress={() => setMode({ m: 'ledger', a })}
+                        >
                           <Text style={kit.name}>{`${a.code} ${a.name}`}</Text>
                           <Text style={kit.sub}>
-                            {[a.groupName ?? t(`fin.chart.type_${a.type}`, { defaultValue: a.type }), a.isSystem ? t('fin.chart.system') : '', a.cashBank ? t(`fin.chart.${a.cashBank}`) : '', a.active ? '' : t('fin.inactive')].filter(Boolean).join(' · ')}
+                            {[
+                              a.groupName ?? t(`fin.chart.type_${a.type}`, { defaultValue: a.type }),
+                              a.isSystem ? t('fin.chart.system') : '',
+                              a.cashBank ? t(`fin.chart.${a.cashBank}`) : '',
+                              a.active ? '' : t('fin.inactive'),
+                            ]
+                              .filter(Boolean)
+                              .join(' · ')}
                           </Text>
                           <Line label={t('fin.chart.balance')} value={formatINR(a.balance ?? '0')} strong />
-                          {manage ? <Button kind="ghost" label={t('fin.chart.edit', { code: a.code })} onPress={() => setMode({ m: 'edit', a })} /> : null}
+                          {manage ? (
+                            <Button
+                              kind="ghost"
+                              label={t('fin.chart.edit', { code: a.code })}
+                              onPress={() => setMode({ m: 'edit', a })}
+                            />
+                          ) : null}
                         </Tap>
                       ))}
                     </>

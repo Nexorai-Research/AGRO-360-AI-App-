@@ -61,8 +61,16 @@ export default function DocumentsScreen() {
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
       <Text style={k.title}>{t('documents.title')}</Text>
-      {msg ? <Text style={k.ok} accessibilityRole="alert">{msg}</Text> : null}
-      {failure ? <Text style={k.error} accessibilityRole="alert">{failText(t, failure)}</Text> : null}
+      {msg ? (
+        <Text style={k.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
+      {failure ? (
+        <Text style={k.error} accessibilityRole="alert">
+          {failText(t, failure)}
+        </Text>
+      ) : null}
       <DocDashboard client={client!} userId={userId} status={status} onPick={setStatus} />
       {can(PERM.docManage) ? (
         uploading ? (
@@ -77,7 +85,10 @@ export default function DocumentsScreen() {
             }}
           />
         ) : (
-          <Button label={t('dcm.upload')} onPress={() => (setUploading(true), setMsg(null), setFailure(null))} />
+          <Button
+            label={t('dcm.upload')}
+            onPress={() => (setUploading(true), setMsg(null), setFailure(null))}
+          />
         )
       ) : null}
       <TextInput
@@ -94,20 +105,27 @@ export default function DocumentsScreen() {
         value={status}
         label={t('documents.statusFilter')}
         onChange={setStatus}
-        options={[['', t('documents.all')], ...DOC_STATUSES.map((s): [string, string] => [s, t(`documents.status.${s}`)])]}
+        options={[
+          ['', t('documents.all')],
+          ...DOC_STATUSES.map((s): [string, string] => [s, t(`documents.status.${s}`)]),
+        ]}
       />
       <Chips
         value={category}
         label={t('documents.categoryFilter')}
         onChange={setCategory}
-        options={[['', t('documents.allCategories')], ...DOC_CATEGORIES.map((c): [string, string] => [c, t(`documents.category.${c}`)])]}
+        options={[
+          ['', t('documents.allCategories')],
+          ...DOC_CATEGORIES.map((c): [string, string] => [c, t(`documents.category.${c}`)]),
+        ]}
       />
       {rows.length === 0 ? <StateView state="empty" message={t('documents.empty')} /> : null}
       {rows.map((d) => (
         <Card key={d.id}>
           <Text style={k.name}>{d.title}</Text>
           <Text style={k.sub}>
-            {t(`documents.category.${d.category}`, { defaultValue: d.category })} · {t(`documents.status.${d.status}`, { defaultValue: d.status })}
+            {t(`documents.category.${d.category}`, { defaultValue: d.category })} ·{' '}
+            {t(`documents.status.${d.status}`, { defaultValue: d.status })}
           </Text>
           <Text style={k.sub}>
             {d.filename} · {formatBytes(d.sizeBytes)} · {t('documents.version', { n: d.currentVersion })}
@@ -140,7 +158,12 @@ export default function DocumentsScreen() {
         </Card>
       ))}
       {docs.hasNextPage ? (
-        <Button kind="ghost" label={t('documents.more')} disabled={docs.isFetchingNextPage} onPress={() => void docs.fetchNextPage()} />
+        <Button
+          kind="ghost"
+          label={t('documents.more')}
+          disabled={docs.isFetchingNextPage}
+          onPress={() => void docs.fetchNextPage()}
+        />
       ) : null}
     </ScrollView>
   );

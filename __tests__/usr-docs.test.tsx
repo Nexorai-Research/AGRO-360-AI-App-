@@ -15,7 +15,13 @@ let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 jest.mock('../src/features/admin/usr-files', () => ({
@@ -24,8 +30,24 @@ jest.mock('../src/features/admin/usr-files', () => ({
 }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const doc = { id: 'doc-1', title: 'Fertiliser licence', category: 'LICENCE', expiresOn: '2027-03-31', notes: null, active: true, status: 'ACTIVE', currentVersion: 2, filename: 'lic.pdf', contentType: 'application/pdf', sizeBytes: 2048, uploadedAt: '2026-10-01T04:00:00Z', updatedAt: '2026-10-01T04:00:00Z' };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const doc = {
+  id: 'doc-1',
+  title: 'Fertiliser licence',
+  category: 'LICENCE',
+  expiresOn: '2027-03-31',
+  notes: null,
+  active: true,
+  status: 'ACTIVE',
+  currentVersion: 2,
+  filename: 'lic.pdf',
+  contentType: 'application/pdf',
+  sizeBytes: 2048,
+  uploadedAt: '2026-10-01T04:00:00Z',
+  updatedAt: '2026-10-01T04:00:00Z',
+};
 
 beforeAll(() => {
   for (const l of ['en', 'hi', 'mr'] as const) {
@@ -41,10 +63,29 @@ beforeEach(async () => {
   await setLanguage('en');
   mockGet.mockImplementation(async (path: string) => {
     if (path === '/documents') return { items: [doc], next_cursor: null };
-    if (path === '/documents/dashboard') return { total: 5, byStatus: { ACTIVE: 3, EXPIRING_SOON: 1, EXPIRED: 1 } };
+    if (path === '/documents/dashboard')
+      return { total: 5, byStatus: { ACTIVE: 3, EXPIRING_SOON: 1, EXPIRED: 1 } };
     if (path === '/documents/doc-1/versions')
-      return { items: [{ version: 2, filename: 'lic.pdf', contentType: 'application/pdf', sizeBytes: 2048, uploadedAt: '2026-10-01T04:00:00Z' }, { version: 1, filename: 'old.pdf', contentType: 'application/pdf', sizeBytes: 1024, uploadedAt: '2026-09-01T04:00:00Z' }] };
-    if (path === '/documents/doc-1/content') return { filename: 'lic.pdf', contentType: 'application/pdf', contentBase64: 'QUJD' };
+      return {
+        items: [
+          {
+            version: 2,
+            filename: 'lic.pdf',
+            contentType: 'application/pdf',
+            sizeBytes: 2048,
+            uploadedAt: '2026-10-01T04:00:00Z',
+          },
+          {
+            version: 1,
+            filename: 'old.pdf',
+            contentType: 'application/pdf',
+            sizeBytes: 1024,
+            uploadedAt: '2026-09-01T04:00:00Z',
+          },
+        ],
+      };
+    if (path === '/documents/doc-1/content')
+      return { filename: 'lic.pdf', contentType: 'application/pdf', contentBase64: 'QUJD' };
     throw new Error(`unexpected ${path}`);
   });
 });
@@ -88,7 +129,14 @@ describe('upload', () => {
     expect(await screen.findByText('Document uploaded.')).toBeTruthy();
     const [path, opts] = mockPost.mock.calls[0]!;
     expect(path).toBe('/documents');
-    expect(opts.body).toEqual({ title: 'licence.pdf', category: 'GENERAL', expiresOn: '2027-03-31', notes: null, filename: 'licence.pdf', contentBase64: 'QUJD' });
+    expect(opts.body).toEqual({
+      title: 'licence.pdf',
+      category: 'GENERAL',
+      expiresOn: '2027-03-31',
+      notes: null,
+      filename: 'licence.pdf',
+      contentBase64: 'QUJD',
+    });
     expect(mockPost.mock.calls[1]![1].idempotencyKey).toBe(opts.idempotencyKey);
   });
 
@@ -161,7 +209,8 @@ describe('versions, download, replace', () => {
   test('a download failure shows the reference', async () => {
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/documents') return { items: [doc], next_cursor: null };
-      if (path === '/documents/doc-1/content') throw new ApiError(500, { title: 'BOOM', correlationId: 'c-30' });
+      if (path === '/documents/doc-1/content')
+        throw new ApiError(500, { title: 'BOOM', correlationId: 'c-30' });
       throw new Error('x');
     });
     await openDoc();

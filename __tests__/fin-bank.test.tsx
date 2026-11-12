@@ -15,24 +15,86 @@ jest.mock('../src/auth/AuthProvider', () => ({
   useAuth: () => ({
     status: 'signedIn',
     me: mockMe,
-    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a), patch: (...a: unknown[]) => mockPatch(...a) },
+    client: {
+      get: (...a: unknown[]) => mockGet(...a),
+      post: (...a: unknown[]) => mockPost(...a),
+      patch: (...a: unknown[]) => mockPatch(...a),
+    },
   }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 const ALL = ['finance.account.view', 'finance.bank.manage', 'finance.bankrec.manage'];
 const bank = (o: Record<string, unknown> = {}) => ({
-  id: 'bk1', accountId: 'l1', ledgerCode: '1010', ledgerName: 'SBI current', bankName: 'SBI', branchName: 'Nashik', ifsc: 'SBIN0001234', holderName: 'Agro Traders',
-  accountNumberMasked: 'XXXX4321', upiVpa: null, active: true, balance: '50000.00', version: 5, ...o,
+  id: 'bk1',
+  accountId: 'l1',
+  ledgerCode: '1010',
+  ledgerName: 'SBI current',
+  bankName: 'SBI',
+  branchName: 'Nashik',
+  ifsc: 'SBIN0001234',
+  holderName: 'Agro Traders',
+  accountNumberMasked: 'XXXX4321',
+  upiVpa: null,
+  active: true,
+  balance: '50000.00',
+  version: 5,
+  ...o,
 });
-const line = (o: Record<string, unknown>) => ({ id: 'ln1', date: '2026-11-05', narration: 'NEFT Kisan Seeds', reference: 'N123', withdrawal: '0.00', deposit: '2500.00', status: 'SUGGESTED', suggestedJournalLineId: 'jl1', ...o });
+const line = (o: Record<string, unknown>) => ({
+  id: 'ln1',
+  date: '2026-11-05',
+  narration: 'NEFT Kisan Seeds',
+  reference: 'N123',
+  withdrawal: '0.00',
+  deposit: '2500.00',
+  status: 'SUGGESTED',
+  suggestedJournalLineId: 'jl1',
+  ...o,
+});
 const rec = (o: Record<string, unknown> = {}) => ({
-  bankAccountId: 'bk1', asOn: '2026-11-12', bookBalance: '50000.00', statementBalance: null, unmatchedBook: [{ journalLineId: 'jl9', date: '2026-11-04', direction: 'IN', amount: '2500.00', narration: 'Receipt', voucherNo: 'RV-9' }, { journalLineId: 'jl8', date: '2026-11-04', direction: 'OUT', amount: '2500.00', narration: 'Pay', voucherNo: 'PV-8' }],
-  depositsInTransit: '0.00', outstandingPayments: '0.00', bankOnlyDeposits: '2500.00', bankOnlyWithdrawals: '0.00', adjustedBank: null, adjustedBook: '52500.00', difference: null, reconciled: false, signed: null, ...o,
+  bankAccountId: 'bk1',
+  asOn: '2026-11-12',
+  bookBalance: '50000.00',
+  statementBalance: null,
+  unmatchedBook: [
+    {
+      journalLineId: 'jl9',
+      date: '2026-11-04',
+      direction: 'IN',
+      amount: '2500.00',
+      narration: 'Receipt',
+      voucherNo: 'RV-9',
+    },
+    {
+      journalLineId: 'jl8',
+      date: '2026-11-04',
+      direction: 'OUT',
+      amount: '2500.00',
+      narration: 'Pay',
+      voucherNo: 'PV-8',
+    },
+  ],
+  depositsInTransit: '0.00',
+  outstandingPayments: '0.00',
+  bankOnlyDeposits: '2500.00',
+  bankOnlyWithdrawals: '0.00',
+  adjustedBank: null,
+  adjustedBook: '52500.00',
+  difference: null,
+  reconciled: false,
+  signed: null,
+  ...o,
 });
-const base: Record<string, unknown> = { '/finance/bank-accounts': { items: [bank()] }, '/finance/bank-statements/lines': { items: [line({})] }, '/finance/bank-reconciliation/bk1': rec() };
+const base: Record<string, unknown> = {
+  '/finance/bank-accounts': { items: [bank()] },
+  '/finance/bank-statements/lines': { items: [line({})] },
+  '/finance/bank-reconciliation/bk1': rec(),
+};
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
     const v = path in o ? o[path] : base[path];
@@ -40,7 +102,8 @@ const answers = (o: Record<string, unknown> = {}) =>
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 const openRec = async () => {
   await render(<BankScreen />, { wrapper });
   await press('Reconciliation');
@@ -48,7 +111,8 @@ const openRec = async () => {
 };
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost, mockPatch].forEach((m) => m.mockReset());
@@ -105,7 +169,12 @@ describe('bank accounts', () => {
     await press('Add bank account');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/bank-accounts');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ bankName: 'HDFC', ifsc: 'HDFC0001234', holderName: 'Agro Traders', accountNumber: '12345678901' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      bankName: 'HDFC',
+      ifsc: 'HDFC0001234',
+      holderName: 'Agro Traders',
+      accountNumber: '12345678901',
+    });
     expect(mockPost.mock.calls[0]![1].idempotencyKey).toBe('key-1');
   });
   test('edit sends the version as If-Match', async () => {
@@ -117,7 +186,11 @@ describe('bank accounts', () => {
     await waitFor(() => expect(mockPatch).toHaveBeenCalled());
     expect(mockPatch.mock.calls[0]![0]).toBe('/finance/bank-accounts/bk1');
     expect(mockPatch.mock.calls[0]![1].version).toBe(5);
-    expect(mockPatch.mock.calls[0]![1].body).toEqual({ holderName: 'Agro Traders Pvt', upiVpa: null, active: true });
+    expect(mockPatch.mock.calls[0]![1].body).toEqual({
+      holderName: 'Agro Traders Pvt',
+      upiVpa: null,
+      active: true,
+    });
   });
 });
 
@@ -138,7 +211,11 @@ describe('reconciliation', () => {
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/bank-lines/ln1/accept');
   });
   test('manual match offers only book entries of the same direction and amount', async () => {
-    answers({ '/finance/bank-statements/lines': { items: [line({ status: 'UNMATCHED', suggestedJournalLineId: null })] } });
+    answers({
+      '/finance/bank-statements/lines': {
+        items: [line({ status: 'UNMATCHED', suggestedJournalLineId: null })],
+      },
+    });
     await openRec();
     await press('Match NEFT Kisan Seeds with a book entry');
     expect(await screen.findByLabelText(/RV-9/)).toBeTruthy();
@@ -163,7 +240,10 @@ describe('reconciliation', () => {
     await press('Sign the reconciliation');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/bank-reconciliation/bk1/sign');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ asOn: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/), statementBalance: '52500.00' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      asOn: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      statementBalance: '52500.00',
+    });
     expect(await screen.findByText('accept or reject the suggested matches before signing')).toBeTruthy();
   });
   test('sign is disabled for a bad amount and for a read-only user there is no sign box', async () => {
@@ -179,7 +259,13 @@ describe('reconciliation', () => {
     expect(screen.queryByLabelText('Accept match for NEFT Kisan Seeds')).toBeNull();
   });
   test('a signed reconciliation says so and hides the sign box', async () => {
-    answers({ '/finance/bank-reconciliation/bk1': rec({ signed: { signedAt: '2026-11-12T10:00:00Z', statementBalance: '52500.00' }, difference: '0.00', reconciled: true }) });
+    answers({
+      '/finance/bank-reconciliation/bk1': rec({
+        signed: { signedAt: '2026-11-12T10:00:00Z', statementBalance: '52500.00' },
+        difference: '0.00',
+        reconciled: true,
+      }),
+    });
     await openRec();
     expect(await screen.findByText('Signed on 12 Nov 2026.')).toBeTruthy();
     expect(screen.queryByLabelText('Sign the reconciliation')).toBeNull();

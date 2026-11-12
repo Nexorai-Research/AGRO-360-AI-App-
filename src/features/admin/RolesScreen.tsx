@@ -64,7 +64,11 @@ export default function RolesScreen() {
               {t('roles.line', { users: r.assignedUsers, perms: r.permissions.length })}
               {r.isSystem ? ` · ${t('roles.system')}` : ''}
             </Text>
-            <Button kind="ghost" label={open ? t('roles.hide') : t('roles.show')} onPress={() => setOpenId(open ? null : r.id)} />
+            <Button
+              kind="ghost"
+              label={open ? t('roles.hide') : t('roles.show')}
+              onPress={() => setOpenId(open ? null : r.id)}
+            />
             {open ? (
               <>
                 {[...groups].map(([area, codes]) => (
@@ -74,7 +78,9 @@ export default function RolesScreen() {
                 ))}
                 {limits.length > 0 ? <Text style={k.name}>{t('roles.limits')}</Text> : null}
                 {limits.map(([key, v]) => (
-                  <Text key={key} style={k.sub}>{key}: {v}</Text>
+                  <Text key={key} style={k.sub}>
+                    {key}: {v}
+                  </Text>
                 ))}
                 {!r.isSystem ? (
                   <RoleEditor

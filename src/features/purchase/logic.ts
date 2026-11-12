@@ -11,7 +11,8 @@ const RATE_RE = /^\d+(\.\d{1,4})?$/;
 
 export const REJECT_REASONS = ['DAMAGED', 'SHORT_EXPIRY', 'WRONG_ITEM', 'QUALITY', 'OTHER'] as const;
 
-export const todayIST = (now: number = Date.now()): string => new Date(now + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
+export const todayIST = (now: number = Date.now()): string =>
+  new Date(now + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
 
 export const validDate = (v: string): boolean => {
   if (!DATE_RE.test(v)) return false;
@@ -43,15 +44,7 @@ export interface OrderDraft {
   lines: OrderLineDraft[];
 }
 export type OrderError =
-  | 'supplier'
-  | 'branch'
-  | 'warehouse'
-  | 'date'
-  | 'expected'
-  | 'noLines'
-  | 'qty'
-  | 'rate'
-  | 'discount';
+  'supplier' | 'branch' | 'warehouse' | 'date' | 'expected' | 'noLines' | 'qty' | 'rate' | 'discount';
 
 export function orderErrors(d: OrderDraft, today: string = todayIST()): OrderError[] {
   const e: OrderError[] = [];
@@ -59,7 +52,11 @@ export function orderErrors(d: OrderDraft, today: string = todayIST()): OrderErr
   if (!d.branchId) e.push('branch');
   if (!d.warehouseId) e.push('warehouse');
   if (!validDate(d.orderDate) || d.orderDate > today) e.push('date');
-  if (d.expectedDate.trim() !== '' && (!validDate(d.expectedDate.trim()) || d.expectedDate.trim() < d.orderDate)) e.push('expected');
+  if (
+    d.expectedDate.trim() !== '' &&
+    (!validDate(d.expectedDate.trim()) || d.expectedDate.trim() < d.orderDate)
+  )
+    e.push('expected');
   if (d.lines.length === 0) e.push('noLines');
   if (d.lines.some((l) => !validQty(l.qty))) e.push('qty');
   if (d.lines.some((l) => !validRate(l.rate))) e.push('rate');
@@ -88,7 +85,8 @@ export function buildOrderBody(d: OrderDraft): OrderBody {
 /** A hint for the screen only: quantity x rate less discount, before GST. The server works out the real totals. */
 export function lineEstimate(l: Pick<OrderLineDraft, 'qty' | 'rate' | 'discountPct'>): Amount | null {
   if (!validQty(l.qty) || !validRate(l.rate)) return null;
-  const pct = l.discountPct.trim() === '' ? dec(0) : validPct(l.discountPct) ? dec(l.discountPct.trim()) : null;
+  const pct =
+    l.discountPct.trim() === '' ? dec(0) : validPct(l.discountPct) ? dec(l.discountPct.trim()) : null;
   if (pct === null) return null;
   return dec(l.qty.trim()).times(l.rate.trim()).times(dec(100).minus(pct)).div(100).toFixed(2);
 }
@@ -109,7 +107,11 @@ export interface OrderActions {
   cancel: boolean;
 }
 /** Maker-checker: the person who raised the order cannot approve it, so no button is offered that can only answer 403. */
-export function orderActions(o: { status: string; createdBy: string }, userId: string, can: (p: string) => boolean): OrderActions {
+export function orderActions(
+  o: { status: string; createdBy: string },
+  userId: string,
+  can: (p: string) => boolean,
+): OrderActions {
   const canApprove = can('purchase.order.approve') && o.status === 'SUBMITTED';
   const own = o.createdBy === userId;
   return {
@@ -141,7 +143,8 @@ export interface ReceiveDraft {
   rejectWarehouseId: string;
   lines: ReceiveLineDraft[];
 }
-export type ReceiveError = 'date' | 'noLines' | 'qty' | 'rejected' | 'reason' | 'mfg' | 'expiry' | 'dateOrder';
+export type ReceiveError =
+  'date' | 'noLines' | 'qty' | 'rejected' | 'reason' | 'mfg' | 'expiry' | 'dateOrder';
 
 export function receiveLinesInUse(d: ReceiveDraft): ReceiveLineDraft[] {
   return d.lines.filter((l) => l.received.trim() !== '' && l.received.trim() !== '0');
@@ -162,7 +165,12 @@ export function receiveErrors(d: ReceiveDraft, today: string = todayIST()): Rece
     else if (dec(rej).gt(0) && !l.reason) e.add('reason');
     if (l.mfgDate.trim() !== '' && !validDate(l.mfgDate.trim())) e.add('mfg');
     if (l.expiryDate.trim() !== '' && !validDate(l.expiryDate.trim())) e.add('expiry');
-    if (validDate(l.mfgDate.trim()) && validDate(l.expiryDate.trim()) && l.expiryDate.trim() < l.mfgDate.trim()) e.add('dateOrder');
+    if (
+      validDate(l.mfgDate.trim()) &&
+      validDate(l.expiryDate.trim()) &&
+      l.expiryDate.trim() < l.mfgDate.trim()
+    )
+      e.add('dateOrder');
   }
   return [...e];
 }
@@ -218,6 +226,15 @@ export function countScan(d: ReceiveDraft, skuId: string): ReceiveDraft | null {
   if (i < 0) return null;
   return {
     ...d,
-    lines: d.lines.map((l, j) => (j === i ? { ...l, received: dec(validQtyOrZero(l.received) && l.received.trim() !== '' ? l.received.trim() : 0).plus(1).toString() } : l)),
+    lines: d.lines.map((l, j) =>
+      j === i
+        ? {
+            ...l,
+            received: dec(validQtyOrZero(l.received) && l.received.trim() !== '' ? l.received.trim() : 0)
+              .plus(1)
+              .toString(),
+          }
+        : l,
+    ),
   };
 }

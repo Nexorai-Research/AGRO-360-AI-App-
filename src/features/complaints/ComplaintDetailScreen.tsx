@@ -8,7 +8,15 @@ import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
 import { Chips, Field, Notice, k, useActionKey, useErrorText } from '../purchase/ui';
-import { PERM, RESOLUTIONS, commentComplaint, getComplaint, key, transitionComplaint, type Status } from './api';
+import {
+  PERM,
+  RESOLUTIONS,
+  commentComplaint,
+  getComplaint,
+  key,
+  transitionComplaint,
+  type Status,
+} from './api';
 import { NEXT, buildTransition, needsText, transitionError } from './logic';
 
 export default function ComplaintDetailScreen() {
@@ -68,12 +76,18 @@ export default function ComplaintDetailScreen() {
             <Text style={k.title}>{c.ticketNo}</Text>
             <Text style={k.name}>{c.customerName ?? '-'}</Text>
             <Text style={k.sub}>
-              {[t(`complaints.category.${c.category}`, { defaultValue: c.category }), t(`complaints.severity.${c.severity}`, { defaultValue: c.severity }), t(`complaints.status.${c.status}`, { defaultValue: c.status })].join(' · ')}
+              {[
+                t(`complaints.category.${c.category}`, { defaultValue: c.category }),
+                t(`complaints.severity.${c.severity}`, { defaultValue: c.severity }),
+                t(`complaints.status.${c.status}`, { defaultValue: c.status }),
+              ].join(' · ')}
             </Text>
             <Text style={k.sub}>{c.description}</Text>
             {c.batchNo ? <Text style={k.sub}>{t('complaints.batchShown', { batch: c.batchNo })}</Text> : null}
             {c.overdue ? <Text style={k.error}>{t('complaints.overdue')}</Text> : null}
-            {c.resolutionText ? <Text style={k.sub}>{t('complaints.resolutionShown', { text: c.resolutionText })}</Text> : null}
+            {c.resolutionText ? (
+              <Text style={k.sub}>{t('complaints.resolutionShown', { text: c.resolutionText })}</Text>
+            ) : null}
 
             {msg ? <Notice tone="ok" text={msg} /> : null}
             {failure ? <Notice tone="error" text={failure} /> : null}
@@ -83,7 +97,12 @@ export default function ComplaintDetailScreen() {
                 <Text style={k.h2}>{t('complaints.moveTo')}</Text>
                 <View style={k.row}>
                   {NEXT[c.status].map((s) => (
-                    <Button key={s} kind={to === s ? 'primary' : 'ghost'} label={t(`complaints.status.${s}`)} onPress={() => setTo(s)} />
+                    <Button
+                      key={s}
+                      kind={to === s ? 'primary' : 'ghost'}
+                      label={t(`complaints.status.${s}`)}
+                      onPress={() => setTo(s)}
+                    />
                   ))}
                 </View>
                 {to ? (
@@ -96,7 +115,14 @@ export default function ComplaintDetailScreen() {
                     />
                     {textErr ? <Text style={k.error}>{t('complaints.v.text')}</Text> : null}
                     {to === 'RESOLVED' ? (
-                      <Chips options={RESOLUTIONS.map((r) => ({ value: r, label: t(`complaints.resolution.${r}`) }))} value={resolution} onChange={setResolution} />
+                      <Chips
+                        options={RESOLUTIONS.map((r) => ({
+                          value: r,
+                          label: t(`complaints.resolution.${r}`),
+                        }))}
+                        value={resolution}
+                        onChange={setResolution}
+                      />
                     ) : null}
                     <Button
                       label={t('complaints.confirmMove')}
@@ -105,7 +131,13 @@ export default function ComplaintDetailScreen() {
                         const body = buildTransition(to, text, resolution);
                         void guarded(
                           t('complaints.moved'),
-                          () => transitionComplaint(client!, c, body, moveKey.keyFor(`${c.id}|${c.version}|${JSON.stringify(body)}`)),
+                          () =>
+                            transitionComplaint(
+                              client!,
+                              c,
+                              body,
+                              moveKey.keyFor(`${c.id}|${c.version}|${JSON.stringify(body)}`),
+                            ),
                           () => {
                             moveKey.reset();
                             setTo(null);
@@ -126,7 +158,13 @@ export default function ComplaintDetailScreen() {
                   onPress={() =>
                     void guarded(
                       t('complaints.commented'),
-                      () => commentComplaint(client!, c.id, comment.trim(), noteKey.keyFor(`${c.id}|${comment.trim()}`)),
+                      () =>
+                        commentComplaint(
+                          client!,
+                          c.id,
+                          comment.trim(),
+                          noteKey.keyFor(`${c.id}|${comment.trim()}`),
+                        ),
                       () => {
                         noteKey.reset();
                         setComment('');

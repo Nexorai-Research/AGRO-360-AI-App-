@@ -15,22 +15,80 @@ jest.mock('../src/auth/AuthProvider', () => ({
   useAuth: () => ({
     status: 'signedIn',
     me: mockMe,
-    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a), patch: (...a: unknown[]) => mockPatch(...a) },
+    client: {
+      get: (...a: unknown[]) => mockGet(...a),
+      post: (...a: unknown[]) => mockPost(...a),
+      patch: (...a: unknown[]) => mockPatch(...a),
+    },
   }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 const acct = (o: Record<string, unknown>) => ({
-  id: 'a1', code: '1000', name: 'Cash in hand', type: 'ASSET', groupId: 'g1', groupName: 'Cash and bank', isControl: false, isSystem: false, cashBank: 'CASH',
-  isOpeningPlug: false, active: true, description: null, version: 3, balance: '2500.75', ...o,
+  id: 'a1',
+  code: '1000',
+  name: 'Cash in hand',
+  type: 'ASSET',
+  groupId: 'g1',
+  groupName: 'Cash and bank',
+  isControl: false,
+  isSystem: false,
+  cashBank: 'CASH',
+  isOpeningPlug: false,
+  active: true,
+  description: null,
+  version: 3,
+  balance: '2500.75',
+  ...o,
 });
 const base: Record<string, unknown> = {
-  '/finance/accounts': { items: [acct({}), acct({ id: 'a2', code: '4000', name: 'Sales', type: 'INCOME', cashBank: null, isSystem: true, balance: '-90000.00', groupName: 'Sales' })] },
-  '/finance/account-groups': { items: [{ id: 'g1', code: '10', name: 'Cash and bank', type: 'ASSET', parentId: null }, { id: 'g2', code: '60', name: 'Admin', type: 'EXPENSE', parentId: null }] },
-  '/reports/general-ledger': { from: '2026-08-14', to: '2026-11-12', opening: '1000.00', closing: '2500.75', entries: [{ journalId: 'j1', date: '2026-11-01', voucherNo: 'RV-0001', sourceType: 'finance.voucher', narration: 'Cash sale', purpose: 'VOUCHER', debit: '1500.75', credit: '0.00', running: '2500.75' }] },
-  '/finance/cost-centres': { items: [{ id: 'c1', code: 'CC1', name: 'Warehouse', active: true, version: 1 }] },
+  '/finance/accounts': {
+    items: [
+      acct({}),
+      acct({
+        id: 'a2',
+        code: '4000',
+        name: 'Sales',
+        type: 'INCOME',
+        cashBank: null,
+        isSystem: true,
+        balance: '-90000.00',
+        groupName: 'Sales',
+      }),
+    ],
+  },
+  '/finance/account-groups': {
+    items: [
+      { id: 'g1', code: '10', name: 'Cash and bank', type: 'ASSET', parentId: null },
+      { id: 'g2', code: '60', name: 'Admin', type: 'EXPENSE', parentId: null },
+    ],
+  },
+  '/reports/general-ledger': {
+    from: '2026-08-14',
+    to: '2026-11-12',
+    opening: '1000.00',
+    closing: '2500.75',
+    entries: [
+      {
+        journalId: 'j1',
+        date: '2026-11-01',
+        voucherNo: 'RV-0001',
+        sourceType: 'finance.voucher',
+        narration: 'Cash sale',
+        purpose: 'VOUCHER',
+        debit: '1500.75',
+        credit: '0.00',
+        running: '2500.75',
+      },
+    ],
+  },
+  '/finance/cost-centres': {
+    items: [{ id: 'c1', code: 'CC1', name: 'Warehouse', active: true, version: 1 }],
+  },
 };
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
@@ -39,15 +97,21 @@ const answers = (o: Record<string, unknown> = {}) =>
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost, mockPatch].forEach((m) => m.mockReset());
   mockId = 0;
-  mockMe = { userId: 'u1', roles: [], permissions: ['finance.account.view', 'finance.account.manage', 'reports.financial'] };
+  mockMe = {
+    userId: 'u1',
+    roles: [],
+    permissions: ['finance.account.view', 'finance.account.manage', 'reports.financial'],
+  };
   qc = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity, retryDelay: 0 } } });
   await setLanguage('en');
   answers();
@@ -112,7 +176,9 @@ describe('chart of accounts', () => {
     expect(screen.queryByLabelText('Active')).toBeNull();
     mockPatch.mockResolvedValue(acct({}));
     await press('Save');
-    await waitFor(() => expect(mockPatch.mock.calls[0]![1].body).toEqual({ name: 'Sales', description: null }));
+    await waitFor(() =>
+      expect(mockPatch.mock.calls[0]![1].body).toEqual({ name: 'Sales', description: null }),
+    );
   });
   test('stale version conflict is shown as an error', async () => {
     await render(<ChartScreen />, { wrapper });
@@ -134,7 +200,12 @@ describe('chart of accounts', () => {
     await press('Add account');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/accounts');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ code: '6050', name: 'Staff tea', type: 'EXPENSE', groupId: 'g2' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      code: '6050',
+      name: 'Staff tea',
+      type: 'EXPENSE',
+      groupId: 'g2',
+    });
   });
   test('without the manage permission there are no add or edit buttons', async () => {
     mockMe = { userId: 'u1', roles: [], permissions: ['finance.account.view'] };

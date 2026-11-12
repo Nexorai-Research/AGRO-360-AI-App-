@@ -26,7 +26,8 @@ export function useIdemKey() {
 }
 
 type TFn = TFunction;
-export const failText = (t: TFn, e: ErrorMessage) => t(e.key, { ...e.params, correlationId: e.params.correlationId ?? '-' });
+export const failText = (t: TFn, e: ErrorMessage) =>
+  t(e.key, { ...e.params, correlationId: e.params.correlationId ?? '-' });
 
 interface QueryLike {
   isPending: boolean;
@@ -65,21 +66,52 @@ export function Chips<T extends string>({
   onChange: (v: T) => void;
   label: string;
 }) {
-  return <KitChips label={label} value={value} onChange={onChange} options={options.map(([id, l]) => ({ id, label: l }))} />;
+  return (
+    <KitChips
+      label={label}
+      value={value}
+      onChange={onChange}
+      options={options.map(([id, l]) => ({ id, label: l }))}
+    />
+  );
 }
 
 export const k = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
   title: { fontSize: 22, fontWeight: '700', color: colors.ink },
   h2: { fontSize: 17, fontWeight: '700', color: colors.ink, marginTop: 6 },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12, gap: 8 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 12,
+    gap: 8,
+  },
   name: { fontSize: 16, color: colors.ink, fontWeight: '600' },
   sub: { fontSize: 14, color: colors.muted },
   ok: { fontSize: 16, color: colors.ok, fontWeight: '600' },
   error: { fontSize: 15, color: colors.danger },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: colors.ink,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { minHeight: 44, paddingHorizontal: 14, borderRadius: radius, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.card },
+  chip: {
+    minHeight: 44,
+    paddingHorizontal: 14,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    justifyContent: 'center',
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { fontSize: 15, color: colors.ink },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },

@@ -76,7 +76,9 @@ describe('document and audit rules', () => {
     expect(fileProblem({ name: 'a.pdf', size: 1000, base64: 'x' })).toBeNull();
     expect(fileProblem({ name: 'a.pdf', size: 5 * 1024 * 1024, base64: 'x' })).toBe('dcm.tooBig');
     expect(fileProblem({ name: 'a.exe', size: 10, base64: 'x' })).toBe('dcm.badType');
-    expect(fileProblem({ name: 'a.pdf', size: null, base64: 'A'.repeat(6 * 1024 * 1024) })).toBe('dcm.tooBig');
+    expect(fileProblem({ name: 'a.pdf', size: null, base64: 'A'.repeat(6 * 1024 * 1024) })).toBe(
+      'dcm.tooBig',
+    );
   });
   test('expiry date', () => {
     expect(validExpiry('')).toBe(true);
@@ -92,7 +94,9 @@ describe('document and audit rules', () => {
 
 describe('texts', () => {
   const flat = (o: unknown, p = ''): string[] =>
-    Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => (typeof v === 'object' && v ? flat(v, `${p}${k}.`) : [`${p}${k}`]));
+    Object.entries(o as Record<string, unknown>).flatMap(([k, v]) =>
+      typeof v === 'object' && v ? flat(v, `${p}${k}.`) : [`${p}${k}`],
+    );
   test('English, Hindi and Marathi have the same keys', () => {
     const en = flat(parts.en).sort();
     expect(flat(parts.hi).sort()).toEqual(en);

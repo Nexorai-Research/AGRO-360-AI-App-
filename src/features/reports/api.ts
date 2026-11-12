@@ -110,7 +110,13 @@ export interface TaxSummary {
   output: { ratePct: string; taxable: string; cgst: string; sgst: string; igst: string; tax: string }[];
   input: { ratePct: string; taxable: string; tax: string }[];
   months: { month: string; outputTax: string; inputTax: string; netPayable: string }[];
-  totals: { outputTaxable: string; outputTax: string; inputTaxable: string; inputTax: string; netPayable: string };
+  totals: {
+    outputTaxable: string;
+    outputTax: string;
+    inputTaxable: string;
+    inputTax: string;
+    netPayable: string;
+  };
   notes: string[];
 }
 
@@ -128,7 +134,13 @@ export interface LossReport {
   groupBy: string;
   rows: LossRow[];
   truncated: boolean;
-  totals: { lossValue: string; lossQuantity: string; returnedToSuppliers: string; netLoss: string; lossPctOfCostSold: string | null };
+  totals: {
+    lossValue: string;
+    lossQuantity: string;
+    returnedToSuppliers: string;
+    netLoss: string;
+    lossPctOfCostSold: string | null;
+  };
   notes: string[];
 }
 
@@ -157,7 +169,10 @@ export const fetchSales = (c: ApiClient, r: Range, groupBy: string, signal?: Abo
 export const fetchProfit = (c: ApiClient, r: Range, groupBy: string, signal?: AbortSignal) =>
   c.get<Profitability>('/reports/profitability', { query: { ...r, groupBy, limit: LIMIT }, signal });
 export const fetchCollections = (c: ApiClient, r: Range, groupBy: string, signal?: AbortSignal) =>
-  c.get<CollectionEfficiency>('/reports/collections/efficiency', { query: { ...r, groupBy, limit: LIMIT }, signal });
+  c.get<CollectionEfficiency>('/reports/collections/efficiency', {
+    query: { ...r, groupBy, limit: LIMIT },
+    signal,
+  });
 export const fetchTax = (c: ApiClient, r: Range, signal?: AbortSignal) =>
   c.get<TaxSummary>('/reports/tax/summary', { query: { ...r }, signal });
 export const fetchLosses = (c: ApiClient, r: Range, groupBy: string, signal?: AbortSignal) =>

@@ -41,18 +41,32 @@ export default function ProductsScreen() {
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
       <Text style={kit.title}>{t('products.title')}</Text>
-      {can(PERM.create) ? <Button label={t('products.new')} onPress={() => router.push('/products/form' as never)} /> : null}
+      {can(PERM.create) ? (
+        <Button label={t('products.new')} onPress={() => router.push('/products/form' as never)} />
+      ) : null}
       <TextInput
         value={search}
         onChangeText={setSearch}
         placeholder={t('products.search')}
         accessibilityLabel={t('products.search')}
         autoCorrect={false}
-        style={{ minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink }}
+        style={{
+          minHeight: 48,
+          borderWidth: 1,
+          borderColor: colors.line,
+          borderRadius: radius,
+          paddingHorizontal: 12,
+          fontSize: 16,
+          backgroundColor: '#fff',
+          color: colors.ink,
+        }}
       />
       <Chips
         label={t('products.status')}
-        options={(['ACTIVE', 'INACTIVE', 'ARCHIVED', ''] as const).map((s) => ({ id: s, label: t(`products.st.${s || 'ALL'}`) }))}
+        options={(['ACTIVE', 'INACTIVE', 'ARCHIVED', ''] as const).map((s) => ({
+          id: s,
+          label: t(`products.st.${s || 'ALL'}`),
+        }))}
         value={status}
         onChange={setStatus}
       />
@@ -60,18 +74,34 @@ export default function ProductsScreen() {
       {err ? (
         <StateView
           state={isNetwork(list.error) ? 'offline' : err.key === 'errors.FORBIDDEN' ? 'denied' : 'error'}
-          message={isNetwork(list.error) ? t('products.offline') : t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })}
+          message={
+            isNetwork(list.error)
+              ? t('products.offline')
+              : t(err.key, { ...err.params, correlationId: err.params.correlationId ?? '-' })
+          }
           onRetry={() => void list.refetch()}
         />
       ) : null}
       {list.data ? <Text style={kit.sub}>{t('products.count', { count: list.data.total })}</Text> : null}
       {list.data && list.data.items.length === 0 ? <Text style={kit.sub}>{t('products.empty')}</Text> : null}
       {(list.data?.items ?? []).map((p) => (
-        <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={p.name} onPress={() => router.push(`/products/${p.id}` as never)}>
+        <Pressable
+          key={p.id}
+          accessibilityRole="button"
+          accessibilityLabel={p.name}
+          onPress={() => router.push(`/products/${p.id}` as never)}
+        >
           <Card>
             <Text style={kit.name}>{p.name}</Text>
             <Text style={kit.sub}>
-              {[p.code, p.categoryName, p.sellingPrice ? formatINR(p.sellingPrice) : null, p.status !== 'ACTIVE' ? p.status : null].filter(Boolean).join(' · ')}
+              {[
+                p.code,
+                p.categoryName,
+                p.sellingPrice ? formatINR(p.sellingPrice) : null,
+                p.status !== 'ACTIVE' ? p.status : null,
+              ]
+                .filter(Boolean)
+                .join(' · ')}
             </Text>
           </Card>
         </Pressable>

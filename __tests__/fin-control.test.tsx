@@ -11,22 +11,86 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const ALL = ['finance.account.view', 'finance.period.lock', 'finance.period.reopen', 'finance.budget.manage', 'finance.budget.approve', 'finance.exception.manage'];
-const period = (o: Record<string, unknown>) => ({ id: 'p1', label: 'Oct 2026', startDate: '2026-10-01', endDate: '2026-10-31', status: 'OPEN', journals: 14, canReopen: false, ...o });
-const year = { id: 'y1', label: '2026-27', startDate: '2026-04-01', endDate: '2027-03-31', status: 'OPEN', periods: [period({ id: 'p0', label: 'Sep 2026', status: 'LOCKED', canReopen: true }), period({})] };
-const budget = (o: Record<string, unknown> = {}) => ({ id: 'bg1', name: 'Annual budget', fyLabel: '2026-27', version: 2, status: 'DRAFT', total: '240000.00', lineCount: 12, ...o });
-const exc = (o: Record<string, unknown> = {}) => ({ id: 'x1', exceptionNo: 'EXC-1', code: 'AR_MISMATCH', severity: 'HIGH', title: 'Receivables differ from customer ledger', status: 'OPEN', raisedAt: '2026-11-10T05:00:00Z', resolution: null, ...o });
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const ALL = [
+  'finance.account.view',
+  'finance.period.lock',
+  'finance.period.reopen',
+  'finance.budget.manage',
+  'finance.budget.approve',
+  'finance.exception.manage',
+];
+const period = (o: Record<string, unknown>) => ({
+  id: 'p1',
+  label: 'Oct 2026',
+  startDate: '2026-10-01',
+  endDate: '2026-10-31',
+  status: 'OPEN',
+  journals: 14,
+  canReopen: false,
+  ...o,
+});
+const year = {
+  id: 'y1',
+  label: '2026-27',
+  startDate: '2026-04-01',
+  endDate: '2027-03-31',
+  status: 'OPEN',
+  periods: [period({ id: 'p0', label: 'Sep 2026', status: 'LOCKED', canReopen: true }), period({})],
+};
+const budget = (o: Record<string, unknown> = {}) => ({
+  id: 'bg1',
+  name: 'Annual budget',
+  fyLabel: '2026-27',
+  version: 2,
+  status: 'DRAFT',
+  total: '240000.00',
+  lineCount: 12,
+  ...o,
+});
+const exc = (o: Record<string, unknown> = {}) => ({
+  id: 'x1',
+  exceptionNo: 'EXC-1',
+  code: 'AR_MISMATCH',
+  severity: 'HIGH',
+  title: 'Receivables differ from customer ledger',
+  status: 'OPEN',
+  raisedAt: '2026-11-10T05:00:00Z',
+  resolution: null,
+  ...o,
+});
 const base: Record<string, unknown> = {
   '/finance/periods': { items: [year] },
   '/finance/budgets': { items: [budget()] },
-  '/finance/budgets/bg1': { ...budget(), lines: [{ accountCode: '6100', accountName: 'Electricity', month: '2026-04-01', amount: '20000.00' }] },
-  '/reports/budget-variance': { from: '2026-04-01', to: '2026-11-12', rows: [{ code: '6100', name: 'Electricity', budget: '160000.00', actual: '170000.50', variance: '-10000.50', variancePct: '-6.25' }] },
+  '/finance/budgets/bg1': {
+    ...budget(),
+    lines: [{ accountCode: '6100', accountName: 'Electricity', month: '2026-04-01', amount: '20000.00' }],
+  },
+  '/reports/budget-variance': {
+    from: '2026-04-01',
+    to: '2026-11-12',
+    rows: [
+      {
+        code: '6100',
+        name: 'Electricity',
+        budget: '160000.00',
+        actual: '170000.50',
+        variance: '-10000.50',
+        variancePct: '-6.25',
+      },
+    ],
+  },
   '/finance/exceptions': { items: [exc()] },
 };
 const answers = (o: Record<string, unknown> = {}) =>
@@ -36,10 +100,12 @@ const answers = (o: Record<string, unknown> = {}) =>
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost].forEach((m) => m.mockReset());
@@ -137,7 +203,9 @@ describe('budgets', () => {
     await openBudgets();
     await press('View Annual budget');
     expect(await screen.findByText('-₹10,000.50')).toBeTruthy();
-    expect(mockGet.mock.calls.find((c) => c[0] === '/reports/budget-variance')![1].query.fyLabel).toBe('2026-27');
+    expect(mockGet.mock.calls.find((c) => c[0] === '/reports/budget-variance')![1].query.fyLabel).toBe(
+      '2026-27',
+    );
   });
   test('a draft budget shows its lines', async () => {
     await openBudgets();
@@ -179,7 +247,9 @@ describe('checks', () => {
     await type('What was done to fix it', 'Posted the missing receipt');
     mockPost.mockResolvedValue({});
     await press('Mark resolved');
-    await waitFor(() => expect(mockPost.mock.calls[0]![1].body).toEqual({ resolution: 'Posted the missing receipt' }));
+    await waitFor(() =>
+      expect(mockPost.mock.calls[0]![1].body).toEqual({ resolution: 'Posted the missing receipt' }),
+    );
   });
   test('run the checks now', async () => {
     await openChecks();

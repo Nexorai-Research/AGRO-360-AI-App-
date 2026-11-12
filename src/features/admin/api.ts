@@ -114,12 +114,23 @@ export interface Page<T> {
 export const LIMIT = 50;
 export const adminKey = (userId: string, ...parts: unknown[]) => ['admin', userId, ...parts] as const;
 
-export const fetchUsers = (c: ApiClient, q: { q: string; status: string; cursor?: string }, signal?: AbortSignal) =>
-  c.get<Page<UserView>>('/users', { query: { q: q.q.trim(), status: q.status, limit: LIMIT, cursor: q.cursor }, signal });
-export const fetchRoles = (c: ApiClient, signal?: AbortSignal) => c.get<{ items: RoleView[] }>('/roles', { signal });
+export const fetchUsers = (
+  c: ApiClient,
+  q: { q: string; status: string; cursor?: string },
+  signal?: AbortSignal,
+) =>
+  c.get<Page<UserView>>('/users', {
+    query: { q: q.q.trim(), status: q.status, limit: LIMIT, cursor: q.cursor },
+    signal,
+  });
+export const fetchRoles = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<{ items: RoleView[] }>('/roles', { signal });
 
 export const deactivateUser = (c: ApiClient, id: string, reason: string, idempotencyKey: string) =>
-  c.post<UserView>(`/users/${encodeURIComponent(id)}:deactivate`, { body: { reason: reason.trim() }, idempotencyKey });
+  c.post<UserView>(`/users/${encodeURIComponent(id)}:deactivate`, {
+    body: { reason: reason.trim() },
+    idempotencyKey,
+  });
 export const reactivateUser = (c: ApiClient, id: string, idempotencyKey: string) =>
   c.post<UserView>(`/users/${encodeURIComponent(id)}:reactivate`, { idempotencyKey });
 
@@ -132,7 +143,15 @@ export interface AuditFilter {
 }
 export const fetchAudit = (c: ApiClient, f: AuditFilter, cursor: string | undefined, signal?: AbortSignal) =>
   c.get<Page<AuditEvent>>('/audit', {
-    query: { action: f.action, entity: f.entity, actor: f.actor, from: f.from, to: f.to, limit: LIMIT, cursor },
+    query: {
+      action: f.action,
+      entity: f.entity,
+      actor: f.actor,
+      from: f.from,
+      to: f.to,
+      limit: LIMIT,
+      cursor,
+    },
     signal,
   });
 
@@ -141,15 +160,37 @@ export interface DocFilter {
   category: string;
   status: string;
 }
-export const fetchDocuments = (c: ApiClient, f: DocFilter, cursor: string | undefined, signal?: AbortSignal) =>
-  c.get<Page<DocumentView>>('/documents', { query: { q: f.q.trim(), category: f.category, status: f.status, limit: LIMIT, cursor }, signal });
+export const fetchDocuments = (
+  c: ApiClient,
+  f: DocFilter,
+  cursor: string | undefined,
+  signal?: AbortSignal,
+) =>
+  c.get<Page<DocumentView>>('/documents', {
+    query: { q: f.q.trim(), category: f.category, status: f.status, limit: LIMIT, cursor },
+    signal,
+  });
 export const setDocumentActive = (c: ApiClient, id: string, active: boolean, idempotencyKey: string) =>
-  c.post<DocumentView>(`/documents/${encodeURIComponent(id)}:${active ? 'restore' : 'deactivate'}`, { idempotencyKey });
+  c.post<DocumentView>(`/documents/${encodeURIComponent(id)}:${active ? 'restore' : 'deactivate'}`, {
+    idempotencyKey,
+  });
 
-export const fetchCompany = (c: ApiClient, signal?: AbortSignal) => c.get<CompanyProfile>('/settings/company', { signal });
-export const fetchBranches = (c: ApiClient, signal?: AbortSignal) => c.get<{ items: BranchView[] }>('/branches', { signal });
-export const fetchPaymentModes = (c: ApiClient, signal?: AbortSignal) => c.get<{ items: PaymentMode[] }>('/settings/payment-modes', { signal });
-export const fetchPolicies = (c: ApiClient, signal?: AbortSignal) => c.get<Policies>('/settings/general', { signal });
+export const fetchCompany = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<CompanyProfile>('/settings/company', { signal });
+export const fetchBranches = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<{ items: BranchView[] }>('/branches', { signal });
+export const fetchPaymentModes = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<{ items: PaymentMode[] }>('/settings/payment-modes', { signal });
+export const fetchPolicies = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<Policies>('/settings/general', { signal });
 
-export const DOC_CATEGORIES = ['GENERAL', 'LICENCE', 'CERTIFICATE', 'CONTRACT', 'INVOICE', 'COMPLIANCE', 'OTHER'] as const;
+export const DOC_CATEGORIES = [
+  'GENERAL',
+  'LICENCE',
+  'CERTIFICATE',
+  'CONTRACT',
+  'INVOICE',
+  'COMPLIANCE',
+  'OTHER',
+] as const;
 export const DOC_STATUSES = ['ACTIVE', 'EXPIRING_SOON', 'EXPIRED', 'INACTIVE'] as const;

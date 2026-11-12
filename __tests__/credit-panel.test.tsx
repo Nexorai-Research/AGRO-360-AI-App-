@@ -12,16 +12,32 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; tenantId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), put: (...a: unknown[]) => mockPut(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    me: mockMe,
+    client: {
+      get: (...a: unknown[]) => mockGet(...a),
+      put: (...a: unknown[]) => mockPut(...a),
+      post: (...a: unknown[]) => mockPost(...a),
+    },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 let account: Record<string, unknown>;
 const review = () => ({
   account,
-  history: [{ oldLimit: '10000.0000', newLimit: '20000.0000', reason: 'good payer', changedAt: '2026-10-01T10:00:00.000Z' }],
+  history: [
+    {
+      oldLimit: '10000.0000',
+      newLimit: '20000.0000',
+      reason: 'good payer',
+      changedAt: '2026-10-01T10:00:00.000Z',
+    },
+  ],
   holds: [{ action: 'HOLD', source: 'MANUAL', reason: 'cheque bounced', at: '2026-09-01T10:00:00.000Z' }],
 });
 const ALL = ['customer.ledger.view', 'credit.limit.manage', 'credit.hold'];
@@ -29,7 +45,17 @@ const ALL = ['customer.ledger.view', 'credit.limit.manage', 'credit.hold'];
 beforeEach(async () => {
   [mockGet, mockPut, mockPost].forEach((m) => m.mockReset());
   mockId = 0;
-  account = { customerId: 'c1', creditLimit: '20000.0000', seasonLimit: null, termId: null, hold: false, holdReason: null, outstanding: '5000.0000', available: '15000.0000', version: 3 };
+  account = {
+    customerId: 'c1',
+    creditLimit: '20000.0000',
+    seasonLimit: null,
+    termId: null,
+    hold: false,
+    holdReason: null,
+    outstanding: '5000.0000',
+    available: '15000.0000',
+    version: 3,
+  };
   mockGet.mockImplementation(async () => review());
   mockMe = { userId: 'u1', tenantId: 't1', roles: [], permissions: ALL };
   qc = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity, retryDelay: 0 } } });
@@ -89,7 +115,11 @@ describe('credit panel', () => {
     await fireEvent.changeText(field, '30000.50');
     await fireEvent.press(screen.getByLabelText('Save limit'));
     expect(await screen.findByText('Credit limit saved.')).toBeTruthy();
-    expect(mockPut).toHaveBeenCalledWith('/customers/c1/credit-limit', { body: { creditLimit: '30000.50', seasonLimit: null }, version: 3, idempotencyKey: 'key-1' });
+    expect(mockPut).toHaveBeenCalledWith('/customers/c1/credit-limit', {
+      body: { creditLimit: '30000.50', seasonLimit: null },
+      version: 3,
+      idempotencyKey: 'key-1',
+    });
   });
   test('a bad amount cannot be saved', async () => {
     await render(<CreditPanel customerId="c1" />, { wrapper });
@@ -101,7 +131,9 @@ describe('credit panel', () => {
     expect(mockPut).not.toHaveBeenCalled();
   });
   test('limit above the approver limit: refusal shown in words; retry keeps the key', async () => {
-    mockPut.mockRejectedValueOnce(new ApiError(0, null, 'c1')).mockRejectedValueOnce(new ApiError(403, { title: 'APPROVAL_REQUIRED' }, 'c2'));
+    mockPut
+      .mockRejectedValueOnce(new ApiError(0, null, 'c1'))
+      .mockRejectedValueOnce(new ApiError(403, { title: 'APPROVAL_REQUIRED' }, 'c2'));
     await render(<CreditPanel customerId="c1" />, { wrapper });
     await openPanel();
     await fireEvent.press(await screen.findByLabelText('Change limit'));
@@ -123,7 +155,10 @@ describe('credit panel', () => {
     await fireEvent.changeText(screen.getByLabelText('Reason'), 'cheque bounced');
     await fireEvent.press(screen.getByLabelText('Put on hold'));
     expect(await screen.findByText('Credit is on hold.')).toBeTruthy();
-    expect(mockPost).toHaveBeenCalledWith('/customers/c1/credit-hold', { body: { reason: 'cheque bounced' }, idempotencyKey: 'key-1' });
+    expect(mockPost).toHaveBeenCalledWith('/customers/c1/credit-hold', {
+      body: { reason: 'cheque bounced' },
+      idempotencyKey: 'key-1',
+    });
   });
   test('a customer on hold shows Release, which posts to credit-release', async () => {
     account = { ...account, hold: true, holdReason: 'cheque bounced' };

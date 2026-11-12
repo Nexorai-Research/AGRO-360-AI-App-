@@ -74,8 +74,13 @@ export const applyLeave = (c: ApiClient, body: ApplyLeaveBody, idempotencyKey: s
   c.post<LeaveRequest>('/hr/leaves', { body, idempotencyKey });
 export const cancelLeave = (c: ApiClient, id: string, idempotencyKey: string) =>
   c.post<LeaveRequest>(`/hr/leaves/${id}/cancel`, { idempotencyKey });
-export const decideLeave = (c: ApiClient, id: string, decision: 'approve' | 'reject', note: string, idempotencyKey: string) =>
-  c.post<LeaveRequest>(`/hr/leaves/${id}/${decision}`, { body: note ? { note } : {}, idempotencyKey });
+export const decideLeave = (
+  c: ApiClient,
+  id: string,
+  decision: 'approve' | 'reject',
+  note: string,
+  idempotencyKey: string,
+) => c.post<LeaveRequest>(`/hr/leaves/${id}/${decision}`, { body: note ? { note } : {}, idempotencyKey });
 
 // ---- payslips ---------------------------------------------------------------------------------------------------------
 export interface PayslipLine {
@@ -105,7 +110,8 @@ export interface Payslip {
 }
 export const fetchPayslips = (c: ApiClient, signal?: AbortSignal) =>
   c.get<{ items: Payslip[] }>('/hr/payslips', { signal });
-export const fetchPayslip = (c: ApiClient, id: string, signal?: AbortSignal) => c.get<Payslip>(`/hr/payslips/${id}`, { signal });
+export const fetchPayslip = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  c.get<Payslip>(`/hr/payslips/${id}`, { signal });
 
 // ---- beat plans and field visits --------------------------------------------------------------------------------------
 export interface Beat {
@@ -178,6 +184,7 @@ export interface AdvanceBody {
   startPeriod: string;
   reason?: string;
 }
-export const fetchAdvances = (c: ApiClient, signal?: AbortSignal) => c.get<AdvanceList>('/hr/advances', { signal });
+export const fetchAdvances = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<AdvanceList>('/hr/advances', { signal });
 export const requestAdvance = (c: ApiClient, body: AdvanceBody, idempotencyKey: string) =>
   c.post<Advance>('/hr/advances', { body, idempotencyKey });

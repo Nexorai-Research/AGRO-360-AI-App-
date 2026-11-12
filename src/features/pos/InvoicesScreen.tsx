@@ -1,5 +1,14 @@
 import { useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, Share, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
@@ -149,7 +158,11 @@ export default function InvoicesScreen() {
     return (
       <StateView
         state={isNetwork(list.error) ? 'offline' : m.key === 'errors.FORBIDDEN' ? 'denied' : 'error'}
-        message={isNetwork(list.error) ? t('invoices.offline') : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })}
+        message={
+          isNetwork(list.error)
+            ? t('invoices.offline')
+            : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })
+        }
         onRetry={() => void list.refetch()}
       />
     );
@@ -158,7 +171,11 @@ export default function InvoicesScreen() {
   return (
     <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
       <Text style={s.title}>{t('invoices.title')}</Text>
-      {msg ? <Text style={s.ok} accessibilityRole="alert">{msg}</Text> : null}
+      {msg ? (
+        <Text style={s.ok} accessibilityRole="alert">
+          {msg}
+        </Text>
+      ) : null}
       {failure ? (
         <Text style={s.error} accessibilityRole="alert">
           {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
@@ -167,28 +184,55 @@ export default function InvoicesScreen() {
       {(list.data ?? []).length === 0 ? <Text style={s.sub}>{t('invoices.empty')}</Text> : null}
       {(list.data ?? []).map((i) => (
         <View key={i.id} style={s.card}>
-          <Text style={s.name}>{i.number} · {formatINR(i.total)}</Text>
+          <Text style={s.name}>
+            {i.number} · {formatINR(i.total)}
+          </Text>
           <Text style={s.sub}>
             {[i.invoiceDate, i.customerName ?? t('invoices.walkIn'), i.status].join(' · ')}
-            {dec(i.creditAmount).gt(0) ? ` · ${t('invoices.credit', { amount: formatINR(i.creditAmount) })}` : ''}
+            {dec(i.creditAmount).gt(0)
+              ? ` · ${t('invoices.credit', { amount: formatINR(i.creditAmount) })}`
+              : ''}
           </Text>
           <View style={s.row}>
-            {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.share')} onPress={() => void share(i, false)} /> : null}
-            {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.print')} onPress={() => void printOrPdf(i, false)} /> : null}
-            {can(PERM2.print) ? <Button kind="ghost" label={t('invoices.pdf')} onPress={() => void printOrPdf(i, true)} /> : null}
-            {can(PERM2.print) && i.customerName ? <Button kind="ghost" label={t('invoices.sendWhatsapp')} onPress={() => void share(i, true)} /> : null}
-            {can(PERM2.ret) && i.status === 'FINALIZED' ? <Button kind="ghost" label={t('invoices.return')} onPress={() => void open(i, 'return')} /> : null}
-            {can(PERM2.cancel) && i.status === 'FINALIZED' ? <Button kind="ghost" label={t('invoices.cancel')} onPress={() => void open(i, 'cancel')} /> : null}
+            {can(PERM2.print) ? (
+              <Button kind="ghost" label={t('invoices.share')} onPress={() => void share(i, false)} />
+            ) : null}
+            {can(PERM2.print) ? (
+              <Button kind="ghost" label={t('invoices.print')} onPress={() => void printOrPdf(i, false)} />
+            ) : null}
+            {can(PERM2.print) ? (
+              <Button kind="ghost" label={t('invoices.pdf')} onPress={() => void printOrPdf(i, true)} />
+            ) : null}
+            {can(PERM2.print) && i.customerName ? (
+              <Button kind="ghost" label={t('invoices.sendWhatsapp')} onPress={() => void share(i, true)} />
+            ) : null}
+            {can(PERM2.ret) && i.status === 'FINALIZED' ? (
+              <Button kind="ghost" label={t('invoices.return')} onPress={() => void open(i, 'return')} />
+            ) : null}
+            {can(PERM2.cancel) && i.status === 'FINALIZED' ? (
+              <Button kind="ghost" label={t('invoices.cancel')} onPress={() => void open(i, 'cancel')} />
+            ) : null}
           </View>
 
           {openId === i.id && mode === 'cancel' ? (
             <View style={s.panel}>
               <Text style={s.sub}>{t('invoices.cancelHint')}</Text>
-              <TextInput value={reason} onChangeText={setReason} placeholder={t('invoices.reason')} accessibilityLabel={t('invoices.reason')} style={s.input} />
+              <TextInput
+                value={reason}
+                onChangeText={setReason}
+                placeholder={t('invoices.reason')}
+                accessibilityLabel={t('invoices.reason')}
+                style={s.input}
+              />
               <Button
                 label={t('invoices.cancelNow')}
                 disabled={busy || reason.trim() === ''}
-                onPress={() => void run(() => cancelInvoice(client!, i.id, reason.trim(), keyFor(`c|${i.id}|${reason.trim()}`)), t('invoices.cancelled', { number: i.number }))}
+                onPress={() =>
+                  void run(
+                    () => cancelInvoice(client!, i.id, reason.trim(), keyFor(`c|${i.id}|${reason.trim()}`)),
+                    t('invoices.cancelled', { number: i.number }),
+                  )
+                }
               />
             </View>
           ) : null}
@@ -206,31 +250,80 @@ export default function InvoicesScreen() {
                   style={[s.chip, lineId === l.id && s.chipOn]}
                 >
                   <Text style={[s.chipTxt, lineId === l.id && s.chipTxtOn]}>
-                    {t('invoices.lineText', { code: l.skuCode, qty: dec(l.qty).toString(), returned: dec(l.returned).toString() })}
+                    {t('invoices.lineText', {
+                      code: l.skuCode,
+                      qty: dec(l.qty).toString(),
+                      returned: dec(l.returned).toString(),
+                    })}
                   </Text>
                 </Pressable>
               ))}
               {detail ? (
                 <>
-                  <TextInput value={qty} onChangeText={setQty} placeholder={t('invoices.qty')} accessibilityLabel={t('invoices.qty')} keyboardType="decimal-pad" style={s.input} />
-                  {qty !== '' && qtyCheck !== 'ok' ? <Text style={s.error}>{t(`invoices.v.${qtyCheck}`)}</Text> : null}
-                  <TextInput value={reason} onChangeText={setReason} placeholder={t('invoices.reason')} accessibilityLabel={t('invoices.reason')} style={s.input} />
+                  <TextInput
+                    value={qty}
+                    onChangeText={setQty}
+                    placeholder={t('invoices.qty')}
+                    accessibilityLabel={t('invoices.qty')}
+                    keyboardType="decimal-pad"
+                    style={s.input}
+                  />
+                  {qty !== '' && qtyCheck !== 'ok' ? (
+                    <Text style={s.error}>{t(`invoices.v.${qtyCheck}`)}</Text>
+                  ) : null}
+                  <TextInput
+                    value={reason}
+                    onChangeText={setReason}
+                    placeholder={t('invoices.reason')}
+                    accessibilityLabel={t('invoices.reason')}
+                    style={s.input}
+                  />
                   <View style={s.chips}>
-                    {[...(detail.customerId ? ['CREDIT_TO_ACCOUNT'] : []), ...(modes.data ?? []).map((m) => m.code)].map((m) => (
-                      <Pressable key={m} accessibilityRole="radio" accessibilityLabel={m} accessibilityState={{ selected: refund === m }} onPress={() => setRefund(m)} style={[s.chip, refund === m && s.chipOn]}>
-                        <Text style={[s.chipTxt, refund === m && s.chipTxtOn]}>{m === 'CREDIT_TO_ACCOUNT' ? t('invoices.toAccount') : m}</Text>
+                    {[
+                      ...(detail.customerId ? ['CREDIT_TO_ACCOUNT'] : []),
+                      ...(modes.data ?? []).map((m) => m.code),
+                    ].map((m) => (
+                      <Pressable
+                        key={m}
+                        accessibilityRole="radio"
+                        accessibilityLabel={m}
+                        accessibilityState={{ selected: refund === m }}
+                        onPress={() => setRefund(m)}
+                        style={[s.chip, refund === m && s.chipOn]}
+                      >
+                        <Text style={[s.chipTxt, refund === m && s.chipTxtOn]}>
+                          {m === 'CREDIT_TO_ACCOUNT' ? t('invoices.toAccount') : m}
+                        </Text>
                       </Pressable>
                     ))}
                   </View>
-                  <Pressable accessibilityRole="checkbox" accessibilityLabel={t('invoices.damaged')} accessibilityState={{ checked: damaged }} onPress={() => setDamaged((d) => !d)} style={s.chip}>
-                    <Text style={s.chipTxt}>{damaged ? '☑ ' : '☐ '}{t('invoices.damaged')}</Text>
+                  <Pressable
+                    accessibilityRole="checkbox"
+                    accessibilityLabel={t('invoices.damaged')}
+                    accessibilityState={{ checked: damaged }}
+                    onPress={() => setDamaged((d) => !d)}
+                    style={s.chip}
+                  >
+                    <Text style={s.chipTxt}>
+                      {damaged ? '☑ ' : '☐ '}
+                      {t('invoices.damaged')}
+                    </Text>
                   </Pressable>
                   <Button
                     label={t('invoices.returnNow')}
                     disabled={busy || !returnOk}
                     onPress={() => {
-                      const body = { invoiceId: detail.id, returnDate: todayIST(), reason: reason.trim(), refundMode: refund, lines: [{ invoiceLineId: lineId, qty: qty.trim(), toDamaged: damaged }] };
-                      void run(() => postReturn(client!, body, keyFor(JSON.stringify(body))), t('invoices.returned', { number: i.number }));
+                      const body = {
+                        invoiceId: detail.id,
+                        returnDate: todayIST(),
+                        reason: reason.trim(),
+                        refundMode: refund,
+                        lines: [{ invoiceLineId: lineId, qty: qty.trim(), toDamaged: damaged }],
+                      };
+                      void run(
+                        () => postReturn(client!, body, keyFor(JSON.stringify(body))),
+                        t('invoices.returned', { number: i.number }),
+                      );
                     }}
                   />
                 </>
@@ -246,16 +339,40 @@ export default function InvoicesScreen() {
 const s = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
   title: { fontSize: 22, fontWeight: '700', color: colors.ink },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12, gap: 8 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 12,
+    gap: 8,
+  },
   panel: { gap: 8, paddingTop: 8 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   name: { fontSize: 16, color: colors.ink, fontWeight: '600' },
   sub: { fontSize: 14, color: colors.muted },
   ok: { fontSize: 16, color: colors.ok, fontWeight: '600' },
   error: { fontSize: 15, color: colors.danger },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    color: colors.ink,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { minHeight: 48, paddingHorizontal: 14, borderRadius: radius, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.card },
+  chip: {
+    minHeight: 48,
+    paddingHorizontal: 14,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    justifyContent: 'center',
+    backgroundColor: colors.card,
+  },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { fontSize: 15, color: colors.ink },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },

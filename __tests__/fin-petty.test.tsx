@@ -11,26 +11,70 @@ const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) } }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 const ALL = ['finance.account.view', 'finance.pettycash.manage', 'finance.voucher.approve'];
 const fund = {
-  id: 'f1', branchId: 'b1', branchName: 'Main', ledgerCode: '1005', floatAmount: '5000.00', custodian: 'Ramesh', balance: '3200.50', toReplenish: '1799.50', active: true, version: 1,
+  id: 'f1',
+  branchId: 'b1',
+  branchName: 'Main',
+  ledgerCode: '1005',
+  floatAmount: '5000.00',
+  custodian: 'Ramesh',
+  balance: '3200.50',
+  toReplenish: '1799.50',
+  active: true,
+  version: 1,
   lastCount: { countedOn: '2026-11-01', difference: '-10.00', status: 'APPROVED' },
 };
 const accounts = [
-  { id: 'x1', code: '6100', name: 'Tea and snacks', type: 'EXPENSE', cashBank: null, isControl: false, active: true },
-  { id: 'c2', code: '1010', name: 'SBI current', type: 'ASSET', cashBank: 'BANK', isControl: false, active: true },
+  {
+    id: 'x1',
+    code: '6100',
+    name: 'Tea and snacks',
+    type: 'EXPENSE',
+    cashBank: null,
+    isControl: false,
+    active: true,
+  },
+  {
+    id: 'c2',
+    code: '1010',
+    name: 'SBI current',
+    type: 'ASSET',
+    cashBank: 'BANK',
+    isControl: false,
+    active: true,
+  },
 ];
 const base: Record<string, unknown> = {
   '/finance/petty-cash': { items: [fund] },
   '/finance/accounts': { items: accounts },
   '/branches': { items: [{ id: 'b1', name: 'Main' }] },
-  '/finance/petty-cash/f1/counts': { items: [{ id: 'k1', fundId: 'f1', countedOn: '2026-11-10', countedAmount: '3190.50', bookAmount: '3200.50', difference: '-10.00', status: 'PENDING_APPROVAL', note: null }] },
+  '/finance/petty-cash/f1/counts': {
+    items: [
+      {
+        id: 'k1',
+        fundId: 'f1',
+        countedOn: '2026-11-10',
+        countedAmount: '3190.50',
+        bookAmount: '3200.50',
+        difference: '-10.00',
+        status: 'PENDING_APPROVAL',
+        note: null,
+      },
+    ],
+  },
 };
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
@@ -39,10 +83,12 @@ const answers = (o: Record<string, unknown> = {}) =>
     return v;
   });
 const press = async (label: string, i = 0) => fireEvent.press((await screen.findAllByLabelText(label))[i]!);
-const type = async (label: string, text: string) => fireEvent.changeText(await screen.findByLabelText(label), text);
+const type = async (label: string, text: string) =>
+  fireEvent.changeText(await screen.findByLabelText(label), text);
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', parts[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost].forEach((m) => m.mockReset());
@@ -86,7 +132,8 @@ describe('petty cash', () => {
     mockMe = { userId: 'u1', roles: [], permissions: ['finance.account.view'] };
     await render(<PettyScreen />, { wrapper });
     await screen.findByText('Main · 1005');
-    for (const l of ['Spend from Main', 'Replenish Main', 'Count the box at Main', 'New fund']) expect(screen.queryByLabelText(l)).toBeNull();
+    for (const l of ['Spend from Main', 'Replenish Main', 'Count the box at Main', 'New fund'])
+      expect(screen.queryByLabelText(l)).toBeNull();
     expect(screen.getByLabelText('Counts at Main')).toBeTruthy();
   });
   test('spend posts category, amount and what for with one key', async () => {
@@ -99,7 +146,12 @@ describe('petty cash', () => {
     await press('Save');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/petty-cash/f1/expense');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/), accountId: 'x1', amount: '45.50', narration: 'Tea for staff' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      accountId: 'x1',
+      amount: '45.50',
+      narration: 'Tea for staff',
+    });
     expect(await screen.findByText('Expense posted.')).toBeTruthy();
   });
   test('spend with a bad amount stays disabled', async () => {
@@ -174,7 +226,11 @@ describe('petty cash', () => {
     await press('Create fund');
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
     expect(mockPost.mock.calls[0]![0]).toBe('/finance/petty-cash');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ branchId: 'b1', floatAmount: '5000', custodian: 'Ramesh' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      branchId: 'b1',
+      floatAmount: '5000',
+      custodian: 'Ramesh',
+    });
   });
   test('Marathi', async () => {
     await setLanguage('mr');

@@ -8,7 +8,15 @@ import { Button } from '@/ui/Button';
 import { Card, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { StateView } from '../stock/StateView';
 import { searchProducts, type ProductLite } from '../pos/api';
-import { DAMAGE_REASONS, PERM, fetchTransfers, fetchWarehouseList, ikey, postDamage, postTransfer } from './api';
+import {
+  DAMAGE_REASONS,
+  PERM,
+  fetchTransfers,
+  fetchWarehouseList,
+  ikey,
+  postDamage,
+  postTransfer,
+} from './api';
 import { checkQty } from './logic';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
@@ -39,9 +47,23 @@ export default function TransfersScreen() {
     return () => clearTimeout(h);
   }, [search]);
 
-  const list = useQuery({ queryKey: ikey(userId, 'transfers'), queryFn: ({ signal }) => fetchTransfers(client!, signal), enabled: ready, retry: (n, e) => isNetwork(e) && n < 1 });
-  const whs = useQuery({ queryKey: ikey(userId, 'whs'), queryFn: ({ signal }) => fetchWarehouseList(client!, signal), enabled: ready, staleTime: 5 * 60_000 });
-  const found = useQuery({ queryKey: ikey(userId, 'prod', q), queryFn: ({ signal }) => searchProducts(client!, q, signal), enabled: ready && mode !== null && q.length >= 2 && product === null });
+  const list = useQuery({
+    queryKey: ikey(userId, 'transfers'),
+    queryFn: ({ signal }) => fetchTransfers(client!, signal),
+    enabled: ready,
+    retry: (n, e) => isNetwork(e) && n < 1,
+  });
+  const whs = useQuery({
+    queryKey: ikey(userId, 'whs'),
+    queryFn: ({ signal }) => fetchWarehouseList(client!, signal),
+    enabled: ready,
+    staleTime: 5 * 60_000,
+  });
+  const found = useQuery({
+    queryKey: ikey(userId, 'prod', q),
+    queryFn: ({ signal }) => searchProducts(client!, q, signal),
+    enabled: ready && mode !== null && q.length >= 2 && product === null,
+  });
 
   const whName = (id: string) => whs.data?.find((w) => w.id === id)?.name ?? id.slice(0, 8);
   const fromBranch = whs.data?.find((w) => w.id === from)?.branchId;
@@ -69,13 +91,28 @@ export default function TransfersScreen() {
       setBusy(false);
     }
   }
-  const open = (m: 'transfer' | 'damage') => { ak.reset(); setFailure(null); setMsg(null); setMode(m); };
+  const open = (m: 'transfer' | 'damage') => {
+    ak.reset();
+    setFailure(null);
+    setMsg(null);
+    setMode(m);
+  };
 
   if (!can(PERM.view)) return <StateView state="denied" message={t('transfers.denied')} />;
   if (list.isPending && list.fetchStatus !== 'idle') return <StateView state="loading" />;
   if (list.error) {
     const m = errorMessage(list.error);
-    return <StateView state={isNetwork(list.error) ? 'offline' : 'error'} message={isNetwork(list.error) ? t('transfers.offline') : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })} onRetry={() => void list.refetch()} />;
+    return (
+      <StateView
+        state={isNetwork(list.error) ? 'offline' : 'error'}
+        message={
+          isNetwork(list.error)
+            ? t('transfers.offline')
+            : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })
+        }
+        onRetry={() => void list.refetch()}
+      />
+    );
   }
 
   return (
@@ -83,14 +120,45 @@ export default function TransfersScreen() {
       <Text style={kit.title}>{t('transfers.title')}</Text>
       <Text style={kit.sub}>{t('transfers.hint')}</Text>
       {msg ? <Notice tone="ok" text={msg} /> : null}
-      {failure ? <Notice tone="error" text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })} /> : null}
+      {failure ? (
+        <Notice
+          tone="error"
+          text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+        />
+      ) : null}
       {can(PERM.transfer) ? <Button label={t('transfers.new')} onPress={() => open('transfer')} /> : null}
-      {can(PERM.damage) ? <Button kind="ghost" label={t('transfers.damage')} onPress={() => open('damage')} /> : null}
+      {can(PERM.damage) ? (
+        <Button kind="ghost" label={t('transfers.damage')} onPress={() => open('damage')} />
+      ) : null}
 
       {mode ? (
         <Card>
-          <Chips label={t('transfers.from')} options={(whs.data ?? []).filter((w) => mode === 'transfer' || w.sellable).map((w) => ({ id: w.id, label: w.name }))} value={from} onChange={(v) => { setFrom(v); setTo(''); }} />
-          {mode === 'transfer' ? <Chips label={t('transfers.to')} options={toOptions.map((w) => ({ id: w.id, label: w.name }))} value={to} onChange={setTo} /> : <Chips label={t('adjust.reason')} options={DAMAGE_REASONS.map((r) => ({ id: r, label: r }))} value={reason} onChange={setReason} />}
+          <Chips
+            label={t('transfers.from')}
+            options={(whs.data ?? [])
+              .filter((w) => mode === 'transfer' || w.sellable)
+              .map((w) => ({ id: w.id, label: w.name }))}
+            value={from}
+            onChange={(v) => {
+              setFrom(v);
+              setTo('');
+            }}
+          />
+          {mode === 'transfer' ? (
+            <Chips
+              label={t('transfers.to')}
+              options={toOptions.map((w) => ({ id: w.id, label: w.name }))}
+              value={to}
+              onChange={setTo}
+            />
+          ) : (
+            <Chips
+              label={t('adjust.reason')}
+              options={DAMAGE_REASONS.map((r) => ({ id: r, label: r }))}
+              value={reason}
+              onChange={setReason}
+            />
+          )}
           {product ? (
             <Text style={kit.name}>{product.name}</Text>
           ) : (
@@ -101,19 +169,38 @@ export default function TransfersScreen() {
               ))}
             </>
           )}
-          <Field label={t('transfers.qty')} value={qty} onChange={setQty} keyboard="decimal-pad" error={qty !== '' && qtyCheck !== 'ok' ? t(`adjust.v.${qtyCheck}`) : null} />
-          {mode === 'transfer' ? <Field label={t('adjust.remarks')} value={remarks} onChange={setRemarks} /> : null}
+          <Field
+            label={t('transfers.qty')}
+            value={qty}
+            onChange={setQty}
+            keyboard="decimal-pad"
+            error={qty !== '' && qtyCheck !== 'ok' ? t(`adjust.v.${qtyCheck}`) : null}
+          />
+          {mode === 'transfer' ? (
+            <Field label={t('adjust.remarks')} value={remarks} onChange={setRemarks} />
+          ) : null}
           <Button
             label={t(mode === 'transfer' ? 'transfers.post' : 'transfers.moveDamaged')}
             disabled={busy || !ok}
             onPress={() => {
               const lines = [{ skuId: product!.id, qty: qty.trim() }];
               if (mode === 'transfer') {
-                const b = { fromWarehouseId: from, toWarehouseId: to, ...(remarks.trim() ? { remarks: remarks.trim() } : {}), lines };
-                void run(() => postTransfer(client!, b, ak.keyFor(`t|${JSON.stringify(b)}`)), t('transfers.posted'));
+                const b = {
+                  fromWarehouseId: from,
+                  toWarehouseId: to,
+                  ...(remarks.trim() ? { remarks: remarks.trim() } : {}),
+                  lines,
+                };
+                void run(
+                  () => postTransfer(client!, b, ak.keyFor(`t|${JSON.stringify(b)}`)),
+                  t('transfers.posted'),
+                );
               } else {
                 const b = { fromWarehouseId: from, reasonCode: reason, lines };
-                void run(() => postDamage(client!, b, ak.keyFor(`d|${JSON.stringify(b)}`)), t('transfers.movedDamaged'));
+                void run(
+                  () => postDamage(client!, b, ak.keyFor(`d|${JSON.stringify(b)}`)),
+                  t('transfers.movedDamaged'),
+                );
               }
             }}
           />
@@ -124,8 +211,14 @@ export default function TransfersScreen() {
       {(list.data ?? []).length === 0 ? <Text style={kit.sub}>{t('transfers.empty')}</Text> : null}
       {(list.data ?? []).map((x) => (
         <Card key={x.id}>
-          <Text style={kit.name}>{x.number} · {x.status}</Text>
-          <Text style={kit.sub}>{[x.transferDate, `${whName(x.fromWarehouseId)} → ${whName(x.toWarehouseId)}`, x.purpose].join(' · ')}</Text>
+          <Text style={kit.name}>
+            {x.number} · {x.status}
+          </Text>
+          <Text style={kit.sub}>
+            {[x.transferDate, `${whName(x.fromWarehouseId)} → ${whName(x.toWarehouseId)}`, x.purpose].join(
+              ' · ',
+            )}
+          </Text>
         </Card>
       ))}
     </ScrollView>

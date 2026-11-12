@@ -22,13 +22,30 @@ const mockClient = {
   delete: (...a: unknown[]) => mockDelete(...a),
 };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const custom = { id: 'r-1', name: 'Counter staff', isSystem: false, systemKey: null, version: 7, permissions: ['sales.invoice.view'], assignedUsers: 0, limits: { line_discount_pct: '5' } };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const custom = {
+  id: 'r-1',
+  name: 'Counter staff',
+  isSystem: false,
+  systemKey: null,
+  version: 7,
+  permissions: ['sales.invoice.view'],
+  assignedUsers: 0,
+  limits: { line_discount_pct: '5' },
+};
 const used = { ...custom, id: 'r-2', name: 'Manager', assignedUsers: 3, limits: {} };
 const system = { ...custom, id: 'r-3', name: 'Admin', isSystem: true, systemKey: 'admin', assignedUsers: 1 };
 const perms = [
@@ -47,7 +64,11 @@ beforeAll(() => {
 beforeEach(async () => {
   [mockGet, mockPost, mockPut, mockPatch, mockDelete].forEach((m) => m.mockReset());
   mockId = 0;
-  mockMe = { userId: 'u-1', roles: [], permissions: ['identity.role.manage', 'sales.invoice.create', 'sales.invoice.view', 'stock.adjust'] };
+  mockMe = {
+    userId: 'u-1',
+    roles: [],
+    permissions: ['identity.role.manage', 'sales.invoice.create', 'sales.invoice.view', 'stock.adjust'],
+  };
   client = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity, retryDelay: 0 } } });
   await setLanguage('en');
   mockGet.mockImplementation(async (path: string) => {
@@ -168,7 +189,9 @@ describe('rename and delete', () => {
     mockDelete.mockResolvedValue(null);
     await open('Counter staff');
     await openRole(1);
-    expect(await screen.findByText('3 users have this role. Move them to another role before deleting it.')).toBeTruthy();
+    expect(
+      await screen.findByText('3 users have this role. Move them to another role before deleting it.'),
+    ).toBeTruthy();
     expect(screen.getByLabelText('Delete role').props.accessibilityState?.disabled).toBe(true);
     await openRole(0);
     await fireEvent.press(screen.getAllByLabelText('Delete role')[0]!);

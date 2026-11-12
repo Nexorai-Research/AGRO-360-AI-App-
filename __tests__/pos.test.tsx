@@ -25,19 +25,49 @@ let mockId = 0;
 // Stable like the real AuthProvider, which builds the client once with useMemo.
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 jest.mock('../src/features/stock/BarcodeScanner', () => ({ BarcodeScanner: () => null }));
 
 const prod: ProductLite = {
-  id: 'p-1', code: 'URE-50', name: 'Urea 50kg', status: 'ACTIVE', sellable: true, saleBlocked: false, banned: false,
-  mrp: '300.00', sellingPrice: '280.00', baseUomCode: 'BAG', primaryBarcode: '890',
+  id: 'p-1',
+  code: 'URE-50',
+  name: 'Urea 50kg',
+  status: 'ACTIVE',
+  sellable: true,
+  saleBlocked: false,
+  banned: false,
+  mrp: '300.00',
+  sellingPrice: '280.00',
+  baseUomCode: 'BAG',
+  primaryBarcode: '890',
 };
-const preview = { docType: 'TAX_INVOICE', placeOfSupply: '27', totals: { gross: '280.00', discount: '0.00', taxable: '266.67', cgst: '6.67', sgst: '6.66', igst: '0.00', roundOff: '0.00', total: '280.00' } };
+const preview = {
+  docType: 'TAX_INVOICE',
+  placeOfSupply: '27',
+  totals: {
+    gross: '280.00',
+    discount: '0.00',
+    taxable: '266.67',
+    cgst: '6.67',
+    sgst: '6.66',
+    igst: '0.00',
+    roundOff: '0.00',
+    total: '280.00',
+  },
+};
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 
 beforeEach(async () => {
   mockGet.mockReset();
@@ -46,8 +76,16 @@ beforeEach(async () => {
   mockMe = { userId: 'u-1', roles: ['CASHIER'], permissions: ['sales.pos.use'] };
   mockGet.mockImplementation(async (path: string) => {
     if (path === '/branches') return { items: [{ id: 'b-1', name: 'Main', status: 'ACTIVE' }] };
-    if (path === '/warehouses') return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true }] };
-    if (path === '/settings/payment-modes') return { items: [{ code: 'CASH', enabled: true }, { code: 'UPI', enabled: true }, { code: 'CREDIT', enabled: true }] };
+    if (path === '/warehouses')
+      return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true }] };
+    if (path === '/settings/payment-modes')
+      return {
+        items: [
+          { code: 'CASH', enabled: true },
+          { code: 'UPI', enabled: true },
+          { code: 'CREDIT', enabled: true },
+        ],
+      };
     if (path === '/products') return { items: [prod] };
     return { items: [] };
   });
@@ -60,7 +98,16 @@ beforeEach(async () => {
 });
 
 describe('cart logic', () => {
-  const line = (over: Partial<CartLine> = {}): CartLine => ({ skuId: 's', code: 'c', name: 'n', warehouseId: 'w', qty: '1', unitPrice: '', discountPct: '', ...over });
+  const line = (over: Partial<CartLine> = {}): CartLine => ({
+    skuId: 's',
+    code: 'c',
+    name: 'n',
+    warehouseId: 'w',
+    qty: '1',
+    unitPrice: '',
+    discountPct: '',
+    ...over,
+  });
   test('same product twice adds to one line, with decimal maths', () => {
     let c = addProduct({ ...emptyCart, branchId: 'b' }, prod, 'w-1');
     c = addProduct(c, prod, 'w-1');
@@ -77,12 +124,21 @@ describe('cart logic', () => {
     expect(bad({ qty: '0.5', unitPrice: '10.50', discountPct: '5' })).toBeUndefined();
   });
   test('body leaves out blank optional boxes and never carries a tenant id', () => {
-    const b = toInvoiceBody({ branchId: 'b', customerId: '', billDiscountPct: '', lines: [line()] }, '2026-11-11');
-    expect(b).toEqual({ branchId: 'b', invoiceDate: '2026-11-11', lines: [{ skuId: 's', warehouseId: 'w', qty: '1' }] });
+    const b = toInvoiceBody(
+      { branchId: 'b', customerId: '', billDiscountPct: '', lines: [line()] },
+      '2026-11-11',
+    );
+    expect(b).toEqual({
+      branchId: 'b',
+      invoiceDate: '2026-11-11',
+      lines: [{ skuId: 's', warehouseId: 'w', qty: '1' }],
+    });
     expect(JSON.stringify(b)).not.toMatch(/tenant|franchise/i);
   });
   test('tenders drop blank boxes; reference only with non-cash', () => {
-    expect(toTenders({ CASH: '300', UPI: '', CARD: '0' }, 'r1')).toEqual([{ mode: 'CASH', amount: '300.00' }]);
+    expect(toTenders({ CASH: '300', UPI: '', CARD: '0' }, 'r1')).toEqual([
+      { mode: 'CASH', amount: '300.00' },
+    ]);
     expect(toTenders({ UPI: '100' }, ' r1 ')).toEqual([{ mode: 'UPI', amount: '100.00', reference: 'r1' }]);
   });
   test('walk-in must pay in full; a customer may leave credit; change is cash over the total', () => {
@@ -91,7 +147,12 @@ describe('cart logic', () => {
     expect(checkPayment('280.00', [{ mode: 'CASH', amount: '300.00' }], false)).toBe('ok');
     expect(checkPayment('280.00', [], true)).toBe('ok');
     expect(changeFor('280.00', [{ mode: 'CASH', amount: '300.00' }])).toBe('20.00');
-    expect(changeFor('0.30', [{ mode: 'CASH', amount: '0.10' }, { mode: 'CASH', amount: '0.20' }])).toBe('0.00');
+    expect(
+      changeFor('0.30', [
+        { mode: 'CASH', amount: '0.10' },
+        { mode: 'CASH', amount: '0.20' },
+      ]),
+    ).toBe('0.00');
   });
   test('key keeper: same body same key; changed body new key; reset drops it', () => {
     let n = 0;
@@ -152,7 +213,9 @@ describe('POS screen', () => {
     expect(await screen.findByText(/The answer was lost/)).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Finalize bill'));
     await screen.findByText('Bill INV-1 saved');
-    const keys = mockPost.mock.calls.filter((c) => c[0] === '/sales/invoices').map((c) => c[1].idempotencyKey);
+    const keys = mockPost.mock.calls
+      .filter((c) => c[0] === '/sales/invoices')
+      .map((c) => c[1].idempotencyKey);
     expect(keys).toEqual(['key-1', 'key-1']);
   });
 
@@ -176,7 +239,9 @@ describe('POS screen', () => {
   test('offline: a clear message, no bill can be made', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await show();
-    expect(await screen.findByText('You are offline. A bill moves money, so it can only be made online.')).toBeTruthy();
+    expect(
+      await screen.findByText('You are offline. A bill moves money, so it can only be made online.'),
+    ).toBeTruthy();
   });
 
   test('Hindi text', async () => {
