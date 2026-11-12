@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">AGRO 360 AI</string>
+  <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
+</resources>

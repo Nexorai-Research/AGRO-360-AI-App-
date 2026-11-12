@@ -98,7 +98,7 @@ describe('purchase logic', () => {
     expect(orderActions({ status: 'SUBMITTED', createdBy: 'u-2' }, 'u-1', () => false).approve).toBe(false);
   });
   test('receive: rejected needs a reason, scan counts one as a decimal', () => {
-    const d = receiveDraftFor(order());
+    const d = { ...receiveDraftFor(order()), receiptDate: '2026-11-10' };
     expect(d.lines).toHaveLength(1);
     const c1 = countScan(d, 'sku-1')!;
     expect(c1.lines[0]!.received).toBe('1');

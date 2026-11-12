@@ -10,13 +10,33 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-camera", { "cameraPermission": "AGRO 360 AI uses the camera to scan product barcodes." }],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "AGRO 360 AI uses the camera to scan product barcodes."
+        }
+      ],
       "expo-web-browser",
       "expo-localization",
-      ["expo-location", { "locationWhenInUsePermission": "AGRO 360 AI uses your location only when you check in or out, and only if you agree." }],
-      ["expo-splash-screen", { "image": "./assets/splash-icon.png", "imageWidth": 220, "backgroundColor": "#ffffff" }]
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "AGRO 360 AI uses your location only when you check in or out, and only if you agree."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-sharing"
     ],
-    "experiments": { "typedRoutes": true },
+    "experiments": {
+      "typedRoutes": true
+    },
     "android": {
       "package": "com.agro360.app",
       "adaptiveIcon": {
@@ -27,8 +47,15 @@
       },
       "predictiveBackGestureEnabled": false
     },
-    "ios": { "bundleIdentifier": "com.agro360.app", "supportsTablet": true },
-    "web": { "favicon": "./assets/favicon.png" },
-    "extra": { "appEnv": "dev" }
+    "ios": {
+      "bundleIdentifier": "com.agro360.app",
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "appEnv": "dev"
+    }
   }
 }
