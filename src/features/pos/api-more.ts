@@ -53,6 +53,15 @@ export interface Shift {
   countedCash: Amount | null;
   difference: Amount | null;
   status: string;
+  /** Cash put in and taken out during the shift (not sales). Older answers may not carry them. */
+  cashIn?: Amount;
+  cashOut?: Amount;
+}
+export interface DayEndRow {
+  id: string;
+  business_date: string;
+  note: string | null;
+  summary: { invoices?: string; sales?: string; cancelled?: string; returns?: string; cash_difference?: string; cashDeposited?: string };
 }
 export interface ShareLink {
   token: string;
@@ -93,6 +102,9 @@ export const cancelInvoice = (c: ApiClient, id: string, reason: string, idempote
 /** A secure link (valid 30 days) the app hands to the phone's share sheet. With send=true the server also queues it to the customer. */
 export const shareInvoice = (c: ApiClient, id: string, send: boolean, idempotencyKey: string) =>
   c.post<ShareLink>(`/sales/invoices/${id}/share`, { body: send ? { send: true } : {}, idempotencyKey });
+/** The printable invoice as HTML. A reprint is marked "Duplicate" by the server, so only call this when the user asks to print or save. */
+export const fetchInvoiceHtml = (c: ApiClient, id: string, paper: 'A4' | '80mm' = 'A4') =>
+  c.get<string>(`/sales/invoices/${id}/print`, { query: { paper }, as: 'text' });
 
 // ---- quick customer
 export const quickCustomer = (c: ApiClient, b: { name: string; mobile: string; village: string }, idempotencyKey: string) =>
@@ -107,5 +119,13 @@ export const openShift = (c: ApiClient, b: { branchId: string; openingCash: stri
   c.post<unknown>('/pos/shifts/open', { body: b, idempotencyKey });
 export const closeShift = (c: ApiClient, id: string, b: { countedCash: string; note?: string }, idempotencyKey: string) =>
   c.post<unknown>(`/pos/shifts/${id}/close`, { body: b, idempotencyKey });
+export type CashKind = 'CASH_IN' | 'CASH_OUT';
+export const addCashMovement = (c: ApiClient, shiftId: string, b: { kind: CashKind; amount: string; reason: string }, idempotencyKey: string) =>
+  c.post<unknown>(`/pos/shifts/${shiftId}/cash-movements`, { body: b, idempotencyKey });
+/** Closed days, newest first (the server returns the last 100). Needs pos.dayend. */
+export async function fetchDayEnds(c: ApiClient, signal?: AbortSignal) {
+  const r = await c.get<{ items: DayEndRow[] }>('/pos/day-end', { signal });
+  return r.items;
+}
 export const dayEnd = (c: ApiClient, b: { branchId: string; businessDate: string }, idempotencyKey: string) =>
   c.post<unknown>('/pos/day-end', { body: b, idempotencyKey });

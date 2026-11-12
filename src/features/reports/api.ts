@@ -8,13 +8,14 @@ export const REPORT_PERM = {
   receivables: 'reports.receivables',
 } as const;
 
-export type ReportKind = 'sales' | 'profit' | 'collections' | 'tax' | 'losses';
+export type ReportKind = 'sales' | 'profit' | 'collections' | 'tax' | 'losses' | 'register';
 export const REPORT_NEEDS: Record<ReportKind, string> = {
   sales: REPORT_PERM.sales,
   profit: REPORT_PERM.financial,
   collections: REPORT_PERM.receivables,
   tax: REPORT_PERM.financial,
   losses: REPORT_PERM.financial,
+  register: REPORT_PERM.sales,
 };
 /** The groupings the screen offers (the server supports more; these are the useful ones on a phone). */
 export const REPORT_GROUPS: Record<ReportKind, string[]> = {
@@ -23,6 +24,7 @@ export const REPORT_GROUPS: Record<ReportKind, string[]> = {
   collections: ['branch', 'village', 'customer'],
   tax: [],
   losses: ['product', 'category', 'reason', 'month'],
+  register: [],
 };
 
 export interface Range {
@@ -130,6 +132,25 @@ export interface LossReport {
   notes: string[];
 }
 
+export interface RegisterRow {
+  kind: 'INVOICE' | 'BILL_OF_SUPPLY' | 'CREDIT_NOTE';
+  id: string;
+  number: string;
+  date: string;
+  customerName: string | null;
+  status: string;
+  taxable: string;
+  cgst: string;
+  sgst: string;
+  igst: string;
+  total: string;
+}
+/** Cancelled documents are listed but left out of the totals by the server; credit notes reduce them. */
+export interface SalesRegister {
+  rows: RegisterRow[];
+  totals: { taxable: string; cgst: string; sgst: string; igst: string; total: string };
+}
+
 const LIMIT = 30;
 export const fetchSales = (c: ApiClient, r: Range, groupBy: string, signal?: AbortSignal) =>
   c.get<SalesAnalysis>('/reports/sales/analysis', { query: { ...r, groupBy, limit: LIMIT }, signal });
@@ -141,6 +162,10 @@ export const fetchTax = (c: ApiClient, r: Range, signal?: AbortSignal) =>
   c.get<TaxSummary>('/reports/tax/summary', { query: { ...r }, signal });
 export const fetchLosses = (c: ApiClient, r: Range, groupBy: string, signal?: AbortSignal) =>
   c.get<LossReport>('/reports/losses', { query: { ...r, groupBy, limit: LIMIT }, signal });
+/** The bill-by-bill register for the period. The server sends up to 5,000 rows of each kind; the screen shows the first REGISTER_ROWS. */
+export const REGISTER_ROWS = 100;
+export const fetchRegister = (c: ApiClient, r: Range, signal?: AbortSignal) =>
+  c.get<SalesRegister>('/reports/sales-register', { query: { ...r }, signal });
 
 /** YYYY-MM-DD minus n days on the calendar date alone. */
 export function rangeOf(today: string, days: number): Range {

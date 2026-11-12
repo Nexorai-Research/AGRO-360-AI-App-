@@ -147,4 +147,19 @@ describe('api client', () => {
     const { client } = setup([res(500, { title: 'INTERNAL' }, { 'X-Correlation-Id': 'hdr-1' })]);
     await expect(client.get('/x')).rejects.toMatchObject({ code: 'INTERNAL', correlationId: 'hdr-1' });
   });
+
+  it('reads an HTML answer as text and asks for text/html, still sending the auth headers', async () => {
+    const r = { ...res(200), text: async () => '<html>Invoice</html>' } as unknown as Response;
+    const { client, calls } = setup([r]);
+    await expect(client.get<string>('/sales/invoices/i-1/print', { query: { paper: 'A4' }, as: 'text' })).resolves.toBe('<html>Invoice</html>');
+    expect(calls[0]!.url).toBe('https://api.test/api/v1/sales/invoices/i-1/print?paper=A4');
+    expect(calls[0]!.init.headers.Accept).toBe('text/html');
+    expect(calls[0]!.init.headers.Authorization).toBe('Bearer tok-1');
+  });
+
+  it('turns a failed text request into an ApiError with the problem code', async () => {
+    const r = { ...res(403, undefined, { 'X-Correlation-Id': 'c-9' }), text: async () => JSON.stringify({ title: 'FORBIDDEN' }) } as unknown as Response;
+    const { client } = setup([r]);
+    await expect(client.get('/x', { as: 'text' })).rejects.toMatchObject({ status: 403, code: 'FORBIDDEN' });
+  });
 });

@@ -348,7 +348,10 @@
     "v": {
       "format": "Quantity must be more than 0 with at most 3 decimals.",
       "tooMany": "More than what is left to return."
-    }
+    },
+    "print": "Print",
+    "pdf": "Save or share PDF",
+    "noSharing": "This phone cannot share files."
   },
   "shifts": {
     "title": "Shifts and day-end",
@@ -373,7 +376,21 @@
     "close": "Close",
     "line": "Opening {{opening}} · expected {{expected}}",
     "counted": "counted {{amount}}",
-    "diff": "difference {{amount}}"
+    "diff": "difference {{amount}}",
+    "cashMove": "Cash in / out",
+    "CASH_IN": "Cash in",
+    "CASH_OUT": "Cash out",
+    "amount": "Amount",
+    "reason": "Reason",
+    "badMovement": "Enter an amount above 0 and up to 1,00,00,000, with at most 2 decimals.",
+    "cashNow": "Save cash movement",
+    "cashDone": "Cash movement saved.",
+    "movements": "Cash in {{cashIn}} · cash out {{cashOut}}",
+    "history": "Day-end history",
+    "historyLoading": "Loading closed days…",
+    "historyError": "Closed days could not be loaded.",
+    "historyEmpty": "No day has been closed yet.",
+    "historyLine": "{{date}} · sales {{sales}} · {{invoices}} bills · cash difference {{diff}}"
   },
   "products": {
     "title": "Products",
@@ -704,7 +721,18 @@
     "lossValue": "Loss value",
     "returnedToSuppliers": "Returned to suppliers",
     "netLoss": "Net loss",
-    "lossPct": "Loss is {{pct}}% of the cost of goods sold"
+    "lossPct": "Loss is {{pct}}% of the cost of goods sold",
+    "kind_register": "Sales register",
+    "regTotal": "Sales total (net of credit notes)",
+    "regTaxable": "Taxable value",
+    "regBillTotal": "Total",
+    "regNote": "Cancelled bills are listed but not counted. Credit notes reduce the total.",
+    "regEmpty": "No bills in this period.",
+    "regWalkIn": "Walk-in",
+    "regMore": "Showing the first {{shown}} of {{count}} documents. Narrow the period, or use the web app for the full list.",
+    "regKind_INVOICE": "Tax invoice",
+    "regKind_BILL_OF_SUPPLY": "Bill of supply",
+    "regKind_CREDIT_NOTE": "Credit note"
   },
   "accounts": {
     "title": "Accounts",
