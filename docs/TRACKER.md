@@ -203,3 +203,15 @@ DONE (read only; loading, empty, offline, error with retry, denied; English, Hin
 
 NOT built: filters (product, warehouse, branch, date range, movement type) and paging beyond the first 50 rows; reorder suggestions; creating or editing reorder rules; opening stock; stock counts and cycle plans; investigations; reservations; serial numbers; batch genealogy and trace; damage report; reconciliation and integrity reports; FIFO valuation; expiry extension request and approval; labels; import and export. Hindi and Marathi texts need a native speaker review.
 
+## Purchase: bills and payables view (branch `purchase-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/purchase-money.test.tsx` (11 tests). Screen `/purchase-money` (`app/purchase-money.tsx`, `src/features/purchase/`), linked from the Home quick links. `src/ui/ReadBox.tsx` is a small shared read-only query box; the stock reports screen now uses it too (its 12 tests still pass).
+
+DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi):
+- Purchase bills: unpaid (default) or all, with supplier, number, date, due date, match status, total, paid, outstanding (`GET /procurement/purchase-bills`, `open=true`, last 50).
+- Supplier payments: mode, reference, amount, TDS withheld, cash paid, advance not yet allocated (`GET /procurement/supplier-payments`, last 50).
+- Returns to suppliers: number, bill, reason, total (`GET /procurement/purchase-returns`, last 50).
+- Payables ageing: total payable and the five buckets (not due, 1-30, 31-60, 61-90, 90+), per supplier, with advance not yet allocated (`GET /procurement/reports/payables-aging`, needs `purchase.supplier.ledger.view`).
+
+NOT built: creating or posting a bill, three-way match actions and override, paying a supplier, supplier returns and claims, supplier create and edit, supplier ledger, bank accounts and contacts, requisitions, RFQs and comparison, schemes and free quantity, landed cost, purchase register, GRNI report, pending orders report, purchase order edit / revise / send / close, goods receipt discard / approve over-receipt / reverse. Bills, payments and returns show the first 50 only (the server gives no total, so the screen only says there may be more); no search or date filter. Hindi and Marathi texts need a native speaker review.
+
