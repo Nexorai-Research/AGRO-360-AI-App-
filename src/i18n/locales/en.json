@@ -117,7 +117,8 @@
     "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note.",
     "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box.",
     "APPROVAL_REQUIRED": "This limit is above your approval limit. Ask someone with a higher limit.",
-    "STALE_VERSION": "Someone else changed this. Close and open it again, then retry."
+    "STALE_VERSION": "Someone else changed this. Close and open it again, then retry.",
+    "INSUFFICIENT_POINTS": "The customer does not have enough points for this."
   },
   "customers": {
     "title": "Customers",
@@ -1483,5 +1484,13 @@
     "saveInteraction": "Save entry",
     "consentSaved": "Consent recorded.",
     "interactionSaved": "Entry saved."
+  },
+  "loyaltyAdj": {
+    "open": "Adjust loyalty points",
+    "points": "Points (use - to take away)",
+    "reason": "Reason",
+    "badPoints": "Enter a whole number, not zero.",
+    "save": "Save points",
+    "saved": "Loyalty points updated."
   }
 }

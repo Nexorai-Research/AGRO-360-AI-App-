@@ -8,6 +8,7 @@ import type { Customer360, LedgerEntry } from '../../src/features/customers/type
 import { CreditPanel } from '../../src/features/customers/CreditPanel';
 import { CrmActions } from '../../src/features/customers/CrmActions';
 import { FarmEditor } from '../../src/features/customers/FarmEditor';
+import { LoyaltyAdjust } from '../../src/features/customers/LoyaltyAdjust';
 import { MoreSections } from '../../src/features/customers/MoreSections';
 import { StaleBanner, StateView, fmtDate, isDenied, useErrorText } from '../../src/features/customers/ui';
 import { dec, formatINR } from '../../src/money';
@@ -134,6 +135,7 @@ function Header({
       <MoreSections customerId={p.id} />
       <FarmEditor customerId={p.id} />
       <CrmActions customerId={p.id} />
+      <LoyaltyAdjust customerId={p.id} />
 
       {canLedger ? (
         <Card title={t('customers.ledger')}>

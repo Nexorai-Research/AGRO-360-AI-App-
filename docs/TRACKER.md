@@ -256,3 +256,10 @@ DONE: record one consent answer (`PUT /customers/:id/consents`, purpose from `GE
 
 Limits: the follow-up date is typed as YYYY-MM-DD (no date picker yet). Visit location, location consent and photos are not built. Evidence text for a consent and recording several answers at once are not built. Hindi and Marathi texts need a native speaker review.
 
+### Loyalty points adjust (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/loyalty-adjust.test.tsx` (4 tests). `src/features/customers/LoyaltyAdjust.tsx` and `loyalty-api.ts` on Customer 360, shown only with `crm.loyalty.manage`.
+
+DONE: add or take away points (`POST /customers/:id/loyalty/points`): a whole number, not zero, from -100000 to 100000, with a reason of 3 to 200 letters. One Idempotency-Key per action, kept on a retry. A result below zero (INSUFFICIENT_POINTS) is shown in words. English, Hindi, Marathi.
+
+Limits: the points ledger list (`GET .../loyalty/ledger`), tier management and recompute are not built. Hindi and Marathi texts need a native speaker review.
+

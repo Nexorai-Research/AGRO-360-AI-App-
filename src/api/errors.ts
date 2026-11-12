@@ -57,6 +57,7 @@ const KNOWN = new Set([
   'DUPLICATE_MOBILE',
   'APPROVAL_REQUIRED',
   'STALE_VERSION',
+  'INSUFFICIENT_POINTS',
 ]);
 
 export interface ErrorMessage {
