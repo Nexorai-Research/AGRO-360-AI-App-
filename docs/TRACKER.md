@@ -175,3 +175,19 @@ Texts: `i18n-parts/step3.json` (en, hi, mr; namespaces purchase, complaints, fol
 - Order totals and GST on the new-order form are an estimate for the screen only (quantity x rate less discount); the server computes the real totals.
 - If a receipt is saved but posting fails, the saved receipt id is kept only while the screen is open. Leaving the screen leaves a draft receipt that has to be posted or discarded from the web app.
 - Jest needs `--testPathIgnorePatterns /node_modules/` when run from inside a `.claude` worktree, because the project config ignores paths containing `/.claude/`.
+
+## Customers: more sections on Customer 360 (branch `customers-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/customers-more.test.tsx` (12 tests).
+
+DONE (read only; each section closed until opened, then one query; states: loading, empty, error with retry, denied):
+- Farms and crops: farms with plots, area and soil as strings (`GET /customers/:id/farms`).
+- KYC documents: type, masked number, expired mark (`GET /customers/:id/documents`, needs `customer.kyc.view`; the server writes an access log on each list, so it loads only when opened). The document file is never opened on the phone.
+- Loyalty: tier, points, spend and the spend still needed for the next tier as a decimal (`GET /customers/:id/loyalty`).
+- Household: members, who decides, who pays (`GET /customers/:id/household`).
+- Consent: current consent per purpose and channel (`GET /customers/:id/consents`).
+- Activity and advice: visits and calls with crop issue, advice, follow up date (`GET /customers/:id/interactions`).
+- Texts in English, Hindi, Marathi (`customers.more.*`); Hindi and Marathi not reviewed by a native speaker.
+
+NOT built here: adding or editing a farm, plot, crop plan or KYC document (no upload from the phone), changing consent, loyalty point adjustments, household edits, recording a new interaction, photos on interactions, service cases, purchase plans, crop plans, guarantors, hold history, customer statement, credit limit change and credit hold or release, creating or editing a customer (only quick-add exists), merge, anonymise. Interactions show the first answer the server sends (no paging).
+
