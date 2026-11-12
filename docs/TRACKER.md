@@ -249,3 +249,10 @@ DONE: add farm (`POST /customers/:id/farms`: name, ownership, optional area with
 
 Limits: editing an existing farm or plot (rename, change area), survey number, location (geo) and geo consent, and plot archiving are not built. Crop plans are not built yet. Hindi and Marathi texts need a native speaker review.
 
+### Record consent and log a call or visit (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/crm-actions.test.tsx` (7 tests). `src/features/customers/CrmActions.tsx` and `crm-api.ts` on Customer 360; the consent button needs `customer.consent`, the visit button `customer.interaction`.
+
+DONE: record one consent answer (`PUT /customers/:id/consents`, purpose from `GET /crm/consent/purposes` with inactive ones hidden, channel, agreed or refused, source STAFF); log a call, field visit or shop visit (`POST /customers/:id/interactions`: type, notes, optional crop problem, advice and follow-up date). One Idempotency-Key per action, kept on a retry. English, Hindi, Marathi.
+
+Limits: the follow-up date is typed as YYYY-MM-DD (no date picker yet). Visit location, location consent and photos are not built. Evidence text for a consent and recording several answers at once are not built. Hindi and Marathi texts need a native speaker review.
+

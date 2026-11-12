@@ -1458,5 +1458,30 @@
       "RIVER_TANK": "River or tank",
       "OTHER": "Other"
     }
+  },
+  "crm": {
+    "title": "Consent and visits",
+    "recordConsent": "Record consent",
+    "logInteraction": "Log call or visit",
+    "purpose": "Purpose",
+    "channel": "Channel",
+    "answer": "Customer said",
+    "agreed": "Agreed",
+    "refused": "Refused",
+    "kind": "Type",
+    "kinds": {
+      "CALL": "Phone call",
+      "VISIT": "Field visit",
+      "SHOP_VISIT": "Shop visit"
+    },
+    "notes": "Notes",
+    "cropIssue": "Crop problem (optional)",
+    "advice": "Advice given (optional)",
+    "followUp": "Follow up on (YYYY-MM-DD, optional)",
+    "badDate": "Enter a real date like 2026-12-31.",
+    "saveConsent": "Save consent",
+    "saveInteraction": "Save entry",
+    "consentSaved": "Consent recorded.",
+    "interactionSaved": "Entry saved."
   }
 }

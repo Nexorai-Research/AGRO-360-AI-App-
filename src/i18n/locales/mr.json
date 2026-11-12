@@ -1458,5 +1458,30 @@
       "RIVER_TANK": "नदी किंवा तलाव",
       "OTHER": "इतर"
     }
+  },
+  "crm": {
+    "title": "संमती आणि भेटी",
+    "recordConsent": "संमती नोंदवा",
+    "logInteraction": "कॉल किंवा भेट नोंदवा",
+    "purpose": "उद्देश",
+    "channel": "माध्यम",
+    "answer": "ग्राहक म्हणाला",
+    "agreed": "संमत",
+    "refused": "नकार",
+    "kind": "प्रकार",
+    "kinds": {
+      "CALL": "फोन कॉल",
+      "VISIT": "शेत भेट",
+      "SHOP_VISIT": "दुकान भेट"
+    },
+    "notes": "टिपणी",
+    "cropIssue": "पिकाची समस्या (ऐच्छिक)",
+    "advice": "दिलेला सल्ला (ऐच्छिक)",
+    "followUp": "पाठपुरावा तारीख (YYYY-MM-DD, ऐच्छिक)",
+    "badDate": "खरी तारीख टाका, उदा. 2026-12-31.",
+    "saveConsent": "संमती जतन करा",
+    "saveInteraction": "नोंद जतन करा",
+    "consentSaved": "संमती नोंदवली.",
+    "interactionSaved": "नोंद जतन केली."
   }
 }
