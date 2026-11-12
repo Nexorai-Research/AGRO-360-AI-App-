@@ -158,6 +158,41 @@
       "RABI": "Rabi",
       "ZAID": "Zaid",
       "PERENNIAL": "Perennial"
+    },
+    "more": {
+      "title": "More about this customer",
+      "farms": "Farms and crops",
+      "farmsEmpty": "No farms recorded.",
+      "kyc": "KYC documents",
+      "kycEmpty": "No KYC documents.",
+      "kycNote": "Only the masked number is shown. Opening a document file is done in the web app.",
+      "loyalty": "Loyalty",
+      "loyaltyEmpty": "This customer is not in the loyalty programme.",
+      "household": "Household",
+      "householdEmpty": "Not part of a household.",
+      "consents": "Consent",
+      "consentsEmpty": "No consent recorded.",
+      "activity": "Activity and advice",
+      "activityEmpty": "No visits or calls recorded.",
+      "acres": "acres",
+      "own": {
+        "OWNED": "Owned",
+        "LEASED": "Leased",
+        "SHARED": "Shared"
+      },
+      "expired": "Expired",
+      "expiresOn": "expires {{date}}",
+      "noTier": "No tier yet",
+      "points": "points",
+      "spend": "Spent {{amount}} over {{count}} bills in the last 12 months",
+      "nextTier": "To reach {{name}}: {{amount}} more spend",
+      "decider": "decides",
+      "payer": "pays",
+      "granted": "Agreed",
+      "refused": "Refused",
+      "issue": "Crop issue: {{text}}",
+      "advice": "Advice: {{text}}",
+      "followUp": "Follow up on {{date}}"
     }
   },
   "stock": {

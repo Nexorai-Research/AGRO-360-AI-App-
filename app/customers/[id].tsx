@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../src/auth/AuthProvider';
 import { useCustomer360, useCustomerLedger } from '../../src/features/customers/hooks';
 import type { Customer360, LedgerEntry } from '../../src/features/customers/types';
+import { MoreSections } from '../../src/features/customers/MoreSections';
 import { StaleBanner, StateView, fmtDate, isDenied, useErrorText } from '../../src/features/customers/ui';
 import { dec, formatINR } from '../../src/money';
 import { Button } from '../../src/ui/Button';
@@ -115,6 +116,8 @@ function Header({
           </View>
         ))}
       </Card>
+
+      <MoreSections customerId={p.id} />
 
       {canLedger ? (
         <Card title={t('customers.ledger')}>
