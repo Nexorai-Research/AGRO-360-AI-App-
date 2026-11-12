@@ -294,7 +294,8 @@
     "complaints": "Complaints",
     "followup": "Collection follow-up",
     "stockReports": "Stock reports",
-    "purchaseMoney": "Bills and payables"
+    "purchaseMoney": "Bills and payables",
+    "statements": "Profit and balance sheet"
   },
   "pos": {
     "title": "New bill",
@@ -1322,5 +1323,40 @@
       "61-90": "61 to 90 days late",
       "90+": "Over 90 days late"
     }
+  },
+  "statements": {
+    "title": "Financial statements",
+    "denied": "You do not have permission to see financial statements.",
+    "offline": "No network. This cannot be loaded now.",
+    "which": "Show",
+    "kind_pl": "Profit and loss",
+    "kind_bs": "Balance sheet",
+    "kind_cash": "Cash book",
+    "kind_bank": "Bank book",
+    "period": "Period",
+    "lastDays": "Last {{count}} days",
+    "asOn": "As on {{date}}",
+    "netSales": "Net sales",
+    "costOfSales": "Cost of sales",
+    "grossProfit": "Gross profit",
+    "expenses": "Operating expenses",
+    "otherIncome": "Other income",
+    "netProfit": "Net profit",
+    "emptyPl": "No income or expense in this period.",
+    "totalAssets": "Total assets",
+    "totalLiabilities": "Total liabilities",
+    "totalEquity": "Total equity",
+    "currentYearProfit": "Profit this year",
+    "assets": "Assets",
+    "liabilities": "Liabilities",
+    "equity": "Equity",
+    "emptyBs": "Nothing here.",
+    "notBalanced": "Assets do not equal liabilities plus equity. Tell your accountant.",
+    "emptyBook": "No cash or bank ledgers.",
+    "opening": "Opening",
+    "receipts": "Receipts",
+    "payments": "Payments",
+    "closing": "Closing",
+    "negative": "The balance went below zero in this period."
   }
 }

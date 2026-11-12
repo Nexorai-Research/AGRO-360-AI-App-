@@ -22,6 +22,7 @@ const LINKS = [
   ['nav.advances', '/advances'],
   ['nav.reports', '/reports'],
   ['nav.accounts', '/accounts'],
+  ['nav.statements', '/statements'],
   ['nav.compliance', '/compliance'],
   ['nav.account', '/account'],
   ['nav.users', '/users'],
