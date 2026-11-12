@@ -376,7 +376,21 @@
     "close": "Close",
     "line": "Opening {{opening}} · expected {{expected}}",
     "counted": "counted {{amount}}",
-    "diff": "difference {{amount}}"
+    "diff": "difference {{amount}}",
+    "cashMove": "Cash in / out",
+    "CASH_IN": "Cash in",
+    "CASH_OUT": "Cash out",
+    "amount": "Amount",
+    "reason": "Reason",
+    "badMovement": "Enter an amount above 0 and up to 1,00,00,000, with at most 2 decimals.",
+    "cashNow": "Save cash movement",
+    "cashDone": "Cash movement saved.",
+    "movements": "Cash in {{cashIn}} · cash out {{cashOut}}",
+    "history": "Day-end history",
+    "historyLoading": "Loading closed days…",
+    "historyError": "Closed days could not be loaded.",
+    "historyEmpty": "No day has been closed yet.",
+    "historyLine": "{{date}} · sales {{sales}} · {{invoices}} bills · cash difference {{diff}}"
   },
   "products": {
     "title": "Products",

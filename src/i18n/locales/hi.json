@@ -376,7 +376,21 @@
     "close": "बंद करें",
     "line": "शुरुआत {{opening}} · अपेक्षित {{expected}}",
     "counted": "गिना {{amount}}",
-    "diff": "अंतर {{amount}}"
+    "diff": "अंतर {{amount}}",
+    "cashMove": "नकद जमा / निकासी",
+    "CASH_IN": "नकद जमा",
+    "CASH_OUT": "नकद निकासी",
+    "amount": "रकम",
+    "reason": "कारण",
+    "badMovement": "0 से ऊपर और 1,00,00,000 तक की रकम, अधिकतम 2 दशमलव के साथ डालें।",
+    "cashNow": "नकद लेन-देन सहेजें",
+    "cashDone": "नकद लेन-देन सहेजा गया।",
+    "movements": "नकद जमा {{cashIn}} · नकद निकासी {{cashOut}}",
+    "history": "दिन-अंत इतिहास",
+    "historyLoading": "बंद दिन लोड हो रहे हैं…",
+    "historyError": "बंद दिन लोड नहीं हो सके।",
+    "historyEmpty": "अभी तक कोई दिन बंद नहीं हुआ।",
+    "historyLine": "{{date}} · बिक्री {{sales}} · {{invoices}} बिल · नकद अंतर {{diff}}"
   },
   "products": {
     "title": "प्रोडक्ट",
