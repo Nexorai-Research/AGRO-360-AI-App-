@@ -118,6 +118,7 @@ export default function OrderDetailScreen() {
                 <Button kind="ghost" label={t('purchase.receive')} onPress={() => router.push({ pathname: '/purchase/receive/[id]', params: { id: o.id } })} />
               ) : null}
               {a.cancel ? <Button kind="ghost" label={t('purchase.cancelOrder')} onPress={() => setAsk('cancel')} /> : null}
+              <Button kind="ghost" label={t('stkOrder.more')} onPress={() => router.push({ pathname: '/purchase/more', params: { id: o.id } } as never)} />
             </View>
 
             {ask ? (
