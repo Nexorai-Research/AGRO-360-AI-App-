@@ -132,7 +132,8 @@ describe('home dashboard', () => {
     mockGet.mockResolvedValueOnce(dashboard());
     await fireEvent.press(screen.getByLabelText('Try again'));
     expect(await screen.findByText('₹12.35 L')).toBeTruthy();
-    expect(mockGet).toHaveBeenCalledTimes(2);
+    // the extra dashboard sections ask for other paths once the numbers are there; count only the dashboard calls
+    expect(mockGet.mock.calls.filter((c) => c[0] === '/reports/dashboard/owner')).toHaveLength(2);
   });
 
   it('shows the cached numbers with an "as of" time when a refresh fails for lack of network', async () => {

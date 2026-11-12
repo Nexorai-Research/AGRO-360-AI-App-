@@ -6,6 +6,7 @@ import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage } from '@/api/errors';
 import { dec } from '@/money';
 import { QuickLinks } from './QuickLinks';
+import HomeExtras from './HomeExtras';
 import { Button } from '@/ui/Button';
 import { LanguagePicker } from '@/ui/LanguagePicker';
 import { colors, radius } from '@/ui/theme';
@@ -222,6 +223,7 @@ export default function HomeScreen() {
       ListFooterComponent={
         <View style={s.footer}>
           {q.data && !denied ? <Trend data={q.data.trend} /> : null}
+          {q.data && !denied ? <HomeExtras /> : null}
           <Profile />
         </View>
       }
