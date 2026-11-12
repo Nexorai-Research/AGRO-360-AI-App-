@@ -99,6 +99,7 @@ export default function ProductDetailScreen() {
       </Card>
 
       <View style={kit.row}>
+        <Button kind="ghost" label={t('stkProd.more')} onPress={() => router.push(`/products/more?id=${x.id}` as never)} />
         {can(PERM.update) ? <Button kind="ghost" label={t('products.edit')} onPress={() => router.push(`/products/form?id=${x.id}` as never)} /> : null}
         {can(PERM.update) && x.status !== 'ACTIVE' ? <Button label={t('products.activate')} disabled={busy} onPress={() => void changeStatus('activate')} /> : null}
         {can(PERM.update) && x.status === 'ACTIVE' ? <Button kind="ghost" label={t('products.deactivate')} disabled={busy} onPress={() => void changeStatus('deactivate')} /> : null}
