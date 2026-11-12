@@ -89,6 +89,7 @@ export const MODULES: AppModule[] = [
     color: '#0f766e',
     features: [
       { key: 'reports', href: '/reports', icon: '📊' },
+      { key: 'reportsMore', href: '/reports-more', icon: '📑' },
       { key: 'gstr1', href: '/gstr1', icon: '🧾' },
       { key: 'agriRegisters', href: '/agri-registers', icon: '🌱' },
       { key: 'stkValuation', href: '/inventory-valuation', icon: '💰' },
@@ -105,6 +106,13 @@ export const MODULES: AppModule[] = [
       { key: 'payslips', href: '/payslips', icon: '💵' },
       { key: 'visits', href: '/visits', icon: '🗺️' },
       { key: 'advances', href: '/advances', icon: '🏦' },
+      { key: 'staff', href: '/staff', icon: '👥' },
+      { key: 'attendanceRegister', href: '/attendance-register', icon: '🗓️' },
+      { key: 'payroll', href: '/payroll', icon: '🧮' },
+      { key: 'salarySetup', href: '/salary-setup', icon: '💼' },
+      { key: 'advanceDesk', href: '/advance-desk', icon: '🏧' },
+      { key: 'fieldReview', href: '/field-review', icon: '🚜' },
+      { key: 'incentives', href: '/incentives', icon: '🎯' },
     ],
   },
   {
