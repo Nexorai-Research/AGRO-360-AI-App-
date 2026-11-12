@@ -4,7 +4,8 @@ export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface ClientOptions {
   baseUrl: string;
-  deviceId: string;
+  /** Only for a device REGISTERED on the server (device binding, with its key). The server refuses any other id, so leave it out. */
+  deviceId?: string;
   appVersion: string;
   getToken: () => Promise<string | null>;
   /** Called once after a 401. Returns the new token, or null when the session cannot be renewed. */
@@ -49,9 +50,9 @@ export function createClient(o: ClientOptions) {
       Authorization: `Bearer ${token}`,
       Accept: opts.as === 'text' ? 'text/html' : 'application/json',
       'X-Correlation-Id': corr,
-      'X-Device-Id': o.deviceId,
       'X-App-Version': o.appVersion,
     };
+    if (o.deviceId) headers['X-Device-Id'] = o.deviceId;
     if (isMutation(method)) headers['Idempotency-Key'] = key;
     if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
     if (opts.version !== undefined) headers['If-Match'] = `"${opts.version}"`;

@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { createClient, type ApiClient } from '../api/client';
 import { config } from '../config';
-import { getAppVersion, getDeviceId, newId } from '../device';
+import { getAppVersion, newId } from '../device';
 import * as auth from './auth';
 
 export interface Me {
@@ -18,6 +18,7 @@ export interface AuthState {
   status: AuthStatus;
   me: Me | null;
   signIn: (loginHint?: string) => Promise<void>;
+  signInWithPassword: (username: string, password: string) => Promise<auth.PasswordResult | 'denied'>;
   signOut: () => Promise<void>;
   client: ApiClient | null;
 }
@@ -27,45 +28,42 @@ const Ctx = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>('loading');
   const [me, setMe] = useState<Me | null>(null);
-  const [deviceId, setDeviceId] = useState<string | null>(null);
 
   const client = useMemo(
     () =>
-      deviceId === null
-        ? null
-        : createClient({
-            baseUrl: config.apiBaseUrl,
-            deviceId,
-            appVersion: getAppVersion(),
-            getToken: auth.accessToken,
-            refreshToken: auth.refresh,
-            onSignedOut: () => {
-              setMe(null);
-              setStatus('signedOut');
-            },
-            uuid: newId,
-          }),
-    [deviceId],
+      createClient({
+        baseUrl: config.apiBaseUrl,
+        appVersion: getAppVersion(),
+        getToken: auth.accessToken,
+        refreshToken: auth.refresh,
+        onSignedOut: () => {
+          setMe(null);
+          setStatus('signedOut');
+        },
+        uuid: newId,
+      }),
+    [],
   );
 
   const loadMe = useCallback(async (c: ApiClient) => {
     try {
       setMe(await c.get<Me>('/me'));
       setStatus('signedIn');
+      return true;
     } catch {
       await auth.signOut();
       setMe(null);
       setStatus('signedOut');
+      return false;
     }
   }, []);
 
   useEffect(() => {
-    void getDeviceId().then(setDeviceId);
-  }, []);
-
-  useEffect(() => {
     if (!client) return;
-    void auth.restore().then((has) => (has ? loadMe(client) : setStatus('signedOut')));
+    void auth.restore().then((has) => {
+      if (has) void loadMe(client);
+      else setStatus('signedOut');
+    });
   }, [client, loadMe]);
 
   const value = useMemo<AuthState>(
@@ -75,6 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       client,
       signIn: async (hint) => {
         if (client && (await auth.signIn(hint))) await loadMe(client);
+      },
+      signInWithPassword: async (u, p) => {
+        const r = await auth.signInWithPassword(u, p);
+        if (r !== 'ok' || !client) return r;
+        // signed in at Keycloak but the API refused this user: say so instead of silently returning to the login page
+        return (await loadMe(client)) ? 'ok' : 'denied';
       },
       signOut: async () => {
         await auth.signOut();

@@ -27,7 +27,6 @@ function setup(responses: (Response | Error)[], over: Partial<ClientOptions> = {
   });
   const opts: ClientOptions = {
     baseUrl: 'https://api.test/api/v1',
-    deviceId: 'dev-1',
     appVersion: '0.1.0',
     getToken: jest.fn(async () => 'tok-1'),
     refreshToken: jest.fn(async () => 'tok-2'),
@@ -47,7 +46,8 @@ describe('api client', () => {
     expect(calls[0]!.url).toBe('https://api.test/api/v1/me');
     expect(h.Authorization).toBe('Bearer tok-1');
     expect(h['X-Correlation-Id']).toBeTruthy();
-    expect(h['X-Device-Id']).toBe('dev-1');
+    // the server treats X-Device-Id as a registered device and refuses unknown ids, so it is not sent by default
+    expect(h['X-Device-Id']).toBeUndefined();
     expect(h['X-App-Version']).toBe('0.1.0');
     expect(h['Idempotency-Key']).toBeUndefined();
     expect(h['If-Match']).toBeUndefined();
@@ -151,14 +151,19 @@ describe('api client', () => {
   it('reads an HTML answer as text and asks for text/html, still sending the auth headers', async () => {
     const r = { ...res(200), text: async () => '<html>Invoice</html>' } as unknown as Response;
     const { client, calls } = setup([r]);
-    await expect(client.get<string>('/sales/invoices/i-1/print', { query: { paper: 'A4' }, as: 'text' })).resolves.toBe('<html>Invoice</html>');
+    await expect(
+      client.get<string>('/sales/invoices/i-1/print', { query: { paper: 'A4' }, as: 'text' }),
+    ).resolves.toBe('<html>Invoice</html>');
     expect(calls[0]!.url).toBe('https://api.test/api/v1/sales/invoices/i-1/print?paper=A4');
     expect(calls[0]!.init.headers.Accept).toBe('text/html');
     expect(calls[0]!.init.headers.Authorization).toBe('Bearer tok-1');
   });
 
   it('turns a failed text request into an ApiError with the problem code', async () => {
-    const r = { ...res(403, undefined, { 'X-Correlation-Id': 'c-9' }), text: async () => JSON.stringify({ title: 'FORBIDDEN' }) } as unknown as Response;
+    const r = {
+      ...res(403, undefined, { 'X-Correlation-Id': 'c-9' }),
+      text: async () => JSON.stringify({ title: 'FORBIDDEN' }),
+    } as unknown as Response;
     const { client } = setup([r]);
     await expect(client.get('/x', { as: 'text' })).rejects.toMatchObject({ status: 403, code: 'FORBIDDEN' });
   });

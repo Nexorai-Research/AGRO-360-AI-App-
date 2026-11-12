@@ -27,3 +27,15 @@ describe('config', () => {
     expect(loadConfig({ EXPO_PUBLIC_APP_ENV: 'qa' }).env).toBe('dev');
   });
 });
+
+describe('password login flag', () => {
+  it('is off by default and on only when asked outside production', () => {
+    expect(loadConfig({}).passwordLogin).toBe(false);
+    expect(
+      loadConfig({ EXPO_PUBLIC_PASSWORD_LOGIN: 'true', EXPO_PUBLIC_APP_ENV: 'staging' }).passwordLogin,
+    ).toBe(true);
+    expect(
+      loadConfig({ EXPO_PUBLIC_PASSWORD_LOGIN: 'true', EXPO_PUBLIC_APP_ENV: 'production' }).passwordLogin,
+    ).toBe(false);
+  });
+});

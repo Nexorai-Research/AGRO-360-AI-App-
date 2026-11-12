@@ -6,7 +6,23 @@
     "title": "Sign in",
     "button": "Sign in",
     "hint": "Use your login as <username>@<franchise code>",
-    "notConfigured": "This build has no server address set. Ask your administrator."
+    "notConfigured": "This build has no server address set. Ask your administrator.",
+    "username": "Username",
+    "password": "Password",
+    "invalid": "Wrong username or password.",
+    "network": "No network. Try again.",
+    "tag": "AGRO-RETAIL ERP",
+    "headline": "Run your agro business, from seed to shelf.",
+    "lead": "Stock, purchases, sales and accounts in one calm system: batch and expiry on every bag, GST-ready billing and books that always balance.",
+    "cta": "Sign in to AGRO 360",
+    "signingIn": "Signing in...",
+    "spec1": "GST-READY INVOICING",
+    "spec2": "BATCH & EXPIRY TRACKING",
+    "spec3": "THREE-WAY PURCHASE MATCH",
+    "server": "The server gave an unexpected answer. Try again in a moment.",
+    "denied": "Signed in, but this account cannot use the app.",
+    "show": "Show password",
+    "hide": "Hide password"
   },
   "home": {
     "hello": "Hello, {{name}}",
@@ -32,7 +48,8 @@
       "low_stock_count": "Low-stock products",
       "expiry_exposure": "Stock near expiry",
       "stock_value": "Stock value"
-    }
+    },
+    "summary": "Today's summary"
   },
   "collections": {
     "title": "Collections",
@@ -1532,5 +1549,77 @@
       "amount": "Enter an amount, up to 4 decimals.",
       "long": "This is too long."
     }
+  },
+  "featureDesc": {
+    "pos": "Make a bill at the counter",
+    "invoices": "Find, view and share bills",
+    "shifts": "Open and close counter shifts",
+    "products": "Product list and prices",
+    "adjustments": "Correct stock counts",
+    "transfers": "Move stock between places",
+    "batches": "Batch and expiry details",
+    "stock": "Check stock by item",
+    "stockReports": "Stock value and movement",
+    "purchase": "Orders and goods received",
+    "purchaseMoney": "Supplier bills and payables",
+    "customers": "Search and open a customer",
+    "collections": "Dues and receipts",
+    "followup": "Calls and promises to pay",
+    "complaints": "Log and resolve complaints",
+    "accounts": "Ledgers and day book",
+    "statements": "Profit and balance sheet",
+    "compliance": "GST and tax registers",
+    "reports": "Sales and business reports",
+    "account": "Your profile and language",
+    "users": "Staff logins",
+    "roles": "Who can do what",
+    "audit": "Who changed what",
+    "documents": "Licences and files",
+    "settings": "Franchise settings",
+    "attendance": "Check in and out",
+    "leave": "Apply and track leave",
+    "payslips": "Your monthly pay",
+    "visits": "Field visit log",
+    "advances": "Salary advances"
+  },
+  "modules": {
+    "account": {
+      "title": "My account",
+      "sub": "Your profile and sign-in"
+    },
+    "admin": {
+      "title": "Administration",
+      "sub": "Users, roles, audit and documents"
+    },
+    "ops": {
+      "title": "Operations",
+      "sub": "Billing, products, stock and purchases"
+    },
+    "setup": {
+      "title": "Setup",
+      "sub": "Settings for your franchise"
+    },
+    "customers": {
+      "title": "Customers",
+      "sub": "Farmers, collections and complaints"
+    },
+    "accounts": {
+      "title": "Accounts",
+      "sub": "Books, statements and tax"
+    },
+    "reports": {
+      "title": "Reports & analytics",
+      "sub": "Sales and business reports"
+    },
+    "staff": {
+      "title": "Staff & payroll",
+      "sub": "Attendance, leave and payslips"
+    },
+    "all": "All modules",
+    "open": "Open",
+    "back": "Back",
+    "notFound": "This section was not found.",
+    "screens_one": "{{count}} screen",
+    "screens_other": "{{count}} screens"
   }
 }

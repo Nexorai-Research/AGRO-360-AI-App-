@@ -66,6 +66,57 @@ export async function signIn(loginHint?: string): Promise<boolean> {
   return true;
 }
 
+export type PasswordResult = 'ok' | 'invalid' | 'network' | 'server';
+
+/**
+ * TEST SERVERS ONLY (EXPO_PUBLIC_PASSWORD_LOGIN=true, never in production): signs in with username and password against the Keycloak
+ * token endpoint, until the `agro360-mobile` browser client exists. The password is sent once and never stored or logged.
+ */
+export async function signInWithPassword(username: string, password: string): Promise<PasswordResult> {
+  if (!config.passwordLogin) return 'invalid';
+  const user = username.trim();
+  const r = await passwordGrant(user, password);
+  // Phone keyboards often add a space after a suggestion: try once more without stray spaces around the password.
+  if (r === 'invalid' && password !== password.trim()) return passwordGrant(user, password.trim());
+  return r;
+}
+
+async function passwordGrant(username: string, password: string): Promise<PasswordResult> {
+  let res: Response;
+  try {
+    res = await fetch(`${config.oidcIssuer}/protocol/openid-connect/token`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'password',
+        client_id: config.oidcClientId,
+        scope: 'openid',
+        username,
+        password,
+      }).toString(),
+    });
+  } catch {
+    return 'network';
+  }
+  if (res.status === 400 || res.status === 401) return 'invalid';
+  if (!res.ok) return 'server';
+  let j: { access_token?: string; refresh_token?: string; id_token?: string; expires_in?: number };
+  try {
+    j = (await res.json()) as typeof j;
+  } catch {
+    return 'server';
+  }
+  if (!j.access_token) return 'server';
+  tokens = {
+    accessToken: j.access_token,
+    refreshToken: j.refresh_token,
+    idToken: j.id_token,
+    expiresAt: Date.now() + (j.expires_in ?? 300) * 1000,
+  };
+  await saveTokens(tokens);
+  return 'ok';
+}
+
 /**
  * Renews the tokens. One call at a time (refresh tokens are single use), so concurrent callers share the same promise.
  * Returns the new access token, or null. Tokens are cleared when the server refuses the refresh token; a network error keeps them.
@@ -111,7 +162,25 @@ async function signOutLocal(): Promise<void> {
 /** Clears everything on the phone, then ends the Keycloak session (best effort: the phone is already signed out). */
 export async function signOut(): Promise<void> {
   const idToken = tokens?.idToken;
+  const refreshToken = tokens?.refreshToken;
   await signOutLocal();
+  if (config.passwordLogin) {
+    // no browser session exists in this mode; end the server session directly (best effort)
+    try {
+      if (refreshToken)
+        await fetch(`${config.oidcIssuer}/protocol/openid-connect/logout`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id: config.oidcClientId,
+            refresh_token: refreshToken,
+          }).toString(),
+        });
+    } catch {
+      /* the local sign out is what matters */
+    }
+    return;
+  }
   try {
     const q = new URLSearchParams({
       client_id: config.oidcClientId,

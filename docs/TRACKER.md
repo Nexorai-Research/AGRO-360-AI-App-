@@ -270,3 +270,12 @@ DONE: create (`POST /procurement/suppliers`) and edit (`PATCH /procurement/suppl
 
 Limits: opening balance (needs a branch), brands, contacts, bank accounts (add, verify, retire) and active / inactive status are not built. The GSTIN check digit and whether the state code is a real GST state are checked only by the server. Hindi and Marathi texts need a native speaker review.
 
+
+# Tracker: Home menu as module cards and sign-in for the test server
+
+| Item | Status | Evidence / limit |
+| --- | --- | --- |
+| Home shows one card per module (Operations, Customers, Accounts, Reports, Staff, Administration, Setup, My account), like the web top menu; a module opens its screens as cards; a module with one screen opens it directly (`src/features/home/modules.ts`, `ModuleGrid.tsx`, `ModuleScreen.tsx`, `app/module/[id].tsx`) | DONE (component logic) | `__tests__/home-modules.test.tsx`, 10 tests: all 30 screens listed once, each route file exists, every feature card opens its own route, English, Hindi and Marathi texts exist, Hindi renders, Back works, unknown module. Not looked at on a phone by the developer. Limits: cards are NOT hidden by permission (the server still refuses; a denied screen shows its own message); icons are emoji; the web screens "Security centre", "Villages and territories", "Customer tools", "Engagement", "Import history", "Configuration" and "Inventory/Sales" hubs have no app screen yet. Hindi and Marathi texts need a native speaker review. |
+| Sign-in with username and password for TEST servers only (`EXPO_PUBLIC_PASSWORD_LOGIN=true`, never in production) | DONE (mocked client) | `__tests__/password-login.test.ts`, `__tests__/config.test.ts`. Used because the Keycloak client `agro360-mobile` does not exist on the cloud server. Password is never stored or logged. Retries once without a stray space; server error, no network and wrong password have separate messages. To be removed when `agro360-mobile` exists. |
+| The app no longer sends `X-Device-Id` | DONE | `__tests__/client.test.ts`. The backend treats that header as a registered device and answers 403 DEVICE_INVALID for any other id. Device registration is NOT built in the app. |
+| On/off switch for today's numbers on Home (tiles, sales trend); module cards and profile always show | DONE (component logic) | `__tests__/home-switch.test.tsx`, 3 tests: on by default, off hides numbers and is saved, saved off starts hidden and on shows again. The choice is kept in secure storage (a non-secret flag). Not looked at on a phone by the developer. |
