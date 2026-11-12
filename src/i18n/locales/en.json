@@ -109,7 +109,12 @@
     "EMPLOYEE_EXITED": "An exited employee cannot check in.",
     "ALREADY_CHECKED_IN": "You have already checked in today.",
     "NOT_CHECKED_IN": "You have not checked in today.",
-    "ALREADY_CHECKED_OUT": "You have already checked out today."
+    "ALREADY_CHECKED_OUT": "You have already checked out today.",
+    "SHIFT_CLOSED": "This shift is already closed.",
+    "SHIFT_ALREADY_OPEN": "You already have an open shift on this terminal.",
+    "OPEN_SHIFTS": "Some shifts are still open. Close them before the day-end.",
+    "DAY_ALREADY_CLOSED": "This day is already closed.",
+    "CASH_DIFFERENCE_NEEDS_APPROVAL": "The cash difference is above the limit. A manager must close this shift, with a note."
   },
   "customers": {
     "title": "Customers",
