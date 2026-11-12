@@ -9,16 +9,44 @@ const mockGet = jest.fn();
 const mockPost = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
-const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a), delete: jest.fn() };
+const mockClient = {
+  get: (...a: unknown[]) => mockGet(...a),
+  post: (...a: unknown[]) => mockPost(...a),
+  delete: jest.fn(),
+};
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const shift = { id: 's-1', businessDate: '2026-11-11', terminal: 'T1', openingCash: '500.00', expectedCash: '1200.00', countedCash: null, difference: null, status: 'OPEN', cashIn: '300.00', cashOut: '50.00' };
-const dayRow = { id: 'd-1', business_date: '2026-11-10', note: null, summary: { invoices: '12', sales: '15400.50', cash_difference: '-20.00' } };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const shift = {
+  id: 's-1',
+  businessDate: '2026-11-11',
+  terminal: 'T1',
+  openingCash: '500.00',
+  expectedCash: '1200.00',
+  countedCash: null,
+  difference: null,
+  status: 'OPEN',
+  cashIn: '300.00',
+  cashOut: '50.00',
+};
+const dayRow = {
+  id: 'd-1',
+  business_date: '2026-11-10',
+  note: null,
+  summary: { invoices: '12', sales: '15400.50', cash_difference: '-20.00' },
+};
 
 beforeEach(async () => {
   [mockGet, mockPost].forEach((m) => m.mockReset());
@@ -70,7 +98,10 @@ describe('shifts: cash in and out', () => {
     expect(await screen.findByText('Cash movement saved.')).toBeTruthy();
     expect(mockPost).toHaveBeenCalledTimes(1);
     expect(mockPost.mock.calls[0]![0]).toBe('/pos/shifts/s-1/cash-movements');
-    expect(mockPost.mock.calls[0]![1]).toMatchObject({ body: { kind: 'CASH_OUT', amount: '250.00', reason: 'Bank deposit' }, idempotencyKey: 'key-1' });
+    expect(mockPost.mock.calls[0]![1]).toMatchObject({
+      body: { kind: 'CASH_OUT', amount: '250.00', reason: 'Bank deposit' },
+      idempotencyKey: 'key-1',
+    });
   });
 
   test('a bad amount or a missing reason blocks saving and shows the message', async () => {
@@ -85,7 +116,9 @@ describe('shifts: cash in and out', () => {
   });
 
   test('a lost answer then a retry reuses the same key; the server refusal is shown', async () => {
-    mockPost.mockRejectedValueOnce(new ApiError(0, null, 'c-1')).mockRejectedValueOnce(new ApiError(409, { title: 'SHIFT_CLOSED' }, 'c-2'));
+    mockPost
+      .mockRejectedValueOnce(new ApiError(0, null, 'c-1'))
+      .mockRejectedValueOnce(new ApiError(409, { title: 'SHIFT_CLOSED' }, 'c-2'));
     await render(<ShiftsScreen />, { wrapper });
     await screen.findByText('2026-11-11 · T1 · OPEN');
     await fireEvent.press(screen.getByLabelText('Cash in / out'));
@@ -103,10 +136,14 @@ describe('shifts: day-end history', () => {
   test('lists closed days with sales, bills and cash difference as money strings', async () => {
     await render(<ShiftsScreen />, { wrapper });
     expect(await screen.findByText('Day-end history')).toBeTruthy();
-    expect(await screen.findByText('2026-11-10 · sales ₹15,400.50 · 12 bills · cash difference -₹20.00')).toBeTruthy();
+    expect(
+      await screen.findByText('2026-11-10 · sales ₹15,400.50 · 12 bills · cash difference -₹20.00'),
+    ).toBeTruthy();
   });
   test('says so when no day is closed yet', async () => {
-    mockGet.mockImplementation(async (path: string) => (path === '/pos/shifts' ? { items: [shift] } : { items: [] }));
+    mockGet.mockImplementation(async (path: string) =>
+      path === '/pos/shifts' ? { items: [shift] } : { items: [] },
+    );
     await render(<ShiftsScreen />, { wrapper });
     expect(await screen.findByText('No day has been closed yet.')).toBeTruthy();
   });

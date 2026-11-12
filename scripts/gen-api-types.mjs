@@ -9,7 +9,9 @@ const file = i > -1 ? process.argv[i + 1] : undefined;
 const source = file ?? process.env.OPENAPI_URL;
 
 if (!source) {
-  console.error('No OpenAPI source. Set OPENAPI_URL (for example https://<host>/api/v1/openapi.json) or pass --file <path>.');
+  console.error(
+    'No OpenAPI source. Set OPENAPI_URL (for example https://<host>/api/v1/openapi.json) or pass --file <path>.',
+  );
   process.exit(1);
 }
 if (file && !existsSync(file)) {

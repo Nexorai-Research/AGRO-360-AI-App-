@@ -113,7 +113,9 @@ export default function LeaveScreen() {
         ))}
 
         {allowed ? (
-          form ? null : <Button label={t('leave.apply')} onPress={() => (act.clear(), keys.reset(), setForm(true))} />
+          form ? null : (
+            <Button label={t('leave.apply')} onPress={() => (act.clear(), keys.reset(), setForm(true))} />
+          )
         ) : null}
 
         {form ? (
@@ -125,7 +127,9 @@ export default function LeaveScreen() {
             ) : (
               <Chips
                 label={t('leave.type')}
-                options={(types.data?.items ?? []).filter((x) => x.active).map((x) => ({ id: x.id, label: x.name }))}
+                options={(types.data?.items ?? [])
+                  .filter((x) => x.active)
+                  .map((x) => ({ id: x.id, label: x.name }))}
                 value={typeId}
                 onChange={setTypeId}
               />
@@ -140,7 +144,9 @@ export default function LeaveScreen() {
               onChange={setDay}
             />
             <Field label={t('leave.from')} value={from} onChange={setFrom} placeholder="YYYY-MM-DD" />
-            {day === 'full' ? <Field label={t('leave.to')} value={to} onChange={setTo} placeholder="YYYY-MM-DD" /> : null}
+            {day === 'full' ? (
+              <Field label={t('leave.to')} value={to} onChange={setTo} placeholder="YYYY-MM-DD" />
+            ) : null}
             <Field label={t('leave.reason')} value={reason} onChange={setReason} />
             {checked && typeId ? <Notice tone="warn" text={t(ERR_KEY[checked])} /> : null}
             <Button
@@ -173,7 +179,8 @@ export default function LeaveScreen() {
             {scope === 'team' ? <Text style={kit.sub}>{l.employeeName}</Text> : null}
             <Text style={kit.sub}>
               {shortDate(l.fromDate)}
-              {l.toDate !== l.fromDate ? ` - ${shortDate(l.toDate)}` : ''} · {t('leave.days', { days: l.days })}
+              {l.toDate !== l.fromDate ? ` - ${shortDate(l.toDate)}` : ''} ·{' '}
+              {t('leave.days', { days: l.days })}
               {l.halfDay ? ` (${t('leave.half')})` : ''}
             </Text>
             {l.unpaidDays !== '0.00' && l.unpaidDays !== '0' ? (
@@ -222,13 +229,22 @@ export default function LeaveScreen() {
             {rejecting === l.id ? (
               <View style={{ gap: 8 }}>
                 <Field label={t('leave.rejectNote')} value={note} onChange={setNote} />
-                {!validRejectNote(note) && note !== '' ? <Notice tone="warn" text={t('leave.badNote')} /> : null}
+                {!validRejectNote(note) && note !== '' ? (
+                  <Notice tone="warn" text={t('leave.badNote')} />
+                ) : null}
                 <Button
                   label={t('leave.rejectNow')}
                   disabled={act.busy || !validRejectNote(note)}
                   onPress={() =>
                     void act.run(
-                      () => decideLeave(client!, l.id, 'reject', note.trim(), keys.keyFor(`reject:${l.id}:${note.trim()}`)),
+                      () =>
+                        decideLeave(
+                          client!,
+                          l.id,
+                          'reject',
+                          note.trim(),
+                          keys.keyFor(`reject:${l.id}:${note.trim()}`),
+                        ),
                       t('leave.rejectedMsg', { no: l.requestNo }),
                       () => (setRejecting(null), refresh()),
                     )

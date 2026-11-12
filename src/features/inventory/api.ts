@@ -76,24 +76,46 @@ export interface TransferBody {
 export const ikey = (userId: string, what: string, extra = '') => ['inventory', what, userId, extra] as const;
 
 const items = async <T>(p: Promise<{ items: T[] }>): Promise<T[]> => (await p).items;
-export const fetchAdjustments = (c: ApiClient, signal?: AbortSignal) => items<Adjustment>(c.get('/inventory/adjustments', { query: { limit: 100 }, signal }));
-export const fetchTransfers = (c: ApiClient, signal?: AbortSignal) => items<Transfer>(c.get('/inventory/transfers', { query: { limit: 100 }, signal }));
+export const fetchAdjustments = (c: ApiClient, signal?: AbortSignal) =>
+  items<Adjustment>(c.get('/inventory/adjustments', { query: { limit: 100 }, signal }));
+export const fetchTransfers = (c: ApiClient, signal?: AbortSignal) =>
+  items<Transfer>(c.get('/inventory/transfers', { query: { limit: 100 }, signal }));
 export const fetchBatches = (c: ApiClient, signal?: AbortSignal) =>
   items<BatchStock>(c.get('/inventory/batches', { query: { withStockOnly: 'true', limit: 500 }, signal }));
 export const fetchBranchList = async (c: ApiClient, signal?: AbortSignal) =>
-  (await items<Br>(c.get('/branches', { signal }))).filter((b) => b.status === undefined || b.status === 'ACTIVE');
+  (await items<Br>(c.get('/branches', { signal }))).filter(
+    (b) => b.status === undefined || b.status === 'ACTIVE',
+  );
 export const fetchWarehouseList = async (c: ApiClient, signal?: AbortSignal) =>
-  (await items<Wh>(c.get('/warehouses', { signal }))).filter((w) => w.status === undefined || w.status === 'ACTIVE');
+  (await items<Wh>(c.get('/warehouses', { signal }))).filter(
+    (w) => w.status === undefined || w.status === 'ACTIVE',
+  );
 
 export const createAdjustment = (c: ApiClient, body: AdjustBody, idempotencyKey: string) =>
   c.post<Adjustment>('/inventory/adjustments', { body, idempotencyKey });
-export const adjustAction = (c: ApiClient, id: string, action: 'submit' | 'cancel' | 'approve', idempotencyKey: string) =>
-  c.post<unknown>(`/inventory/adjustments/${id}/${action}`, { idempotencyKey });
+export const adjustAction = (
+  c: ApiClient,
+  id: string,
+  action: 'submit' | 'cancel' | 'approve',
+  idempotencyKey: string,
+) => c.post<unknown>(`/inventory/adjustments/${id}/${action}`, { idempotencyKey });
 export const rejectAdjustment = (c: ApiClient, id: string, note: string, idempotencyKey: string) =>
   c.post<unknown>(`/inventory/adjustments/${id}/reject`, { body: { note }, idempotencyKey });
 export const postTransfer = (c: ApiClient, body: TransferBody, idempotencyKey: string) =>
   c.post<Transfer>('/inventory/transfers/internal', { body, idempotencyKey });
-export const postDamage = (c: ApiClient, body: { fromWarehouseId: string; reasonCode: string; lines: { skuId: string; qty: string }[] }, idempotencyKey: string) =>
-  c.post<unknown>('/inventory/damage', { body, idempotencyKey });
-export const blockBatch = (c: ApiClient, id: string, release: boolean, reason: string, idempotencyKey: string) =>
-  c.post<unknown>(`/inventory/batches/${id}/${release ? 'unblock' : 'block'}`, { body: { reason }, idempotencyKey });
+export const postDamage = (
+  c: ApiClient,
+  body: { fromWarehouseId: string; reasonCode: string; lines: { skuId: string; qty: string }[] },
+  idempotencyKey: string,
+) => c.post<unknown>('/inventory/damage', { body, idempotencyKey });
+export const blockBatch = (
+  c: ApiClient,
+  id: string,
+  release: boolean,
+  reason: string,
+  idempotencyKey: string,
+) =>
+  c.post<unknown>(`/inventory/batches/${id}/${release ? 'unblock' : 'block'}`, {
+    body: { reason },
+    idempotencyKey,
+  });

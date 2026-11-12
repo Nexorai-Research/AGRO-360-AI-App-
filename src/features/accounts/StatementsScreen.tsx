@@ -9,7 +9,16 @@ import { Card, Chips, Line, Notice, kit, useCan } from '../hr/kit';
 import { shortDate } from '../hr/logic';
 import { todayIST } from '../collections/receipt';
 import { rangeOf } from '../reports/api';
-import { STATEMENT_KINDS, STATEMENT_PERM, fetchBalanceSheet, fetchBook, fetchProfitLoss, type BsSection, type PlSection, type StatementKind } from './statements-api';
+import {
+  STATEMENT_KINDS,
+  STATEMENT_PERM,
+  fetchBalanceSheet,
+  fetchBook,
+  fetchProfitLoss,
+  type BsSection,
+  type PlSection,
+  type StatementKind,
+} from './statements-api';
 
 const PERIODS = ['7', '30', '90'] as const;
 
@@ -49,25 +58,49 @@ export default function StatementsScreen() {
 
   return (
     <ScrollView contentContainerStyle={kit.page}>
-      <Text style={kit.title} accessibilityRole="header">{t('statements.title')}</Text>
+      <Text style={kit.title} accessibilityRole="header">
+        {t('statements.title')}
+      </Text>
       {!allowed ? (
         <StateView state="denied" message={t('statements.denied')} />
       ) : (
         <>
-          <Chips label={t('statements.which')} options={STATEMENT_KINDS.map((k) => ({ id: k, label: t(`statements.kind_${k}`) }))} value={kind} onChange={setKind} />
+          <Chips
+            label={t('statements.which')}
+            options={STATEMENT_KINDS.map((k) => ({ id: k, label: t(`statements.kind_${k}`) }))}
+            value={kind}
+            onChange={setKind}
+          />
           {kind !== 'bs' ? (
-            <Chips label={t('statements.period')} options={PERIODS.map((d) => ({ id: d, label: t('statements.lastDays', { count: Number(d) }) }))} value={days} onChange={setDays} />
+            <Chips
+              label={t('statements.period')}
+              options={PERIODS.map((d) => ({ id: d, label: t('statements.lastDays', { count: Number(d) }) }))}
+              value={days}
+              onChange={setDays}
+            />
           ) : null}
-          <Text style={kit.sub}>{kind === 'bs' ? t('statements.asOn', { date: shortDate(today) }) : `${shortDate(range.from)} - ${shortDate(range.to)}`}</Text>
+          <Text style={kit.sub}>
+            {kind === 'bs'
+              ? t('statements.asOn', { date: shortDate(today) })
+              : `${shortDate(range.from)} - ${shortDate(range.to)}`}
+          </Text>
 
           {kind === 'pl' ? (
-            <ReadBox {...common} queryKey={['statements', uid, 'pl', range.from, range.to]} load={(c, s) => fetchProfitLoss(c, range.from, range.to, s)}>
+            <ReadBox
+              {...common}
+              queryKey={['statements', uid, 'pl', range.from, range.to]}
+              load={(c, s) => fetchProfitLoss(c, range.from, range.to, s)}
+            >
               {(d) => (
                 <>
                   <Card>
                     <Line label={t('statements.netSales')} value={formatINR(d.current.netSales)} />
                     <Line label={t('statements.costOfSales')} value={formatINR(d.current.costOfSales)} />
-                    <Line label={t('statements.grossProfit')} value={formatINR(d.current.grossProfit)} strong />
+                    <Line
+                      label={t('statements.grossProfit')}
+                      value={formatINR(d.current.grossProfit)}
+                      strong
+                    />
                     <Line label={t('statements.expenses')} value={formatINR(d.current.operatingExpenses)} />
                     <Line label={t('statements.otherIncome')} value={formatINR(d.current.otherIncome)} />
                     <Line label={t('statements.netProfit')} value={formatINR(d.current.netProfit)} strong />
@@ -79,7 +112,11 @@ export default function StatementsScreen() {
           ) : null}
 
           {kind === 'bs' ? (
-            <ReadBox {...common} queryKey={['statements', uid, 'bs', today]} load={(c, s) => fetchBalanceSheet(c, today, s)}>
+            <ReadBox
+              {...common}
+              queryKey={['statements', uid, 'bs', today]}
+              load={(c, s) => fetchBalanceSheet(c, today, s)}
+            >
               {(d) => (
                 <>
                   {!d.balanced ? <Notice tone="error" text={t('statements.notBalanced')} /> : null}
@@ -101,13 +138,21 @@ export default function StatementsScreen() {
           ) : null}
 
           {kind === 'cash' || kind === 'bank' ? (
-            <ReadBox {...common} queryKey={['statements', uid, kind, range.from, range.to]} load={(c, s) => fetchBook(c, kind, range.from, range.to, s)}>
+            <ReadBox
+              {...common}
+              queryKey={['statements', uid, kind, range.from, range.to]}
+              load={(c, s) => fetchBook(c, kind, range.from, range.to, s)}
+            >
               {(d) => (
                 <>
-                  {d.accounts.length === 0 ? <StateView state="empty" message={t('statements.emptyBook')} /> : null}
+                  {d.accounts.length === 0 ? (
+                    <StateView state="empty" message={t('statements.emptyBook')} />
+                  ) : null}
                   {d.accounts.map((a) => (
                     <Card key={a.accountId}>
-                      <Text style={kit.name}>{a.code} {a.name}</Text>
+                      <Text style={kit.name}>
+                        {a.code} {a.name}
+                      </Text>
                       <Line label={t('statements.opening')} value={formatINR(a.opening)} />
                       <Line label={t('statements.receipts')} value={formatINR(a.receipts)} />
                       <Line label={t('statements.payments')} value={formatINR(a.payments)} />

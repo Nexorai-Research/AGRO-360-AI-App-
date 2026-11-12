@@ -15,3 +15,6 @@ expo-env.d.ts
 *.log
 node_modules/
 web-build/
+
+# a worktree may link node_modules; never commit it
+node_modules

@@ -96,7 +96,8 @@ export default function VisitsScreen() {
     ...(planVillage.trim() ? { village: planVillage.trim() } : {}),
     ...(purpose.trim() ? { purpose: purpose.trim() } : {}),
   };
-  const beatOk = isDate(planDate) && planDate >= today && (planVillage.trim() !== '' || purpose.trim() !== '');
+  const beatOk =
+    isDate(planDate) && planDate >= today && (planVillage.trim() !== '' || purpose.trim() !== '');
   const sendBeat = () =>
     act.run(
       () => createBeat(client!, beatBody, keys.keyFor(`beat:${JSON.stringify(beatBody)}`)),
@@ -154,7 +155,11 @@ export default function VisitsScreen() {
             />
             <Field label={t('visits.notes')} value={notes} onChange={setNotes} />
             {visitErr === 'place' ? <Notice tone="warn" text={t('visits.needPlace')} /> : null}
-            <Button label={t('visits.save')} disabled={act.busy || visitErr !== null} onPress={() => void send()} />
+            <Button
+              label={t('visits.save')}
+              disabled={act.busy || visitErr !== null}
+              onPress={() => void send()}
+            />
             <Button kind="ghost" label={t('visits.close')} onPress={() => setMode('list')} />
           </Card>
         ) : null}
@@ -162,17 +167,30 @@ export default function VisitsScreen() {
         {mode === 'beat' ? (
           <Card>
             <Text style={kit.name}>{t('visits.newBeat')}</Text>
-            <Field label={t('visits.planDate')} value={planDate} onChange={setPlanDate} placeholder="YYYY-MM-DD" />
+            <Field
+              label={t('visits.planDate')}
+              value={planDate}
+              onChange={setPlanDate}
+              placeholder="YYYY-MM-DD"
+            />
             <Field label={t('visits.village')} value={planVillage} onChange={setPlanVillage} />
             <Field label={t('visits.purpose')} value={purpose} onChange={setPurpose} />
-            {!isDate(planDate) || planDate < today ? <Notice tone="warn" text={t('visits.badPlanDate')} /> : null}
-            <Button label={t('visits.saveBeat')} disabled={act.busy || !beatOk} onPress={() => void sendBeat()} />
+            {!isDate(planDate) || planDate < today ? (
+              <Notice tone="warn" text={t('visits.badPlanDate')} />
+            ) : null}
+            <Button
+              label={t('visits.saveBeat')}
+              disabled={act.busy || !beatOk}
+              onPress={() => void sendBeat()}
+            />
             <Button kind="ghost" label={t('visits.close')} onPress={() => setMode('list')} />
           </Card>
         ) : null}
 
         <Text style={kit.name}>{t('visits.beatsTitle')}</Text>
-        {(beats.data?.items ?? []).length === 0 ? <StateView state="empty" message={t('visits.noBeats')} /> : null}
+        {(beats.data?.items ?? []).length === 0 ? (
+          <StateView state="empty" message={t('visits.noBeats')} />
+        ) : null}
         {(beats.data?.items ?? []).map((b) => (
           <Card key={b.id}>
             <Text style={kit.name}>{b.village ?? b.purpose ?? '-'}</Text>
@@ -198,12 +216,15 @@ export default function VisitsScreen() {
         ))}
 
         <Text style={kit.name}>{t('visits.visitsTitle')}</Text>
-        {visits.data && visits.data.items.length === 0 ? <StateView state="empty" message={t('visits.noVisits')} /> : null}
+        {visits.data && visits.data.items.length === 0 ? (
+          <StateView state="empty" message={t('visits.noVisits')} />
+        ) : null}
         {(visits.data?.items ?? []).map((v) => (
           <Card key={v.id}>
             <Text style={kit.name}>{v.village ?? '-'}</Text>
             <Text style={kit.sub}>
-              {shortDate(istDay(v.visitedAt))} · {t(`visits.outcome_${v.outcome}`, { defaultValue: v.outcome })}
+              {shortDate(istDay(v.visitedAt))} ·{' '}
+              {t(`visits.outcome_${v.outcome}`, { defaultValue: v.outcome })}
             </Text>
             {v.notes ? <Text style={kit.sub}>{v.notes}</Text> : null}
           </Card>

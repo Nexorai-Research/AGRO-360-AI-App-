@@ -44,8 +44,16 @@ describe('ApiError', () => {
 
   it('shift and day-end codes from the backend have their own translated text in all 3 languages', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const locales = ['en', 'hi', 'mr'].map((l) => require(`../src/i18n/locales/${l}.json`).errors as Record<string, string>);
-    for (const code of ['SHIFT_CLOSED', 'SHIFT_ALREADY_OPEN', 'OPEN_SHIFTS', 'DAY_ALREADY_CLOSED', 'CASH_DIFFERENCE_NEEDS_APPROVAL']) {
+    const locales = ['en', 'hi', 'mr'].map(
+      (l) => require(`../src/i18n/locales/${l}.json`).errors as Record<string, string>,
+    );
+    for (const code of [
+      'SHIFT_CLOSED',
+      'SHIFT_ALREADY_OPEN',
+      'OPEN_SHIFTS',
+      'DAY_ALREADY_CLOSED',
+      'CASH_DIFFERENCE_NEEDS_APPROVAL',
+    ]) {
       expect(errorMessage(new ApiError(409, { title: code })).key).toBe(`errors.${code}`);
       for (const errs of locales) expect(typeof errs[code]).toBe('string');
     }

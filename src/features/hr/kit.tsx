@@ -125,4 +125,3 @@ const bar = StyleSheet.create({
   v: { fontSize: 14, color: colors.ink, textAlign: 'right' },
   strong: { fontWeight: '700', color: colors.ink },
 });
-

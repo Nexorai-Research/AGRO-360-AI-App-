@@ -45,8 +45,16 @@ export default function ComplaintsScreen() {
         value={filter}
         onChange={(v) => setFilter(v as 'open' | 'all')}
       />
-      <TextInput value={text} onChangeText={setText} placeholder={t('complaints.search')} accessibilityLabel={t('complaints.search')} style={k.input} />
-      {can(PERM.create) ? <Button label={t('complaints.new')} onPress={() => router.push('/complaints/new')} /> : null}
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        placeholder={t('complaints.search')}
+        accessibilityLabel={t('complaints.search')}
+        style={k.input}
+      />
+      {can(PERM.create) ? (
+        <Button label={t('complaints.new')} onPress={() => router.push('/complaints/new')} />
+      ) : null}
       <Gate q={q} ns="complaints" emptyKey="complaints.empty" isEmpty={(q.data ?? []).length === 0}>
         {(q.data ?? []).map((c) => (
           <Pressable
@@ -60,7 +68,11 @@ export default function ComplaintsScreen() {
               {c.ticketNo} · {c.customerName ?? '-'}
             </Text>
             <Text style={k.sub}>
-              {[t(`complaints.category.${c.category}`, { defaultValue: c.category }), t(`complaints.severity.${c.severity}`, { defaultValue: c.severity }), t(`complaints.status.${c.status}`, { defaultValue: c.status })].join(' · ')}
+              {[
+                t(`complaints.category.${c.category}`, { defaultValue: c.category }),
+                t(`complaints.severity.${c.severity}`, { defaultValue: c.severity }),
+                t(`complaints.status.${c.status}`, { defaultValue: c.status }),
+              ].join(' · ')}
             </Text>
             {c.overdue ? <Text style={k.error}>{t('complaints.overdue')}</Text> : null}
           </Pressable>

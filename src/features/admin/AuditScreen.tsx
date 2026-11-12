@@ -6,6 +6,7 @@ import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { PERM, adminKey, fetchAudit, type AuditFilter } from './api';
 import { Card, isNetwork, k, queryState, useAccess } from './kit';
+import { lastDays } from './usr-audit';
 import { auditRange, fmtWhen, shortId, validAction, validActor, validDate, validEntity } from './logic';
 
 const EMPTY = { action: '', entity: '', actor: '', from: '', to: '' };
@@ -16,6 +17,7 @@ export default function AuditScreen() {
   const { client, can, userId } = useAccess();
   const [draft, setDraft] = useState(EMPTY);
   const [applied, setApplied] = useState(EMPTY);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const bad = {
     action: !validAction(draft.action.trim()),
@@ -71,6 +73,24 @@ export default function AuditScreen() {
       {input('actor', t('audit.actor'))}
       {input('from', t('audit.from'))}
       {input('to', t('audit.to'))}
+      <Button
+        kind="ghost"
+        label={t('aud.today')}
+        onPress={() => {
+          const r = lastDays(1);
+          setDraft({ ...draft, ...r });
+          setApplied({ ...draft, ...r });
+        }}
+      />
+      <Button
+        kind="ghost"
+        label={t('aud.week')}
+        onPress={() => {
+          const r = lastDays(7);
+          setDraft({ ...draft, ...r });
+          setApplied({ ...draft, ...r });
+        }}
+      />
       <Button label={t('audit.apply')} disabled={anyBad} onPress={() => setApplied(draft)} />
       <Button
         kind="ghost"
@@ -85,7 +105,8 @@ export default function AuditScreen() {
         <Card key={e.id}>
           <Text style={k.name}>{e.action}</Text>
           <Text style={k.sub}>
-            {fmtWhen(e.at)} · {e.outcome === 'SUCCESS' ? t('audit.success') : t('audit.failed', { outcome: e.outcome })}
+            {fmtWhen(e.at)} ·{' '}
+            {e.outcome === 'SUCCESS' ? t('audit.success') : t('audit.failed', { outcome: e.outcome })}
           </Text>
           <Text style={k.sub}>
             {e.actorName
@@ -94,12 +115,56 @@ export default function AuditScreen() {
                 ? t('audit.by', { name: shortId(e.actorId) })
                 : t('audit.system')}
           </Text>
-          <Text style={k.sub}>{e.targetType}{e.targetId ? ` ${shortId(e.targetId)}` : ''}</Text>
+          <Text style={k.sub}>
+            {e.targetType}
+            {e.targetId ? ` ${shortId(e.targetId)}` : ''}
+          </Text>
           {e.correlationId ? <Text style={k.sub}>{t('audit.ref', { id: e.correlationId })}</Text> : null}
+          <Button
+            kind="ghost"
+            label={openId === e.id ? t('users.hide') : t('users.details')}
+            onPress={() => setOpenId(openId === e.id ? null : e.id)}
+          />
+          {openId === e.id ? (
+            <>
+              <Text style={k.sub}>{t('aud.when', { value: e.at })}</Text>
+              <Text style={k.sub}>{t('aud.eventId', { value: e.id })}</Text>
+              <Text style={k.sub}>{t('aud.actorFull', { value: e.actorId ?? '-' })}</Text>
+              {e.actorUsername ? (
+                <Text style={k.sub}>{t('aud.username', { value: e.actorUsername })}</Text>
+              ) : null}
+              <Text style={k.sub}>{t('aud.targetFull', { type: e.targetType, id: e.targetId ?? '-' })}</Text>
+              <Text style={k.sub}>{t('aud.outcome', { value: e.outcome })}</Text>
+              {e.actorId ? (
+                <Button
+                  kind="ghost"
+                  label={t('aud.sameUser')}
+                  onPress={() => {
+                    setDraft({ ...draft, actor: e.actorId! });
+                    setApplied({ ...draft, actor: e.actorId! });
+                  }}
+                />
+              ) : null}
+              <Button
+                kind="ghost"
+                label={t('aud.sameAction')}
+                onPress={() => {
+                  setDraft({ ...draft, action: e.action });
+                  setApplied({ ...draft, action: e.action });
+                }}
+              />
+              <Text style={k.sub}>{t('aud.noDetail')}</Text>
+            </>
+          ) : null}
         </Card>
       ))}
       {events.hasNextPage ? (
-        <Button kind="ghost" label={t('audit.more')} disabled={events.isFetchingNextPage} onPress={() => void events.fetchNextPage()} />
+        <Button
+          kind="ghost"
+          label={t('audit.more')}
+          disabled={events.isFetchingNextPage}
+          onPress={() => void events.fetchNextPage()}
+        />
       ) : null}
     </ScrollView>
   );

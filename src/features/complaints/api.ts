@@ -11,7 +11,15 @@ export const PERM = {
   resolve: 'customer.complaint.resolve',
 } as const;
 
-export const CATEGORIES = ['PRODUCT_QUALITY', 'GERMINATION', 'EFFICACY', 'SERVICE', 'DELIVERY', 'PRICING', 'OTHER'] as const;
+export const CATEGORIES = [
+  'PRODUCT_QUALITY',
+  'GERMINATION',
+  'EFFICACY',
+  'SERVICE',
+  'DELIVERY',
+  'PRICING',
+  'OTHER',
+] as const;
 export const SEVERITIES = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'] as const;
 export const STATUSES = ['OPEN', 'IN_PROGRESS', 'ESCALATED_SUPPLIER', 'RESOLVED', 'CLOSED'] as const;
 export const RESOLUTIONS = ['REPLACEMENT', 'CREDIT_NOTE', 'ADVICE', 'REFUND', 'OTHER'] as const;
@@ -64,7 +72,11 @@ export const getComplaint = (c: ApiClient, id: string, signal?: AbortSignal) =>
 export const createComplaint = (c: ApiClient, body: ComplaintBody, idempotencyKey: string) =>
   c.post<Complaint>('/complaints', { body, idempotencyKey });
 /** The version read earlier goes as If-Match, so two people cannot move the same ticket at once. */
-export const transitionComplaint = (c: ApiClient, x: Complaint, body: TransitionBody, idempotencyKey: string) =>
-  c.post<Complaint>(`/complaints/${x.id}/transition`, { body, version: x.version, idempotencyKey });
+export const transitionComplaint = (
+  c: ApiClient,
+  x: Complaint,
+  body: TransitionBody,
+  idempotencyKey: string,
+) => c.post<Complaint>(`/complaints/${x.id}/transition`, { body, version: x.version, idempotencyKey });
 export const commentComplaint = (c: ApiClient, id: string, text: string, idempotencyKey: string) =>
   c.post<unknown>(`/complaints/${id}/comments`, { body: { text }, idempotencyKey });

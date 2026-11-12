@@ -52,7 +52,8 @@ export default function AdvancesScreen() {
   });
 
   const amountErr = amount === '' ? null : checkAmount(amount);
-  const valid = checkAmount(amount) === null && checkInstallments(count) && isPeriod(start) && emp.data !== undefined;
+  const valid =
+    checkAmount(amount) === null && checkInstallments(count) && isPeriod(start) && emp.data !== undefined;
   const per = valid ? dec(amount.trim()).div(count.trim()).toFixed(2, Decimal.ROUND_UP) : null;
 
   const send = () => {
@@ -81,7 +82,12 @@ export default function AdvancesScreen() {
       <Text style={kit.title} accessibilityRole="header">
         {t('advances.title')}
       </Text>
-      <Gate query={list} denied={!allowed} deniedText={t('advances.denied')} offlineText={t('advances.offline')}>
+      <Gate
+        query={list}
+        denied={!allowed}
+        deniedText={t('advances.denied')}
+        offlineText={t('advances.offline')}
+      >
         {act.msg ? <Notice tone="ok" text={act.msg} /> : null}
         {act.failure ? <Notice tone="error" text={act.failure} /> : null}
         {list.data ? (
@@ -117,7 +123,9 @@ export default function AdvancesScreen() {
               error={start !== '' && !isPeriod(start) ? t('advances.badPeriod') : null}
             />
             <Field label={t('advances.reason')} value={reason} onChange={setReason} />
-            {per ? <Text style={kit.sub}>{t('advances.perInstallment', { amount: formatINR(per) })}</Text> : null}
+            {per ? (
+              <Text style={kit.sub}>{t('advances.perInstallment', { amount: formatINR(per) })}</Text>
+            ) : null}
             <Button label={t('advances.submit')} disabled={act.busy || !valid} onPress={() => void send()} />
             <Button kind="ghost" label={t('advances.close')} onPress={() => setForm(false)} />
           </Card>
@@ -135,8 +143,12 @@ export default function AdvancesScreen() {
             <Line label={t('advances.recovered')} value={formatINR(a.recovered)} />
             <Line label={t('advances.balance')} value={formatINR(a.balance)} strong />
             <Text style={kit.sub}>
-              {t('advances.plan', { count: a.installments, amount: formatINR(a.installmentAmount), from: a.startPeriod })} ·{' '}
-              {shortDate(a.issuedOn)}
+              {t('advances.plan', {
+                count: a.installments,
+                amount: formatINR(a.installmentAmount),
+                from: a.startPeriod,
+              })}{' '}
+              · {shortDate(a.issuedOn)}
             </Text>
             <Text style={kit.sub}>{t(`advances.status_${a.status}`, { defaultValue: a.status })}</Text>
           </Card>

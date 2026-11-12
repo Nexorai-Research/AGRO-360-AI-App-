@@ -57,8 +57,18 @@ export default function OrderFormScreen() {
     enabled: ready,
     retry: retryNetworkOnce,
   });
-  const branches = useQuery({ queryKey: key(userId, 'branches'), queryFn: ({ signal }) => fetchBranches(client!, signal), enabled: ready, staleTime: 5 * 60_000 });
-  const warehouses = useQuery({ queryKey: key(userId, 'warehouses'), queryFn: ({ signal }) => fetchWarehouses(client!, signal), enabled: ready, staleTime: 5 * 60_000 });
+  const branches = useQuery({
+    queryKey: key(userId, 'branches'),
+    queryFn: ({ signal }) => fetchBranches(client!, signal),
+    enabled: ready,
+    staleTime: 5 * 60_000,
+  });
+  const warehouses = useQuery({
+    queryKey: key(userId, 'warehouses'),
+    queryFn: ({ signal }) => fetchWarehouses(client!, signal),
+    enabled: ready,
+    staleTime: 5 * 60_000,
+  });
   const found = useQuery({
     queryKey: key(userId, 'products', searched),
     queryFn: ({ signal }) => searchProducts(client!, searched, signal),
@@ -71,14 +81,19 @@ export default function OrderFormScreen() {
       setNote(t('purchase.alreadyAdded', { name: p.name }));
       return;
     }
-    setD((x) => ({ ...x, lines: [...x.lines, { skuId: p.id, label: `${p.code} ${p.name}`, qty: '', rate: '', discountPct: '' }] }));
+    setD((x) => ({
+      ...x,
+      lines: [...x.lines, { skuId: p.id, label: `${p.code} ${p.name}`, qty: '', rate: '', discountPct: '' }],
+    }));
   }
   async function onScanned(code: string) {
     setScan(false);
     try {
       addProduct(await productByBarcode(client!, code));
     } catch (e) {
-      setNote(e instanceof ApiError && e.status === 404 ? t('purchase.barcodeNotFound', { code }) : errText(e));
+      setNote(
+        e instanceof ApiError && e.status === 404 ? t('purchase.barcodeNotFound', { code }) : errText(e),
+      );
     }
   }
   const setLine = (i: number, patch: Partial<OrderDraft['lines'][number]>) =>
@@ -89,7 +104,9 @@ export default function OrderFormScreen() {
   const errors = orderErrors(d);
   const has = (e: (typeof errors)[number]) => tried && errors.includes(e);
   const activeSuppliers = (suppliers.data ?? []).filter((s) => s.status === 'ACTIVE');
-  const wh = (warehouses.data ?? []).filter((w) => w.sellable !== false && (!d.branchId || !w.branchId || w.branchId === d.branchId));
+  const wh = (warehouses.data ?? []).filter(
+    (w) => w.sellable !== false && (!d.branchId || !w.branchId || w.branchId === d.branchId),
+  );
 
   async function save() {
     setTried(true);
@@ -114,19 +131,43 @@ export default function OrderFormScreen() {
       <Stack.Screen options={{ headerShown: true, title: t('purchase.newOrder') }} />
       <Gate q={suppliers} ns="purchase" emptyKey="purchase.emptySuppliers" isEmpty={false}>
         <Text style={k.label}>{t('purchase.supplier')}</Text>
-        <Chips options={activeSuppliers.map((s) => ({ value: s.id, label: s.name }))} value={d.supplierId} onChange={(v) => setD({ ...d, supplierId: v })} />
+        <Chips
+          options={activeSuppliers.map((s) => ({ value: s.id, label: s.name }))}
+          value={d.supplierId}
+          onChange={(v) => setD({ ...d, supplierId: v })}
+        />
         {has('supplier') ? <Text style={k.error}>{t('purchase.v.supplier')}</Text> : null}
 
         <Text style={k.label}>{t('purchase.branch')}</Text>
-        <Chips options={(branches.data ?? []).map((b) => ({ value: b.id, label: b.name }))} value={d.branchId} onChange={(v) => setD({ ...d, branchId: v, warehouseId: '' })} />
+        <Chips
+          options={(branches.data ?? []).map((b) => ({ value: b.id, label: b.name }))}
+          value={d.branchId}
+          onChange={(v) => setD({ ...d, branchId: v, warehouseId: '' })}
+        />
         {has('branch') ? <Text style={k.error}>{t('purchase.v.branch')}</Text> : null}
 
         <Text style={k.label}>{t('purchase.warehouse')}</Text>
-        <Chips options={wh.map((w) => ({ value: w.id, label: w.name }))} value={d.warehouseId} onChange={(v) => setD({ ...d, warehouseId: v })} />
+        <Chips
+          options={wh.map((w) => ({ value: w.id, label: w.name }))}
+          value={d.warehouseId}
+          onChange={(v) => setD({ ...d, warehouseId: v })}
+        />
         {has('warehouse') ? <Text style={k.error}>{t('purchase.v.warehouse')}</Text> : null}
 
-        <Field label={t('purchase.orderDate')} value={d.orderDate} onChange={(v) => setD({ ...d, orderDate: v })} placeholder="YYYY-MM-DD" error={has('date') ? t('purchase.v.date') : null} />
-        <Field label={t('purchase.expectedDate')} value={d.expectedDate} onChange={(v) => setD({ ...d, expectedDate: v })} placeholder="YYYY-MM-DD" error={has('expected') ? t('purchase.v.expected') : null} />
+        <Field
+          label={t('purchase.orderDate')}
+          value={d.orderDate}
+          onChange={(v) => setD({ ...d, orderDate: v })}
+          placeholder="YYYY-MM-DD"
+          error={has('date') ? t('purchase.v.date') : null}
+        />
+        <Field
+          label={t('purchase.expectedDate')}
+          value={d.expectedDate}
+          onChange={(v) => setD({ ...d, expectedDate: v })}
+          placeholder="YYYY-MM-DD"
+          error={has('expected') ? t('purchase.v.expected') : null}
+        />
         <Field label={t('purchase.notes')} value={d.notes} onChange={(v) => setD({ ...d, notes: v })} />
 
         <Text style={k.h2}>{t('purchase.lines')}</Text>
@@ -138,7 +179,12 @@ export default function OrderFormScreen() {
               <Button kind="ghost" label={t('purchase.scan')} onPress={() => setScan(true)} />
             </View>
             {(found.data ?? []).map((p) => (
-              <Button key={p.id} kind="ghost" label={`${t('purchase.add')} ${p.code} ${p.name}`} onPress={() => addProduct(p)} />
+              <Button
+                key={p.id}
+                kind="ghost"
+                label={`${t('purchase.add')} ${p.code} ${p.name}`}
+                onPress={() => addProduct(p)}
+              />
             ))}
           </>
         ) : (
@@ -152,18 +198,41 @@ export default function OrderFormScreen() {
           return (
             <View key={l.skuId} style={k.card}>
               <Text style={k.name}>{l.label}</Text>
-              <Field label={`${t('purchase.qty')} ${i + 1}`} value={l.qty} onChange={(v) => setLine(i, { qty: v })} keyboard="decimal-pad" />
-              <Field label={`${t('purchase.rate')} ${i + 1}`} value={l.rate} onChange={(v) => setLine(i, { rate: v })} keyboard="decimal-pad" />
-              <Field label={`${t('purchase.discount')} ${i + 1}`} value={l.discountPct} onChange={(v) => setLine(i, { discountPct: v })} keyboard="decimal-pad" />
+              <Field
+                label={`${t('purchase.qty')} ${i + 1}`}
+                value={l.qty}
+                onChange={(v) => setLine(i, { qty: v })}
+                keyboard="decimal-pad"
+              />
+              <Field
+                label={`${t('purchase.rate')} ${i + 1}`}
+                value={l.rate}
+                onChange={(v) => setLine(i, { rate: v })}
+                keyboard="decimal-pad"
+              />
+              <Field
+                label={`${t('purchase.discount')} ${i + 1}`}
+                value={l.discountPct}
+                onChange={(v) => setLine(i, { discountPct: v })}
+                keyboard="decimal-pad"
+              />
               {est ? <Text style={k.sub}>{t('purchase.estimate', { amount: formatINR(est) })}</Text> : null}
-              <Button kind="ghost" label={`${t('purchase.remove')} ${l.label}`} onPress={() => setD((x) => ({ ...x, lines: x.lines.filter((_, j) => j !== i) }))} />
+              <Button
+                kind="ghost"
+                label={`${t('purchase.remove')} ${l.label}`}
+                onPress={() => setD((x) => ({ ...x, lines: x.lines.filter((_, j) => j !== i) }))}
+              />
             </View>
           );
         })}
         {has('qty') ? <Text style={k.error}>{t('purchase.v.qty')}</Text> : null}
         {has('rate') ? <Text style={k.error}>{t('purchase.v.rate')}</Text> : null}
         {has('discount') ? <Text style={k.error}>{t('purchase.v.discount')}</Text> : null}
-        {d.lines.length > 0 ? <Text style={k.name}>{t('purchase.estimateTotal', { amount: formatINR(orderEstimate(d.lines)) })}</Text> : null}
+        {d.lines.length > 0 ? (
+          <Text style={k.name}>
+            {t('purchase.estimateTotal', { amount: formatINR(orderEstimate(d.lines)) })}
+          </Text>
+        ) : null}
         <Text style={k.sub}>{t('purchase.serverTotals')}</Text>
 
         {failure ? <Notice tone="error" text={failure} /> : null}

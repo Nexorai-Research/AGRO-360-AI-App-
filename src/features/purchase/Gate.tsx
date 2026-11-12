@@ -28,9 +28,16 @@ export function Gate({
   if (q.isPending && q.fetchStatus !== 'idle') return <StateView state="loading" />;
   if (q.error && q.data === undefined) {
     const m = errorMessage(q.error);
-    if (isNetwork(q.error)) return <StateView state="offline" message={t(`${ns}.offline`)} onRetry={() => void q.refetch()} />;
+    if (isNetwork(q.error))
+      return <StateView state="offline" message={t(`${ns}.offline`)} onRetry={() => void q.refetch()} />;
     if (m.key === 'errors.FORBIDDEN') return <StateView state="denied" message={t(`${ns}.denied`)} />;
-    return <StateView state="error" message={t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })} onRetry={() => void q.refetch()} />;
+    return (
+      <StateView
+        state="error"
+        message={t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })}
+        onRetry={() => void q.refetch()}
+      />
+    );
   }
   if (q.data !== undefined && isEmpty) return <StateView state="empty" message={t(emptyKey)} />;
   return <>{children}</>;

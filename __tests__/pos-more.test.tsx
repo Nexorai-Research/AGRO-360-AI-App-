@@ -19,14 +19,30 @@ const mockClient = {
   delete: (...a: unknown[]) => mockDelete(...a),
 };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 jest.mock('../src/features/stock/BarcodeScanner', () => ({ BarcodeScanner: () => null }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const inv = { id: 'i-1', number: 'INV-1', invoiceDate: '2026-11-11', customerName: 'Ramesh Patil', total: '280.00', creditAmount: '80.00', status: 'FINALIZED' };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const inv = {
+  id: 'i-1',
+  number: 'INV-1',
+  invoiceDate: '2026-11-11',
+  customerName: 'Ramesh Patil',
+  total: '280.00',
+  creditAmount: '80.00',
+  status: 'FINALIZED',
+};
 
 beforeEach(async () => {
   [mockGet, mockPost, mockDelete].forEach((m) => m.mockReset());
@@ -57,7 +73,12 @@ describe('invoices screen', () => {
   beforeEach(() => {
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/sales/invoices') return { items: [inv] };
-      if (path === '/sales/invoices/i-1') return { ...inv, customerId: 'c-1', lines: [{ id: 'l-1', skuCode: 'URE-50', qty: '2.000', returned: '0.000' }] };
+      if (path === '/sales/invoices/i-1')
+        return {
+          ...inv,
+          customerId: 'c-1',
+          lines: [{ id: 'l-1', skuCode: 'URE-50', qty: '2.000', returned: '0.000' }],
+        };
       if (path === '/settings/payment-modes') return { items: [{ code: 'CASH', enabled: true }] };
       return { items: [] };
     });
@@ -120,7 +141,11 @@ describe('invoices screen', () => {
     expect(await screen.findByText('Credit note issued against INV-1.')).toBeTruthy();
     const [path, o] = mockPost.mock.calls[0]!;
     expect(path).toBe('/sales/returns');
-    expect(o.body).toMatchObject({ invoiceId: 'i-1', refundMode: 'CREDIT_TO_ACCOUNT', lines: [{ invoiceLineId: 'l-1', qty: '1', toDamaged: false }] });
+    expect(o.body).toMatchObject({
+      invoiceId: 'i-1',
+      refundMode: 'CREDIT_TO_ACCOUNT',
+      lines: [{ invoiceLineId: 'l-1', qty: '1', toDamaged: false }],
+    });
   });
 
   test('share opens the phone share sheet with the link', async () => {
@@ -142,7 +167,16 @@ describe('invoices screen', () => {
 
 describe('shifts screen', () => {
   const show = () => render(<ShiftsScreen />, { wrapper });
-  const shift = { id: 's-1', businessDate: '2026-11-11', terminal: 'T1', openingCash: '500.00', expectedCash: '1200.00', countedCash: null, difference: null, status: 'OPEN' };
+  const shift = {
+    id: 's-1',
+    businessDate: '2026-11-11',
+    terminal: 'T1',
+    openingCash: '500.00',
+    expectedCash: '1200.00',
+    countedCash: null,
+    difference: null,
+    status: 'OPEN',
+  };
   beforeEach(() => {
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/pos/shifts') return { items: [shift] };
@@ -180,7 +214,10 @@ describe('shifts screen', () => {
     await fireEvent.changeText(screen.getByLabelText('Opening cash'), '500');
     await fireEvent.press(screen.getAllByLabelText('Open shift').at(-1)!);
     expect(await screen.findByText('Shift opened.')).toBeTruthy();
-    expect(mockPost.mock.calls[0]![1]).toMatchObject({ body: { branchId: 'b-1', openingCash: '500.00' }, idempotencyKey: 'key-1' });
+    expect(mockPost.mock.calls[0]![1]).toMatchObject({
+      body: { branchId: 'b-1', openingCash: '500.00' },
+      idempotencyKey: 'key-1',
+    });
   });
 
   test('day-end is hidden without pos.dayend', async () => {
@@ -192,18 +229,52 @@ describe('shifts screen', () => {
 });
 
 describe('POS: hold, resume and quick customer', () => {
-  const prod = { id: 'p-1', code: 'URE-50', name: 'Urea 50kg', status: 'ACTIVE', sellable: true, saleBlocked: false, banned: false, mrp: '300.00', sellingPrice: '280.00', baseUomCode: 'BAG', primaryBarcode: null };
-  const preview = { docType: 'TAX_INVOICE', placeOfSupply: '27', totals: { gross: '280.00', discount: '0.00', taxable: '266.67', cgst: '6.67', sgst: '6.66', igst: '0.00', roundOff: '0.00', total: '280.00' } };
+  const prod = {
+    id: 'p-1',
+    code: 'URE-50',
+    name: 'Urea 50kg',
+    status: 'ACTIVE',
+    sellable: true,
+    saleBlocked: false,
+    banned: false,
+    mrp: '300.00',
+    sellingPrice: '280.00',
+    baseUomCode: 'BAG',
+    primaryBarcode: null,
+  };
+  const preview = {
+    docType: 'TAX_INVOICE',
+    placeOfSupply: '27',
+    totals: {
+      gross: '280.00',
+      discount: '0.00',
+      taxable: '266.67',
+      cgst: '6.67',
+      sgst: '6.66',
+      igst: '0.00',
+      roundOff: '0.00',
+      total: '280.00',
+    },
+  };
   let heldRows: { id: string; label: string; created_at: string }[];
   beforeEach(() => {
     heldRows = [];
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/branches') return { items: [{ id: 'b-1', name: 'Main', status: 'ACTIVE' }] };
-      if (path === '/warehouses') return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true }] };
+      if (path === '/warehouses')
+        return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Shop', status: 'ACTIVE', sellable: true }] };
       if (path === '/settings/payment-modes') return { items: [{ code: 'CASH', enabled: true }] };
       if (path === '/products') return { items: [prod] };
       if (path === '/sales/held') return { items: heldRows };
-      if (path === '/sales/held/h-1') return { cart: { branchId: 'b-1', customerId: 'c-9', billDiscountPct: '5', lines: [{ skuId: 'p-1', warehouseId: 'w-1', qty: '3' }] } };
+      if (path === '/sales/held/h-1')
+        return {
+          cart: {
+            branchId: 'b-1',
+            customerId: 'c-9',
+            billDiscountPct: '5',
+            lines: [{ skuId: 'p-1', warehouseId: 'w-1', qty: '3' }],
+          },
+        };
       if (path === '/customers/c-9') return { id: 'c-9', name: 'Sunita Jadhav' };
       return { items: [] };
     });
@@ -232,21 +303,33 @@ describe('POS: hold, resume and quick customer', () => {
     await fireEvent.press(screen.getByLabelText('Hold'));
     expect(await screen.findByText('Bill held. Find it under Held bills.')).toBeTruthy();
     const c = mockPost.mock.calls.find((x) => x[0] === '/sales/held')!;
-    expect(c[1].body).toMatchObject({ branchId: 'b-1', label: 'Ramesh', cart: { lines: [{ skuId: 'p-1', qty: '1' }] } });
+    expect(c[1].body).toMatchObject({
+      branchId: 'b-1',
+      label: 'Ramesh',
+      cart: { lines: [{ skuId: 'p-1', qty: '1' }] },
+    });
     expect(c[1].idempotencyKey).toBeTruthy();
   });
 
   test('quick customer: bad mobile blocks save; a good one creates and selects the customer', async () => {
-    mockPost.mockImplementation(async (path: string) => (path === '/customers/quick' ? { id: 'c-5', name: 'Naya Kisan' } : preview));
+    mockPost.mockImplementation(async (path: string) =>
+      path === '/customers/quick' ? { id: 'c-5', name: 'Naya Kisan' } : preview,
+    );
     await render(<PosScreen />, { wrapper });
     await fireEvent.changeText(await screen.findByLabelText('Search customer by name or mobile'), 'naya');
-    await fireEvent.press(await screen.findByLabelText('Not found: add a quick customer', {}, { timeout: 3000 }));
+    await fireEvent.press(
+      await screen.findByLabelText('Not found: add a quick customer', {}, { timeout: 3000 }),
+    );
     await fireEvent.changeText(screen.getByLabelText('Mobile (10 digits, starts 6-9)'), '12345');
     expect(await screen.findByText('Mobile must be 10 digits and start with 6, 7, 8 or 9.')).toBeTruthy();
     await fireEvent.changeText(screen.getByLabelText('Mobile (10 digits, starts 6-9)'), '9876543210');
     await fireEvent.changeText(screen.getByLabelText('Village'), 'Pune');
     await fireEvent.press(screen.getByLabelText('Save customer'));
     expect(await screen.findByText('Naya Kisan')).toBeTruthy();
-    expect(mockPost.mock.calls.find((x) => x[0] === '/customers/quick')![1].body).toEqual({ name: 'naya', mobile: '9876543210', village: 'Pune' });
+    expect(mockPost.mock.calls.find((x) => x[0] === '/customers/quick')![1].body).toEqual({
+      name: 'naya',
+      mobile: '9876543210',
+      village: 'Pune',
+    });
   });
 });

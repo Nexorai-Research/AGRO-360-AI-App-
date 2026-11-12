@@ -32,7 +32,13 @@ const mockPush = jest.fn();
 const mockReplace = jest.fn();
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 jest.mock('expo-router', () => ({
@@ -48,18 +54,50 @@ jest.mock('../src/features/stock/BarcodeScanner', () => ({
 }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 
 const order = (over: Partial<OrderDetail> = {}): OrderDetail => ({
-  id: 'po-1', number: 'PO-1', revision: 1, branchId: 'b-1', supplierId: 's-1', supplierName: 'Agro Seeds', warehouseId: 'w-1',
-  orderDate: '2026-11-10', expectedDate: null, status: 'SUBMITTED', total: '1180.00', createdBy: 'u-2', version: 3,
-  subtotal: '1000.00', taxTotal: '180.00', notes: null, reason: null,
-  lines: [{ id: 'l-1', lineNo: 1, skuId: 'sku-1', skuCode: 'URE-50', skuName: 'Urea 50kg', qty: '10.000000', rate: '100.0000', discountPct: '0.0000', lineTotal: '1180.00', receivedQty: '0.000000', closedQty: '0.000000', pendingQty: '10.000000' }],
+  id: 'po-1',
+  number: 'PO-1',
+  revision: 1,
+  branchId: 'b-1',
+  supplierId: 's-1',
+  supplierName: 'Agro Seeds',
+  warehouseId: 'w-1',
+  orderDate: '2026-11-10',
+  expectedDate: null,
+  status: 'SUBMITTED',
+  total: '1180.00',
+  createdBy: 'u-2',
+  version: 3,
+  subtotal: '1000.00',
+  taxTotal: '180.00',
+  notes: null,
+  reason: null,
+  lines: [
+    {
+      id: 'l-1',
+      lineNo: 1,
+      skuId: 'sku-1',
+      skuCode: 'URE-50',
+      skuName: 'Urea 50kg',
+      qty: '10.000000',
+      rate: '100.0000',
+      discountPct: '0.0000',
+      lineTotal: '1180.00',
+      receivedQty: '0.000000',
+      closedQty: '0.000000',
+      pendingQty: '10.000000',
+    },
+  ],
   ...over,
 });
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', (parts as Record<string, object>)[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', (parts as Record<string, object>)[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost, mockPush, mockReplace].forEach((m) => m.mockReset());
@@ -83,8 +121,22 @@ describe('purchase logic', () => {
     expect(lineEstimate({ qty: '3', rate: '33.33', discountPct: '10' })).toBe('89.99');
   });
   test('order body leaves blanks out and needs a line', () => {
-    const d = { supplierId: 's', branchId: 'b', warehouseId: 'w', orderDate: '2026-11-10', expectedDate: '', notes: '', lines: [{ skuId: 'k', label: 'x', qty: '2', rate: '5', discountPct: '' }] };
-    expect(buildOrderBody(d)).toEqual({ supplierId: 's', branchId: 'b', warehouseId: 'w', orderDate: '2026-11-10', lines: [{ skuId: 'k', qty: '2', rate: '5' }] });
+    const d = {
+      supplierId: 's',
+      branchId: 'b',
+      warehouseId: 'w',
+      orderDate: '2026-11-10',
+      expectedDate: '',
+      notes: '',
+      lines: [{ skuId: 'k', label: 'x', qty: '2', rate: '5', discountPct: '' }],
+    };
+    expect(buildOrderBody(d)).toEqual({
+      supplierId: 's',
+      branchId: 'b',
+      warehouseId: 'w',
+      orderDate: '2026-11-10',
+      lines: [{ skuId: 'k', qty: '2', rate: '5' }],
+    });
     expect(orderErrors({ ...d, lines: [] }, '2026-11-11')).toContain('noLines');
     expect(orderErrors({ ...d, orderDate: '2026-12-01' }, '2026-11-11')).toContain('date');
     expect(orderErrors({ ...d, expectedDate: '2026-11-01' }, '2026-11-11')).toContain('expected');
@@ -108,8 +160,15 @@ describe('purchase logic', () => {
     expect(receiveErrors(bad, '2026-11-11')).toContain('reason');
     const ok = { ...c1, lines: [{ ...c1.lines[0]!, received: '3', rejected: '1', reason: 'DAMAGED' }] };
     expect(receiveErrors(ok, '2026-11-11')).toEqual([]);
-    expect(buildGrnBody('po-1', ok).lines[0]).toEqual({ poLineId: 'l-1', receivedQty: '3', rejectedQty: '1', rejectReason: 'DAMAGED' });
-    expect(receiveErrors({ ...ok, lines: [{ ...ok.lines[0]!, rejected: '4' }] }, '2026-11-11')).toContain('rejected');
+    expect(buildGrnBody('po-1', ok).lines[0]).toEqual({
+      poLineId: 'l-1',
+      receivedQty: '3',
+      rejectedQty: '1',
+      rejectReason: 'DAMAGED',
+    });
+    expect(receiveErrors({ ...ok, lines: [{ ...ok.lines[0]!, rejected: '4' }] }, '2026-11-11')).toContain(
+      'rejected',
+    );
   });
 });
 
@@ -224,9 +283,25 @@ describe('order detail', () => {
 describe('order form', () => {
   beforeEach(() => {
     mockGet.mockImplementation(async (path: string) => {
-      if (path === '/procurement/suppliers') return { items: [{ id: 's-1', code: 'S1', name: 'Agro Seeds', type: 'COMPANY', gstin: null, stateCode: '27', creditDays: 0, creditLimit: '0', status: 'ACTIVE' }] };
+      if (path === '/procurement/suppliers')
+        return {
+          items: [
+            {
+              id: 's-1',
+              code: 'S1',
+              name: 'Agro Seeds',
+              type: 'COMPANY',
+              gstin: null,
+              stateCode: '27',
+              creditDays: 0,
+              creditLimit: '0',
+              status: 'ACTIVE',
+            },
+          ],
+        };
       if (path === '/branches') return { items: [{ id: 'b-1', name: 'Main', status: 'ACTIVE' }] };
-      if (path === '/warehouses') return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Store', status: 'ACTIVE', sellable: true }] };
+      if (path === '/warehouses')
+        return { items: [{ id: 'w-1', branchId: 'b-1', name: 'Store', status: 'ACTIVE', sellable: true }] };
       if (path.startsWith('/products/by-barcode')) return { id: 'sku-1', code: 'URE-50', name: 'Urea 50kg' };
       return { items: [] };
     });
@@ -311,7 +386,11 @@ describe('goods receipt', () => {
     await fireEvent.press(screen.getByLabelText('Post receipt again'));
     expect(await screen.findByText('Goods received and stock updated.')).toBeTruthy();
     const calls = mockPost.mock.calls;
-    expect(calls.map((c) => c[0])).toEqual(['/procurement/goods-receipts', '/procurement/goods-receipts/g-1/receive', '/procurement/goods-receipts/g-1/receive']);
+    expect(calls.map((c) => c[0])).toEqual([
+      '/procurement/goods-receipts',
+      '/procurement/goods-receipts/g-1/receive',
+      '/procurement/goods-receipts/g-1/receive',
+    ]);
     expect(calls[1]![1].idempotencyKey).toBe(calls[2]![1].idempotencyKey);
     expect(calls[0]![1].body.lines).toEqual([{ poLineId: 'l-1', receivedQty: '2' }]);
   });
@@ -348,7 +427,9 @@ describe('goods receipt', () => {
 describe('texts', () => {
   test('Hindi and Marathi have the same keys as English', () => {
     const keys = (o: unknown, p = ''): string[] =>
-      Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => (typeof v === 'object' && v !== null ? keys(v, `${p}${k}.`) : [`${p}${k}`]));
+      Object.entries(o as Record<string, unknown>).flatMap(([k, v]) =>
+        typeof v === 'object' && v !== null ? keys(v, `${p}${k}.`) : [`${p}${k}`],
+      );
     const p = parts as unknown as Record<string, object>;
     expect(keys(p.hi!).sort()).toEqual(keys(p.en!).sort());
     expect(keys(p.mr!).sort()).toEqual(keys(p.en!).sort());

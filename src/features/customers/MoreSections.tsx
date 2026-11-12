@@ -48,7 +48,8 @@ function Section<T>({
     if (q.isPending) body = <StateView kind="loading" />;
     else if (q.isError && isDenied(q.error)) body = <StateView kind="denied" />;
     else if (q.isError) body = <StateView kind="error" error={q.error} onRetry={() => void q.refetch()} />;
-    else if (q.data !== undefined && empty(q.data)) body = <Text style={s.muted}>{t(`customers.more.${name}Empty`)}</Text>;
+    else if (q.data !== undefined && empty(q.data))
+      body = <Text style={s.muted}>{t(`customers.more.${name}Empty`)}</Text>;
     else if (q.data !== undefined) body = children(q.data);
   }
   return (
@@ -83,10 +84,15 @@ export function MoreSections({ customerId }: { customerId: string }) {
           <>
             {d.map((f) => (
               <View key={f.id} style={s.item}>
-                <Row a={f.name} b={`${t(`customers.more.own.${f.ownership}`, { defaultValue: f.ownership })} · ${f.areaAcres ?? f.plotAcres} ${t('customers.more.acres')}`} />
+                <Row
+                  a={f.name}
+                  b={`${t(`customers.more.own.${f.ownership}`, { defaultValue: f.ownership })} · ${f.areaAcres ?? f.plotAcres} ${t('customers.more.acres')}`}
+                />
                 {f.plots.map((p) => (
                   <Text key={p.id} style={s.muted}>
-                    {[p.name, `${p.areaAcres} ${t('customers.more.acres')}`, p.soilType, p.irrigationSource].filter(Boolean).join(' · ')}
+                    {[p.name, `${p.areaAcres} ${t('customers.more.acres')}`, p.soilType, p.irrigationSource]
+                      .filter(Boolean)
+                      .join(' · ')}
                   </Text>
                 ))}
               </View>
@@ -114,11 +120,21 @@ export function MoreSections({ customerId }: { customerId: string }) {
       </Section>
     ),
     loyalty: (
-      <Section customerId={customerId} name="loyalty" load={fetchLoyalty} empty={(d) => !d.eligible && !d.tier && d.points === 0}>
+      <Section
+        customerId={customerId}
+        name="loyalty"
+        load={fetchLoyalty}
+        empty={(d) => !d.eligible && !d.tier && d.points === 0}
+      >
         {(d) => (
           <>
-            <Row a={d.tier ? d.tier.name : t('customers.more.noTier')} b={`${d.points} ${t('customers.more.points')}`} />
-            <Text style={s.muted}>{t('customers.more.spend', { amount: formatINR(d.spend), count: d.invoices })}</Text>
+            <Row
+              a={d.tier ? d.tier.name : t('customers.more.noTier')}
+              b={`${d.points} ${t('customers.more.points')}`}
+            />
+            <Text style={s.muted}>
+              {t('customers.more.spend', { amount: formatINR(d.spend), count: d.invoices })}
+            </Text>
             {d.nextTier ? (
               <Text style={s.muted}>
                 {t('customers.more.nextTier', {
@@ -141,7 +157,12 @@ export function MoreSections({ customerId }: { customerId: string }) {
                 <View key={m.customerId} style={s.item}>
                   <Row a={m.name} b={m.relationship} />
                   <Text style={s.muted}>
-                    {[m.code, m.mobile, m.customerId === d.decisionMakerCustomerId ? t('customers.more.decider') : null, m.customerId === d.payerCustomerId ? t('customers.more.payer') : null]
+                    {[
+                      m.code,
+                      m.mobile,
+                      m.customerId === d.decisionMakerCustomerId ? t('customers.more.decider') : null,
+                      m.customerId === d.payerCustomerId ? t('customers.more.payer') : null,
+                    ]
                       .filter(Boolean)
                       .join(' · ')}
                   </Text>
@@ -157,7 +178,11 @@ export function MoreSections({ customerId }: { customerId: string }) {
         {(d) => (
           <>
             {d.map((c) => (
-              <Row key={`${c.purpose}-${c.channel}`} a={`${c.purpose} · ${c.channel}`} b={c.granted ? t('customers.more.granted') : t('customers.more.refused')} />
+              <Row
+                key={`${c.purpose}-${c.channel}`}
+                a={`${c.purpose} · ${c.channel}`}
+                b={c.granted ? t('customers.more.granted') : t('customers.more.refused')}
+              />
             ))}
           </>
         )}
@@ -171,9 +196,15 @@ export function MoreSections({ customerId }: { customerId: string }) {
               <View key={i.id} style={s.item}>
                 <Row a={i.kind} b={fmtDate(i.occurredAt.slice(0, 10))} />
                 <Text style={s.muted}>{i.notes}</Text>
-                {i.cropIssue ? <Text style={s.muted}>{t('customers.more.issue', { text: i.cropIssue })}</Text> : null}
-                {i.advice ? <Text style={s.muted}>{t('customers.more.advice', { text: i.advice })}</Text> : null}
-                {i.followUpOn ? <Text style={s.warn}>{t('customers.more.followUp', { date: fmtDate(i.followUpOn) })}</Text> : null}
+                {i.cropIssue ? (
+                  <Text style={s.muted}>{t('customers.more.issue', { text: i.cropIssue })}</Text>
+                ) : null}
+                {i.advice ? (
+                  <Text style={s.muted}>{t('customers.more.advice', { text: i.advice })}</Text>
+                ) : null}
+                {i.followUpOn ? (
+                  <Text style={s.warn}>{t('customers.more.followUp', { date: fmtDate(i.followUpOn) })}</Text>
+                ) : null}
               </View>
             ))}
           </>
@@ -195,7 +226,14 @@ export function MoreSections({ customerId }: { customerId: string }) {
 const s = StyleSheet.create({
   wrap: { gap: 8 },
   h: { fontSize: 18, fontWeight: '700', color: colors.ink },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 8, gap: 6 },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 8,
+    gap: 6,
+  },
   item: { paddingVertical: 4, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line, gap: 2 },
   row: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
   fv: { color: colors.ink, fontSize: 15, flexShrink: 1 },

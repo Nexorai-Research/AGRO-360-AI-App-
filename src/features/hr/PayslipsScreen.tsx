@@ -24,7 +24,9 @@ function Detail({ p }: { p: Payslip }) {
       {p.earnings.map((e) => (
         <Line key={`e-${e.code}`} label={e.name} value={formatINR(e.amount)} />
       ))}
-      {p.incentive !== '0.00' ? <Line label={t('payslips.incentive')} value={formatINR(p.incentive)} /> : null}
+      {p.incentive !== '0.00' ? (
+        <Line label={t('payslips.incentive')} value={formatINR(p.incentive)} />
+      ) : null}
       <Line label={t('payslips.gross')} value={formatINR(p.gross)} strong />
       {p.deductions
         .filter((d) => !d.memo)

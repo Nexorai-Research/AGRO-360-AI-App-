@@ -4,7 +4,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApiError } from '../src/api/errors';
 import { setLanguage } from '../src/i18n';
 import CustomerFormScreen from '../src/features/customers/CustomerFormScreen';
-import { draftOf, emptyDraft, isChanged, toBody, validateDraft, type CustomerFull } from '../src/features/customers/form-logic';
+import {
+  draftOf,
+  emptyDraft,
+  isChanged,
+  toBody,
+  validateDraft,
+  type CustomerFull,
+} from '../src/features/customers/form-logic';
 
 const mockGet = jest.fn();
 const mockPost = jest.fn();
@@ -13,25 +20,66 @@ let mockMe: { userId: string; tenantId: string; roles: string[]; permissions?: s
 let mockParams: { id?: string };
 let mockId = 0;
 const mockReplace = jest.fn();
-jest.mock('expo-router', () => ({ useLocalSearchParams: () => mockParams, useRouter: () => ({ replace: mockReplace, push: jest.fn() }) }));
+jest.mock('expo-router', () => ({
+  useLocalSearchParams: () => mockParams,
+  useRouter: () => ({ replace: mockReplace, push: jest.fn() }),
+}));
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a), patch: (...a: unknown[]) => mockPatch(...a) } }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: {
+      get: (...a: unknown[]) => mockGet(...a),
+      post: (...a: unknown[]) => mockPost(...a),
+      patch: (...a: unknown[]) => mockPatch(...a),
+    },
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const saved: CustomerFull = { id: 'c1', code: 'CUS-1', name: 'Ramesh Patil', mobile: '9876543210', altMobile: null, sharedMobile: false, village: 'Shirur', taluka: null, district: 'Pune', stateCode: '27', pin: null, categoryId: 'k1', language: 'mr', gstin: null, status: 'ACTIVE', version: 4 };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const saved: CustomerFull = {
+  id: 'c1',
+  code: 'CUS-1',
+  name: 'Ramesh Patil',
+  mobile: '9876543210',
+  altMobile: null,
+  sharedMobile: false,
+  village: 'Shirur',
+  taluka: null,
+  district: 'Pune',
+  stateCode: '27',
+  pin: null,
+  categoryId: 'k1',
+  language: 'mr',
+  gstin: null,
+  status: 'ACTIVE',
+  version: 4,
+};
 
 beforeEach(async () => {
   [mockGet, mockPost, mockPatch, mockReplace].forEach((m) => m.mockReset());
   mockId = 0;
   mockParams = {};
-  mockMe = { userId: 'u1', tenantId: 't1', roles: [], permissions: ['customer.create', 'customer.update', 'customer.view'] };
+  mockMe = {
+    userId: 'u1',
+    tenantId: 't1',
+    roles: [],
+    permissions: ['customer.create', 'customer.update', 'customer.view'],
+  };
   qc = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity, retryDelay: 0 } } });
   await setLanguage('en');
   mockGet.mockImplementation(async (path: string) => {
-    if (path === '/customer-categories') return { items: [{ id: 'k1', name: 'Farmer', status: 'ACTIVE' }, { id: 'k2', name: 'Old', status: 'INACTIVE' }] };
+    if (path === '/customer-categories')
+      return {
+        items: [
+          { id: 'k1', name: 'Farmer', status: 'ACTIVE' },
+          { id: 'k2', name: 'Old', status: 'INACTIVE' },
+        ],
+      };
     if (path === '/customers/c1') return saved;
     return {};
   });
@@ -54,8 +102,12 @@ describe('form logic', () => {
     expect(validateDraft({ ...ok, gstin: '27aapfu0939f1zv', stateCode: '27' })).toEqual({});
   });
   test('create sends only what was filled; a ticked shared phone is sent, an unticked one is not', () => {
-    expect(toBody({ ...emptyDraft, name: ' Ramesh ', mobile: '9876543210', village: 'Shirur' }, null)).toEqual({ name: 'Ramesh', mobile: '9876543210', village: 'Shirur', language: 'mr' });
-    expect(toBody({ ...emptyDraft, name: 'R R', mobile: '9876543210', sharedMobile: true }, null)).toMatchObject({ sharedMobile: true });
+    expect(
+      toBody({ ...emptyDraft, name: ' Ramesh ', mobile: '9876543210', village: 'Shirur' }, null),
+    ).toEqual({ name: 'Ramesh', mobile: '9876543210', village: 'Shirur', language: 'mr' });
+    expect(
+      toBody({ ...emptyDraft, name: 'R R', mobile: '9876543210', sharedMobile: true }, null),
+    ).toMatchObject({ sharedMobile: true });
   });
   test('edit sends only changed fields; clearing an optional field sends null', () => {
     const d = { ...draftOf(saved), village: 'Daund', district: '' };
@@ -80,7 +132,10 @@ describe('customer form screen', () => {
     expect(await screen.findByText('Customer Sunita Jadhav created.')).toBeTruthy();
     expect(mockPost).toHaveBeenCalledTimes(1);
     expect(mockPost.mock.calls[0]![0]).toBe('/customers');
-    expect(mockPost.mock.calls[0]![1]).toMatchObject({ body: { name: 'Sunita Jadhav', mobile: '9123456789', categoryId: 'k1', language: 'mr' }, idempotencyKey: 'key-1' });
+    expect(mockPost.mock.calls[0]![1]).toMatchObject({
+      body: { name: 'Sunita Jadhav', mobile: '9123456789', categoryId: 'k1', language: 'mr' },
+      idempotencyKey: 'key-1',
+    });
   });
   test('an invalid form is not sent and shows the messages', async () => {
     await render(<CustomerFormScreen />, { wrapper });
@@ -101,11 +156,17 @@ describe('customer form screen', () => {
     expect(mockPost.mock.calls[0]![1].idempotencyKey).toBe(mockPost.mock.calls[1]![1].idempotencyKey);
   });
   test('same name in the village: asks, then creates anyway with confirmDuplicate and the body changed so a new key', async () => {
-    mockPost.mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING' }, 'c2')).mockResolvedValueOnce({ ...saved, id: 'c9' });
+    mockPost
+      .mockRejectedValueOnce(new ApiError(409, { title: 'DUPLICATE_WARNING' }, 'c2'))
+      .mockResolvedValueOnce({ ...saved, id: 'c9' });
     await render(<CustomerFormScreen />, { wrapper });
     await fill();
     await fireEvent.press(screen.getByLabelText('Save customer'));
-    expect(await screen.findByText('A customer with the same name already exists in this village. Create this one anyway?')).toBeTruthy();
+    expect(
+      await screen.findByText(
+        'A customer with the same name already exists in this village. Create this one anyway?',
+      ),
+    ).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Create anyway'));
     await screen.findByText(/created/);
     expect(mockPost.mock.calls[1]![1].body).toMatchObject({ confirmDuplicate: true });
@@ -127,7 +188,10 @@ describe('customer form screen', () => {
     await fireEvent.changeText(village, 'Daund');
     await fireEvent.press(screen.getByLabelText('Save customer'));
     expect(await screen.findByText('Customer Ramesh Patil saved.')).toBeTruthy();
-    expect(mockPatch).toHaveBeenCalledWith('/customers/c1', expect.objectContaining({ body: { village: 'Daund' }, version: 4 }));
+    expect(mockPatch).toHaveBeenCalledWith(
+      '/customers/c1',
+      expect.objectContaining({ body: { village: 'Daund' }, version: 4 }),
+    );
     expect(mockPost).not.toHaveBeenCalled();
   });
   test('edit with no change sends nothing', async () => {

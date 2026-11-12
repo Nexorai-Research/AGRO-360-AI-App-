@@ -35,18 +35,25 @@ export interface DeviceInfo {
 
 export const acctKey = (userId: string, part: string) => ['account', userId, part] as const;
 
-export const fetchPreferences = (c: ApiClient, signal?: AbortSignal) => c.get<Preferences>('/me/preferences', { signal });
-export const fetchSessions = (c: ApiClient, signal?: AbortSignal) => c.get<{ items: SessionInfo[] }>('/auth/sessions', { signal });
-export const fetchDevices = (c: ApiClient, signal?: AbortSignal) => c.get<{ items: DeviceInfo[] }>('/devices', { signal });
+export const fetchPreferences = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<Preferences>('/me/preferences', { signal });
+export const fetchSessions = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<{ items: SessionInfo[] }>('/auth/sessions', { signal });
+export const fetchDevices = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<{ items: DeviceInfo[] }>('/devices', { signal });
 
 /** Only the fields the person changed are sent; the server keeps the rest. */
-export const savePreferences = (c: ApiClient, body: { displayName?: string; language?: string }, idempotencyKey: string) =>
-  c.put<Preferences>('/me/preferences', { body, idempotencyKey });
+export const savePreferences = (
+  c: ApiClient,
+  body: { displayName?: string; language?: string },
+  idempotencyKey: string,
+) => c.put<Preferences>('/me/preferences', { body, idempotencyKey });
 
 export const endSession = (c: ApiClient, id: string, idempotencyKey: string) =>
   c.delete<null>(`/auth/sessions/${encodeURIComponent(id)}`, { idempotencyKey });
 
-export const logoutAll = (c: ApiClient, idempotencyKey: string) => c.post<null>('/auth/logout-all', { idempotencyKey });
+export const logoutAll = (c: ApiClient, idempotencyKey: string) =>
+  c.post<null>('/auth/logout-all', { idempotencyKey });
 
 export const revokeDevice = (c: ApiClient, id: string, reason: string, idempotencyKey: string) =>
   c.post<DeviceInfo>(`/devices/${encodeURIComponent(id)}:revoke`, { body: { reason }, idempotencyKey });

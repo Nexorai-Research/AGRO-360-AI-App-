@@ -6,13 +6,24 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
+import { SUPPLIER_PERM } from './supplier-logic';
 import { StateView } from '../stock/StateView';
 import { PERM, fetchApprovals, fetchOrders, fetchReceipts, fetchSuppliers, key, type OrderRow } from './api';
 import { Gate, retryNetworkOnce } from './Gate';
 import { Chips, k } from './ui';
 
 type Tab = 'orders' | 'approvals' | 'suppliers' | 'receipts';
-const STATUSES = ['', 'DRAFT', 'SUBMITTED', 'APPROVED', 'SENT', 'PART_RECEIVED', 'RECEIVED', 'CLOSED', 'CANCELLED'];
+const STATUSES = [
+  '',
+  'DRAFT',
+  'SUBMITTED',
+  'APPROVED',
+  'SENT',
+  'PART_RECEIVED',
+  'RECEIVED',
+  'CLOSED',
+  'CANCELLED',
+];
 
 export default function PurchaseScreen() {
   const { t } = useTranslation();
@@ -72,17 +83,24 @@ export default function PurchaseScreen() {
       <Text style={k.name}>
         {o.number ?? t('purchase.draft')} · {formatINR(o.total)}
       </Text>
-      <Text style={k.sub}>{[o.supplierName, o.orderDate, t(`purchase.status.${o.status}`, { defaultValue: o.status })].join(' · ')}</Text>
+      <Text style={k.sub}>
+        {[o.supplierName, o.orderDate, t(`purchase.status.${o.status}`, { defaultValue: o.status })].join(
+          ' · ',
+        )}
+      </Text>
     </Pressable>
   );
 
-  const active = tab === 'orders' ? orders : tab === 'approvals' ? approvals : tab === 'suppliers' ? suppliers : receipts;
+  const active =
+    tab === 'orders' ? orders : tab === 'approvals' ? approvals : tab === 'suppliers' ? suppliers : receipts;
 
   return (
     <ScrollView
       contentContainerStyle={k.page}
       keyboardShouldPersistTaps="handled"
-      refreshControl={<RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />}
+      refreshControl={
+        <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
+      }
     >
       <Stack.Screen options={{ headerShown: true, title: t('nav.purchase') }} />
       <Text style={k.title}>{t('purchase.title')}</Text>
@@ -91,19 +109,34 @@ export default function PurchaseScreen() {
       {tab === 'orders' ? (
         <>
           <Chips
-            options={STATUSES.map((s) => ({ value: s, label: s ? t(`purchase.status.${s}`, { defaultValue: s }) : t('purchase.all') }))}
+            options={STATUSES.map((s) => ({
+              value: s,
+              label: s ? t(`purchase.status.${s}`, { defaultValue: s }) : t('purchase.all'),
+            }))}
             value={status}
             onChange={setStatus}
           />
-          {can(PERM.create) ? <Button label={t('purchase.newOrder')} onPress={() => router.push('/purchase/order-new')} /> : null}
-          <Gate q={orders} ns="purchase" emptyKey="purchase.emptyOrders" isEmpty={(orders.data ?? []).length === 0}>
+          {can(PERM.create) ? (
+            <Button label={t('purchase.newOrder')} onPress={() => router.push('/purchase/order-new')} />
+          ) : null}
+          <Gate
+            q={orders}
+            ns="purchase"
+            emptyKey="purchase.emptyOrders"
+            isEmpty={(orders.data ?? []).length === 0}
+          >
             {(orders.data ?? []).map(orderCard)}
           </Gate>
         </>
       ) : null}
 
       {tab === 'approvals' ? (
-        <Gate q={approvals} ns="purchase" emptyKey="purchase.emptyApprovals" isEmpty={(approvals.data ?? []).length === 0}>
+        <Gate
+          q={approvals}
+          ns="purchase"
+          emptyKey="purchase.emptyApprovals"
+          isEmpty={(approvals.data ?? []).length === 0}
+        >
           {(approvals.data ?? []).map(orderCard)}
         </Gate>
       ) : null}
@@ -117,13 +150,38 @@ export default function PurchaseScreen() {
             accessibilityLabel={t('purchase.searchSuppliers')}
             style={k.input}
           />
-          <Gate q={suppliers} ns="purchase" emptyKey="purchase.emptySuppliers" isEmpty={(suppliers.data ?? []).length === 0}>
+          {can(SUPPLIER_PERM) ? (
+            <Button
+              label={t('supplierForm.new')}
+              onPress={() => router.push('/purchase/supplier-form' as never)}
+            />
+          ) : null}
+          <Gate
+            q={suppliers}
+            ns="purchase"
+            emptyKey="purchase.emptySuppliers"
+            isEmpty={(suppliers.data ?? []).length === 0}
+          >
             {(suppliers.data ?? []).map((s) => (
               <View key={s.id} style={k.card}>
                 <Text style={k.name}>{s.name}</Text>
                 <Text style={k.sub}>
-                  {[s.code, s.gstin ?? t('purchase.noGstin'), t('purchase.creditDays', { days: s.creditDays }), s.status].join(' · ')}
+                  {[
+                    s.code,
+                    s.gstin ?? t('purchase.noGstin'),
+                    t('purchase.creditDays', { days: s.creditDays }),
+                    s.status,
+                  ].join(' · ')}
                 </Text>
+                {can(SUPPLIER_PERM) ? (
+                  <Button
+                    kind="ghost"
+                    label={`${t('supplierForm.edit')} ${s.name}`}
+                    onPress={() =>
+                      router.push({ pathname: '/purchase/supplier-form', params: { id: s.id } } as never)
+                    }
+                  />
+                ) : null}
               </View>
             ))}
           </Gate>
@@ -131,14 +189,24 @@ export default function PurchaseScreen() {
       ) : null}
 
       {tab === 'receipts' ? (
-        <Gate q={receipts} ns="purchase" emptyKey="purchase.emptyReceipts" isEmpty={(receipts.data ?? []).length === 0}>
+        <Gate
+          q={receipts}
+          ns="purchase"
+          emptyKey="purchase.emptyReceipts"
+          isEmpty={(receipts.data ?? []).length === 0}
+        >
           {(receipts.data ?? []).map((g) => (
             <View key={g.id} style={k.card}>
               <Text style={k.name}>
                 {g.number ?? t('purchase.draft')} · {formatINR(g.value)}
               </Text>
               <Text style={k.sub}>
-                {[g.supplierName, g.receiptDate, g.poNumber ?? t('purchase.noOrder'), t(`purchase.status.${g.status}`, { defaultValue: g.status })].join(' · ')}
+                {[
+                  g.supplierName,
+                  g.receiptDate,
+                  g.poNumber ?? t('purchase.noOrder'),
+                  t(`purchase.status.${g.status}`, { defaultValue: g.status }),
+                ].join(' · ')}
               </Text>
             </View>
           ))}

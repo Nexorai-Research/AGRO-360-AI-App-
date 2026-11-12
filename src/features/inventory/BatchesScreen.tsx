@@ -26,14 +26,25 @@ export default function BatchesScreen() {
   const [failure, setFailure] = useState<ErrorMessage | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const list = useQuery({ queryKey: ikey(userId, 'batches'), queryFn: ({ signal }) => fetchBatches(client!, signal), enabled: ready, retry: (n, e) => isNetwork(e) && n < 1 });
+  const list = useQuery({
+    queryKey: ikey(userId, 'batches'),
+    queryFn: ({ signal }) => fetchBatches(client!, signal),
+    enabled: ready,
+    retry: (n, e) => isNetwork(e) && n < 1,
+  });
 
   async function submit(b: BatchStock, release: boolean) {
     if (busy) return;
     setBusy(true);
     setFailure(null);
     try {
-      await blockBatch(client!, b.id, release, reason.trim(), ak.keyFor(`${b.id}|${release}|${reason.trim()}`));
+      await blockBatch(
+        client!,
+        b.id,
+        release,
+        reason.trim(),
+        ak.keyFor(`${b.id}|${release}|${reason.trim()}`),
+      );
       ak.reset();
       setMsg(t(release ? 'batches.released' : 'batches.blocked', { batch: b.batchNo }));
       setOpen(null);
@@ -50,25 +61,74 @@ export default function BatchesScreen() {
   if (list.isPending && list.fetchStatus !== 'idle') return <StateView state="loading" />;
   if (list.error) {
     const m = errorMessage(list.error);
-    return <StateView state={isNetwork(list.error) ? 'offline' : 'error'} message={isNetwork(list.error) ? t('batches.offline') : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })} onRetry={() => void list.refetch()} />;
+    return (
+      <StateView
+        state={isNetwork(list.error) ? 'offline' : 'error'}
+        message={
+          isNetwork(list.error)
+            ? t('batches.offline')
+            : t(m.key, { ...m.params, correlationId: m.params.correlationId ?? '-' })
+        }
+        onRetry={() => void list.refetch()}
+      />
+    );
   }
 
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
       <Text style={kit.title}>{t('batches.title')}</Text>
       {msg ? <Notice tone="ok" text={msg} /> : null}
-      {failure ? <Notice tone="error" text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })} /> : null}
+      {failure ? (
+        <Notice
+          tone="error"
+          text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+        />
+      ) : null}
       {(list.data ?? []).length === 0 ? <Text style={kit.sub}>{t('batches.empty')}</Text> : null}
       {(list.data ?? []).map((b) => (
         <Card key={b.id}>
-          <Text style={kit.name}>{b.skuName} · {b.batchNo}</Text>
-          <Text style={kit.sub}>{[b.status, b.expiryDate ? t('batches.expires', { date: b.expiryDate }) : null, t('batches.onHand', { qty: dec(b.onHand).toString() })].filter(Boolean).join(' · ')}</Text>
-          {b.status === 'ACTIVE' && can(PERM.block) ? <Button kind="ghost" label={t('batches.block')} onPress={() => { ak.reset(); setReason(''); setOpen({ id: b.id, release: false }); }} /> : null}
-          {b.status === 'QUARANTINED' && can(PERM.unblock) ? <Button kind="ghost" label={t('batches.release')} onPress={() => { ak.reset(); setReason(''); setOpen({ id: b.id, release: true }); }} /> : null}
+          <Text style={kit.name}>
+            {b.skuName} · {b.batchNo}
+          </Text>
+          <Text style={kit.sub}>
+            {[
+              b.status,
+              b.expiryDate ? t('batches.expires', { date: b.expiryDate }) : null,
+              t('batches.onHand', { qty: dec(b.onHand).toString() }),
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </Text>
+          {b.status === 'ACTIVE' && can(PERM.block) ? (
+            <Button
+              kind="ghost"
+              label={t('batches.block')}
+              onPress={() => {
+                ak.reset();
+                setReason('');
+                setOpen({ id: b.id, release: false });
+              }}
+            />
+          ) : null}
+          {b.status === 'QUARANTINED' && can(PERM.unblock) ? (
+            <Button
+              kind="ghost"
+              label={t('batches.release')}
+              onPress={() => {
+                ak.reset();
+                setReason('');
+                setOpen({ id: b.id, release: true });
+              }}
+            />
+          ) : null}
           {open?.id === b.id ? (
             <>
               <Field label={t('adjust.rejectReason')} value={reason} onChange={setReason} />
-              <Button label={t(open.release ? 'batches.release' : 'batches.block')} disabled={busy || !reason.trim()} onPress={() => void submit(b, open.release)} />
+              <Button
+                label={t(open.release ? 'batches.release' : 'batches.block')}
+                disabled={busy || !reason.trim()}
+                onPress={() => void submit(b, open.release)}
+              />
             </>
           ) : null}
         </Card>

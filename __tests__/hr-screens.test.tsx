@@ -16,12 +16,20 @@ let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
 const NETWORK = 'No network. Check your connection and try again.';
 
 beforeAll(() => {
@@ -37,8 +45,18 @@ beforeEach(async () => {
 });
 
 const lv = {
-  id: 'l-1', requestNo: 'LV-1', employeeName: 'Sita', leaveType: 'Casual', fromDate: '2026-11-12', toDate: '2026-11-13',
-  halfDay: false, days: '2.00', unpaidDays: '0.00', reason: null, status: 'SUBMITTED', decisionNote: null,
+  id: 'l-1',
+  requestNo: 'LV-1',
+  employeeName: 'Sita',
+  leaveType: 'Casual',
+  fromDate: '2026-11-12',
+  toDate: '2026-11-13',
+  halfDay: false,
+  days: '2.00',
+  unpaidDays: '0.00',
+  reason: null,
+  status: 'SUBMITTED',
+  decisionNote: null,
 };
 
 describe('helpers', () => {
@@ -78,8 +96,10 @@ describe('leave', () => {
   const route = () =>
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/hr/leaves') return { items: [lv] };
-      if (path === '/hr/leave-balances') return { items: [{ leaveTypeId: 't-1', name: 'Casual', remaining: '8.00', quota: '12.00' }] };
-      if (path === '/hr/leave-types') return { items: [{ id: 't-1', code: 'CL', name: 'Casual', active: true }] };
+      if (path === '/hr/leave-balances')
+        return { items: [{ leaveTypeId: 't-1', name: 'Casual', remaining: '8.00', quota: '12.00' }] };
+      if (path === '/hr/leave-types')
+        return { items: [{ id: 't-1', code: 'CL', name: 'Casual', active: true }] };
       return { items: [] };
     });
 
@@ -97,7 +117,9 @@ describe('leave', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<LeaveScreen />, { wrapper });
-    expect(await screen.findByText('No network. Leave cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Leave cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('server error shows reference', async () => {
     mockGet.mockRejectedValue(new ApiError(500, { title: 'BOOM', correlationId: 'c-9' }));
@@ -144,7 +166,12 @@ describe('leave', () => {
     expect(await screen.findByText('Leave request sent.')).toBeTruthy();
     expect(mockPost.mock.calls.map((c) => c[1].idempotencyKey)).toEqual(['key-1', 'key-1']);
     expect(mockPost.mock.calls[0]![0]).toBe('/hr/leaves');
-    expect(mockPost.mock.calls[0]![1].body).toMatchObject({ leaveTypeId: 't-1', fromDate: '2026-11-20', toDate: '2026-11-21', halfDay: false });
+    expect(mockPost.mock.calls[0]![1].body).toMatchObject({
+      leaveTypeId: 't-1',
+      fromDate: '2026-11-20',
+      toDate: '2026-11-21',
+      halfDay: false,
+    });
     expect(mockPost.mock.calls[0]![1].body).not.toHaveProperty('tenantId');
 
     await fireEvent.press(screen.getByLabelText('Apply for leave'));
@@ -177,10 +204,24 @@ describe('leave', () => {
 
 describe('payslips', () => {
   const slip = {
-    id: 'p-1', slipNo: 'PS-1', period: '2026-10', employeeName: 'Sita', designation: null, workingDays: '26.00', paidDays: '25.00',
-    unpaidDays: '1.00', earnings: [{ code: 'BASIC', name: 'Basic', amount: '25000.00' }], deductions: [{ code: 'PF', name: 'PF', amount: '1800.00' }],
-    incentive: '0.00', advanceRecovery: '2000.00', adjustment: '0.00', gross: '25000.00', totalDeductions: '3800.00', net: '1221200.50',
-    paidAmount: '0.00', status: 'PUBLISHED',
+    id: 'p-1',
+    slipNo: 'PS-1',
+    period: '2026-10',
+    employeeName: 'Sita',
+    designation: null,
+    workingDays: '26.00',
+    paidDays: '25.00',
+    unpaidDays: '1.00',
+    earnings: [{ code: 'BASIC', name: 'Basic', amount: '25000.00' }],
+    deductions: [{ code: 'PF', name: 'PF', amount: '1800.00' }],
+    incentive: '0.00',
+    advanceRecovery: '2000.00',
+    adjustment: '0.00',
+    gross: '25000.00',
+    totalDeductions: '3800.00',
+    net: '1221200.50',
+    paidAmount: '0.00',
+    status: 'PUBLISHED',
   };
   test('shows net pay in rupees with Indian grouping and opens details', async () => {
     mockGet.mockResolvedValue({ items: [slip] });
@@ -197,7 +238,9 @@ describe('payslips', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<PayslipsScreen />, { wrapper });
-    expect(await screen.findByText('No network. Payslips cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Payslips cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('server 403 shows denied', async () => {
     mockGet.mockRejectedValue(new ApiError(403, { title: 'FORBIDDEN' }));
@@ -221,7 +264,19 @@ describe('payslips', () => {
 describe('visits', () => {
   const route = () =>
     mockGet.mockImplementation(async (path: string) => {
-      if (path === '/hr/beat-plans') return { items: [{ id: 'b-1', employeeName: 'Sita', planDate: '2026-11-12', village: 'Wadi', purpose: null, status: 'PLANNED' }] };
+      if (path === '/hr/beat-plans')
+        return {
+          items: [
+            {
+              id: 'b-1',
+              employeeName: 'Sita',
+              planDate: '2026-11-12',
+              village: 'Wadi',
+              purpose: null,
+              status: 'PLANNED',
+            },
+          ],
+        };
       return { items: [] };
     });
   test('lists beats and empty visits', async () => {
@@ -277,14 +332,26 @@ describe('visits', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<VisitsScreen />, { wrapper });
-    expect(await screen.findByText('No network. Visits cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Visits cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
 });
 
 describe('advances', () => {
   const adv = {
-    id: 'a-1', advanceNo: 'ADV-1', employeeName: 'Sita', amount: '12000.00', issuedOn: '2026-11-01', installments: 4,
-    installmentAmount: '3000.00', startPeriod: '2026-12', recovered: '3000.00', balance: '9000.00', status: 'APPROVED', reason: null,
+    id: 'a-1',
+    advanceNo: 'ADV-1',
+    employeeName: 'Sita',
+    amount: '12000.00',
+    issuedOn: '2026-11-01',
+    installments: 4,
+    installmentAmount: '3000.00',
+    startPeriod: '2026-12',
+    recovered: '3000.00',
+    balance: '9000.00',
+    status: 'APPROVED',
+    reason: null,
   };
   const route = () =>
     mockGet.mockImplementation(async (path: string) => {
@@ -313,7 +380,9 @@ describe('advances', () => {
   test('offline', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await render(<AdvancesScreen />, { wrapper });
-    expect(await screen.findByText('No network. Advances cannot be loaded now.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Advances cannot be loaded now.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
   });
   test('request: bad amount refused; valid sends a decimal string with a stable key', async () => {
     route();

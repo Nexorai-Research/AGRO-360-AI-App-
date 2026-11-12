@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Switch, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage } from '@/api/errors';
 import { dec } from '@/money';
-import { QuickLinks } from './QuickLinks';
+import { ModuleGrid } from './ModuleGrid';
+import HomeExtras from './HomeExtras';
 import { Button } from '@/ui/Button';
 import { LanguagePicker } from '@/ui/LanguagePicker';
 import { colors, radius } from '@/ui/theme';
@@ -20,6 +22,26 @@ import {
 import { formatClock, formatCount, formatINRShort, formatPercent } from './format';
 
 const PERIOD = 'today';
+const SUMMARY_KEY = 'agro360.home.summary';
+
+/** On/off switch for the numbers on the home screen. Remembered on the phone (not secret); on by default. */
+function useSummaryFlag(): [boolean, (v: boolean) => void] {
+  const [on, setOn] = useState(true);
+  useEffect(() => {
+    void SecureStore.getItemAsync(SUMMARY_KEY)
+      .then((v) => {
+        if (v === 'off') setOn(false);
+      })
+      .catch(() => undefined);
+  }, []);
+  return [
+    on,
+    (v) => {
+      setOn(v);
+      void SecureStore.setItemAsync(SUMMARY_KEY, v ? 'on' : 'off').catch(() => undefined);
+    },
+  ];
+}
 
 const TONE: Record<string, string> = {
   net_sales: colors.ok,
@@ -129,6 +151,7 @@ export default function HomeScreen() {
   const { t, i18n } = useTranslation();
   const { me, client } = useAuth();
   const userId = me?.userId ?? '';
+  const [showSummary, setShowSummary] = useSummaryFlag();
   // permissions are only used to hide the screen; the server decides on every call. Unknown permissions (older /me) means: ask the server.
   const knownDenied = me?.permissions !== undefined && !me.permissions.includes(OWNER_DASHBOARD_PERMISSION);
 
@@ -199,7 +222,7 @@ export default function HomeScreen() {
       testID="home-list"
       style={s.list}
       contentContainerStyle={s.content}
-      data={denied ? [] : tiles}
+      data={denied || !showSummary ? [] : tiles}
       keyExtractor={(x) => x.id}
       numColumns={2}
       columnWrapperStyle={s.col}
@@ -214,14 +237,26 @@ export default function HomeScreen() {
       ListHeaderComponent={
         <View>
           {header}
-          {banner}
-          <QuickLinks />
-          {top}
+          <ModuleGrid />
+          <View style={s.switchRow}>
+            <Text style={s.switchLabel}>{t('home.summary')}</Text>
+            <Switch
+              testID="summary-switch"
+              value={showSummary}
+              onValueChange={setShowSummary}
+              accessibilityLabel={t('home.summary')}
+              trackColor={{ false: '#b9c4bd', true: colors.brand }}
+              thumbColor="#fff"
+            />
+          </View>
+          {showSummary ? banner : null}
+          {showSummary ? top : null}
         </View>
       }
       ListFooterComponent={
         <View style={s.footer}>
-          {q.data && !denied ? <Trend data={q.data.trend} /> : null}
+          {q.data && !denied && showSummary ? <Trend data={q.data.trend} /> : null}
+          {q.data && !denied && showSummary ? <HomeExtras /> : null}
           <Profile />
         </View>
       }
@@ -234,6 +269,19 @@ const s = StyleSheet.create({
   content: { padding: 16, gap: 12 },
   col: { gap: 12 },
   head: { gap: 2, marginBottom: 8 },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.line,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginVertical: 8,
+  },
+  switchLabel: { fontSize: 16, fontWeight: '700', color: colors.ink },
   title: { fontSize: 24, fontWeight: '700', color: colors.ink },
   sub: { color: colors.muted },
   center: { alignItems: 'center', gap: 8, padding: 24 },

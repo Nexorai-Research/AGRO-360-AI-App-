@@ -62,28 +62,41 @@ export type ProductStatusFilter = '' | 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
 
 export const pkey = (userId: string, what: string, extra = '') => ['products', what, userId, extra] as const;
 
-export async function fetchProducts(c: ApiClient, q: string, status: ProductStatusFilter, signal?: AbortSignal) {
+export async function fetchProducts(
+  c: ApiClient,
+  q: string,
+  status: ProductStatusFilter,
+  signal?: AbortSignal,
+) {
   const r = await c.get<{ items: Product[]; total: number }>('/products', {
     query: { q: q || undefined, status: status || undefined, limit: 100 },
     signal,
   });
   return r;
 }
-export const fetchProduct = (c: ApiClient, id: string, signal?: AbortSignal) => c.get<Product>(`/products/${id}`, { signal });
+export const fetchProduct = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  c.get<Product>(`/products/${id}`, { signal });
 const items = async <T>(p: Promise<{ items: T[] } | T[]>): Promise<T[]> => {
   const r = await p;
   return Array.isArray(r) ? r : r.items;
 };
-export const fetchCategories = (c: ApiClient, signal?: AbortSignal) => items<Ref>(c.get('/product-categories', { signal }));
+export const fetchCategories = (c: ApiClient, signal?: AbortSignal) =>
+  items<Ref>(c.get('/product-categories', { signal }));
 export const fetchBrands = (c: ApiClient, signal?: AbortSignal) => items<Ref>(c.get('/brands', { signal }));
 export const fetchUoms = (c: ApiClient, signal?: AbortSignal) => items<Ref>(c.get('/uoms', { signal }));
-export const fetchBarcodes = (c: ApiClient, id: string, signal?: AbortSignal) => items<Barcode>(c.get(`/products/${id}/barcodes`, { signal }));
-export const fetchPrices = (c: ApiClient, id: string, signal?: AbortSignal) => items<PriceRow>(c.get(`/products/${id}/prices`, { signal }));
+export const fetchBarcodes = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  items<Barcode>(c.get(`/products/${id}/barcodes`, { signal }));
+export const fetchPrices = (c: ApiClient, id: string, signal?: AbortSignal) =>
+  items<PriceRow>(c.get(`/products/${id}/prices`, { signal }));
 
 export const createProduct = (c: ApiClient, body: Record<string, unknown>, idempotencyKey: string) =>
   c.post<Product>('/products', { body, idempotencyKey });
-export const updateProduct = (c: ApiClient, p: Product, body: Record<string, unknown>, idempotencyKey: string) =>
-  c.patch<Product>(`/products/${p.id}`, { body, version: p.version, idempotencyKey });
+export const updateProduct = (
+  c: ApiClient,
+  p: Product,
+  body: Record<string, unknown>,
+  idempotencyKey: string,
+) => c.patch<Product>(`/products/${p.id}`, { body, version: p.version, idempotencyKey });
 export const setProductStatus = (
   c: ApiClient,
   id: string,
@@ -91,8 +104,12 @@ export const setProductStatus = (
   body: Record<string, unknown>,
   idempotencyKey: string,
 ) => c.post<unknown>(`/products/${id}/${action}`, { body, idempotencyKey });
-export const addBarcode = (c: ApiClient, id: string, body: { barcode: string } | { generate: true }, idempotencyKey: string) =>
-  c.post<unknown>(`/products/${id}/barcodes`, { body, idempotencyKey });
+export const addBarcode = (
+  c: ApiClient,
+  id: string,
+  body: { barcode: string } | { generate: true },
+  idempotencyKey: string,
+) => c.post<unknown>(`/products/${id}/barcodes`, { body, idempotencyKey });
 export const removeBarcode = (c: ApiClient, id: string, barcodeId: string, idempotencyKey: string) =>
   c.delete<unknown>(`/products/${id}/barcodes/${barcodeId}`, { idempotencyKey });
 export const setPrice = (c: ApiClient, id: string, body: Record<string, string>, idempotencyKey: string) =>

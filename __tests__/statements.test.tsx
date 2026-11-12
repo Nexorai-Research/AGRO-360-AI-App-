@@ -12,12 +12,70 @@ jest.mock('../src/auth/AuthProvider', () => ({
 }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const pl = { sections: [{ section: 'SALES', label: 'Sales (net of returns and discounts)', total: '120000.00', lines: [{ code: '4000', name: 'Sales', amount: '120000.00' }] }, { section: 'OTHER_INCOME', label: 'Other income', total: '0.00', lines: [] }], netSales: '120000.00', costOfSales: '90000.00', grossProfit: '30000.00', operatingExpenses: '12500.50', otherIncome: '0.00', netProfit: '17499.50' };
-const sec = (section: string, label: string, total: string, lines: { code: string; name: string; amount: string }[]) => ({ section, label, total, lines });
-const bs = { asOn: '2026-11-12', assets: [sec('CASH_BANK', 'Cash and bank', '50000.00', [{ code: '1000', name: 'Cash', amount: '50000.00' }])], liabilities: [sec('PAYABLES', 'Payables', '20000.00', [])], equity: [sec('EQUITY', 'Equity', '30000.00', [])], totalAssets: '50000.00', totalLiabilities: '20000.00', totalEquity: '30000.00', currentYearProfit: '17499.50', earlierYearsProfit: '0.00', balanced: true };
-const book = { kind: 'CASH', from: '2026-10-14', to: '2026-11-12', accounts: [{ accountId: 'a1', code: '1000', name: 'Cash in hand', opening: '1000.00', receipts: '9000.00', payments: '12000.00', closing: '-2000.00', negative: true, days: [] }] };
-const base: Record<string, unknown> = { '/reports/profit-loss': { from: '2026-10-14', to: '2026-11-12', current: pl, previous: null }, '/reports/balance-sheet': bs, '/reports/cash-book': book, '/reports/bank-book': { ...book, kind: 'BANK', accounts: [] } };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const pl = {
+  sections: [
+    {
+      section: 'SALES',
+      label: 'Sales (net of returns and discounts)',
+      total: '120000.00',
+      lines: [{ code: '4000', name: 'Sales', amount: '120000.00' }],
+    },
+    { section: 'OTHER_INCOME', label: 'Other income', total: '0.00', lines: [] },
+  ],
+  netSales: '120000.00',
+  costOfSales: '90000.00',
+  grossProfit: '30000.00',
+  operatingExpenses: '12500.50',
+  otherIncome: '0.00',
+  netProfit: '17499.50',
+};
+const sec = (
+  section: string,
+  label: string,
+  total: string,
+  lines: { code: string; name: string; amount: string }[],
+) => ({ section, label, total, lines });
+const bs = {
+  asOn: '2026-11-12',
+  assets: [
+    sec('CASH_BANK', 'Cash and bank', '50000.00', [{ code: '1000', name: 'Cash', amount: '50000.00' }]),
+  ],
+  liabilities: [sec('PAYABLES', 'Payables', '20000.00', [])],
+  equity: [sec('EQUITY', 'Equity', '30000.00', [])],
+  totalAssets: '50000.00',
+  totalLiabilities: '20000.00',
+  totalEquity: '30000.00',
+  currentYearProfit: '17499.50',
+  earlierYearsProfit: '0.00',
+  balanced: true,
+};
+const book = {
+  kind: 'CASH',
+  from: '2026-10-14',
+  to: '2026-11-12',
+  accounts: [
+    {
+      accountId: 'a1',
+      code: '1000',
+      name: 'Cash in hand',
+      opening: '1000.00',
+      receipts: '9000.00',
+      payments: '12000.00',
+      closing: '-2000.00',
+      negative: true,
+      days: [],
+    },
+  ],
+};
+const base: Record<string, unknown> = {
+  '/reports/profit-loss': { from: '2026-10-14', to: '2026-11-12', current: pl, previous: null },
+  '/reports/balance-sheet': bs,
+  '/reports/cash-book': book,
+  '/reports/bank-book': { ...book, kind: 'BANK', accounts: [] },
+};
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
     const v = path in o ? o[path] : base[path];
@@ -61,13 +119,17 @@ describe('financial statements', () => {
     expect((await screen.findAllByText('₹50,000.00')).length).toBeGreaterThan(0);
     expect(screen.getByText('1000 Cash')).toBeTruthy();
     expect(screen.queryByText(/Tell your accountant/)).toBeNull();
-    expect(mockGet.mock.calls.find((c) => c[0] === '/reports/balance-sheet')![1].query.asOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(mockGet.mock.calls.find((c) => c[0] === '/reports/balance-sheet')![1].query.asOn).toMatch(
+      /^\d{4}-\d{2}-\d{2}$/,
+    );
   });
   test('balance sheet that does not balance shows the warning', async () => {
     answers({ '/reports/balance-sheet': { ...bs, balanced: false } });
     await render(<StatementsScreen />, { wrapper });
     await pick('Balance sheet');
-    expect(await screen.findByText('Assets do not equal liabilities plus equity. Tell your accountant.')).toBeTruthy();
+    expect(
+      await screen.findByText('Assets do not equal liabilities plus equity. Tell your accountant.'),
+    ).toBeTruthy();
   });
   test('cash book: opening, receipts, payments, closing and a note when the balance went negative', async () => {
     await render(<StatementsScreen />, { wrapper });

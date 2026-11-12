@@ -4,7 +4,12 @@ import type { ApiClient } from '@/api/client';
 // Read only. All money is a decimal string (up to 4 places from the server).
 export const MPERM = { view: 'purchase.view', ledger: 'purchase.supplier.ledger.view' } as const;
 export type MoneyKind = 'bills' | 'payments' | 'returns' | 'ageing';
-export const MONEY_PERM: Record<MoneyKind, string> = { bills: MPERM.view, payments: MPERM.view, returns: MPERM.view, ageing: MPERM.ledger };
+export const MONEY_PERM: Record<MoneyKind, string> = {
+  bills: MPERM.view,
+  payments: MPERM.view,
+  returns: MPERM.view,
+  ageing: MPERM.ledger,
+};
 export const MONEY_ROWS = 50;
 
 export interface Bill {
@@ -61,9 +66,25 @@ export interface Ageing {
 }
 
 export const fetchBills = async (c: ApiClient, openOnly: boolean, signal?: AbortSignal) =>
-  (await c.get<{ items: Bill[] }>('/procurement/purchase-bills', { query: { limit: MONEY_ROWS, ...(openOnly ? { open: 'true' } : {}) }, signal })).items;
+  (
+    await c.get<{ items: Bill[] }>('/procurement/purchase-bills', {
+      query: { limit: MONEY_ROWS, ...(openOnly ? { open: 'true' } : {}) },
+      signal,
+    })
+  ).items;
 export const fetchPayments = async (c: ApiClient, signal?: AbortSignal) =>
-  (await c.get<{ items: Payment[] }>('/procurement/supplier-payments', { query: { limit: MONEY_ROWS }, signal })).items;
+  (
+    await c.get<{ items: Payment[] }>('/procurement/supplier-payments', {
+      query: { limit: MONEY_ROWS },
+      signal,
+    })
+  ).items;
 export const fetchReturns = async (c: ApiClient, signal?: AbortSignal) =>
-  (await c.get<{ items: PurchaseReturn[] }>('/procurement/purchase-returns', { query: { limit: MONEY_ROWS }, signal })).items;
-export const fetchAgeing = (c: ApiClient, signal?: AbortSignal) => c.get<Ageing>('/procurement/reports/payables-aging', { signal });
+  (
+    await c.get<{ items: PurchaseReturn[] }>('/procurement/purchase-returns', {
+      query: { limit: MONEY_ROWS },
+      signal,
+    })
+  ).items;
+export const fetchAgeing = (c: ApiClient, signal?: AbortSignal) =>
+  c.get<Ageing>('/procurement/reports/payables-aging', { signal });

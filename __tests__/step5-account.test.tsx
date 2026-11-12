@@ -21,15 +21,45 @@ const mockClient = {
   delete: (...a: unknown[]) => mockDelete(...a),
 };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: mockSignOut }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: mockSignOut,
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-const prefs = { displayName: 'Asha Kulkarni', language: 'en', dateFormat: 'DD/MM/YYYY', theme: 'light', printer: null, defaultBranchId: null };
-const session = { id: 's-1', ip: '49.36.x.x', browser: 'AGRO app', startedAt: '2026-11-10T04:00:00Z', lastAccessAt: '2026-11-11T04:00:00Z' };
-const device = { id: 'd-1', userId: 'u-1', name: 'Counter phone', platform: 'ANDROID', status: 'REGISTERED', registeredAt: '2026-11-01T04:00:00Z', lastSeenAt: null, revokedAt: null };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
+const prefs = {
+  displayName: 'Asha Kulkarni',
+  language: 'en',
+  dateFormat: 'DD/MM/YYYY',
+  theme: 'light',
+  printer: null,
+  defaultBranchId: null,
+};
+const session = {
+  id: 's-1',
+  ip: '49.36.x.x',
+  browser: 'AGRO app',
+  startedAt: '2026-11-10T04:00:00Z',
+  lastAccessAt: '2026-11-11T04:00:00Z',
+};
+const device = {
+  id: 'd-1',
+  userId: 'u-1',
+  name: 'Counter phone',
+  platform: 'ANDROID',
+  status: 'REGISTERED',
+  registeredAt: '2026-11-01T04:00:00Z',
+  lastSeenAt: null,
+  revokedAt: null,
+};
 
 beforeAll(() => {
   for (const l of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(l, 'translation', parts[l], true, true);
@@ -59,7 +89,9 @@ describe('account helpers', () => {
   });
   test('the texts exist in English, Hindi and Marathi with the same keys', () => {
     const flat = (o: object, p = ''): string[] =>
-      Object.entries(o).flatMap(([k, v]) => (typeof v === 'object' ? flat(v as object, `${p}${k}.`) : [`${p}${k}`]));
+      Object.entries(o).flatMap(([k, v]) =>
+        typeof v === 'object' ? flat(v as object, `${p}${k}.`) : [`${p}${k}`],
+      );
     expect(flat(parts.hi).sort()).toEqual(flat(parts.en).sort());
     expect(flat(parts.mr).sort()).toEqual(flat(parts.en).sort());
   });
@@ -83,7 +115,9 @@ describe('account screen', () => {
   test('offline: network error shows the offline text and Try again', async () => {
     mockGet.mockRejectedValue(new ApiError(0, null));
     await show();
-    expect(await screen.findByText('No network. Check your connection and try again.', {}, { timeout: 3000 })).toBeTruthy();
+    expect(
+      await screen.findByText('No network. Check your connection and try again.', {}, { timeout: 3000 }),
+    ).toBeTruthy();
     expect(screen.getByLabelText('Try again')).toBeTruthy();
   });
 

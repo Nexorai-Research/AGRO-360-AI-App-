@@ -22,15 +22,39 @@ export interface ProductDraft {
   purchasable: boolean;
 }
 export const emptyDraft: ProductDraft = {
-  name: '', localName: '', categoryId: '', brandId: '', baseUomId: '', code: '', hsnCode: '', taxCode: '', mrp: '',
-  sellingPrice: '', purchasePrice: '', reorderLevel: '', shelfLifeMonths: '',
-  mrpControlled: true, batchTracked: false, expiryTracked: false, sellable: true, purchasable: true,
+  name: '',
+  localName: '',
+  categoryId: '',
+  brandId: '',
+  baseUomId: '',
+  code: '',
+  hsnCode: '',
+  taxCode: '',
+  mrp: '',
+  sellingPrice: '',
+  purchasePrice: '',
+  reorderLevel: '',
+  shelfLifeMonths: '',
+  mrpControlled: true,
+  batchTracked: false,
+  expiryTracked: false,
+  sellable: true,
+  purchasable: true,
 };
 export const draftOf = (p: Product): ProductDraft => ({
   ...emptyDraft,
-  name: p.name, localName: p.localName ?? '', categoryId: p.categoryId ?? '', brandId: p.brandId ?? '', baseUomId: p.baseUomId,
-  reorderLevel: p.reorderLevel ?? '', shelfLifeMonths: p.shelfLifeMonths === null ? '' : String(p.shelfLifeMonths),
-  mrpControlled: p.mrpControlled, batchTracked: p.batchTracked, expiryTracked: p.expiryTracked, sellable: p.sellable, purchasable: p.purchasable,
+  name: p.name,
+  localName: p.localName ?? '',
+  categoryId: p.categoryId ?? '',
+  brandId: p.brandId ?? '',
+  baseUomId: p.baseUomId,
+  reorderLevel: p.reorderLevel ?? '',
+  shelfLifeMonths: p.shelfLifeMonths === null ? '' : String(p.shelfLifeMonths),
+  mrpControlled: p.mrpControlled,
+  batchTracked: p.batchTracked,
+  expiryTracked: p.expiryTracked,
+  sellable: p.sellable,
+  purchasable: p.purchasable,
 });
 
 const PRICE_RE = /^\d+(\.\d{1,4})?$/;
@@ -52,15 +76,21 @@ export function validateDraft(d: ProductDraft, creating: boolean, canCost: boole
     else if (!PRICE_RE.test(d.sellingPrice.trim())) e.sellingPrice = 'price';
     if (d.mrp.trim() && !PRICE_RE.test(d.mrp.trim())) e.mrp = 'price';
     if (d.mrpControlled && !d.mrp.trim()) e.mrp = 'mrpRequired';
-    if (!e.mrp && !e.sellingPrice && d.mrpControlled && dec(d.sellingPrice.trim()).gt(d.mrp.trim())) e.sellingPrice = 'aboveMrp';
-    if (canCost && d.purchasePrice.trim() && !PRICE_RE.test(d.purchasePrice.trim())) e.purchasePrice = 'price';
+    if (!e.mrp && !e.sellingPrice && d.mrpControlled && dec(d.sellingPrice.trim()).gt(d.mrp.trim()))
+      e.sellingPrice = 'aboveMrp';
+    if (canCost && d.purchasePrice.trim() && !PRICE_RE.test(d.purchasePrice.trim()))
+      e.purchasePrice = 'price';
   }
   return e;
 }
 
 /** Create: blank optional boxes are left out. Edit: a blank optional box clears the value (null), as the web screen does. */
 export function toBody(d: ProductDraft, creating: boolean, canCost: boolean): Record<string, unknown> {
-  const o: Record<string, unknown> = { name: d.name.trim(), categoryId: d.categoryId, baseUomId: d.baseUomId };
+  const o: Record<string, unknown> = {
+    name: d.name.trim(),
+    categoryId: d.categoryId,
+    baseUomId: d.baseUomId,
+  };
   const opt = (k: string, v: string, conv: (x: string) => unknown = (x) => x) => {
     if (v.trim()) o[k] = conv(v.trim());
     else if (!creating) o[k] = null;
@@ -69,7 +99,13 @@ export function toBody(d: ProductDraft, creating: boolean, canCost: boolean): Re
   opt('brandId', d.brandId);
   opt('reorderLevel', d.reorderLevel);
   opt('shelfLifeMonths', d.shelfLifeMonths, Number);
-  Object.assign(o, { mrpControlled: d.mrpControlled, batchTracked: d.batchTracked, expiryTracked: d.expiryTracked, sellable: d.sellable, purchasable: d.purchasable });
+  Object.assign(o, {
+    mrpControlled: d.mrpControlled,
+    batchTracked: d.batchTracked,
+    expiryTracked: d.expiryTracked,
+    sellable: d.sellable,
+    purchasable: d.purchasable,
+  });
   if (creating) {
     if (d.code.trim()) o.code = d.code.trim();
     if (d.hsnCode.trim()) o.hsnCode = d.hsnCode.trim();
@@ -82,7 +118,13 @@ export function toBody(d: ProductDraft, creating: boolean, canCost: boolean): Re
 }
 
 /** A new price may carry only the boxes that were filled. Cost above selling price is a warning, never a block. */
-export function priceBody(f: { effectiveFrom: string; mrp: string; sellingPrice: string; purchasePrice: string; reason: string }): Record<string, string> {
+export function priceBody(f: {
+  effectiveFrom: string;
+  mrp: string;
+  sellingPrice: string;
+  purchasePrice: string;
+  reason: string;
+}): Record<string, string> {
   const b: Record<string, string> = {};
   for (const [k, v] of Object.entries(f)) if (v.trim()) b[k] = v.trim();
   return b;

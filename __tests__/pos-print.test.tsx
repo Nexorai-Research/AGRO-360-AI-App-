@@ -9,7 +9,13 @@ const mockGet = jest.fn();
 let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: jest.fn(), delete: jest.fn() };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => 'key-1' }));
 jest.mock('expo-print', () => ({
@@ -26,8 +32,18 @@ const Print = require('expo-print') as { printAsync: jest.Mock; printToFileAsync
 const Sharing = require('expo-sharing') as { isAvailableAsync: jest.Mock; shareAsync: jest.Mock };
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const inv = { id: 'i-1', number: 'INV-1', invoiceDate: '2026-11-11', customerName: 'Ramesh Patil', total: '280.00', creditAmount: '0.00', status: 'FINALIZED' };
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const inv = {
+  id: 'i-1',
+  number: 'INV-1',
+  invoiceDate: '2026-11-11',
+  customerName: 'Ramesh Patil',
+  total: '280.00',
+  creditAmount: '0.00',
+  status: 'FINALIZED',
+};
 const client = mockClient as never;
 
 beforeEach(async () => {
@@ -52,7 +68,10 @@ describe('print helpers', () => {
   test('pdf makes a file from the same page and shares it as a PDF', async () => {
     expect(await shareInvoicePdf(client, 'i-1')).toBe('done');
     expect(Print.printToFileAsync).toHaveBeenCalledWith({ html: '<html>INV-1</html>' });
-    expect(Sharing.shareAsync).toHaveBeenCalledWith('file:///cache/invoice.pdf', expect.objectContaining({ mimeType: 'application/pdf' }));
+    expect(Sharing.shareAsync).toHaveBeenCalledWith(
+      'file:///cache/invoice.pdf',
+      expect.objectContaining({ mimeType: 'application/pdf' }),
+    );
   });
   test('pdf says so when the phone cannot share files, and does not try', async () => {
     Sharing.isAvailableAsync.mockResolvedValue(false);

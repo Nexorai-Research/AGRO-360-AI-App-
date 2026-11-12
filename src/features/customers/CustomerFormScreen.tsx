@@ -8,8 +8,24 @@ import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { Card, Check, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { StateView } from '../stock/StateView';
-import { CPERM, createCustomer, fetchCustomerCategories, fetchCustomerFull, updateCustomer } from './form-api';
-import { LANGS, draftOf, emptyDraft, isChanged, toBody, validateDraft, type CustomerDraft, type CustomerFull, type DraftErrors } from './form-logic';
+import {
+  CPERM,
+  createCustomer,
+  fetchCustomerCategories,
+  fetchCustomerFull,
+  updateCustomer,
+} from './form-api';
+import {
+  LANGS,
+  draftOf,
+  emptyDraft,
+  isChanged,
+  toBody,
+  validateDraft,
+  type CustomerDraft,
+  type CustomerFull,
+  type DraftErrors,
+} from './form-logic';
 
 /** Waits for the customer when editing, then mounts the form with it as the starting values. */
 export default function CustomerFormScreen() {
@@ -75,7 +91,13 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
     try {
       const r = creating
         ? await createCustomer(client, body, ak.keyFor(JSON.stringify(body)))
-        : await updateCustomer(client, customer.id, customer.version, body, ak.keyFor(`${customer.id}|${customer.version}|${JSON.stringify(body)}`));
+        : await updateCustomer(
+            client,
+            customer.id,
+            customer.version,
+            body,
+            ak.keyFor(`${customer.id}|${customer.version}|${JSON.stringify(body)}`),
+          );
       ak.reset();
       void qc.invalidateQueries({ queryKey: ['customers'] });
       setSaved({ id: r?.id ?? customer?.id ?? '', name: r?.name ?? d.name.trim() });
@@ -91,35 +113,119 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
   if (saved)
     return (
       <ScrollView contentContainerStyle={kit.page}>
-        <Notice tone="ok" text={t(creating ? 'customers.form.created' : 'customers.form.saved', { name: saved.name })} />
-        {saved.id ? <Button label={t('customers.form.open')} onPress={() => router.replace({ pathname: '/customers/[id]', params: { id: saved.id } } as never)} /> : null}
-        <Button kind="ghost" label={t('customers.form.backToList')} onPress={() => router.replace('/customers' as never)} />
+        <Notice
+          tone="ok"
+          text={t(creating ? 'customers.form.created' : 'customers.form.saved', { name: saved.name })}
+        />
+        {saved.id ? (
+          <Button
+            label={t('customers.form.open')}
+            onPress={() => router.replace({ pathname: '/customers/[id]', params: { id: saved.id } } as never)}
+          />
+        ) : null}
+        <Button
+          kind="ghost"
+          label={t('customers.form.backToList')}
+          onPress={() => router.replace('/customers' as never)}
+        />
       </ScrollView>
     );
 
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
       <Text style={kit.title}>{t(creating ? 'customers.form.new' : 'customers.form.edit')}</Text>
-      <Field label={t('customers.form.name')} value={d.name} onChange={(v) => set('name', v)} error={err('name')} />
-      <Field label={t('customers.mobile')} value={d.mobile} onChange={(v) => set('mobile', v)} keyboard="phone-pad" error={err('mobile')} />
-      <Field label={t('customers.altMobile')} value={d.altMobile} onChange={(v) => set('altMobile', v)} keyboard="phone-pad" error={err('altMobile')} />
-      <Check label={t('customers.form.sharedMobile')} value={d.sharedMobile} onChange={(v) => set('sharedMobile', v)} />
-      <Field label={t('customers.village')} value={d.village} onChange={(v) => set('village', v)} error={err('village')} />
-      <Field label={t('customers.form.taluka')} value={d.taluka} onChange={(v) => set('taluka', v)} error={err('taluka')} />
-      <Field label={t('customers.form.district')} value={d.district} onChange={(v) => set('district', v)} error={err('district')} />
-      <Field label={t('customers.form.stateCode')} value={d.stateCode} onChange={(v) => set('stateCode', v)} keyboard="number-pad" error={err('stateCode')} />
-      <Field label={t('customers.form.pin')} value={d.pin} onChange={(v) => set('pin', v)} keyboard="number-pad" error={err('pin')} />
-      <Field label={t('customers.gstin')} value={d.gstin} onChange={(v) => set('gstin', v)} error={err('gstin')} />
-      <Chips label={t('customers.category')} options={(cats.data ?? []).map((c) => ({ id: c.id, label: c.name }))} value={d.categoryId} onChange={(v) => set('categoryId', v)} />
-      <Chips label={t('customers.form.language')} options={LANGS.map((l) => ({ id: l, label: t(`customers.form.lang.${l}`) }))} value={d.language as 'en'} onChange={(v) => set('language', v)} />
-      {failure ? <Notice tone="error" text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })} /> : null}
+      <Field
+        label={t('customers.form.name')}
+        value={d.name}
+        onChange={(v) => set('name', v)}
+        error={err('name')}
+      />
+      <Field
+        label={t('customers.mobile')}
+        value={d.mobile}
+        onChange={(v) => set('mobile', v)}
+        keyboard="phone-pad"
+        error={err('mobile')}
+      />
+      <Field
+        label={t('customers.altMobile')}
+        value={d.altMobile}
+        onChange={(v) => set('altMobile', v)}
+        keyboard="phone-pad"
+        error={err('altMobile')}
+      />
+      <Check
+        label={t('customers.form.sharedMobile')}
+        value={d.sharedMobile}
+        onChange={(v) => set('sharedMobile', v)}
+      />
+      <Field
+        label={t('customers.village')}
+        value={d.village}
+        onChange={(v) => set('village', v)}
+        error={err('village')}
+      />
+      <Field
+        label={t('customers.form.taluka')}
+        value={d.taluka}
+        onChange={(v) => set('taluka', v)}
+        error={err('taluka')}
+      />
+      <Field
+        label={t('customers.form.district')}
+        value={d.district}
+        onChange={(v) => set('district', v)}
+        error={err('district')}
+      />
+      <Field
+        label={t('customers.form.stateCode')}
+        value={d.stateCode}
+        onChange={(v) => set('stateCode', v)}
+        keyboard="number-pad"
+        error={err('stateCode')}
+      />
+      <Field
+        label={t('customers.form.pin')}
+        value={d.pin}
+        onChange={(v) => set('pin', v)}
+        keyboard="number-pad"
+        error={err('pin')}
+      />
+      <Field
+        label={t('customers.gstin')}
+        value={d.gstin}
+        onChange={(v) => set('gstin', v)}
+        error={err('gstin')}
+      />
+      <Chips
+        label={t('customers.category')}
+        options={(cats.data ?? []).map((c) => ({ id: c.id, label: c.name }))}
+        value={d.categoryId}
+        onChange={(v) => set('categoryId', v)}
+      />
+      <Chips
+        label={t('customers.form.language')}
+        options={LANGS.map((l) => ({ id: l, label: t(`customers.form.lang.${l}`) }))}
+        value={d.language as 'en'}
+        onChange={(v) => set('language', v)}
+      />
+      {failure ? (
+        <Notice
+          tone="error"
+          text={t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
+        />
+      ) : null}
       {dup ? (
         <Card>
           <Notice tone="warn" text={t('customers.form.duplicate')} />
           <Button label={t('customers.form.createAnyway')} disabled={busy} onPress={() => void save(true)} />
         </Card>
       ) : null}
-      <Button label={busy ? t('common.loading') : t('customers.form.save')} disabled={busy} onPress={() => void save()} />
+      <Button
+        label={busy ? t('common.loading') : t('customers.form.save')}
+        disabled={busy}
+        onPress={() => void save()}
+      />
     </ScrollView>
   );
 }

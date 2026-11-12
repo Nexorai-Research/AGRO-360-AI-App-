@@ -8,8 +8,19 @@ import ComplaintsScreen from '../src/features/complaints/ComplaintsScreen';
 import ComplaintFormScreen from '../src/features/complaints/ComplaintFormScreen';
 import ComplaintDetailScreen from '../src/features/complaints/ComplaintDetailScreen';
 import FollowUpScreen from '../src/features/collections/FollowUpScreen';
-import { buildComplaintBody, buildTransition, complaintErrors, transitionError } from '../src/features/complaints/logic';
-import { buildOutcome, outcomeErrors, promiseErrors, validAmount, validFutureDate } from '../src/features/collections/extras-logic';
+import {
+  buildComplaintBody,
+  buildTransition,
+  complaintErrors,
+  transitionError,
+} from '../src/features/complaints/logic';
+import {
+  buildOutcome,
+  outcomeErrors,
+  promiseErrors,
+  validAmount,
+  validFutureDate,
+} from '../src/features/collections/extras-logic';
 import type { Complaint } from '../src/features/complaints/api';
 
 const mockGet = jest.fn();
@@ -20,7 +31,13 @@ let mockMe: { userId: string; roles: string[]; permissions?: string[] };
 let mockId = 0;
 const mockClient = { get: (...a: unknown[]) => mockGet(...a), post: (...a: unknown[]) => mockPost(...a) };
 jest.mock('../src/auth/AuthProvider', () => ({
-  useAuth: () => ({ status: 'signedIn', me: mockMe, client: mockClient, signIn: jest.fn(), signOut: jest.fn() }),
+  useAuth: () => ({
+    status: 'signedIn',
+    me: mockMe,
+    client: mockClient,
+    signIn: jest.fn(),
+    signOut: jest.fn(),
+  }),
 }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 jest.mock('expo-router', () => ({
@@ -30,17 +47,48 @@ jest.mock('expo-router', () => ({
 }));
 
 let client: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={client}>{children}</QueryClientProvider>
+);
 
 const cmp = (over: Partial<Complaint> = {}): Complaint => ({
-  id: 'c-1', ticketNo: 'CMP-1', customerId: 'k-1', customerName: 'Ramesh Patil', category: 'GERMINATION', severity: 'HIGH',
-  description: 'Seeds did not grow', batchNo: 'B7', invoiceNumber: null, status: 'OPEN', slaDueAt: '2026-11-12T00:00:00Z', overdue: false,
-  resolutionType: null, resolutionText: null, createdAt: '2026-11-10T00:00:00Z', version: 4, ...over,
+  id: 'c-1',
+  ticketNo: 'CMP-1',
+  customerId: 'k-1',
+  customerName: 'Ramesh Patil',
+  category: 'GERMINATION',
+  severity: 'HIGH',
+  description: 'Seeds did not grow',
+  batchNo: 'B7',
+  invoiceNumber: null,
+  status: 'OPEN',
+  slaDueAt: '2026-11-12T00:00:00Z',
+  overdue: false,
+  resolutionType: null,
+  resolutionText: null,
+  createdAt: '2026-11-10T00:00:00Z',
+  version: 4,
+  ...over,
 });
-const task = { id: 't-1', customerId: 'k-1', customerName: 'Ramesh Patil', mobile: null, village: 'Wadgaon', branchId: 'b-1', assignedTo: null, taskDate: '2026-11-11', overdueAmount: '5000.00', oldestDays: 40, status: 'OPEN', outcome: null, note: null };
+const task = {
+  id: 't-1',
+  customerId: 'k-1',
+  customerName: 'Ramesh Patil',
+  mobile: null,
+  village: 'Wadgaon',
+  branchId: 'b-1',
+  assignedTo: null,
+  taskDate: '2026-11-11',
+  overdueAmount: '5000.00',
+  oldestDays: 40,
+  status: 'OPEN',
+  outcome: null,
+  note: null,
+};
 
 beforeAll(() => {
-  for (const lg of ['en', 'hi', 'mr'] as const) i18n.addResourceBundle(lg, 'translation', (parts as Record<string, object>)[lg], true, true);
+  for (const lg of ['en', 'hi', 'mr'] as const)
+    i18n.addResourceBundle(lg, 'translation', (parts as Record<string, object>)[lg], true, true);
 });
 beforeEach(async () => {
   [mockGet, mockPost, mockPush, mockReplace].forEach((m) => m.mockReset());
@@ -55,12 +103,21 @@ describe('logic', () => {
     const d = { customerId: 'k', category: 'SERVICE', severity: 'LOW', description: 'ab', batchNo: '' };
     expect(complaintErrors(d)).toEqual(['description']);
     expect(complaintErrors({ ...d, description: 'abc', customerId: '' })).toEqual(['customer']);
-    expect(buildComplaintBody({ ...d, description: ' late delivery ' })).toEqual({ customerId: 'k', category: 'SERVICE', severity: 'LOW', description: 'late delivery' });
+    expect(buildComplaintBody({ ...d, description: ' late delivery ' })).toEqual({
+      customerId: 'k',
+      category: 'SERVICE',
+      severity: 'LOW',
+      description: 'late delivery',
+    });
   });
   test('resolve needs text', () => {
     expect(transitionError('RESOLVED', ' ')).toBe('text');
     expect(transitionError('IN_PROGRESS', '')).toBeNull();
-    expect(buildTransition('RESOLVED', 'replaced', 'REPLACEMENT')).toEqual({ to: 'RESOLVED', text: 'replaced', resolutionType: 'REPLACEMENT' });
+    expect(buildTransition('RESOLVED', 'replaced', 'REPLACEMENT')).toEqual({
+      to: 'RESOLVED',
+      text: 'replaced',
+      resolutionType: 'REPLACEMENT',
+    });
     expect(buildTransition('IN_PROGRESS', '', 'REFUND')).toEqual({ to: 'IN_PROGRESS' });
   });
   test('amounts are decimal strings; promise date must be after today', () => {
@@ -71,12 +128,26 @@ describe('logic', () => {
     expect(validFutureDate('2026-11-12', '2026-11-11')).toBe(true);
     expect(validFutureDate('2026-11-11', '2026-11-11')).toBe(false);
     expect(validFutureDate('2026-02-30', '2026-01-01')).toBe(false);
-    expect(outcomeErrors('PROMISE', { note: '', amount: '', date: '' }, '2026-11-11')).toEqual(['amount', 'date']);
+    expect(outcomeErrors('PROMISE', { note: '', amount: '', date: '' }, '2026-11-11')).toEqual([
+      'amount',
+      'date',
+    ]);
     expect(outcomeErrors('DISPUTE', { note: ' ', amount: '', date: '' })).toEqual(['note']);
     expect(outcomeErrors('PAID', { note: '', amount: '', date: '' })).toEqual([]);
-    expect(buildOutcome('PROMISE', { note: '', amount: '500', date: '2026-12-01' })).toEqual({ outcome: 'PROMISE', promiseAmount: '500', promiseDate: '2026-12-01' });
-    expect(buildOutcome('PAID', { note: 'cash', amount: '500', date: '2026-12-01' })).toEqual({ outcome: 'PAID', note: 'cash' });
-    expect(promiseErrors({ customerId: '', amount: 'x', date: '', note: '' })).toEqual(['customer', 'amount', 'date']);
+    expect(buildOutcome('PROMISE', { note: '', amount: '500', date: '2026-12-01' })).toEqual({
+      outcome: 'PROMISE',
+      promiseAmount: '500',
+      promiseDate: '2026-12-01',
+    });
+    expect(buildOutcome('PAID', { note: 'cash', amount: '500', date: '2026-12-01' })).toEqual({
+      outcome: 'PAID',
+      note: 'cash',
+    });
+    expect(promiseErrors({ customerId: '', amount: 'x', date: '', note: '' })).toEqual([
+      'customer',
+      'amount',
+      'date',
+    ]);
   });
 });
 
@@ -147,7 +218,12 @@ describe('complaint form', () => {
     await fireEvent.press(screen.getByLabelText('Register complaint'));
     await screen.findByText(/No network|x/, {}, { timeout: 200 }).catch(() => null);
     expect(mockPost.mock.calls.map((c) => c[1].idempotencyKey)).toEqual(['key-1', 'key-1']);
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ customerId: 'k-1', category: 'GERMINATION', severity: 'MEDIUM', description: 'Seeds did not grow' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      customerId: 'k-1',
+      category: 'GERMINATION',
+      severity: 'MEDIUM',
+      description: 'Seeds did not grow',
+    });
     expect(mockReplace).toHaveBeenCalled();
   });
   test('changed description gets a new key', async () => {
@@ -213,8 +289,39 @@ describe('collection follow-up', () => {
   beforeEach(() => {
     mockGet.mockImplementation(async (path: string) => {
       if (path === '/credit/tasks') return { items: [task] };
-      if (path === '/credit/promises') return { items: [{ id: 'p-1', customerId: 'k-1', customerName: 'Ramesh Patil', promisedAmount: '2000.00', promiseDate: '2026-12-01', madeOn: '2026-11-10', status: 'PENDING', receivedAmount: '0.00', note: null }] };
-      if (path === '/receipts') return { items: [{ id: 'r-1', number: 'RC-1', customerId: 'k-1', receiptDate: '2026-11-10', modeCode: 'CASH', reference: null, amount: '1500.00', allocated: '1500.00', onAccount: '0.00', status: 'ACTIVE' }] };
+      if (path === '/credit/promises')
+        return {
+          items: [
+            {
+              id: 'p-1',
+              customerId: 'k-1',
+              customerName: 'Ramesh Patil',
+              promisedAmount: '2000.00',
+              promiseDate: '2026-12-01',
+              madeOn: '2026-11-10',
+              status: 'PENDING',
+              receivedAmount: '0.00',
+              note: null,
+            },
+          ],
+        };
+      if (path === '/receipts')
+        return {
+          items: [
+            {
+              id: 'r-1',
+              number: 'RC-1',
+              customerId: 'k-1',
+              receiptDate: '2026-11-10',
+              modeCode: 'CASH',
+              reference: null,
+              amount: '1500.00',
+              allocated: '1500.00',
+              onAccount: '0.00',
+              status: 'ACTIVE',
+            },
+          ],
+        };
       return { items: [] };
     });
   });
@@ -243,7 +350,11 @@ describe('collection follow-up', () => {
     expect(await screen.findByText('Result saved.')).toBeTruthy();
     expect(mockPost.mock.calls.map((c) => c[1].idempotencyKey)).toEqual(['key-1', 'key-1']);
     expect(mockPost.mock.calls[0]![0]).toBe('/credit/tasks/t-1/outcome');
-    expect(mockPost.mock.calls[0]![1].body).toEqual({ outcome: 'PROMISE', promiseAmount: '2000.50', promiseDate: '2099-01-01' });
+    expect(mockPost.mock.calls[0]![1].body).toEqual({
+      outcome: 'PROMISE',
+      promiseAmount: '2000.50',
+      promiseDate: '2099-01-01',
+    });
   });
 
   test('dispute without a note is refused', async () => {

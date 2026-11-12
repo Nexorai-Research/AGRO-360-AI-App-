@@ -13,9 +13,37 @@ jest.mock('../src/auth/AuthProvider', () => ({
 }));
 
 let qc: QueryClient;
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-const batch = (o: Record<string, unknown> = {}) => ({ id: 'b1', skuCode: 'URE-50', skuName: 'Urea 50kg', batchNo: 'B-77', expiryDate: '2026-12-01', daysToExpiry: 19, status: 'ACTIVE', onHand: '40.000', available: '40.000', valueAtRisk: '10400.5000', ...o });
-const move = (o: Record<string, unknown> = {}) => ({ id: 'm1', businessDate: '2026-11-10', movementType: 'SALE_ISSUE', skuCode: 'URE-50', skuName: 'Urea 50kg', warehouseCode: 'WH1', batchNo: 'B-77', qty: '-2.000', value: '-520.0000', sourceType: 'INVOICE', reasonCode: null, runningBalance: '38.000', ...o });
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+);
+const batch = (o: Record<string, unknown> = {}) => ({
+  id: 'b1',
+  skuCode: 'URE-50',
+  skuName: 'Urea 50kg',
+  batchNo: 'B-77',
+  expiryDate: '2026-12-01',
+  daysToExpiry: 19,
+  status: 'ACTIVE',
+  onHand: '40.000',
+  available: '40.000',
+  valueAtRisk: '10400.5000',
+  ...o,
+});
+const move = (o: Record<string, unknown> = {}) => ({
+  id: 'm1',
+  businessDate: '2026-11-10',
+  movementType: 'SALE_ISSUE',
+  skuCode: 'URE-50',
+  skuName: 'Urea 50kg',
+  warehouseCode: 'WH1',
+  batchNo: 'B-77',
+  qty: '-2.000',
+  value: '-520.0000',
+  sourceType: 'INVOICE',
+  reasonCode: null,
+  runningBalance: '38.000',
+  ...o,
+});
 const answers = (o: Record<string, unknown> = {}) =>
   mockGet.mockImplementation(async (path: string) => {
     if (path in o) {
@@ -25,8 +53,39 @@ const answers = (o: Record<string, unknown> = {}) =>
     }
     if (path === '/inventory/batches') return { items: [batch()], total: 1 };
     if (path === '/inventory/ledger') return { items: [move()], total: 120, currentBalance: '38.000' };
-    if (path === '/inventory/reorder-rules') return { items: [{ skuCode: 'URE-50', skuName: 'Urea 50kg', branchName: null, minQty: '10.000', reorderLevel: '25.000', maxQty: '100.000', reorderQty: '60.000' }], total: 1 };
-    if (path === '/inventory/valuation') return { asOn: '2026-11-12', costingMethod: 'FIFO', warning: 'FIFO cost layers are not built yet; valued at the weighted average.', totalQty: '38.000', totalValue: '9880.0000', rows: [{ skuCode: 'URE-50', skuName: 'Urea 50kg', branchName: 'Main', qty: '38.000', avgCost: '260.000000', value: '9880.0000' }] };
+    if (path === '/inventory/reorder-rules')
+      return {
+        items: [
+          {
+            skuCode: 'URE-50',
+            skuName: 'Urea 50kg',
+            branchName: null,
+            minQty: '10.000',
+            reorderLevel: '25.000',
+            maxQty: '100.000',
+            reorderQty: '60.000',
+          },
+        ],
+        total: 1,
+      };
+    if (path === '/inventory/valuation')
+      return {
+        asOn: '2026-11-12',
+        costingMethod: 'FIFO',
+        warning: 'FIFO cost layers are not built yet; valued at the weighted average.',
+        totalQty: '38.000',
+        totalValue: '9880.0000',
+        rows: [
+          {
+            skuCode: 'URE-50',
+            skuName: 'Urea 50kg',
+            branchName: 'Main',
+            qty: '38.000',
+            avgCost: '260.000000',
+            value: '9880.0000',
+          },
+        ],
+      };
     return { items: [] };
   });
 
@@ -116,6 +175,10 @@ describe('stock reports', () => {
   test('fetchExpiry builds the right query', async () => {
     const get = jest.fn().mockResolvedValue({ items: [], total: 0 });
     await fetchExpiry({ get } as never, '90');
-    expect(get.mock.calls[0]![1].query).toEqual({ withStockOnly: 'true', limit: 50, expiringWithinDays: '90' });
+    expect(get.mock.calls[0]![1].query).toEqual({
+      withStockOnly: 'true',
+      limit: 50,
+      expiringWithinDays: '90',
+    });
   });
 });

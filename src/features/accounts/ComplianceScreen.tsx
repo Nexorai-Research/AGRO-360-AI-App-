@@ -8,7 +8,14 @@ import { todayIST } from '../collections/receipt';
 import { StateView } from '../stock/StateView';
 import { Card, Chips, Gate, Line, Notice, isNetwork, kit, useCan } from '../hr/kit';
 import { shortDate } from '../hr/logic';
-import { COMPLIANCE_PERM, fetchGstr3b, fetchHsn, fetchItc, monthRange, previousMonth } from './compliance-api';
+import {
+  COMPLIANCE_PERM,
+  fetchGstr3b,
+  fetchHsn,
+  fetchItc,
+  monthRange,
+  previousMonth,
+} from './compliance-api';
 
 type Tab = 'gstr3b' | 'hsn' | 'itc';
 type Which = 'this' | 'last';
@@ -75,13 +82,20 @@ export default function ComplianceScreen() {
             value={which}
             onChange={setWhich}
           />
-
         </>
       ) : null}
-      <Gate query={active} denied={!allowed} deniedText={t('compliance.denied')} offlineText={t('compliance.offline')}>
+      <Gate
+        query={active}
+        denied={!allowed}
+        deniedText={t('compliance.denied')}
+        offlineText={t('compliance.offline')}
+      >
         {tab === 'gstr3b' && g.data ? (
           <>
-            <Notice tone={g.data.matchesGstr1 ? 'ok' : 'warn'} text={t(g.data.matchesGstr1 ? 'compliance.matches' : 'compliance.noMatch')} />
+            <Notice
+              tone={g.data.matchesGstr1 ? 'ok' : 'warn'}
+              text={t(g.data.matchesGstr1 ? 'compliance.matches' : 'compliance.noMatch')}
+            />
             <Card>
               <Text style={kit.name}>{t('compliance.outward')}</Text>
               <Line label={t('compliance.taxable')} value={formatINR(g.data.outward.taxable)} />
@@ -113,7 +127,9 @@ export default function ComplianceScreen() {
               <Line label={t('compliance.taxable')} value={formatINR(hsn.data.totals.taxable)} />
               <Line label={t('compliance.tax')} value={formatINR(hsn.data.totals.tax)} strong />
             </Card>
-            {hsn.data.rows.length === 0 ? <StateView state="empty" message={t('compliance.emptyHsn')} /> : null}
+            {hsn.data.rows.length === 0 ? (
+              <StateView state="empty" message={t('compliance.emptyHsn')} />
+            ) : null}
             {hsn.data.rows.map((r) => (
               <Card key={`${r.hsn}-${r.rate}-${r.uqc}`}>
                 <Text style={kit.name}>
@@ -135,7 +151,9 @@ export default function ComplianceScreen() {
               <Line label={t('compliance.eligible')} value={formatINR(itc.data.totals.eligible)} strong />
               <Line label={t('compliance.blocked')} value={formatINR(itc.data.totals.blocked)} />
             </Card>
-            {itc.data.rows.length === 0 ? <StateView state="empty" message={t('compliance.emptyItc')} /> : null}
+            {itc.data.rows.length === 0 ? (
+              <StateView state="empty" message={t('compliance.emptyItc')} />
+            ) : null}
             {itc.data.rows.map((b) => (
               <Card key={b.billId}>
                 <Text style={kit.name}>

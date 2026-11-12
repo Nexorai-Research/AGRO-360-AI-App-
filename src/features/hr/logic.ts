@@ -13,7 +13,12 @@ export const isDate = (v: string): boolean => {
 export const isPeriod = (v: string): boolean => /^\d{4}-(0[1-9]|1[0-2])$/.test(v.trim());
 
 export type LeaveError = 'type' | 'from' | 'to' | 'order' | 'year' | 'half';
-export function checkLeave(f: { typeId: string; from: string; to: string; half: boolean }): LeaveError | null {
+export function checkLeave(f: {
+  typeId: string;
+  from: string;
+  to: string;
+  half: boolean;
+}): LeaveError | null {
   if (!f.typeId) return 'type';
   if (!isDate(f.from)) return 'from';
   if (!isDate(f.to)) return 'to';
