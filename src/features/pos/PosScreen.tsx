@@ -27,6 +27,7 @@ import {
   type Preview,
   type ProductLite,
 } from './api';
+import LineExtras from './LineExtras';
 import { PERM2, dropHeld, fetchHeld, getHeld, holdBill, key2, quickCustomer, type HeldRow } from './api-more';
 import {
   addProduct,
@@ -267,6 +268,8 @@ export default function PosScreen() {
         qty: l.qty,
         unitPrice: l.unitPrice ?? '',
         discountPct: l.discountPct ?? '',
+        ...(l.crop ? { crop: l.crop, targetPest: l.targetPest ?? '', dose: l.dose ?? '' } : {}),
+        ...(l.batchId ? { batchId: l.batchId, batchNo: '', fefoOverrideReason: l.fefoOverrideReason ?? '' } : {}),
       }));
       // the customer and the bill discount belong to the held bill: a credit sale must not turn into a walk-in sale
       let c: CustomerLite | null = null;
@@ -276,7 +279,7 @@ export default function PosScreen() {
           .catch(() => ({ id: r.cart.customerId!, name: t('pos.customerFallback') }));
       }
       setCustomer(c);
-      setCart({ branchId, customerId: c?.id ?? '', billDiscountPct: r.cart.billDiscountPct ?? '', lines });
+      setCart({ branchId, customerId: c?.id ?? '', billDiscountPct: r.cart.billDiscountPct ?? '', lines, wholesale: !!r.cart.wholesale });
       await dropHeld(client, h.id);
       void qc.invalidateQueries({ queryKey: key2(userId, 'held') });
       setNote(r.problem ?? null);
@@ -445,6 +448,14 @@ export default function PosScreen() {
               />
             </View>
           </View>
+          <LineExtras
+            line={l}
+            canBatch={me?.permissions === undefined || me.permissions.includes('inventory.view')}
+            onPatch={(p) => {
+              setCart(patchLine(effective, i, p));
+              changed();
+            }}
+          />
           {lineErr?.index === i ? err(lineErr.error) : null}
         </View>
       ))}
@@ -489,6 +500,20 @@ export default function PosScreen() {
           >
             <Text style={s.linkTxt}>{t('pos.walkIn')}</Text>
           </Pressable>
+          {me?.permissions === undefined || me.permissions.includes('sales.wholesale') ? (
+            <Pressable
+              accessibilityRole="checkbox"
+              accessibilityLabel={t('pos.wholesale')}
+              accessibilityState={{ checked: !!effective.wholesale }}
+              onPress={() => {
+                setCart({ ...effective, wholesale: !effective.wholesale });
+                changed();
+              }}
+              style={s.link}
+            >
+              <Text style={s.linkTxt}>{`${effective.wholesale ? '☑' : '☐'} ${t('pos.wholesale')}`}</Text>
+            </Pressable>
+          ) : null}
         </View>
       ) : (
         <>

@@ -10,6 +10,14 @@ export interface CartLine {
   /** Left blank = the server uses the price list. */
   unitPrice: string;
   discountPct: string;
+  /** Crop protection capture (UC-129): all three are sent together, or none. */
+  crop?: string;
+  targetPest?: string;
+  dose?: string;
+  /** Batch picked by hand instead of FEFO (UC-069). A later batch than FEFO needs a reason. */
+  batchId?: string;
+  batchNo?: string;
+  fefoOverrideReason?: string;
 }
 
 export interface Cart {
@@ -17,6 +25,8 @@ export interface Cart {
   customerId: string;
   billDiscountPct: string;
   lines: CartLine[];
+  /** Dealer sale (UC-136): needs a customer with a GSTIN and the sales.wholesale right; the server checks both. */
+  wholesale?: boolean;
 }
 
 export const emptyCart: Cart = { branchId: '', customerId: '', billDiscountPct: '', lines: [] };
@@ -26,7 +36,7 @@ const QTY_RE = /^\d+(\.\d{1,3})?$/;
 const PRICE_RE = /^\d+(\.\d{1,2})?$/;
 const PCT_RE = /^\d+(\.\d{1,2})?$/;
 
-export type LineError = 'qty' | 'price' | 'discount';
+export type LineError = 'qty' | 'price' | 'discount' | 'crop';
 
 export function lineError(l: CartLine): LineError | null {
   if (!QTY_RE.test(l.qty.trim()) || !dec(l.qty.trim()).gt(0)) return 'qty';
@@ -34,6 +44,8 @@ export function lineError(l: CartLine): LineError | null {
   if (l.discountPct.trim() !== '') {
     if (!PCT_RE.test(l.discountPct.trim()) || dec(l.discountPct.trim()).gt(100)) return 'discount';
   }
+  const cap = [l.crop, l.targetPest, l.dose].map((v) => (v ?? '').trim());
+  if (cap.some((v) => v !== '') && cap.some((v) => v === '')) return 'crop';
   return null;
 }
 
@@ -83,12 +95,16 @@ export function toInvoiceBody(c: Cart, invoiceDate: string, tenders?: TenderBody
     qty: l.qty.trim(),
     ...(l.unitPrice.trim() ? { unitPrice: l.unitPrice.trim() } : {}),
     ...(l.discountPct.trim() ? { discountPct: l.discountPct.trim() } : {}),
+    ...(l.crop?.trim() ? { crop: l.crop.trim(), targetPest: (l.targetPest ?? '').trim(), dose: (l.dose ?? '').trim() } : {}),
+    ...(l.batchId ? { batchId: l.batchId } : {}),
+    ...(l.batchId && l.fefoOverrideReason?.trim() ? { fefoOverrideReason: l.fefoOverrideReason.trim() } : {}),
   }));
   const body: InvoiceBody = {
     branchId: c.branchId,
     invoiceDate,
     ...(c.customerId ? { customerId: c.customerId } : {}),
     ...(c.billDiscountPct.trim() ? { billDiscountPct: c.billDiscountPct.trim() } : {}),
+    ...(c.wholesale && c.customerId ? { wholesale: true } : {}),
     lines,
   };
   if (tenders) body.tenders = tenders;
