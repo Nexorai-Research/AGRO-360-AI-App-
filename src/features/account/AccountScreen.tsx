@@ -9,6 +9,7 @@ import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { Card, Chips, failText, isNetwork, k, queryState, useAccess, useIdemKey } from '../admin/kit';
 import { fmtWhen } from '../admin/logic';
+import { PrefsExtras } from './AccountExtras';
 import {
   ACCOUNT_PERMISSION,
   acctKey,
@@ -131,6 +132,8 @@ export default function AccountScreen() {
         <Chips value={shownLang} options={LANGS} onChange={setLang} label={t('account.language')} />
         <Button label={t('account.save')} disabled={busy || !changed || nameBad} onPress={save} />
       </Card>
+
+      <PrefsExtras client={client!} userId={userId} prefs={p} />
 
       <Text style={k.h2}>{t('account.sessions')}</Text>
       {sessions.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}

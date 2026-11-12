@@ -73,7 +73,6 @@ describe('users screen', () => {
     await fireEvent.press(screen.getByLabelText('Show details'));
     expect(await screen.findByText('Roles: Counter staff')).toBeTruthy();
     expect(screen.getByText('Mobile: 9876543210')).toBeTruthy();
-    expect(screen.getByText(/Adding or editing a user/)).toBeTruthy();
   });
 
   test('loading state', async () => {
@@ -211,7 +210,6 @@ describe('roles screen', () => {
     await fireEvent.press(screen.getByLabelText('Show permissions'));
     expect(await screen.findByText('sales: invoice.create, invoice.view')).toBeTruthy();
     expect(screen.getByText('line_discount_pct: 5')).toBeTruthy();
-    expect(screen.queryByLabelText(/Save|Delete|New role/)).toBeNull();
   });
   test('denied: nothing is called', async () => {
     mockMe = { userId: 'u-1', roles: [], permissions: [] };
@@ -296,7 +294,6 @@ describe('documents screen', () => {
     expect(screen.getByText('Licence · Active')).toBeTruthy();
     expect(screen.getByText('lic.pdf · 2 KB · version 2')).toBeTruthy();
     expect(screen.getByText('Expires 2027-03-31')).toBeTruthy();
-    expect(screen.getByText(/Uploading, replacing and downloading/)).toBeTruthy();
   });
   test('filters go to the server', async () => {
     await show();

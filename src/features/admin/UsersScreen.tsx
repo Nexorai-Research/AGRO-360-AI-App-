@@ -6,6 +6,8 @@ import { errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { PERM, adminKey, deactivateUser, fetchRoles, fetchUsers, reactivateUser, type UserStatus, type UserView } from './api';
+import { UserForm, UserSecurity } from './UserAdmin';
+import { fetchBranchList } from './usr-api';
 import { Card, Chips, failText, isNetwork, k, queryState, useAccess, useIdemKey } from './kit';
 import { fmtWhen, validReason } from './logic';
 
@@ -25,6 +27,7 @@ export default function UsersScreen() {
   const [msg, setMsg] = useState<string | null>(null);
   const [failure, setFailure] = useState<ErrorMessage | null>(null);
   const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState<'new' | string | null>(null);
   const idem = useIdemKey();
 
   const users = useInfiniteQuery({
@@ -44,6 +47,14 @@ export default function UsersScreen() {
     enabled: ready && canRoles,
     staleTime: 5 * 60_000,
   });
+  const branches = useQuery({
+    queryKey: adminKey(userId, 'branches'),
+    queryFn: ({ signal }) => fetchBranchList(client!, signal),
+    enabled: ready,
+    staleTime: 5 * 60_000,
+    retry: false,
+  });
+  const branchList = branches.data?.items.filter((b) => b.status === 'ACTIVE') ?? null;
   const roleName = new Map((roles.data?.items ?? []).map((r) => [r.id, r.name]));
 
   async function run(fn: () => Promise<unknown>, done: string) {
@@ -76,6 +87,21 @@ export default function UsersScreen() {
       <Text style={k.title}>{t('users.title')}</Text>
       {msg ? <Text style={k.ok} accessibilityRole="alert">{msg}</Text> : null}
       {failure ? <Text style={k.error} accessibilityRole="alert">{failText(t, failure)}</Text> : null}
+      {form === 'new' ? (
+        <UserForm
+          client={client!}
+          roles={canRoles && roles.data ? roles.data.items : null}
+          branches={branchList}
+          onCancel={() => setForm(null)}
+          onDone={(m) => {
+            setForm(null);
+            setMsg(m);
+            void qc.invalidateQueries({ queryKey: adminKey(userId, 'users') });
+          }}
+        />
+      ) : (
+        <Button label={t('usr.addUser')} onPress={() => (setForm('new'), setMsg(null), setFailure(null))} />
+      )}
       <TextInput
         value={text}
         onChangeText={setText}
@@ -109,6 +135,7 @@ export default function UsersScreen() {
               label={open ? t('users.hide') : t('users.details')}
               onPress={() => {
                 setOpenId(open ? null : u.id);
+                setForm(null);
                 setReason('');
                 setFailure(null);
                 setMsg(null);
@@ -128,6 +155,23 @@ export default function UsersScreen() {
                   {u.allBranches ? t('users.allBranches') : t('users.branches', { count: u.branchIds.length })}
                 </Text>
                 <Text style={k.sub}>{t('users.created', { value: fmtWhen(u.createdAt) })}</Text>
+                {form === u.id ? (
+                  <UserForm
+                    client={client!}
+                    user={u}
+                    roles={canRoles && roles.data ? roles.data.items : null}
+                    branches={branchList}
+                    onCancel={() => setForm(null)}
+                    onDone={(m) => {
+                      setForm(null);
+                      setMsg(m);
+                      void qc.invalidateQueries({ queryKey: adminKey(userId, 'users') });
+                    }}
+                  />
+                ) : u.status !== 'DEACTIVATED' ? (
+                  <Button kind="ghost" label={t('usr.edit')} onPress={() => (setForm(u.id), setMsg(null), setFailure(null))} />
+                ) : null}
+                {u.status !== 'DEACTIVATED' ? <UserSecurity client={client!} user={u} userId={userId} /> : null}
                 {u.status === 'DEACTIVATED' ? (
                   <Button
                     label={t('users.reactivate')}
@@ -167,7 +211,6 @@ export default function UsersScreen() {
       {users.hasNextPage ? (
         <Button kind="ghost" label={t('users.more')} disabled={users.isFetchingNextPage} onPress={() => void users.fetchNextPage()} />
       ) : null}
-      <Text style={k.sub}>{t('users.notBuilt')}</Text>
     </ScrollView>
   );
 }

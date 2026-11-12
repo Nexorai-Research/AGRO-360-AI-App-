@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { PERM, adminKey, fetchRoles } from './api';
+import { NewRole, RoleEditor } from './RoleAdmin';
+import { Result } from './usr-run';
 import { Card, isNetwork, k, queryState, useAccess } from './kit';
 
-/** View only. Creating roles and changing what a role may do stays on the web app. */
+/** Roles: list, create, rename, delete, permission matrix and approval limits. System roles are read only. */
 export default function RolesScreen() {
   const { t } = useTranslation();
   const { client, can, userId } = useAccess();
+  const qc = useQueryClient();
+  const [adding, setAdding] = useState(false);
+  const [done, setDone] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const roles = useQuery({
     queryKey: adminKey(userId, 'roles'),
@@ -28,6 +33,21 @@ export default function RolesScreen() {
     <ScrollView contentContainerStyle={k.page}>
       <Text style={k.title}>{t('roles.title')}</Text>
       <Text style={k.sub}>{t('roles.hint')}</Text>
+      <Result msg={done} failure={null} />
+      {adding ? (
+        <NewRole
+          client={client!}
+          roles={items}
+          onCancel={() => setAdding(false)}
+          onDone={(m) => {
+            setAdding(false);
+            setDone(m);
+            void qc.invalidateQueries({ queryKey: adminKey(userId, 'roles') });
+          }}
+        />
+      ) : (
+        <Button label={t('rol.newRole')} onPress={() => (setAdding(true), setDone(null))} />
+      )}
       {items.length === 0 ? <StateView state="empty" message={t('roles.empty')} /> : null}
       {items.map((r) => {
         const open = openId === r.id;
@@ -56,12 +76,27 @@ export default function RolesScreen() {
                 {limits.map(([key, v]) => (
                   <Text key={key} style={k.sub}>{key}: {v}</Text>
                 ))}
+                {!r.isSystem ? (
+                  <RoleEditor
+                    client={client!}
+                    role={r}
+                    userId={userId}
+                    held={(code) => can(code)}
+                    onChanged={() => void qc.invalidateQueries({ queryKey: adminKey(userId, 'roles') })}
+                    onDeleted={() => {
+                      setOpenId(null);
+                      setDone(t('rol.deleted'));
+                      void qc.invalidateQueries({ queryKey: adminKey(userId, 'roles') });
+                    }}
+                  />
+                ) : (
+                  <Text style={k.sub}>{t('rol.systemFixed')}</Text>
+                )}
               </>
             ) : null}
           </Card>
         );
       })}
-      <Text style={k.sub}>{t('roles.notBuilt')}</Text>
     </ScrollView>
   );
 }
