@@ -242,3 +242,10 @@ DONE: credit review (`GET /customers/:id/credit`: account, last 5 limit changes,
 
 Limits: credit term choice, guarantors and promises to pay (also in the same server answer) are not shown or edited. The override right for releasing an automatic hold is decided by the server only. Hindi and Marathi texts need a native speaker review.
 
+### Farm and plot add and archive (branch `parity-all`)
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/farm-editor.test.tsx` (9 tests). `src/features/customers/FarmEditor.tsx` and `farm-api.ts` on Customer 360, shown only with `customer.farm`.
+
+DONE: add farm (`POST /customers/:id/farms`: name, ownership, optional area with unit), add plot (`POST /customers/:id/plots`: farm, name, area and unit, optional soil and irrigation), archive farm (`PATCH .../farms/:farmId` with status ARCHIVED, farm version as If-Match). Area is a decimal string, more than 0, up to 4 places. One Idempotency-Key per action, kept on a retry. English, Hindi, Marathi.
+
+Limits: editing an existing farm or plot (rename, change area), survey number, location (geo) and geo consent, and plot archiving are not built. Crop plans are not built yet. Hindi and Marathi texts need a native speaker review.
+

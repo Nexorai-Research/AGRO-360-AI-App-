@@ -18,6 +18,7 @@ export interface FarmView {
   areaAcres: string | null;
   plotAcres: string;
   status: string;
+  version?: number;
   plots: PlotView[];
 }
 export interface KycView {

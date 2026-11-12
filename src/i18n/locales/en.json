@@ -1412,5 +1412,51 @@
     "limitSaved": "Credit limit saved.",
     "held": "Credit is on hold.",
     "released": "Credit hold released."
+  },
+  "farm": {
+    "manage": "Farms and plots",
+    "addFarm": "Add farm",
+    "addPlot": "Add plot",
+    "archive": "Archive farm",
+    "name": "Farm name",
+    "ownership": "Ownership",
+    "area": "Area",
+    "unitLabel": "Unit",
+    "farm": "Farm",
+    "plotName": "Plot name",
+    "soil": "Soil",
+    "irrigation": "Irrigation",
+    "badArea": "Area must be more than 0, up to 4 decimals.",
+    "saveFarm": "Save farm",
+    "savePlot": "Save plot",
+    "archiveNow": "Archive",
+    "farmSaved": "Farm saved.",
+    "plotSaved": "Plot saved.",
+    "archived": "Farm archived.",
+    "unit": {
+      "ACRE": "Acre",
+      "HECTARE": "Hectare",
+      "GUNTHA": "Guntha"
+    },
+    "soilType": {
+      "ALLUVIAL": "Alluvial",
+      "BLACK": "Black",
+      "RED": "Red",
+      "LATERITE": "Laterite",
+      "SANDY": "Sandy",
+      "LOAMY": "Loamy",
+      "CLAY": "Clay",
+      "OTHER": "Other"
+    },
+    "irr": {
+      "RAINFED": "Rainfed",
+      "WELL": "Well",
+      "BOREWELL": "Borewell",
+      "CANAL": "Canal",
+      "DRIP": "Drip",
+      "SPRINKLER": "Sprinkler",
+      "RIVER_TANK": "River or tank",
+      "OTHER": "Other"
+    }
   }
 }
