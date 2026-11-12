@@ -1,0 +1,374 @@
+{
+  "en": {
+    "nav": {
+      "creditInterest": "Credit interest",
+      "creditReminders": "Payment reminders",
+      "creditSettings": "Credit settings"
+    },
+    "featureDesc": {
+      "creditInterest": "Calculate, review, waive and post interest on overdue dues",
+      "creditReminders": "Reminder rules, send now and the delivery log",
+      "creditSettings": "Interest, automatic credit hold, bounce charge and settlement limit"
+    },
+    "crx": {
+      "on": "On",
+      "off": "Off",
+      "noLimit": "No limit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "back": "Back to the list",
+      "reason": "Reason (3 to 500 letters)",
+      "v": {
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "reason": "Give a reason of 3 to 500 letters."
+      },
+      "settings": {
+        "title": "Credit settings",
+        "denied": "You do not have permission to see credit settings.",
+        "offline": "No network. Check your connection and try again.",
+        "saved": "Credit settings saved.",
+        "passDone": "Daily pass done.",
+        "interest": "Interest on overdue dues",
+        "rateLine": "{{rate}}% a year, {{days}} grace days",
+        "interestFirst": "Receipts pay interest notes first",
+        "autoHold": "Automatic credit hold",
+        "moreThanDays": "more than {{n}} days overdue",
+        "moreThanAmount": "more than {{amount}} overdue",
+        "holdOnBounce": "Hold when a cheque bounces",
+        "bounceCharge": "Bounce charge",
+        "settlementLimit": "Settlement discount limit",
+        "change": "Change settings",
+        "runPass": "Run the daily pass now",
+        "intro": "Interest and automatic holds stay off until you switch them on. Rates and limits are your own decision.",
+        "interestLabel": "Charge interest on overdue dues",
+        "rateLabel": "Interest rate (% a year, up to 100)",
+        "graceLabel": "Grace days after the due date (0 to 365)",
+        "interestFirstLabel": "Receipts pay interest notes before invoices",
+        "autoHoldLabel": "Put overdue customers on credit hold automatically",
+        "holdDaysLabel": "Hold when overdue more than (days, blank for none)",
+        "holdAmountLabel": "Hold when the overdue amount is more than (blank for none)",
+        "holdOnBounceLabel": "Hold a customer whose cheque bounces",
+        "bounceChargeLabel": "Bounce charge",
+        "settlementLimitLabel": "Settlement discount above this needs the franchise admin (blank for no limit)",
+        "v": {
+          "rate": "Rate must be 0 to 100 with up to 4 places.",
+          "grace": "Grace days must be a whole number from 0 to 365.",
+          "holdDays": "Days must be a whole number from 1 to 3650.",
+          "holdAmount": "Amount must be more than 0 with up to 4 places.",
+          "bounceCharge": "Charge must be 0 or more with up to 4 places.",
+          "settlementLimit": "Limit must be 0 or more with up to 4 places."
+        }
+      },
+      "interest": {
+        "title": "Interest on overdue dues",
+        "intro": "A run drafts the interest of a period for your review. Nothing reaches a customer account until you post it.",
+        "denied": "You do not have permission to see interest runs.",
+        "offline": "No network. Check your connection and try again.",
+        "empty": "No interest runs yet.",
+        "drafted": "Interest run drafted.",
+        "posted": "Interest posted as debit notes.",
+        "cancelled": "Interest run cancelled.",
+        "waived": "Interest waived for this customer.",
+        "periodTo": "Charge up to (YYYY-MM-DD)",
+        "calculate": "Calculate interest",
+        "new": "Calculate interest for a period",
+        "period": "{{from}} to {{to}} at {{rate}}% a year",
+        "status": {
+          "DRAFT": "Draft",
+          "POSTED": "Posted",
+          "CANCELLED": "Cancelled"
+        },
+        "open": "Open",
+        "post": "Post (approve)",
+        "cancelRun": "Cancel the run",
+        "confirmCancel": "Confirm cancel",
+        "item": "item",
+        "days": "{{n}} days",
+        "line": {
+          "INCLUDED": "Included",
+          "WAIVED": "Waived"
+        },
+        "debitNote": "debit note",
+        "waive": "Waive",
+        "confirmWaive": "Confirm waive"
+      },
+      "rem": {
+        "title": "Payment reminders",
+        "denied": "You do not have permission to see reminders.",
+        "offline": "No network. Check your connection and try again.",
+        "empty": "No reminder rules yet. Add one to remind customers politely before and after the due date.",
+        "logEmpty": "No reminders sent yet.",
+        "saved": "Reminder rules saved.",
+        "runDone": "Reminders run.",
+        "intro": "Use {name}, {amount}, {invoice} and {due_date} in the message. Nothing is sent between 9 PM and 8 AM.",
+        "name": "Name (2 to 60 letters)",
+        "offset": "Days from the due date (negative is before, -30 to 365)",
+        "bodyEn": "Message (English, 5 to 500 letters)",
+        "bodyHi": "Message (Hindi, optional)",
+        "bodyMr": "Message (Marathi, optional)",
+        "add": "Add a reminder",
+        "runNow": "Send due reminders now",
+        "edit": "Edit",
+        "logTitle": "Delivery log",
+        "before": "{{n}} days before",
+        "onDue": "on the due date",
+        "after": "{{n}} days after",
+        "v": {
+          "name": "Name must be 2 to 60 letters.",
+          "offset": "Enter a whole number from -30 to 365.",
+          "bodyEn": "The English message must be 5 to 500 letters.",
+          "bodyHi": "The Hindi message can be 500 letters at most.",
+          "bodyMr": "The Marathi message can be 500 letters at most."
+        }
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "creditInterest": "उधार पर ब्याज",
+      "creditReminders": "भुगतान अनुस्मारक",
+      "creditSettings": "उधार सेटिंग"
+    },
+    "featureDesc": {
+      "creditInterest": "बकाया पर ब्याज निकालें, जाँचें, माफ़ करें और पोस्ट करें",
+      "creditReminders": "अनुस्मारक नियम, अभी भेजें और डिलीवरी लॉग",
+      "creditSettings": "ब्याज, स्वचालित उधार रोक, चेक बाउंस शुल्क और समझौता सीमा"
+    },
+    "crx": {
+      "on": "चालू",
+      "off": "बंद",
+      "noLimit": "कोई सीमा नहीं",
+      "save": "सहेजें",
+      "cancel": "रद्द करें",
+      "back": "सूची पर वापस",
+      "reason": "कारण (3 से 500 अक्षर)",
+      "v": {
+        "date": "सही तारीख YYYY-MM-DD में लिखें।",
+        "reason": "3 से 500 अक्षर का कारण दें।"
+      },
+      "settings": {
+        "title": "उधार सेटिंग",
+        "denied": "आपको उधार सेटिंग देखने की अनुमति नहीं है।",
+        "offline": "नेटवर्क नहीं है। कनेक्शन जाँचकर फिर कोशिश करें।",
+        "saved": "उधार सेटिंग सहेज ली गई।",
+        "passDone": "दैनिक जाँच पूरी हुई।",
+        "interest": "बकाया पर ब्याज",
+        "rateLine": "{{rate}}% सालाना, {{days}} छूट के दिन",
+        "interestFirst": "रसीद पहले ब्याज नोट चुकाती है",
+        "autoHold": "स्वचालित उधार रोक",
+        "moreThanDays": "{{n}} दिन से ज़्यादा बकाया",
+        "moreThanAmount": "{{amount}} से ज़्यादा बकाया",
+        "holdOnBounce": "चेक बाउंस होने पर रोक",
+        "bounceCharge": "बाउंस शुल्क",
+        "settlementLimit": "समझौता छूट की सीमा",
+        "change": "सेटिंग बदलें",
+        "runPass": "दैनिक जाँच अभी चलाएँ",
+        "intro": "ब्याज और स्वचालित रोक आपके चालू करने तक बंद रहते हैं। दर और सीमा आपका अपना फ़ैसला है।",
+        "interestLabel": "बकाया पर ब्याज लगाएँ",
+        "rateLabel": "ब्याज दर (% सालाना, 100 तक)",
+        "graceLabel": "देय तिथि के बाद छूट के दिन (0 से 365)",
+        "interestFirstLabel": "रसीद चालान से पहले ब्याज नोट चुकाए",
+        "autoHoldLabel": "बकाया वाले ग्राहकों पर अपने आप उधार रोक लगाएँ",
+        "holdDaysLabel": "इतने दिन से ज़्यादा बकाया पर रोक (खाली = नहीं)",
+        "holdAmountLabel": "इस रकम से ज़्यादा बकाया पर रोक (खाली = नहीं)",
+        "holdOnBounceLabel": "जिसका चेक बाउंस हो उस ग्राहक पर रोक",
+        "bounceChargeLabel": "बाउंस शुल्क",
+        "settlementLimitLabel": "इससे ज़्यादा समझौता छूट के लिए फ्रैंचाइज़ी एडमिन चाहिए (खाली = कोई सीमा नहीं)",
+        "v": {
+          "rate": "दर 0 से 100 के बीच, 4 अंक तक दशमलव।",
+          "grace": "छूट के दिन 0 से 365 की पूरी संख्या हों।",
+          "holdDays": "दिन 1 से 3650 की पूरी संख्या हों।",
+          "holdAmount": "रकम 0 से ज़्यादा, 4 अंक तक दशमलव।",
+          "bounceCharge": "शुल्क 0 या ज़्यादा, 4 अंक तक दशमलव।",
+          "settlementLimit": "सीमा 0 या ज़्यादा, 4 अंक तक दशमलव।"
+        }
+      },
+      "interest": {
+        "title": "बकाया पर ब्याज",
+        "intro": "एक रन किसी अवधि का ब्याज आपकी जाँच के लिए तैयार करता है। आपके पोस्ट करने तक ग्राहक खाते में कुछ नहीं जाता।",
+        "denied": "आपको ब्याज रन देखने की अनुमति नहीं है।",
+        "offline": "नेटवर्क नहीं है। कनेक्शन जाँचकर फिर कोशिश करें।",
+        "empty": "अभी कोई ब्याज रन नहीं है।",
+        "drafted": "ब्याज रन का मसौदा बना।",
+        "posted": "ब्याज डेबिट नोट के रूप में पोस्ट हुआ।",
+        "cancelled": "ब्याज रन रद्द हुआ।",
+        "waived": "इस ग्राहक का ब्याज माफ़ हुआ।",
+        "periodTo": "इस तारीख तक ब्याज (YYYY-MM-DD)",
+        "calculate": "ब्याज निकालें",
+        "new": "किसी अवधि का ब्याज निकालें",
+        "period": "{{from}} से {{to}}, {{rate}}% सालाना",
+        "status": {
+          "DRAFT": "मसौदा",
+          "POSTED": "पोस्ट हुआ",
+          "CANCELLED": "रद्द"
+        },
+        "open": "खोलें",
+        "post": "पोस्ट करें (मंज़ूर)",
+        "cancelRun": "रन रद्द करें",
+        "confirmCancel": "रद्द करना पक्का करें",
+        "item": "मद",
+        "days": "{{n}} दिन",
+        "line": {
+          "INCLUDED": "शामिल",
+          "WAIVED": "माफ़"
+        },
+        "debitNote": "डेबिट नोट",
+        "waive": "माफ़ करें",
+        "confirmWaive": "माफ़ी पक्की करें"
+      },
+      "rem": {
+        "title": "भुगतान अनुस्मारक",
+        "denied": "आपको अनुस्मारक देखने की अनुमति नहीं है।",
+        "offline": "नेटवर्क नहीं है। कनेक्शन जाँचकर फिर कोशिश करें।",
+        "empty": "अभी कोई अनुस्मारक नियम नहीं है। देय तिथि से पहले और बाद में ग्राहकों को विनम्रता से याद दिलाने के लिए एक जोड़ें।",
+        "logEmpty": "अभी कोई अनुस्मारक नहीं भेजा गया।",
+        "saved": "अनुस्मारक नियम सहेजे गए।",
+        "runDone": "अनुस्मारक चलाए गए।",
+        "intro": "संदेश में {name}, {amount}, {invoice} और {due_date} लिख सकते हैं। रात 9 से सुबह 8 बजे के बीच कुछ नहीं भेजा जाता।",
+        "name": "नाम (2 से 60 अक्षर)",
+        "offset": "देय तिथि से दिन (ऋण = पहले, -30 से 365)",
+        "bodyEn": "संदेश (अंग्रेज़ी, 5 से 500 अक्षर)",
+        "bodyHi": "संदेश (हिंदी, वैकल्पिक)",
+        "bodyMr": "संदेश (मराठी, वैकल्पिक)",
+        "add": "अनुस्मारक जोड़ें",
+        "runNow": "देय अनुस्मारक अभी भेजें",
+        "edit": "बदलें",
+        "logTitle": "डिलीवरी लॉग",
+        "before": "{{n}} दिन पहले",
+        "onDue": "देय तिथि पर",
+        "after": "{{n}} दिन बाद",
+        "v": {
+          "name": "नाम 2 से 60 अक्षर का हो।",
+          "offset": "-30 से 365 की पूरी संख्या लिखें।",
+          "bodyEn": "अंग्रेज़ी संदेश 5 से 500 अक्षर का हो।",
+          "bodyHi": "हिंदी संदेश अधिकतम 500 अक्षर का हो सकता है।",
+          "bodyMr": "मराठी संदेश अधिकतम 500 अक्षर का हो सकता है।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "creditInterest": "उधारीवरील व्याज",
+      "creditReminders": "पेमेंट स्मरणपत्रे",
+      "creditSettings": "उधार सेटिंग"
+    },
+    "featureDesc": {
+      "creditInterest": "थकबाकीवरील व्याज काढा, तपासा, माफ करा आणि पोस्ट करा",
+      "creditReminders": "स्मरणपत्र नियम, आता पाठवा आणि डिलिव्हरी लॉग",
+      "creditSettings": "व्याज, आपोआप उधार थांबवणे, चेक बाउन्स शुल्क आणि तडजोड मर्यादा"
+    },
+    "crx": {
+      "on": "चालू",
+      "off": "बंद",
+      "noLimit": "मर्यादा नाही",
+      "save": "जतन करा",
+      "cancel": "रद्द करा",
+      "back": "यादीकडे परत",
+      "reason": "कारण (3 ते 500 अक्षरे)",
+      "v": {
+        "date": "खरी तारीख YYYY-MM-DD अशी लिहा.",
+        "reason": "3 ते 500 अक्षरांचे कारण द्या."
+      },
+      "settings": {
+        "title": "उधार सेटिंग",
+        "denied": "उधार सेटिंग पाहण्याची परवानगी तुम्हाला नाही.",
+        "offline": "नेटवर्क नाही. कनेक्शन तपासून पुन्हा प्रयत्न करा.",
+        "saved": "उधार सेटिंग जतन झाली.",
+        "passDone": "दैनिक तपासणी पूर्ण झाली.",
+        "interest": "थकबाकीवरील व्याज",
+        "rateLine": "{{rate}}% वार्षिक, {{days}} सवलतीचे दिवस",
+        "interestFirst": "पावती आधी व्याज नोट भरते",
+        "autoHold": "आपोआप उधार थांबवणे",
+        "moreThanDays": "{{n}} दिवसांपेक्षा जास्त थकबाकी",
+        "moreThanAmount": "{{amount}} पेक्षा जास्त थकबाकी",
+        "holdOnBounce": "चेक बाउन्स झाल्यास थांबवा",
+        "bounceCharge": "बाउन्स शुल्क",
+        "settlementLimit": "तडजोड सवलत मर्यादा",
+        "change": "सेटिंग बदला",
+        "runPass": "दैनिक तपासणी आता चालवा",
+        "intro": "तुम्ही चालू करेपर्यंत व्याज आणि आपोआप थांबवणे बंद राहते. दर आणि मर्यादा तुमचा स्वतःचा निर्णय आहे.",
+        "interestLabel": "थकबाकीवर व्याज लावा",
+        "rateLabel": "व्याज दर (% वार्षिक, 100 पर्यंत)",
+        "graceLabel": "देय तारखेनंतर सवलतीचे दिवस (0 ते 365)",
+        "interestFirstLabel": "पावती बिलांआधी व्याज नोट भरते",
+        "autoHoldLabel": "थकबाकीदार ग्राहकांवर आपोआप उधार थांबवा",
+        "holdDaysLabel": "इतक्या दिवसांपेक्षा जास्त थकबाकीवर थांबवा (रिकामे = नाही)",
+        "holdAmountLabel": "या रकमेपेक्षा जास्त थकबाकीवर थांबवा (रिकामे = नाही)",
+        "holdOnBounceLabel": "ज्याचा चेक बाउन्स झाला त्या ग्राहकावर थांबवा",
+        "bounceChargeLabel": "बाउन्स शुल्क",
+        "settlementLimitLabel": "यापेक्षा जास्त तडजोड सवलतीला फ्रँचायझी अॅडमिन हवा (रिकामे = मर्यादा नाही)",
+        "v": {
+          "rate": "दर 0 ते 100, 4 अंकांपर्यंत दशांश.",
+          "grace": "सवलतीचे दिवस 0 ते 365 ही पूर्ण संख्या असावी.",
+          "holdDays": "दिवस 1 ते 3650 ही पूर्ण संख्या असावी.",
+          "holdAmount": "रक्कम 0 पेक्षा जास्त, 4 अंकांपर्यंत दशांश.",
+          "bounceCharge": "शुल्क 0 किंवा जास्त, 4 अंकांपर्यंत दशांश.",
+          "settlementLimit": "मर्यादा 0 किंवा जास्त, 4 अंकांपर्यंत दशांश."
+        }
+      },
+      "interest": {
+        "title": "थकबाकीवरील व्याज",
+        "intro": "एक रन कालावधीचे व्याज तुमच्या तपासणीसाठी तयार करतो. तुम्ही पोस्ट करेपर्यंत ग्राहक खात्यात काही जात नाही.",
+        "denied": "व्याज रन पाहण्याची परवानगी तुम्हाला नाही.",
+        "offline": "नेटवर्क नाही. कनेक्शन तपासून पुन्हा प्रयत्न करा.",
+        "empty": "अजून व्याज रन नाही.",
+        "drafted": "व्याज रनचा मसुदा तयार झाला.",
+        "posted": "व्याज डेबिट नोट म्हणून पोस्ट झाले.",
+        "cancelled": "व्याज रन रद्द झाला.",
+        "waived": "या ग्राहकाचे व्याज माफ झाले.",
+        "periodTo": "या तारखेपर्यंत व्याज (YYYY-MM-DD)",
+        "calculate": "व्याज काढा",
+        "new": "कालावधीचे व्याज काढा",
+        "period": "{{from}} ते {{to}}, {{rate}}% वार्षिक",
+        "status": {
+          "DRAFT": "मसुदा",
+          "POSTED": "पोस्ट झाले",
+          "CANCELLED": "रद्द"
+        },
+        "open": "उघडा",
+        "post": "पोस्ट करा (मंजूर)",
+        "cancelRun": "रन रद्द करा",
+        "confirmCancel": "रद्द करणे नक्की करा",
+        "item": "नोंद",
+        "days": "{{n}} दिवस",
+        "line": {
+          "INCLUDED": "समाविष्ट",
+          "WAIVED": "माफ"
+        },
+        "debitNote": "डेबिट नोट",
+        "waive": "माफ करा",
+        "confirmWaive": "माफी नक्की करा"
+      },
+      "rem": {
+        "title": "पेमेंट स्मरणपत्रे",
+        "denied": "स्मरणपत्रे पाहण्याची परवानगी तुम्हाला नाही.",
+        "offline": "नेटवर्क नाही. कनेक्शन तपासून पुन्हा प्रयत्न करा.",
+        "empty": "अजून स्मरणपत्र नियम नाही. देय तारखेआधी आणि नंतर ग्राहकांना नम्रपणे आठवण करून देण्यासाठी एक जोडा.",
+        "logEmpty": "अजून स्मरणपत्र पाठवलेले नाही.",
+        "saved": "स्मरणपत्र नियम जतन झाले.",
+        "runDone": "स्मरणपत्रे चालवली.",
+        "intro": "संदेशात {name}, {amount}, {invoice} आणि {due_date} वापरता येतात. रात्री 9 ते सकाळी 8 दरम्यान काही पाठवले जात नाही.",
+        "name": "नाव (2 ते 60 अक्षरे)",
+        "offset": "देय तारखेपासून दिवस (वजा = आधी, -30 ते 365)",
+        "bodyEn": "संदेश (इंग्रजी, 5 ते 500 अक्षरे)",
+        "bodyHi": "संदेश (हिंदी, ऐच्छिक)",
+        "bodyMr": "संदेश (मराठी, ऐच्छिक)",
+        "add": "स्मरणपत्र जोडा",
+        "runNow": "देय स्मरणपत्रे आता पाठवा",
+        "edit": "बदला",
+        "logTitle": "डिलिव्हरी लॉग",
+        "before": "{{n}} दिवस आधी",
+        "onDue": "देय तारखेला",
+        "after": "{{n}} दिवस नंतर",
+        "v": {
+          "name": "नाव 2 ते 60 अक्षरांचे असावे.",
+          "offset": "-30 ते 365 ही पूर्ण संख्या लिहा.",
+          "bodyEn": "इंग्रजी संदेश 5 ते 500 अक्षरांचा असावा.",
+          "bodyHi": "हिंदी संदेश जास्तीत जास्त 500 अक्षरांचा असू शकतो.",
+          "bodyMr": "मराठी संदेश जास्तीत जास्त 500 अक्षरांचा असू शकतो."
+        }
+      }
+    }
+  }
+}

@@ -492,3 +492,48 @@ All lines: mocked API client, NOT run against the real backend or a phone. Respo
 | Home extras: payment mix (7 days), latest bills, expiring batches, needs attention counts, insights, daily sales goal (inside `HomeScreen`, `src/features/home/HomeExtras.tsx`, `extras.ts`) | DONE (mocked client) | `stf-reports-home.test.tsx`. Uses `/reports/sales-register`, `/sales/invoices`, `/inventory/batches`, `/procurement/purchase-orders/approvals`, `/complaints`, `/alerts`. Each part loads and fails alone, shows the reference code, and is skipped when the user lacks its permission. The goal is kept on the phone only (secure storage, per user), not on the server. NOT built: biggest stock lines and customer dues cards of the web home, quick actions, setup banner, auto refresh. |
 | Leave approvals | DONE earlier (Step 4, `/leave`) | Not changed. NOT built: leave types create/edit, leave balance edit, applying leave for another employee. |
 | Home menu entries for the new screens | NOT DONE here | `modules.ts` is not edited; the nav texts and routes are listed in the final report. |
+
+## Credit interest, payment reminders and credit settings (web parity)
+
+All rows: mocked API, not run against the real backend or on a phone. Paths, bodies, limits and permissions were copied from `apps/api/src/collections.controller.ts`, `modules/credit/src/domain/collections.ts` and the web page `collections.js`. New routes `/credit-interest`, `/credit-reminders`, `/credit-settings` (home module Operations, next to Cheques). Texts are in `i18n-parts/crx.json` (English, Hindi, Marathi). Tests: `__tests__/crx-credit-admin.test.tsx`, 19 passed.
+
+| Feature | State | Test |
+|---|---|---|
+| Interest runs: list, draft a run up to a date (`POST /credit/interest-runs`), open a run with its lines and the days per bill | DONE (mocked) | `crx-credit-admin.test.tsx` |
+| Post a draft run as debit notes, cancel a run (reason), waive one customer's interest (reason); posted runs have no actions | DONE (mocked) | same |
+| Payment reminders: rules list, add and edit (the whole list is sent, as the server replaces it; 12 rules at most), send due reminders now, delivery log with the reason a message was held back | DONE (mocked) | same |
+| Credit settings: view (`customer.ledger.view`), change with `If-Match` version (`credit.settings.manage`): interest on/off, rate, grace days, receipts pay interest first, automatic hold (days, amount), hold on bounce, bounce charge, settlement limit; rates and money stay decimal strings, blank means none | DONE (mocked) | same |
+| Run the daily pass now (`POST /credit/collections/run`) | DONE (mocked) | same |
+| One Idempotency-Key per action, reused when the same save is sent again after a lost answer; a new key when the body changes | DONE | same |
+
+NOT built or limits:
+- Reminder rules cannot be deleted or re-ordered one by one; the web page does not do it either (it sends the list). Turn a rule off instead.
+- The reminder message text is not previewed with real values.
+- Lists show what the server sends (interest runs: all; delivery log: latest 100). No filters.
+- Dates are typed as YYYY-MM-DD (no date picker).
+- Hindi and Marathi texts need a native speaker review.
+
+## Setup: financial years, tax, numbering, print templates, branches, warehouses and bins (web parity)
+
+All rows: mocked API, not run against the real backend or on a phone. Paths, bodies, limits and permissions were copied from `apps/api/src/org.controller.ts`, `modules/org/src/domain/org.ts` and the web page `settings.js`. New routes `/setup-years`, `/setup-tax`, `/setup-numbering`, `/setup-print`, `/setup-branches`, `/setup-warehouses` (home module Setup). Texts are in `i18n-parts/setup.json` (English, Hindi, Marathi). Tests: `__tests__/setup-screens.test.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| Financial years: list, add the next year (start filled from the last year), months of a year | DONE (mocked) | `setup-screens.test.tsx` |
+| Lock a month or a whole year (reason of 10+ letters; locked rows have no button) | DONE (mocked) | same |
+| Tax rates: list, add or change a rate (rate as a decimal string, 0 unless the kind is GST, code in capitals) | DONE (mocked) | same |
+| HSN mapping: list, map a 4, 6 or 8 digit code to a tax code | DONE (mocked) | same |
+| Tax settings (composition dealer, rounding) saved with `If-Match` version | DONE (mocked) | same |
+| Document numbering: pick branch and year, edit prefix, digits and next number of an unused series; a used series is shown as frozen; GST invoice numbers checked for 16 characters | DONE (mocked) | same |
+| Print templates: paper, which fields print, terms and footer, saved with the version; HSN and licence numbers cannot be switched off where the server forbids it | DONE (mocked) | same |
+| Branches: add, edit (only changed fields, `If-Match`), deactivate (reason), reactivate; head office cannot be deactivated | DONE (mocked) | same |
+| Warehouses: add, edit name and type, deactivate (reason), reactivate | DONE (mocked) | same |
+| Bins of a warehouse: list, add, switch on or off | DONE (mocked) | same |
+| One Idempotency-Key per action, kept on retry after a lost answer, new when the body changes | DONE | same |
+
+NOT built or limits:
+- Print template preview (the server answers with a web page of sample data); use the web app.
+- Branch manager choice and time zone are not editable here; the server keeps the existing values.
+- GSTIN check digit and whether the state code is a real GST state are checked only by the server.
+- Dates are typed as YYYY-MM-DD (no date picker). Lists show what the server sends, no paging.
+- Hindi and Marathi texts need a native speaker review.
