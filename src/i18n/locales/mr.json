@@ -292,7 +292,8 @@
     "settings": "सेटिंग्ज",
     "purchase": "खरेदी",
     "complaints": "तक्रारी",
-    "followup": "वसुली पाठपुरावा"
+    "followup": "वसुली पाठपुरावा",
+    "stockReports": "स्टॉक अहवाल"
   },
   "pos": {
     "title": "नवीन बिल",
@@ -1230,6 +1231,57 @@
       "PARTIAL": "अंशतः पाळले",
       "BROKEN": "मोडले",
       "CANCELLED": "रद्द"
+    }
+  },
+  "stockReports": {
+    "title": "स्टॉक अहवाल",
+    "denied": "तुम्हाला हे स्टॉक अहवाल पाहण्याची परवानगी नाही.",
+    "offline": "नेटवर्क नाही. अहवाल आत्ता लोड होऊ शकत नाही.",
+    "which": "अहवाल",
+    "kind_expiry": "मुदत",
+    "kind_ledger": "स्टॉक खातेवही",
+    "kind_reorder": "पुनर्मागणी नियम",
+    "kind_valuation": "मूल्यांकन",
+    "window": "मुदत संपणार",
+    "expired": "आधीच संपलेले",
+    "withinDays": "{{count}} दिवसांत",
+    "emptyExpiry": "या कालावधीत स्टॉक असलेला एकही बॅच नाही.",
+    "emptyLedger": "अजून स्टॉकची हालचाल नाही.",
+    "emptyReorder": "कोणताही पुनर्मागणी नियम नाही.",
+    "emptyValuation": "मूल्यांकनासाठी स्टॉक नाही.",
+    "batch": "बॅच {{no}}",
+    "expiry": "मुदत",
+    "days": "{{count}} दिवस",
+    "onHand": "हातात",
+    "valueAtRisk": "धोक्यातील मूल्य",
+    "qty": "प्रमाण",
+    "balance": "यानंतर शिल्लक",
+    "value": "मूल्य",
+    "allBranches": "सर्व शाखा (डिफॉल्ट)",
+    "reorderLevel": "येथे मागवा",
+    "minQty": "किमान",
+    "maxQty": "कमाल",
+    "reorderQty": "मागणी प्रमाण",
+    "totalValue": "स्टॉक मूल्य",
+    "totalQty": "एकूण प्रमाण",
+    "asOn": "{{date}} रोजी",
+    "avgCost": "सरासरी किंमत",
+    "more": "{{count}} पैकी पहिले {{shown}} दाखवले आहेत. पूर्ण यादी वेब ॲपमध्ये पहा.",
+    "mv": {
+      "OPENING": "सुरुवातीचा स्टॉक",
+      "GRN_RECEIPT": "माल मिळाला",
+      "SALE_ISSUE": "विक्री",
+      "SALE_RETURN_IN": "विक्री परतावा",
+      "PURCHASE_RETURN_OUT": "पुरवठादाराला परत",
+      "TRANSFER_OUT": "हस्तांतरण गेले",
+      "TRANSFER_IN": "हस्तांतरण आले",
+      "ADJUST_PLUS": "समायोजन (वाढ)",
+      "ADJUST_MINUS": "समायोजन (घट)",
+      "COUNT_VARIANCE": "मोजणीतील फरक",
+      "QUARANTINE_OUT": "क्वारंटाइनमध्ये गेले",
+      "QUARANTINE_IN": "क्वारंटाइनमधून परत",
+      "DAMAGE_WRITEOFF": "नुकसान बट्टा",
+      "REVERSAL": "उलट नोंद"
     }
   }
 }
