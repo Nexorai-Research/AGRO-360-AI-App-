@@ -10,11 +10,13 @@ import { StateView } from '../stock/StateView';
 import { Bar, Card, Chips, Gate, Line, isNetwork, kit, useCan } from '../hr/kit';
 import { shortDate } from '../hr/logic';
 import {
+  REGISTER_ROWS,
   REPORT_GROUPS,
   REPORT_NEEDS,
   fetchCollections,
   fetchLosses,
   fetchProfit,
+  fetchRegister,
   fetchSales,
   fetchTax,
   rangeOf,
@@ -22,7 +24,7 @@ import {
   type ReportKind,
 } from './api';
 
-const KINDS: ReportKind[] = ['sales', 'profit', 'collections', 'tax', 'losses'];
+const KINDS: ReportKind[] = ['sales', 'profit', 'collections', 'tax', 'losses', 'register'];
 const PERIODS = ['7', '30', '90'] as const;
 
 /** A percentage string from the server as a bar width. Only a picture; the numbers shown stay strings. */
@@ -253,6 +255,42 @@ function Losses(p: Props) {
   );
 }
 
+function Register(p: Props) {
+  const { t } = useTranslation();
+  return (
+    <Box props={p} kind="register" load={(c, s) => fetchRegister(c, p.range, s)}>
+      {(d) => (
+        <>
+          <Card>
+            <Line label={t('reports.regTotal')} value={formatINR(d.totals.total)} strong />
+            <Line label={t('reports.regTaxable')} value={formatINR(d.totals.taxable)} />
+            <Line label="CGST" value={formatINR(d.totals.cgst)} />
+            <Line label="SGST" value={formatINR(d.totals.sgst)} />
+            <Line label="IGST" value={formatINR(d.totals.igst)} />
+            <Text style={kit.sub}>{t('reports.regNote')}</Text>
+          </Card>
+          {d.rows.length === 0 ? <StateView state="empty" message={t('reports.regEmpty')} /> : null}
+          {d.rows.slice(0, REGISTER_ROWS).map((r) => (
+            <Card key={`${r.kind}-${r.id}`}>
+              <Text style={kit.name}>
+                {r.number} · {shortDate(r.date)}
+              </Text>
+              <Text style={kit.sub}>
+                {[t(`reports.regKind_${r.kind}`), r.customerName ?? t('reports.regWalkIn'), r.status].join(' · ')}
+              </Text>
+              <Line label={t('reports.regTaxable')} value={formatINR(r.taxable)} />
+              <Line label={t('reports.regBillTotal')} value={formatINR(r.total)} strong />
+            </Card>
+          ))}
+          {d.rows.length > REGISTER_ROWS ? (
+            <Text style={kit.sub}>{t('reports.regMore', { shown: REGISTER_ROWS, count: d.rows.length })}</Text>
+          ) : null}
+        </>
+      )}
+    </Box>
+  );
+}
+
 export default function ReportsScreen() {
   const { t } = useTranslation();
   const { me, client } = useAuth();
@@ -311,6 +349,7 @@ export default function ReportsScreen() {
           {kind === 'collections' ? <Collections {...props} /> : null}
           {kind === 'tax' ? <Tax {...props} /> : null}
           {kind === 'losses' ? <Losses {...props} /> : null}
+          {kind === 'register' ? <Register {...props} /> : null}
         </>
       )}
     </ScrollView>

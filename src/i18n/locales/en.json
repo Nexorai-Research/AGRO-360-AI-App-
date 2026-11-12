@@ -721,7 +721,18 @@
     "lossValue": "Loss value",
     "returnedToSuppliers": "Returned to suppliers",
     "netLoss": "Net loss",
-    "lossPct": "Loss is {{pct}}% of the cost of goods sold"
+    "lossPct": "Loss is {{pct}}% of the cost of goods sold",
+    "kind_register": "Sales register",
+    "regTotal": "Sales total (net of credit notes)",
+    "regTaxable": "Taxable value",
+    "regBillTotal": "Total",
+    "regNote": "Cancelled bills are listed but not counted. Credit notes reduce the total.",
+    "regEmpty": "No bills in this period.",
+    "regWalkIn": "Walk-in",
+    "regMore": "Showing the first {{shown}} of {{count}} documents. Narrow the period, or use the web app for the full list.",
+    "regKind_INVOICE": "Tax invoice",
+    "regKind_BILL_OF_SUPPLY": "Bill of supply",
+    "regKind_CREDIT_NOTE": "Credit note"
   },
   "accounts": {
     "title": "Accounts",
