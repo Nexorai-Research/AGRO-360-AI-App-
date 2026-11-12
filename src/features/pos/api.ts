@@ -52,6 +52,11 @@ export interface LineBody {
   qty: string;
   unitPrice?: string;
   discountPct?: string;
+  crop?: string;
+  targetPest?: string;
+  dose?: string;
+  batchId?: string;
+  fefoOverrideReason?: string;
 }
 export interface TenderBody {
   mode: string;
@@ -63,6 +68,7 @@ export interface InvoiceBody {
   invoiceDate: string;
   customerId?: string;
   billDiscountPct?: string;
+  wholesale?: boolean;
   lines: LineBody[];
   tenders?: TenderBody[];
 }
