@@ -1,0 +1,473 @@
+{
+  "en": {
+    "customers": {
+      "plans": {
+        "cropTitle": "Crops grown (crop plans)",
+        "buyTitle": "Seasonal purchase plans",
+        "addCrop": "Add a crop",
+        "crop": "Crop",
+        "year": "Year",
+        "plot": "Plot",
+        "area": "Area (more than 0)",
+        "sowing": "Sowing date (YYYY-MM-DD)",
+        "intercrop": "Intercrop (grown together with another crop on this plot)",
+        "yes": "Yes",
+        "no": "No",
+        "save": "Save",
+        "cancel": "Cancel",
+        "cropAdded": "Crop added.",
+        "moved": "Crop plan updated.",
+        "noCrops": "No crops recorded yet.",
+        "confirmMove": "Confirm",
+        "dateOpt": "Date (optional, YYYY-MM-DD)",
+        "harvestDate": "Harvest date (YYYY-MM-DD)",
+        "yieldQty": "Yield (optional)",
+        "yieldUnit": "Yield unit (optional)",
+        "abandonReason": "Reason",
+        "by": "by {{date}}",
+        "newBuy": "New purchase plan",
+        "buyIntro": "A plan is not binding. It feeds reminders and the shop's demand estimate.",
+        "item": "Item",
+        "qty": "Quantity (more than 0)",
+        "neededBy": "Needed by (optional, YYYY-MM-DD)",
+        "buyAdded": "Purchase plan added.",
+        "confirmBuy": "Confirm with farmer",
+        "buyConfirmed": "Plan confirmed.",
+        "noBuy": "No purchase plans yet.",
+        "season": {
+          "KHARIF": "Kharif",
+          "RABI": "Rabi",
+          "ZAID": "Zaid",
+          "PERENNIAL": "Perennial"
+        },
+        "unit": {
+          "ACRE": "Acre",
+          "HECTARE": "Hectare",
+          "GUNTHA": "Guntha"
+        },
+        "status": {
+          "PLANNED": "Planned",
+          "SOWN": "Sown",
+          "GROWING": "Growing",
+          "HARVESTED": "Harvested",
+          "ABANDONED": "Abandoned"
+        },
+        "to": {
+          "SOWN": "Mark sown",
+          "GROWING": "Growing",
+          "HARVESTED": "Harvested",
+          "ABANDONED": "Abandon"
+        },
+        "buyStatus": {
+          "DRAFT": "Draft",
+          "CONFIRMED": "Confirmed",
+          "CLOSED": "Closed"
+        },
+        "v": {
+          "crop": "Choose a crop.",
+          "year": "Year must be 4 digits from 2000 to 2100.",
+          "area": "Area must be more than 0 with up to 4 places.",
+          "date": "Enter a real date as YYYY-MM-DD.",
+          "yield": "Yield must be 0 or more with up to 3 places.",
+          "note": "Give a reason of up to 500 letters.",
+          "item": "Item must be 1 to 120 letters.",
+          "qty": "Quantity must be more than 0 with up to 3 places."
+        }
+      },
+      "service": {
+        "casesTitle": "Service cases",
+        "contactsTitle": "Extra contacts",
+        "newCase": "New service case",
+        "kind": {
+          "QUERY": "Query",
+          "VISIT": "Visit",
+          "ADVICE": "Advice"
+        },
+        "query": "What was asked or seen",
+        "advice": "Advice given (optional)",
+        "source": "Where the advice comes from",
+        "src": {
+          "APPROVED_SOURCE": "Approved source",
+          "EXPERT_PROVIDED": "Expert"
+        },
+        "reference": "Source document or name of the expert",
+        "followUp": "Follow up on (optional, YYYY-MM-DD)",
+        "caseAdded": "Service case recorded.",
+        "noCases": "No service cases yet.",
+        "followUpOn": "follow up {{date}}",
+        "addContact": "Add a contact",
+        "contactName": "Name",
+        "contactPhone": "Mobile (10 digits)",
+        "relation": "Relation (optional)",
+        "primary": "Primary contact",
+        "primaryTag": "primary",
+        "contactAdded": "Contact added.",
+        "contactRemoved": "Contact removed.",
+        "remove": "Remove",
+        "noContacts": "No extra contacts.",
+        "v": {
+          "query": "Write what was asked, 1 to 2000 letters.",
+          "advice": "Advice can be 2000 letters at most.",
+          "source": "Choose where the advice comes from.",
+          "reference": "Name the source document or the expert (up to 200 letters).",
+          "date": "Enter a real date as YYYY-MM-DD.",
+          "c_name": "Name must be 1 to 120 letters.",
+          "c_phone": "Mobile must be exactly 10 digits.",
+          "c_relation": "Relation can be 40 letters at most."
+        }
+      },
+      "privacy": {
+        "prefsTitle": "Communication preferences",
+        "logTitle": "Document access log",
+        "dangerTitle": "Status and privacy",
+        "channel": "Preferred channel",
+        "noChannel": "none",
+        "quiet": "quiet hours {{from}} to {{to}}",
+        "noQuiet": "no quiet hours",
+        "max": "at most {{n}} a week",
+        "noMax": "no weekly limit",
+        "changePrefs": "Change preferences",
+        "quietStart": "Quiet from (HH:MM, blank for none)",
+        "quietEnd": "Quiet until (HH:MM)",
+        "maxPerWeek": "Messages a week at most (0 to 100, blank for none)",
+        "prefSaved": "Preferences saved.",
+        "noLog": "No one has opened the documents yet.",
+        "byUser": "by user {{id}}",
+        "deactivate": "Make this customer inactive",
+        "activate": "Make this customer active again",
+        "deactivateIntro": "An inactive customer cannot be billed. History is kept.",
+        "activateIntro": "The customer can be billed again.",
+        "confirmStatus": "Confirm",
+        "statusDone": "Customer status changed.",
+        "anonymize": "Anonymise this customer",
+        "anonIntro": "This removes the personal details for good and cannot be undone. A customer with a balance cannot be anonymised.",
+        "anonReason": "Reason (3 to 500 letters)",
+        "anonConfirm": "Type exactly: {{text}}",
+        "anonymizeNow": "Anonymise now",
+        "anonymized": "Customer anonymised.",
+        "v": {
+          "start": "Time must be HH:MM, for example 21:00.",
+          "end": "Time must be HH:MM, for example 07:00.",
+          "quiet": "Quiet hours need both a start and an end.",
+          "max": "Enter a whole number from 0 to 100.",
+          "reason": "Give a reason of 3 to 500 letters.",
+          "confirm": "The text does not match."
+        }
+      }
+    }
+  },
+  "hi": {
+    "customers": {
+      "plans": {
+        "cropTitle": "उगाई जा रही फ़सलें (फ़सल योजना)",
+        "buyTitle": "मौसमी खरीद योजना",
+        "addCrop": "फ़सल जोड़ें",
+        "crop": "फ़सल",
+        "year": "वर्ष",
+        "plot": "प्लॉट",
+        "area": "क्षेत्रफल (0 से ज़्यादा)",
+        "sowing": "बुवाई की तारीख (YYYY-MM-DD)",
+        "intercrop": "अंतरफ़सल (इसी प्लॉट पर दूसरी फ़सल के साथ)",
+        "yes": "हाँ",
+        "no": "नहीं",
+        "save": "सहेजें",
+        "cancel": "रद्द करें",
+        "cropAdded": "फ़सल जुड़ गई।",
+        "moved": "फ़सल योजना बदली गई।",
+        "noCrops": "अभी कोई फ़सल दर्ज नहीं।",
+        "confirmMove": "पक्का करें",
+        "dateOpt": "तारीख (वैकल्पिक, YYYY-MM-DD)",
+        "harvestDate": "कटाई की तारीख (YYYY-MM-DD)",
+        "yieldQty": "उपज (वैकल्पिक)",
+        "yieldUnit": "उपज की इकाई (वैकल्पिक)",
+        "abandonReason": "कारण",
+        "by": "{{date}} तक",
+        "newBuy": "नई खरीद योजना",
+        "buyIntro": "योजना बाध्यकारी नहीं है। यह अनुस्मारक और दुकान की माँग के अनुमान में काम आती है।",
+        "item": "वस्तु",
+        "qty": "मात्रा (0 से ज़्यादा)",
+        "neededBy": "कब तक चाहिए (वैकल्पिक, YYYY-MM-DD)",
+        "buyAdded": "खरीद योजना जुड़ गई।",
+        "confirmBuy": "किसान से पक्की करें",
+        "buyConfirmed": "योजना पक्की हुई।",
+        "noBuy": "अभी कोई खरीद योजना नहीं।",
+        "season": {
+          "KHARIF": "खरीफ़",
+          "RABI": "रबी",
+          "ZAID": "ज़ायद",
+          "PERENNIAL": "बारहमासी"
+        },
+        "unit": {
+          "ACRE": "एकड़",
+          "HECTARE": "हेक्टेयर",
+          "GUNTHA": "गुंठा"
+        },
+        "status": {
+          "PLANNED": "योजना में",
+          "SOWN": "बोई गई",
+          "GROWING": "बढ़ रही",
+          "HARVESTED": "कट चुकी",
+          "ABANDONED": "छोड़ दी"
+        },
+        "to": {
+          "SOWN": "बोई गई चिह्नित करें",
+          "GROWING": "बढ़ रही",
+          "HARVESTED": "कटाई हुई",
+          "ABANDONED": "छोड़ें"
+        },
+        "buyStatus": {
+          "DRAFT": "मसौदा",
+          "CONFIRMED": "पक्की",
+          "CLOSED": "बंद"
+        },
+        "v": {
+          "crop": "फ़सल चुनें।",
+          "year": "वर्ष 2000 से 2100 के बीच 4 अंक का हो।",
+          "area": "क्षेत्रफल 0 से ज़्यादा, 4 अंक तक दशमलव।",
+          "date": "सही तारीख YYYY-MM-DD में लिखें।",
+          "yield": "उपज 0 या ज़्यादा, 3 अंक तक दशमलव।",
+          "note": "500 अक्षर तक का कारण दें।",
+          "item": "वस्तु 1 से 120 अक्षर की हो।",
+          "qty": "मात्रा 0 से ज़्यादा, 3 अंक तक दशमलव।"
+        }
+      },
+      "service": {
+        "casesTitle": "सेवा मामले",
+        "contactsTitle": "अतिरिक्त संपर्क",
+        "newCase": "नया सेवा मामला",
+        "kind": {
+          "QUERY": "सवाल",
+          "VISIT": "दौरा",
+          "ADVICE": "सलाह"
+        },
+        "query": "क्या पूछा गया या देखा गया",
+        "advice": "दी गई सलाह (वैकल्पिक)",
+        "source": "सलाह कहाँ से आई",
+        "src": {
+          "APPROVED_SOURCE": "मंज़ूर स्रोत",
+          "EXPERT_PROVIDED": "विशेषज्ञ"
+        },
+        "reference": "स्रोत दस्तावेज़ या विशेषज्ञ का नाम",
+        "followUp": "फ़ॉलो-अप की तारीख (वैकल्पिक, YYYY-MM-DD)",
+        "caseAdded": "सेवा मामला दर्ज हुआ।",
+        "noCases": "अभी कोई सेवा मामला नहीं।",
+        "followUpOn": "फ़ॉलो-अप {{date}}",
+        "addContact": "संपर्क जोड़ें",
+        "contactName": "नाम",
+        "contactPhone": "मोबाइल (10 अंक)",
+        "relation": "रिश्ता (वैकल्पिक)",
+        "primary": "मुख्य संपर्क",
+        "primaryTag": "मुख्य",
+        "contactAdded": "संपर्क जुड़ गया।",
+        "contactRemoved": "संपर्क हटाया गया।",
+        "remove": "हटाएँ",
+        "noContacts": "कोई अतिरिक्त संपर्क नहीं।",
+        "v": {
+          "query": "क्या पूछा गया, 1 से 2000 अक्षर में लिखें।",
+          "advice": "सलाह अधिकतम 2000 अक्षर की हो सकती है।",
+          "source": "चुनें कि सलाह कहाँ से आई।",
+          "reference": "स्रोत दस्तावेज़ या विशेषज्ञ का नाम लिखें (200 अक्षर तक)।",
+          "date": "सही तारीख YYYY-MM-DD में लिखें।",
+          "c_name": "नाम 1 से 120 अक्षर का हो।",
+          "c_phone": "मोबाइल ठीक 10 अंक का हो।",
+          "c_relation": "रिश्ता अधिकतम 40 अक्षर का हो सकता है।"
+        }
+      },
+      "privacy": {
+        "prefsTitle": "संवाद की पसंद",
+        "logTitle": "दस्तावेज़ देखने का लॉग",
+        "dangerTitle": "स्थिति और गोपनीयता",
+        "channel": "पसंदीदा माध्यम",
+        "noChannel": "कोई नहीं",
+        "quiet": "शांत समय {{from}} से {{to}}",
+        "noQuiet": "कोई शांत समय नहीं",
+        "max": "हफ़्ते में अधिकतम {{n}}",
+        "noMax": "हफ़्ते की कोई सीमा नहीं",
+        "changePrefs": "पसंद बदलें",
+        "quietStart": "शांत समय शुरू (HH:MM, खाली = नहीं)",
+        "quietEnd": "शांत समय खत्म (HH:MM)",
+        "maxPerWeek": "हफ़्ते में अधिकतम संदेश (0 से 100, खाली = नहीं)",
+        "prefSaved": "पसंद सहेजी गई।",
+        "noLog": "अभी किसी ने दस्तावेज़ नहीं खोले।",
+        "byUser": "उपयोगकर्ता {{id}} द्वारा",
+        "deactivate": "इस ग्राहक को निष्क्रिय करें",
+        "activate": "इस ग्राहक को फिर सक्रिय करें",
+        "deactivateIntro": "निष्क्रिय ग्राहक को बिल नहीं बन सकता। इतिहास बना रहता है।",
+        "activateIntro": "ग्राहक को फिर बिल बन सकेगा।",
+        "confirmStatus": "पक्का करें",
+        "statusDone": "ग्राहक की स्थिति बदली।",
+        "anonymize": "इस ग्राहक को गुमनाम करें",
+        "anonIntro": "इससे निजी जानकारी हमेशा के लिए हट जाती है और वापस नहीं आ सकती। जिस ग्राहक पर बकाया है उसे गुमनाम नहीं कर सकते।",
+        "anonReason": "कारण (3 से 500 अक्षर)",
+        "anonConfirm": "ठीक यही लिखें: {{text}}",
+        "anonymizeNow": "अभी गुमनाम करें",
+        "anonymized": "ग्राहक गुमनाम किया गया।",
+        "v": {
+          "start": "समय HH:MM में हो, जैसे 21:00।",
+          "end": "समय HH:MM में हो, जैसे 07:00।",
+          "quiet": "शांत समय के लिए शुरू और अंत दोनों चाहिए।",
+          "max": "0 से 100 की पूरी संख्या लिखें।",
+          "reason": "3 से 500 अक्षर का कारण दें।",
+          "confirm": "लिखा हुआ मेल नहीं खाता।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "customers": {
+      "plans": {
+        "cropTitle": "घेतली जाणारी पिके (पीक योजना)",
+        "buyTitle": "हंगामी खरेदी योजना",
+        "addCrop": "पीक जोडा",
+        "crop": "पीक",
+        "year": "वर्ष",
+        "plot": "प्लॉट",
+        "area": "क्षेत्रफळ (0 पेक्षा जास्त)",
+        "sowing": "पेरणीची तारीख (YYYY-MM-DD)",
+        "intercrop": "आंतरपीक (याच प्लॉटवर दुसऱ्या पिकासोबत)",
+        "yes": "हो",
+        "no": "नाही",
+        "save": "जतन करा",
+        "cancel": "रद्द करा",
+        "cropAdded": "पीक जोडले गेले.",
+        "moved": "पीक योजना बदलली गेली.",
+        "noCrops": "अजून कोणतेही पीक नोंदलेले नाही.",
+        "confirmMove": "नक्की करा",
+        "dateOpt": "तारीख (ऐच्छिक, YYYY-MM-DD)",
+        "harvestDate": "कापणीची तारीख (YYYY-MM-DD)",
+        "yieldQty": "उत्पादन (ऐच्छिक)",
+        "yieldUnit": "उत्पादनाचे एकक (ऐच्छिक)",
+        "abandonReason": "कारण",
+        "by": "{{date}} पर्यंत",
+        "newBuy": "नवी खरेदी योजना",
+        "buyIntro": "योजना बंधनकारक नाही. ती स्मरणपत्रे आणि दुकानाच्या मागणीच्या अंदाजासाठी वापरली जाते.",
+        "item": "वस्तू",
+        "qty": "प्रमाण (0 पेक्षा जास्त)",
+        "neededBy": "कधीपर्यंत हवे (ऐच्छिक, YYYY-MM-DD)",
+        "buyAdded": "खरेदी योजना जोडली गेली.",
+        "confirmBuy": "शेतकऱ्याकडून नक्की करा",
+        "buyConfirmed": "योजना नक्की झाली.",
+        "noBuy": "अजून खरेदी योजना नाही.",
+        "season": {
+          "KHARIF": "खरीप",
+          "RABI": "रब्बी",
+          "ZAID": "उन्हाळी",
+          "PERENNIAL": "बारमाही"
+        },
+        "unit": {
+          "ACRE": "एकर",
+          "HECTARE": "हेक्टर",
+          "GUNTHA": "गुंठा"
+        },
+        "status": {
+          "PLANNED": "नियोजित",
+          "SOWN": "पेरले",
+          "GROWING": "वाढत आहे",
+          "HARVESTED": "कापले",
+          "ABANDONED": "सोडून दिले"
+        },
+        "to": {
+          "SOWN": "पेरले म्हणून नोंदवा",
+          "GROWING": "वाढत आहे",
+          "HARVESTED": "कापणी झाली",
+          "ABANDONED": "सोडून द्या"
+        },
+        "buyStatus": {
+          "DRAFT": "मसुदा",
+          "CONFIRMED": "नक्की",
+          "CLOSED": "बंद"
+        },
+        "v": {
+          "crop": "पीक निवडा.",
+          "year": "वर्ष 2000 ते 2100 मधील 4 अंकी असावे.",
+          "area": "क्षेत्रफळ 0 पेक्षा जास्त, 4 अंकांपर्यंत दशांश.",
+          "date": "खरी तारीख YYYY-MM-DD अशी लिहा.",
+          "yield": "उत्पादन 0 किंवा जास्त, 3 अंकांपर्यंत दशांश.",
+          "note": "500 अक्षरांपर्यंत कारण द्या.",
+          "item": "वस्तू 1 ते 120 अक्षरांची असावी.",
+          "qty": "प्रमाण 0 पेक्षा जास्त, 3 अंकांपर्यंत दशांश."
+        }
+      },
+      "service": {
+        "casesTitle": "सेवा प्रकरणे",
+        "contactsTitle": "अतिरिक्त संपर्क",
+        "newCase": "नवे सेवा प्रकरण",
+        "kind": {
+          "QUERY": "प्रश्न",
+          "VISIT": "भेट",
+          "ADVICE": "सल्ला"
+        },
+        "query": "काय विचारले किंवा पाहिले",
+        "advice": "दिलेला सल्ला (ऐच्छिक)",
+        "source": "सल्ला कुठून आला",
+        "src": {
+          "APPROVED_SOURCE": "मंजूर स्रोत",
+          "EXPERT_PROVIDED": "तज्ज्ञ"
+        },
+        "reference": "स्रोत दस्तऐवज किंवा तज्ज्ञाचे नाव",
+        "followUp": "पाठपुरावा तारीख (ऐच्छिक, YYYY-MM-DD)",
+        "caseAdded": "सेवा प्रकरण नोंदवले गेले.",
+        "noCases": "अजून सेवा प्रकरण नाही.",
+        "followUpOn": "पाठपुरावा {{date}}",
+        "addContact": "संपर्क जोडा",
+        "contactName": "नाव",
+        "contactPhone": "मोबाइल (10 अंक)",
+        "relation": "नाते (ऐच्छिक)",
+        "primary": "मुख्य संपर्क",
+        "primaryTag": "मुख्य",
+        "contactAdded": "संपर्क जोडला गेला.",
+        "contactRemoved": "संपर्क काढला गेला.",
+        "remove": "काढा",
+        "noContacts": "अतिरिक्त संपर्क नाहीत.",
+        "v": {
+          "query": "काय विचारले ते 1 ते 2000 अक्षरांत लिहा.",
+          "advice": "सल्ला जास्तीत जास्त 2000 अक्षरांचा असू शकतो.",
+          "source": "सल्ला कुठून आला ते निवडा.",
+          "reference": "स्रोत दस्तऐवज किंवा तज्ज्ञाचे नाव लिहा (200 अक्षरांपर्यंत).",
+          "date": "खरी तारीख YYYY-MM-DD अशी लिहा.",
+          "c_name": "नाव 1 ते 120 अक्षरांचे असावे.",
+          "c_phone": "मोबाइल अगदी 10 अंकी असावा.",
+          "c_relation": "नाते जास्तीत जास्त 40 अक्षरांचे असू शकते."
+        }
+      },
+      "privacy": {
+        "prefsTitle": "संवादाची पसंती",
+        "logTitle": "दस्तऐवज पाहिल्याचा लॉग",
+        "dangerTitle": "स्थिती आणि गोपनीयता",
+        "channel": "पसंतीचे माध्यम",
+        "noChannel": "नाही",
+        "quiet": "शांत वेळ {{from}} ते {{to}}",
+        "noQuiet": "शांत वेळ नाही",
+        "max": "आठवड्यात जास्तीत जास्त {{n}}",
+        "noMax": "आठवड्याची मर्यादा नाही",
+        "changePrefs": "पसंती बदला",
+        "quietStart": "शांत वेळ सुरू (HH:MM, रिकामे = नाही)",
+        "quietEnd": "शांत वेळ संपते (HH:MM)",
+        "maxPerWeek": "आठवड्यात जास्तीत जास्त संदेश (0 ते 100, रिकामे = नाही)",
+        "prefSaved": "पसंती जतन झाली.",
+        "noLog": "अजून कोणीही दस्तऐवज उघडलेले नाहीत.",
+        "byUser": "वापरकर्ता {{id}} कडून",
+        "deactivate": "हा ग्राहक निष्क्रिय करा",
+        "activate": "हा ग्राहक पुन्हा सक्रिय करा",
+        "deactivateIntro": "निष्क्रिय ग्राहकाला बिल करता येत नाही. इतिहास राहतो.",
+        "activateIntro": "ग्राहकाला पुन्हा बिल करता येईल.",
+        "confirmStatus": "नक्की करा",
+        "statusDone": "ग्राहकाची स्थिती बदलली.",
+        "anonymize": "हा ग्राहक अनामिक करा",
+        "anonIntro": "यामुळे वैयक्तिक माहिती कायमची काढली जाते आणि परत येत नाही. ज्या ग्राहकावर थकबाकी आहे त्याला अनामिक करता येत नाही.",
+        "anonReason": "कारण (3 ते 500 अक्षरे)",
+        "anonConfirm": "अगदी हेच लिहा: {{text}}",
+        "anonymizeNow": "आता अनामिक करा",
+        "anonymized": "ग्राहक अनामिक केला.",
+        "v": {
+          "start": "वेळ HH:MM अशी असावी, उदा. 21:00.",
+          "end": "वेळ HH:MM अशी असावी, उदा. 07:00.",
+          "quiet": "शांत वेळेसाठी सुरुवात आणि शेवट दोन्ही हवेत.",
+          "max": "0 ते 100 ही पूर्ण संख्या लिहा.",
+          "reason": "3 ते 500 अक्षरांचे कारण द्या.",
+          "confirm": "लिहिलेले जुळत नाही."
+        }
+      }
+    }
+  }
+}
