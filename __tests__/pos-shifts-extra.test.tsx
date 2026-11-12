@@ -94,7 +94,7 @@ describe('shifts: cash in and out', () => {
     await fireEvent.press(screen.getByLabelText('Save cash movement'));
     await screen.findByRole('alert');
     await fireEvent.press(screen.getByLabelText('Save cash movement'));
-    await screen.findByRole('alert');
+    expect(await screen.findByText('This shift is already closed.')).toBeTruthy();
     expect(mockPost.mock.calls[0]![1].idempotencyKey).toBe(mockPost.mock.calls[1]![1].idempotencyKey);
   });
 });
