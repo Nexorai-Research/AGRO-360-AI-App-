@@ -84,6 +84,12 @@ export const MODULES: AppModule[] = [
       { key: 'finBank', href: '/finance-bank', icon: '🏦' },
       { key: 'finPetty', href: '/finance-petty', icon: '👛' },
       { key: 'finControl', href: '/finance-control', icon: '🔒' },
+      { key: 'finSettings', href: '/fin-settings', icon: '⚙️' },
+      { key: 'finOpening', href: '/fin-opening', icon: '🚪' },
+      { key: 'finYearEnd', href: '/fin-year-end', icon: '📆' },
+      { key: 'finExport', href: '/fin-export', icon: '📤' },
+      { key: 'finInter', href: '/fin-inter', icon: '🔁' },
+      { key: 'finTemplates', href: '/fin-templates', icon: '🗓️' },
     ],
   },
   {

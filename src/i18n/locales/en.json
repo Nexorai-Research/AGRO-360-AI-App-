@@ -562,7 +562,13 @@
     "setupNumbering": "Document numbering",
     "setupPrint": "Print templates",
     "setupBranches": "Branches",
-    "setupWarehouses": "Warehouses and bins"
+    "setupWarehouses": "Warehouses and bins",
+    "finSettings": "Accounting settings",
+    "finOpening": "Opening balances",
+    "finYearEnd": "Year-end closing",
+    "finExport": "Export for accountant",
+    "finInter": "Cash between branches",
+    "finTemplates": "Recurring expenses"
   },
   "pos": {
     "title": "New bill",
@@ -1887,7 +1893,13 @@
     "setupNumbering": "Prefix, digits and next number of each document",
     "setupPrint": "Paper size and which fields print",
     "setupBranches": "Add, edit, deactivate and reactivate branches",
-    "setupWarehouses": "Warehouses, their bins, deactivate and reactivate"
+    "setupWarehouses": "Warehouses, their bins, deactivate and reactivate",
+    "finSettings": "Approval limits, cash limit and expense basis",
+    "finOpening": "Enter or reverse the balances at go-live",
+    "finYearEnd": "Checks and closing of a financial year",
+    "finExport": "Tally or CSV file and account mapping",
+    "finInter": "Cash sent from one branch to another",
+    "finTemplates": "Monthly drafts and expenses by category"
   },
   "modules": {
     "account": {
@@ -4356,6 +4368,151 @@
         "name": "Name must be 2 to 120 letters.",
         "binLabel": "Label must be 1 to 40 letters.",
         "binText": "Rack and shelf can be 40 letters at most."
+      }
+    }
+  },
+  "fx": {
+    "amount": "Amount",
+    "cancel": "Cancel",
+    "credit": "credit",
+    "debit": "debit",
+    "denied": "You do not have permission for this screen.",
+    "offline": "No connection. Pull down to try again.",
+    "noLimit": "no limit",
+    "off": "off",
+    "on": "on",
+    "reason10": "Reason (at least 10 letters)",
+    "remove": "Remove",
+    "save": "Save",
+    "searchAccount": "Search account by code or name",
+    "v": {
+      "date": "Enter a real date as YYYY-MM-DD.",
+      "money": "Amount must be more than 0 with up to 2 places.",
+      "moneyOpt": "Leave empty for no limit, or enter an amount above 0 with up to 2 places.",
+      "reason10": "Give a reason of 10 to 500 letters."
+    },
+    "settings": {
+      "title": "Accounting settings",
+      "intro": "Leave an amount empty for no limit.",
+      "journal": "Voucher amount that needs a second person to approve",
+      "cash": "Warn when a cash payment is above",
+      "attachment": "Bill or slip reference required above",
+      "expenseApproval": "Expense amount that needs a second person to approve",
+      "basis": "Expenses reach the books",
+      "basisCASH": "When they are paid",
+      "basisACCRUAL": "When they are approved",
+      "costCentre": "Branch or cost centre needed on income and expense lines",
+      "costCentreLabel": "Income and expense lines need a branch or cost centre",
+      "change": "Change settings",
+      "saved": "Settings saved."
+    },
+    "opening": {
+      "title": "Opening balances",
+      "intro": "Cash, bank, fixed assets, loans and capital at go-live. Customer dues, supplier dues and stock open from their own screens. Any difference goes to Opening balance equity.",
+      "asOn": "As on (the day before you start billing, YYYY-MM-DD)",
+      "account": "Account",
+      "addLine": "Add this balance",
+      "totals": "Debit {{debit}} | Credit {{credit}} | Opening balance equity takes {{plug}} {{side}}",
+      "save": "Save opening balances",
+      "saved": "Opening balances saved.",
+      "enteredAs": "Entered as {{no}} on {{date}}.",
+      "locked": "A period has been closed, so they are locked.",
+      "canReverse": "They can be reversed and entered again until a period is closed.",
+      "reverse": "Reverse opening balances",
+      "confirmReverse": "Confirm reverse",
+      "reversed": "Opening balances reversed.",
+      "none": "Opening balances have not been entered.",
+      "v": {
+        "date": "Enter a real date up to today as YYYY-MM-DD.",
+        "account": "Choose an account.",
+        "lines": "Add at least one balance."
+      }
+    },
+    "year": {
+      "title": "Year-end closing",
+      "none": "No financial year yet.",
+      "intro": "Closing moves the profit or loss of the year into retained earnings with one journal on the last day, locks the year and its months, and prepares the next year.",
+      "closedOn": "Closed on {{date}}",
+      "profit": "Net profit moved to retained earnings: {{amount}}",
+      "next": "Next year: {{label}}",
+      "ok": "ok",
+      "blocks": "blocks closing",
+      "warn": "warning",
+      "close": "Close the year",
+      "warnLock": "This locks the year. It cannot be undone here.",
+      "confirm": "Confirm close",
+      "closedDone": "Year closed."
+    },
+    "export": {
+      "title": "Export for the accountant",
+      "intro": "The journals of a period as one file. The same period with the same content is exported once; every export is recorded.",
+      "generic": "Generic CSV",
+      "tally": "Tally XML",
+      "from": "From (YYYY-MM-DD)",
+      "to": "To (YYYY-MM-DD)",
+      "run": "Export and share",
+      "done": "Export done.",
+      "replay": "Same as an earlier export: nothing new.",
+      "lines": "{{n}} lines exported",
+      "noShare": "This phone cannot share files.",
+      "unmapped": "Not mapped yet: {{list}}",
+      "mapTitle": "Account mapping (accountant's ledger names)",
+      "saveMap": "Save mapping",
+      "mapSaved": "Mapping saved.",
+      "history": "Earlier exports",
+      "noHistory": "None yet.",
+      "noAccounts": "No accounts.",
+      "v": {
+        "to": "End date must be a real date and not before the start.",
+        "name": "Ledger name can be 100 letters at most."
+      }
+    },
+    "inter": {
+      "title": "Cash between branches",
+      "intro": "One journal with both sides: the sending branch is owed, the receiving branch owes. The consolidated books show neither.",
+      "new": "New transfer",
+      "from": "From branch",
+      "to": "To branch",
+      "cash": "Cash or bank ledger",
+      "date": "Date (optional, YYYY-MM-DD)",
+      "what": "What for",
+      "saved": "Transfer posted.",
+      "none": "No transfers between branches yet.",
+      "v": {
+        "from": "Choose the sending branch.",
+        "to": "Choose the receiving branch.",
+        "same": "The two branches must be different.",
+        "cash": "Choose the cash or bank ledger.",
+        "what": "Write what it is for, 3 to 300 letters."
+      }
+    },
+    "tpl": {
+      "title": "Recurring expenses",
+      "intro": "A template makes one draft expense each month on its day. Running it twice never makes a second draft for the same month.",
+      "add": "Add template",
+      "generate": "Make the drafts that are due",
+      "generated": "Drafts made.",
+      "name": "Name",
+      "category": "Category (expense account)",
+      "payee": "Payee",
+      "day": "Day of the month (1 to 28)",
+      "start": "Starting from (YYYY-MM-DD)",
+      "saved": "Template added.",
+      "none": "No templates yet.",
+      "dayNext": "day {{day}}, next {{next}}",
+      "switchOff": "Switch off",
+      "switchOn": "Switch on",
+      "toggled": "Template updated.",
+      "report": "Expenses by category",
+      "reportRange": "Expenses by category, {{from}} to {{to}}",
+      "noReport": "Nothing reached the books in this period.",
+      "gst": "claimable GST",
+      "total": "Total {{amount}}",
+      "v": {
+        "name": "Name must be 2 to 80 letters.",
+        "account": "Choose a category.",
+        "payee": "Payee must be 2 to 100 letters.",
+        "day": "Day must be a whole number from 1 to 28."
       }
     }
   }
