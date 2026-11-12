@@ -292,7 +292,8 @@
     "settings": "सेटिंग्स",
     "purchase": "खरीद",
     "complaints": "शिकायतें",
-    "followup": "वसूली फॉलो-अप"
+    "followup": "वसूली फॉलो-अप",
+    "stockReports": "स्टॉक रिपोर्ट"
   },
   "pos": {
     "title": "नया बिल",
@@ -1230,6 +1231,57 @@
       "PARTIAL": "आंशिक निभाया",
       "BROKEN": "टूटा",
       "CANCELLED": "रद्द"
+    }
+  },
+  "stockReports": {
+    "title": "स्टॉक रिपोर्ट",
+    "denied": "आपको ये स्टॉक रिपोर्ट देखने की अनुमति नहीं है।",
+    "offline": "नेटवर्क नहीं है। रिपोर्ट अभी लोड नहीं हो सकती।",
+    "which": "रिपोर्ट",
+    "kind_expiry": "एक्सपायरी",
+    "kind_ledger": "स्टॉक खाता",
+    "kind_reorder": "री-ऑर्डर नियम",
+    "kind_valuation": "मूल्यांकन",
+    "window": "समाप्ति",
+    "expired": "पहले ही समाप्त",
+    "withinDays": "{{count}} दिन के भीतर",
+    "emptyExpiry": "इस अवधि में स्टॉक वाला कोई बैच नहीं।",
+    "emptyLedger": "अभी कोई स्टॉक हलचल नहीं।",
+    "emptyReorder": "कोई री-ऑर्डर नियम नहीं।",
+    "emptyValuation": "मूल्यांकन के लिए स्टॉक नहीं।",
+    "batch": "बैच {{no}}",
+    "expiry": "समाप्ति",
+    "days": "{{count}} दिन",
+    "onHand": "हाथ में",
+    "valueAtRisk": "जोखिम में मूल्य",
+    "qty": "मात्रा",
+    "balance": "इसके बाद शेष",
+    "value": "मूल्य",
+    "allBranches": "सभी शाखाएँ (डिफ़ॉल्ट)",
+    "reorderLevel": "यहाँ मँगाएँ",
+    "minQty": "न्यूनतम",
+    "maxQty": "अधिकतम",
+    "reorderQty": "ऑर्डर मात्रा",
+    "totalValue": "स्टॉक मूल्य",
+    "totalQty": "कुल मात्रा",
+    "asOn": "{{date}} तक",
+    "avgCost": "औसत लागत",
+    "more": "{{count}} में से पहले {{shown}} दिख रहे हैं। पूरी सूची वेब ऐप में देखें।",
+    "mv": {
+      "OPENING": "शुरुआती स्टॉक",
+      "GRN_RECEIPT": "माल प्राप्त",
+      "SALE_ISSUE": "बिक्री",
+      "SALE_RETURN_IN": "बिक्री वापसी",
+      "PURCHASE_RETURN_OUT": "सप्लायर को वापस",
+      "TRANSFER_OUT": "ट्रांसफ़र गया",
+      "TRANSFER_IN": "ट्रांसफ़र आया",
+      "ADJUST_PLUS": "समायोजन (जोड़ा)",
+      "ADJUST_MINUS": "समायोजन (घटाया)",
+      "COUNT_VARIANCE": "गिनती का अंतर",
+      "QUARANTINE_OUT": "क्वारंटीन में गया",
+      "QUARANTINE_IN": "क्वारंटीन से वापस",
+      "DAMAGE_WRITEOFF": "खराबी बट्टे खाते",
+      "REVERSAL": "उलटा"
     }
   }
 }

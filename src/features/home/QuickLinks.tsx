@@ -12,6 +12,7 @@ const LINKS = [
   ['nav.transfers', '/transfers'],
   ['nav.batches', '/batches'],
   ['nav.stock', '/stock'],
+  ['nav.stockReports', '/stock-reports'],
   ['nav.customers', '/customers'],
   ['nav.collections', '/collections'],
   ['nav.attendance', '/attendance'],

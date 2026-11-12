@@ -191,3 +191,15 @@ DONE (read only; each section closed until opened, then one query; states: loadi
 
 NOT built here: adding or editing a farm, plot, crop plan or KYC document (no upload from the phone), changing consent, loyalty point adjustments, household edits, recording a new interaction, photos on interactions, service cases, purchase plans, crop plans, guarantors, hold history, customer statement, credit limit change and credit hold or release, creating or editing a customer (only quick-add exists), merge, anonymise. Interactions show the first answer the server sends (no paging).
 
+## Inventory: stock reports (branch `inventory-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/stock-reports.test.tsx` (12 tests). Screen `/stock-reports` (`app/stock-reports.tsx`, `src/features/inventory/`), linked from the Home quick links.
+
+DONE (read only; loading, empty, offline, error with retry, denied; English, Hindi, Marathi):
+- Expiry: batches with stock that are already expired, or expire within 30 / 60 / 90 days (`GET /inventory/batches` with `withStockOnly`, `expired` or `expiringWithinDays`), with days left and value at risk. Cost fields the server hides (null) are not shown.
+- Stock ledger: the latest 50 movements with movement name, quantity, balance after, batch, reason (`GET /inventory/ledger`).
+- Reorder rules: reorder level, minimum, maximum and order quantity per product and branch (`GET /inventory/reorder-rules`); the product default is labelled "All branches".
+- Valuation: total stock value and quantity, per product and branch, with the server's warning (`GET /inventory/valuation`, needs `inventory.value.view`; the server values at weighted average even when the franchise method is FIFO and says so).
+
+NOT built: filters (product, warehouse, branch, date range, movement type) and paging beyond the first 50 rows; reorder suggestions; creating or editing reorder rules; opening stock; stock counts and cycle plans; investigations; reservations; serial numbers; batch genealogy and trace; damage report; reconciliation and integrity reports; FIFO valuation; expiry extension request and approval; labels; import and export. Hindi and Marathi texts need a native speaker review.
+
