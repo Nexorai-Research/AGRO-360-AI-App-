@@ -30,6 +30,7 @@ const LINKS = [
   ['nav.documents', '/documents'],
   ['nav.settings', '/settings'],
   ['nav.purchase', '/purchase'],
+  ['nav.purchaseMoney', '/purchase-money'],
   ['nav.complaints', '/complaints'],
   ['nav.followup', '/collections/follow-up'],
 ] as const;

@@ -1,12 +1,11 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
-import type { ApiClient } from '@/api/client';
 import { formatINR } from '@/money';
+import { MoreNote, ReadBox } from '@/ui/ReadBox';
 import { StateView } from '../stock/StateView';
-import { Card, Chips, Gate, Line, isNetwork, kit, useCan } from '../hr/kit';
+import { Card, Chips, Line, kit, useCan } from '../hr/kit';
 import { shortDate } from '../hr/logic';
 import {
   EXPIRY_WINDOWS,
@@ -22,35 +21,6 @@ import {
 
 const KINDS: StockReportKind[] = ['expiry', 'ledger', 'reorder', 'valuation'];
 
-/** One read-only query per report; the state texts are shared. */
-function Box<T>({ userId, kind, extra, client, enabled, load, children }: {
-  userId: string;
-  kind: StockReportKind;
-  extra: string;
-  client: ApiClient | null;
-  enabled: boolean;
-  load: (c: ApiClient, signal: AbortSignal) => Promise<T>;
-  children: (d: T) => ReactNode;
-}) {
-  const { t } = useTranslation();
-  const q = useQuery({
-    queryKey: ['stockreports', userId, kind, extra],
-    queryFn: ({ signal }) => load(client!, signal),
-    enabled: enabled && client !== null,
-    retry: (n, e) => isNetwork(e) && n < 1,
-  });
-  return (
-    <Gate query={q} denied={!enabled} deniedText={t('stockReports.denied')} offlineText={t('stockReports.offline')}>
-      {q.data ? children(q.data) : null}
-    </Gate>
-  );
-}
-
-function More({ shown, total }: { shown: number; total: number }) {
-  const { t } = useTranslation();
-  return total > shown ? <Text style={kit.sub}>{t('stockReports.more', { shown, count: total })}</Text> : null;
-}
-
 export default function StockReportsScreen() {
   const { t } = useTranslation();
   const { me, client } = useAuth();
@@ -61,7 +31,7 @@ export default function StockReportsScreen() {
   const kind: StockReportKind = allowed.includes(pick) ? pick : (allowed[0] ?? 'expiry');
   const userId = me?.userId ?? '';
   const enabled = client !== null && me !== null && allowed.length > 0;
-  const common = { userId, client, enabled };
+  const common = { client, enabled, deniedText: t('stockReports.denied'), offlineText: t('stockReports.offline') };
 
   return (
     <ScrollView contentContainerStyle={kit.page}>
@@ -74,7 +44,7 @@ export default function StockReportsScreen() {
           {kind === 'expiry' ? (
             <>
               <Chips label={t('stockReports.window')} options={EXPIRY_WINDOWS.map((w) => ({ id: w, label: w === 'expired' ? t('stockReports.expired') : t('stockReports.withinDays', { count: Number(w) }) }))} value={win} onChange={setWin} />
-              <Box {...common} kind="expiry" extra={win} load={(c, s) => fetchExpiry(c, win, s)}>
+              <ReadBox {...common} queryKey={['stockreports', userId, 'expiry', win]} load={(c, s) => fetchExpiry(c, win, s)}>
                 {(d) => (
                   <>
                     {d.items.length === 0 ? <StateView state="empty" message={t('stockReports.emptyExpiry')} /> : null}
@@ -87,14 +57,14 @@ export default function StockReportsScreen() {
                         {b.valueAtRisk !== null ? <Line label={t('stockReports.valueAtRisk')} value={formatINR(b.valueAtRisk)} /> : null}
                       </Card>
                     ))}
-                    <More shown={d.items.length} total={d.total} />
+                    <MoreNote textKey="stockReports.more" shown={d.items.length} total={d.total} />
                   </>
                 )}
-              </Box>
+              </ReadBox>
             </>
           ) : null}
           {kind === 'ledger' ? (
-            <Box {...common} kind="ledger" extra="" load={(c, s) => fetchLedger(c, s)}>
+            <ReadBox {...common} queryKey={['stockreports', userId, 'ledger', ""]} load={(c, s) => fetchLedger(c, s)}>
               {(d) => (
                 <>
                   {d.items.length === 0 ? <StateView state="empty" message={t('stockReports.emptyLedger')} /> : null}
@@ -110,13 +80,13 @@ export default function StockReportsScreen() {
                       {m.reasonCode ? <Text style={kit.sub}>{m.reasonCode}</Text> : null}
                     </Card>
                   ))}
-                  <More shown={d.items.length} total={d.total} />
+                  <MoreNote textKey="stockReports.more" shown={d.items.length} total={d.total} />
                 </>
               )}
-            </Box>
+            </ReadBox>
           ) : null}
           {kind === 'reorder' ? (
-            <Box {...common} kind="reorder" extra="" load={(c, s) => fetchReorderRules(c, s)}>
+            <ReadBox {...common} queryKey={['stockreports', userId, 'reorder', ""]} load={(c, s) => fetchReorderRules(c, s)}>
               {(d) => (
                 <>
                   {d.items.length === 0 ? <StateView state="empty" message={t('stockReports.emptyReorder')} /> : null}
@@ -130,13 +100,13 @@ export default function StockReportsScreen() {
                       <Line label={t('stockReports.reorderQty')} value={r.reorderQty} />
                     </Card>
                   ))}
-                  <More shown={d.items.length} total={d.total} />
+                  <MoreNote textKey="stockReports.more" shown={d.items.length} total={d.total} />
                 </>
               )}
-            </Box>
+            </ReadBox>
           ) : null}
           {kind === 'valuation' ? (
-            <Box {...common} kind="valuation" extra="" load={(c, s) => fetchValuation(c, s)}>
+            <ReadBox {...common} queryKey={['stockreports', userId, 'valuation', ""]} load={(c, s) => fetchValuation(c, s)}>
               {(d) => (
                 <>
                   <Card>
@@ -155,10 +125,10 @@ export default function StockReportsScreen() {
                       {r.avgCost !== null ? <Line label={t('stockReports.avgCost')} value={formatINR(r.avgCost)} /> : null}
                     </Card>
                   ))}
-                  <More shown={Math.min(d.rows.length, PAGE_ROWS)} total={d.rows.length} />
+                  <MoreNote textKey="stockReports.more" shown={Math.min(d.rows.length, PAGE_ROWS)} total={d.rows.length} />
                 </>
               )}
-            </Box>
+            </ReadBox>
           ) : null}
         </>
       )}

@@ -293,7 +293,8 @@
     "purchase": "Purchases",
     "complaints": "Complaints",
     "followup": "Collection follow-up",
-    "stockReports": "Stock reports"
+    "stockReports": "Stock reports",
+    "purchaseMoney": "Bills and payables"
   },
   "pos": {
     "title": "New bill",
@@ -1282,6 +1283,44 @@
       "QUARANTINE_IN": "Back from quarantine",
       "DAMAGE_WRITEOFF": "Damage write-off",
       "REVERSAL": "Reversal"
+    }
+  },
+  "purchaseMoney": {
+    "title": "Bills and payables",
+    "denied": "You do not have permission to see this.",
+    "offline": "No network. This cannot be loaded now.",
+    "which": "Show",
+    "kind_bills": "Purchase bills",
+    "kind_payments": "Payments",
+    "kind_returns": "Returns",
+    "kind_ageing": "Payables ageing",
+    "show": "Bills",
+    "openBills": "Unpaid",
+    "allBills": "All",
+    "emptyBills": "No bills.",
+    "emptyPayments": "No supplier payments yet.",
+    "emptyReturns": "No returns to suppliers.",
+    "emptyAgeing": "Nothing is owed to suppliers.",
+    "total": "Bill total",
+    "paid": "Paid",
+    "outstanding": "Outstanding",
+    "due": "Due {{date}}",
+    "match": "Match: {{status}}",
+    "amount": "Amount",
+    "tds": "TDS withheld",
+    "cashPaid": "Cash paid",
+    "advance": "Advance (not yet allocated)",
+    "againstBill": "Bill {{no}}",
+    "totalPayable": "Total payable",
+    "asOf": "As of {{date}}",
+    "advanceNote": "Advance paid, not yet allocated: {{amount}}",
+    "more": "Showing the first {{shown}}. Use the web app for the full list.",
+    "bucket": {
+      "NOT_DUE": "Not due",
+      "1-30": "1 to 30 days late",
+      "31-60": "31 to 60 days late",
+      "61-90": "61 to 90 days late",
+      "90+": "Over 90 days late"
     }
   }
 }
