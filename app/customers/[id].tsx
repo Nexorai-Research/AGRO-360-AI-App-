@@ -10,6 +10,9 @@ import { CrmActions } from '../../src/features/customers/CrmActions';
 import { FarmEditor } from '../../src/features/customers/FarmEditor';
 import { LoyaltyAdjust } from '../../src/features/customers/LoyaltyAdjust';
 import { MoreSections } from '../../src/features/customers/MoreSections';
+import { PlansPanel } from '../../src/features/customers/PlansPanel';
+import { PrivacyPanel } from '../../src/features/customers/PrivacyPanel';
+import { ServicePanel } from '../../src/features/customers/ServicePanel';
 import { StaleBanner, StateView, fmtDate, isDenied, useErrorText } from '../../src/features/customers/ui';
 import { dec, formatINR } from '../../src/money';
 import { Button } from '../../src/ui/Button';
@@ -136,6 +139,9 @@ function Header({
       <FarmEditor customerId={p.id} />
       <CrmActions customerId={p.id} />
       <LoyaltyAdjust customerId={p.id} />
+      <PlansPanel customerId={p.id} />
+      <ServicePanel customerId={p.id} />
+      <PrivacyPanel customerId={p.id} code={p.code} status={p.status} />
 
       {canLedger ? (
         <Card title={t('customers.ledger')}>

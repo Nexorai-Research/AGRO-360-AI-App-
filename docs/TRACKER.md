@@ -537,3 +537,48 @@ NOT built or limits:
 - GSTIN check digit and whether the state code is a real GST state are checked only by the server.
 - Dates are typed as YYYY-MM-DD (no date picker). Lists show what the server sends, no paging.
 - Hindi and Marathi texts need a native speaker review.
+
+## Customer 360: crop plans, purchase plans, service cases, contacts, preferences, access log, status and anonymise (web parity)
+
+All rows: mocked API, not run against the real backend or on a phone. Paths, bodies, limits and permissions were copied from `apps/api/src/{agri,crm,crm-admin,sales}.controller.ts` and `modules/customer/src/domain/{agri,crm,privacy}.ts`. New cards on the customer page (`app/customers/[id].tsx`), each closed until opened so nothing is read before. Texts are in `i18n-parts/custx.json` (English, Hindi, Marathi). Tests: `__tests__/custx-panels.test.tsx`, 16 passed.
+
+| Feature | State | Test |
+|---|---|---|
+| Crop plans: list, add (crop from the master, season, year, plot, area as a decimal string and unit, sowing date, intercrop), move to sown / growing / harvested (date, yield) or abandon (reason); only the moves the server allows are offered | DONE (mocked) | `custx-panels.test.tsx` |
+| Seasonal purchase plans: list, add one line, confirm a draft with the farmer | DONE (mocked) | same |
+| Service cases: list and record a query, visit or advice; advice must name its source and reference | DONE (mocked) | same |
+| Extra contacts: list, add (10 digit mobile), remove (`crm.household.manage`) | DONE (mocked) | same |
+| Communication preferences: view and change with `If-Match` version (channel, quiet hours, weekly limit); only changed fields sent | DONE (mocked) | same |
+| Document access log (`customer.privacy`) | DONE (mocked) | same |
+| Make a customer inactive or active again (`customer.update`) | DONE (mocked) | same |
+| Anonymise (`customer.privacy`): reason and the exact text `ANONYMIZE <code>` must be typed | DONE (mocked) | same |
+| One Idempotency-Key per action, kept on retry, new when the body changes | DONE | same |
+
+NOT built or limits:
+- Adding a crop to the master list, crop stage log, editing a crop plan (only the status moves) and the purchase plan variation view.
+- A purchase plan is entered with one item; more lines and editing a plan are not built.
+- Service case: no photos, no linked crop plan, no status change after saving.
+- Households (`POST /crm/households`), crop-input applications and their verify step, and sharing the statement (`/statement/share`) are not built.
+- Dates are typed as YYYY-MM-DD (no date picker). Lists show what the server sends, no paging.
+- Hindi and Marathi texts need a native speaker review.
+
+## Finance: settings, opening balances, year-end, accounting export, inter-branch cash, recurring expenses (web parity)
+
+All rows: mocked API, not run against the real backend or on a phone. Paths, bodies, limits and permissions were copied from `apps/api/src/{finance,finance-ops}.controller.ts` and `modules/finance/src/domain/{finance,finance-b}.ts`. New screens are in the Accounts group on Home. Texts: `i18n-parts/fx.json` (English, Hindi, Marathi). Tests: `__tests__/fx-finance.test.tsx`, 18 passed.
+
+| Feature | State | Test |
+|---|---|---|
+| Accounting settings: view, change with `If-Match` version, blank = no limit (`finance.settings.manage`) | DONE (mocked) | `fx-finance.test.tsx` |
+| Opening balances: add lines (account search, debit or credit), live difference to equity, save; reverse with a reason; hidden when locked (`finance.opening.manage`) | DONE (mocked) | same |
+| Year-end: pick a year, see checks, close with a reason of 10+ letters (`finance.yearend.close`) | DONE (mocked) | same |
+| Accounting export: Generic CSV or Tally XML for a period, saved and opened in the share sheet; account mapping; export history (`finance.export.run`) | DONE (mocked) | same |
+| Cash between branches: list and post (`finance.intercompany.manage`) | DONE (mocked) | same |
+| Recurring expenses: list, add, switch on or off, make due drafts; expenses by category report | DONE (mocked) | same |
+| One Idempotency-Key per action, kept on retry | DONE | same |
+
+NOT built or limits:
+- The file share sheet and the real file content were not tried on a phone; the test only checks the call.
+- Opening balances list shows up to 8 accounts per search; the mapping list shows the first 60 accounts.
+- Recurring expense: no tax amount, branch or cost centre, and no edit besides on/off.
+- Not built yet in Finance: bank statement import and bank line entry, period lock from a voucher post, GRNI report, ITC reconciliation.
+- Dates are typed as YYYY-MM-DD. Hindi and Marathi texts need native review.
