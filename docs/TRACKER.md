@@ -215,3 +215,14 @@ DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi
 
 NOT built: creating or posting a bill, three-way match actions and override, paying a supplier, supplier returns and claims, supplier create and edit, supplier ledger, bank accounts and contacts, requisitions, RFQs and comparison, schemes and free quantity, landed cost, purchase register, GRNI report, pending orders report, purchase order edit / revise / send / close, goods receipt discard / approve over-receipt / reverse. Bills, payments and returns show the first 50 only (the server gives no total, so the screen only says there may be more); no search or date filter. Hindi and Marathi texts need a native speaker review.
 
+## Accounts: financial statements view (branch `accounts-gaps`)
+
+Mocked API, not run against the real backend or a phone. Evidence: `__tests__/statements.test.tsx` (9 tests). Screen `/statements` (`app/statements.tsx`, `src/features/accounts/`), linked from the Home quick links. All need `reports.financial`.
+
+DONE (read only; loading, empty, offline, error, denied; English, Hindi, Marathi):
+- Profit and loss for the last 7 / 30 / 90 days: net sales, cost of sales, gross profit, operating expenses, other income, net profit, and each section's accounts (`GET /reports/profit-loss`).
+- Balance sheet as of today: assets, liabilities, equity, totals, profit this year; a warning when the server says it does not balance (`GET /reports/balance-sheet`).
+- Cash book and bank book for the period: opening, receipts, payments, closing per ledger, with a note when the balance went below zero (`GET /reports/cash-book`, `/reports/bank-book`).
+
+NOT built: comparison with the previous period; custom dates, branch and cost-centre filters; branch-wise profit; the day-by-day lines of the cash and bank book; general ledger of one account; vouchers, journals, expenses, petty cash, bank reconciliation, budgets, opening balances, periods, year-end; exports (CSV, Excel, PDF); any posting. Hindi and Marathi texts need a native speaker review.
+
