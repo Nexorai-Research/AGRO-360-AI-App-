@@ -6,10 +6,11 @@ import { errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { DOC_CATEGORIES, DOC_STATUSES, PERM, adminKey, fetchDocuments, setDocumentActive } from './api';
+import { DocActions, DocDashboard, UploadForm } from './DocAdmin';
 import { Card, Chips, failText, isNetwork, k, queryState, useAccess, useIdemKey } from './kit';
 import { formatBytes } from './logic';
 
-/** List only. Upload, replace and download of files stay on the web app. */
+/** List, upload, replace, versions and download. Files live in the server database for now (storage decision M02-OD-14 is open). */
 export default function DocumentsScreen() {
   const { t } = useTranslation();
   const { client, can, userId } = useAccess();
@@ -21,6 +22,8 @@ export default function DocumentsScreen() {
   const [msg, setMsg] = useState<string | null>(null);
   const [failure, setFailure] = useState<ErrorMessage | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
   const idem = useIdemKey();
 
   const docs = useInfiniteQuery({
@@ -60,6 +63,23 @@ export default function DocumentsScreen() {
       <Text style={k.title}>{t('documents.title')}</Text>
       {msg ? <Text style={k.ok} accessibilityRole="alert">{msg}</Text> : null}
       {failure ? <Text style={k.error} accessibilityRole="alert">{failText(t, failure)}</Text> : null}
+      <DocDashboard client={client!} userId={userId} status={status} onPick={setStatus} />
+      {can(PERM.docManage) ? (
+        uploading ? (
+          <UploadForm
+            client={client!}
+            onCancel={() => setUploading(false)}
+            onDone={(m) => {
+              setUploading(false);
+              setMsg(m);
+              void qc.invalidateQueries({ queryKey: adminKey(userId, 'documents') });
+              void qc.invalidateQueries({ queryKey: adminKey(userId, 'doc-dash') });
+            }}
+          />
+        ) : (
+          <Button label={t('dcm.upload')} onPress={() => (setUploading(true), setMsg(null), setFailure(null))} />
+        )
+      ) : null}
       <TextInput
         value={text}
         onChangeText={setText}
@@ -93,6 +113,22 @@ export default function DocumentsScreen() {
             {d.filename} · {formatBytes(d.sizeBytes)} · {t('documents.version', { n: d.currentVersion })}
           </Text>
           {d.expiresOn ? <Text style={k.sub}>{t('documents.expires', { date: d.expiresOn })}</Text> : null}
+          <Button
+            kind="ghost"
+            label={openId === d.id ? t('users.hide') : t('users.details')}
+            onPress={() => setOpenId(openId === d.id ? null : d.id)}
+          />
+          {openId === d.id ? (
+            <DocActions
+              client={client!}
+              doc={d}
+              canManage={can(PERM.docManage)}
+              onChanged={() => {
+                void qc.invalidateQueries({ queryKey: adminKey(userId, 'documents') });
+                void qc.invalidateQueries({ queryKey: adminKey(userId, 'doc-dash') });
+              }}
+            />
+          ) : null}
           {can(PERM.docManage) ? (
             <Button
               kind="ghost"
@@ -106,7 +142,6 @@ export default function DocumentsScreen() {
       {docs.hasNextPage ? (
         <Button kind="ghost" label={t('documents.more')} disabled={docs.isFetchingNextPage} onPress={() => void docs.fetchNextPage()} />
       ) : null}
-      <Text style={k.sub}>{t('documents.notBuilt')}</Text>
     </ScrollView>
   );
 }
