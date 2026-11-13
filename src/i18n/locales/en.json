@@ -135,7 +135,13 @@
     "DUPLICATE_MOBILE": "A customer with this mobile number already exists. Open that customer, or tick the shared phone box.",
     "APPROVAL_REQUIRED": "This limit is above your approval limit. Ask someone with a higher limit.",
     "STALE_VERSION": "Someone else changed this. Close and open it again, then retry.",
-    "INSUFFICIENT_POINTS": "The customer does not have enough points for this."
+    "INSUFFICIENT_POINTS": "The customer does not have enough points for this.",
+    "ASSISTANT_NOT_CONFIGURED": "The AI assistant is not switched on for this server yet.",
+    "ASSISTANT_UNAVAILABLE": "The AI service could not answer. Try again in a moment. Reference: {{correlationId}}",
+    "RATE_LIMITED": "Too many requests. Wait a minute and try again.",
+    "AI_DISABLED": "AI is switched off for this shop.",
+    "AI_QUOTA_EXCEEDED": "This month's AI limit is used up.",
+    "AI_LIMIT_REACHED": "This month's AI limit is used up."
   },
   "customers": {
     "title": "Customers",
@@ -568,7 +574,45 @@
     "finYearEnd": "Year-end closing",
     "finExport": "Export for accountant",
     "finInter": "Cash between branches",
-    "finTemplates": "Recurring expenses"
+    "finTemplates": "Recurring expenses",
+    "assistant": "AI assistant",
+    "aiDigest": "Daily alerts",
+    "aiForecast": "Demand forecast",
+    "aiSeason": "Season plan",
+    "aiReorder": "Reorder suggestions",
+    "aiRecs": "AI suggestions",
+    "aiExpiry": "Expiry advice",
+    "aiSupplierPrices": "Supplier rate check",
+    "aiScenario": "Budget what-if",
+    "aiAccuracy": "Forecast accuracy",
+    "aiProductCheck": "Check one product",
+    "aiCustomers": "Customer insights",
+    "aiCash": "Cash outlook",
+    "aiPricing": "Price advice",
+    "aiMarketing": "Message drafts",
+    "aiCropDoctor": "Crop doctor",
+    "aiAdvisory": "Crop advisory",
+    "aiWeather": "Weather alerts",
+    "aiSearch": "Smart search",
+    "aiVoice": "Spoken order draft",
+    "aiClassify": "File a document",
+    "aiTraining": "Staff training",
+    "aiReport": "Ask a report",
+    "aiReportDrafts": "Saved report drafts",
+    "aiStrategy": "Strategy and health",
+    "aiBranchCompare": "Compare branches",
+    "aiExpansion": "Expansion what-if",
+    "aiBillScan": "Scan supplier bill",
+    "aiLabelScan": "Scan product label",
+    "aiShelf": "Shelf photo check",
+    "aiVillages": "Village trends",
+    "aiCropMap": "Crop map and shortage",
+    "aiCases": "Crop doctor cases",
+    "aiRisks": "Risk register",
+    "aiQuality": "Data quality",
+    "aiGovern": "AI usage and evaluation",
+    "aiPolicies": "Approval policy",
+    "aiAudit": "AI decision log"
   },
   "pos": {
     "title": "New bill",
@@ -1899,7 +1943,44 @@
     "finYearEnd": "Checks and closing of a financial year",
     "finExport": "Tally or CSV file and account mapping",
     "finInter": "Cash sent from one branch to another",
-    "finTemplates": "Monthly drafts and expenses by category"
+    "finTemplates": "Monthly drafts and expenses by category",
+    "assistant": "Ask in your own words; it reads data and does tasks",
+    "aiDigest": "What needs your attention today",
+    "aiForecast": "Expected sales for the next weeks, product by product",
+    "aiSeason": "What to buy before the season and the last day to order",
+    "aiReorder": "What to reorder now, with supplier and budget",
+    "aiRecs": "Suggestions waiting for a person to approve",
+    "aiExpiry": "Stock about to expire: discount, move or return",
+    "aiSupplierPrices": "Which suppliers charged more than usual",
+    "aiScenario": "See what a purchase budget can buy",
+    "aiAccuracy": "How right the forecasts were, and which are getting worse",
+    "aiProductCheck": "Why, how accurate, drifting, unusual for the season, or beaten by another method",
+    "aiCustomers": "Who may not pay, who to call first, who stopped buying",
+    "aiCash": "Cash for the next 7, 14 and 30 days",
+    "aiPricing": "Price advice by customer category",
+    "aiMarketing": "Make a message text from a reviewed template",
+    "aiCropDoctor": "Describe or photograph a crop problem and see approved matches",
+    "aiAdvisory": "Approved sowing, nutrition and care notes for a crop",
+    "aiWeather": "Forecast and alerts for each branch",
+    "aiSearch": "Find a product by local name, brand or crop",
+    "aiVoice": "Turn words into a draft order (check before billing)",
+    "aiClassify": "Upload a document and file it under the right category",
+    "aiTraining": "Ask the shop's own training notes and take a quiz",
+    "aiReport": "Ask for a report in your own words",
+    "aiStrategy": "Monthly strategy draft, roadmap and shop health score",
+    "aiBranchCompare": "Which branch is short, which has extra, and what a move costs",
+    "aiExpansion": "What-if for opening a new branch",
+    "aiBillScan": "Read a supplier bill photo or PDF and check it",
+    "aiLabelScan": "Read a product label into a prefilled product form",
+    "aiShelf": "Estimate shelf stock from a photo",
+    "aiVillages": "Buying power and demand by village",
+    "aiCropMap": "Crop area by village and predicted shortage",
+    "aiCases": "Crop doctor questions and expert answers",
+    "aiRisks": "Open risks found by the scan, with case notes",
+    "aiQuality": "How complete and clean your data is",
+    "aiGovern": "Monthly AI quota and the evaluation report",
+    "aiPolicies": "Who must approve AI actions, and limits",
+    "aiAudit": "Every AI call: who, which tool, which model"
   },
   "modules": {
     "account": {
@@ -1939,7 +2020,11 @@
     "back": "Back",
     "notFound": "This section was not found.",
     "screens_one": "{{count}} screen",
-    "screens_other": "{{count}} screens"
+    "screens_other": "{{count}} screens",
+    "ai": {
+      "title": "AI assistant",
+      "sub": "Ask, act and get daily alerts"
+    }
   },
   "sec": {
     "title": "Security centre",
@@ -4514,6 +4599,806 @@
         "payee": "Payee must be 2 to 100 letters.",
         "day": "Day must be a whole number from 1 to 28."
       }
+    }
+  },
+  "ai": {
+    "intro": "Ask a question or tell me what to do. I read the same data your role can see.",
+    "tryTitle": "You can try",
+    "try1": "Today's sales",
+    "try2": "Which batches expire in 60 days?",
+    "try3": "Record 500 rupees cash from Ramesh",
+    "you": "You",
+    "bot": "Assistant",
+    "thinking": "Thinking...",
+    "input": "Type your question",
+    "send": "Send",
+    "clear": "New chat",
+    "yes": "Yes, do it",
+    "no": "No",
+    "tooLong": "That took too many steps. Please ask in a narrower way.",
+    "offline": "No connection. Check the network and try again. Pull down on a list to refresh.",
+    "note": "The assistant can be wrong. Money and customers are shown to you to confirm before anything is saved. Voice input and streaming of words are not in the app yet.",
+    "denied": "You do not have permission for this screen.",
+    "digestTitle": "Daily alerts",
+    "allBranches": "All branches",
+    "counts": "High {{high}} · Medium {{medium}} · Low {{low}}",
+    "snoozedCount": "{{n}} hidden for now",
+    "notScanned": "Not checked: {{parts}}. A short list is not a clean bill of health.",
+    "advice": "These are suggestions from rules over your data, not facts.",
+    "digestNone": "Nothing needs attention right now.",
+    "open": "Open",
+    "snooze": "Hide for 7 days",
+    "snoozed": "Hidden for 7 days.",
+    "snoozeReason": "Hidden for a week from the phone",
+    "sev": {
+      "HIGH": "High",
+      "MEDIUM": "Medium",
+      "LOW": "Low"
+    },
+    "fc": {
+      "title": "Demand forecast",
+      "weeks": "{{n}} weeks",
+      "onHand": "In stock: {{n}}",
+      "total": "Expected sales: {{n}}",
+      "range": "likely {{low}} to {{high}}",
+      "noRange": "range could not be measured",
+      "method": "Method: {{method}}",
+      "error": "past error {{pct}}",
+      "insufficient": "Not enough data: {{reason}}",
+      "fellBack": "A newer method was tried but the basic method is shown.",
+      "adopted": "Approved method in use: {{method}}",
+      "summary": "{{n}} of {{total}} products forecast",
+      "few": "{{n}} could not be planned (not enough data).",
+      "none": "No products to forecast.",
+      "showMore": "Show more products"
+    },
+    "se": {
+      "title": "Season plan",
+      "startsIn": "Season starts in",
+      "length": "Season length",
+      "summary": "{{n}} of {{total}} products planned",
+      "totalBuy": "Total to buy: {{n}} units",
+      "earliest": "Order the first ones by {{date}}",
+      "expected": "Expected sales: {{n}}",
+      "toBuy": "To buy: {{n}}",
+      "orderBy": "order by {{date}}",
+      "lastYear": "Same weeks last year: {{n}}",
+      "growth": "change this year {{n}}"
+    },
+    "ro": {
+      "title": "Reorder suggestions",
+      "lines": "{{n}} products to reorder",
+      "wanted": "Wanted {{value}}",
+      "funded": "Covered {{value}}",
+      "budget": "Budget {{value}}",
+      "shortAll": "Left out for want of budget: {{value}}",
+      "noOrder": "Nothing is ordered from here. Saving suggestions only lists them for a person to approve.",
+      "propose": "Save as suggestions",
+      "proposed": "Saved. A person must approve each one.",
+      "none": "Nothing needs reordering now.",
+      "qty": "{{n}} of {{want}} units",
+      "cost": "Cost {{cost}} (rate {{unit}})",
+      "cover": "stock lasts {{n}} days",
+      "supplier": "Supplier: {{name}}",
+      "lead": "{{n}} days to arrive",
+      "noSupplier": "No supplier chosen: {{reason}}",
+      "short": "Short by {{n}} units ({{value}})",
+      "skipped": "Not planned",
+      "st": {
+        "FUNDED": "covered",
+        "TRIMMED": "reduced",
+        "UNFUNDED": "not covered",
+        "COST_UNKNOWN": "cost not known"
+      }
+    },
+    "rec": {
+      "title": "AI suggestions",
+      "intro": "Nothing here has happened yet. A person approves a suggestion, and then only a draft is made.",
+      "none": "No suggestions in this list.",
+      "expires": "valid till {{date}}",
+      "confidence": "confidence {{n}}%",
+      "st": {
+        "PRESENTED": "Waiting",
+        "ACCEPTED": "Approved",
+        "OUTCOME_PENDING": "Draft made",
+        "REJECTED": "Rejected",
+        "EXPIRED": "Expired"
+      },
+      "kind": {
+        "inventory": {
+          "reorder": "Reorder",
+          "transfer": "Move stock between branches"
+        },
+        "pricing": {
+          "revision": "Price change"
+        },
+        "expiry": {
+          "discount": "Expiry discount"
+        },
+        "procurement": {
+          "return": "Return to supplier"
+        },
+        "finance": {
+          "voucher": "Accounting entry"
+        },
+        "comms": {
+          "message": "Customer message"
+        }
+      },
+      "draftIn": "Makes a draft in: {{where}}",
+      "draftMade": "A draft has been made.",
+      "because": "Rejected: {{reason}}",
+      "details": "Details",
+      "evidence": "Based on {{n}} facts",
+      "approvedBy": "Approved by {{n}} person(s) so far",
+      "twoPeople": "This needs two different people to approve.",
+      "check": "Check first",
+      "checked": "Checked. Nothing was changed.",
+      "allPass": "All checks pass",
+      "someFail": "Some checks fail",
+      "nothingWritten": "Checking writes nothing.",
+      "approve": "Approve",
+      "approved": "Approved.",
+      "execute": "Make the draft",
+      "executed": "The draft was made.",
+      "reject": "Reject",
+      "confirmReject": "Reject now",
+      "rejected": "Rejected.",
+      "reason": "Reason (at least 3 letters)",
+      "reasonBad": "Write a reason of 3 to 500 letters.",
+      "note": "Approving shows you the same details the server checks. If the suggestion changed meanwhile, it will not be approved."
+    },
+    "ex": {
+      "title": "Expiry advice",
+      "days": "within {{n}} days",
+      "none": "No stock is at risk in this period.",
+      "noCost": "You cannot see stock cost, so discounts cannot be checked against it.",
+      "expires": "expires {{date}} ({{n}} days)",
+      "qty": "in stock {{n}}",
+      "atRisk": "likely unsold: {{n}}",
+      "sev": {
+        "EXPIRED": "expired",
+        "HIGH": "high risk",
+        "MEDIUM": "medium risk",
+        "LOW": "low risk",
+        "NONE": "no risk"
+      },
+      "discount": "Suggested discount {{pct}}%",
+      "margin": "margin {{pct}}",
+      "locked": "Fixed-price product: no discount allowed.",
+      "transfer": "Another branch can sell it: {{to}}, {{n}} units",
+      "return": "Can be returned: {{n}} units to {{who}}",
+      "pDiscount": "Suggest discount",
+      "pTransfer": "Suggest move",
+      "pReturn": "Suggest return",
+      "proposed": "Saved as a suggestion for approval."
+    },
+    "sp": {
+      "title": "Supplier rate check",
+      "intro": "Suppliers whose rates were above their own usual rates in posted bills.",
+      "judged": "{{n}} bill lines checked, {{skipped}} skipped",
+      "none": "No supplier stands out.",
+      "flagged": "{{flagged}} of {{lines}} lines higher than usual ({{share}}%)",
+      "avg": "average gap {{pct}}%",
+      "products": "{{n}} products"
+    },
+    "sc": {
+      "title": "Budget what-if",
+      "intro": "See which open reorder suggestions a budget can pay for. Nothing is ordered or saved.",
+      "budget": "Budget in rupees (leave blank to use cash only)",
+      "budgetBad": "Enter an amount above 0 with up to 2 decimals.",
+      "change": "Purchase price change in percent (-50 to 200)",
+      "changeBad": "Enter a number from -50 to 200.",
+      "cash": "Also limit by the cash the books can spare?",
+      "yes": "Yes",
+      "needLimit": "Give a budget, or choose to limit by cash.",
+      "run": "Run",
+      "done": "Done.",
+      "funded": "Covered {{funded}} of {{wanted}}",
+      "limit": "Limit {{value}} ({{by}})",
+      "left": "left {{value}}",
+      "by": {
+        "BUDGET": "your budget",
+        "CASH": "cash available"
+      },
+      "st": {
+        "FUNDED": "covered",
+        "PARTIAL": "partly covered",
+        "NOT_FUNDED": "not covered",
+        "NOT_PRICED": "no rate known",
+        "NOT_NEEDED": "not needed"
+      },
+      "nothing": "This is a trial only. Nothing was ordered.",
+      "billTitle": "Scan supplier bill",
+      "labelTitle": "Scan product label",
+      "billIntro": "Choose a PDF, PNG or JPEG up to 4 MB. The fields are read for you to check. No bill is made.",
+      "labelIntro": "Choose a photo or PDF of the label. The fields are read for you to check. No product is created.",
+      "pick": "Choose file",
+      "chosen": "{{name}} ({{kb}} KB)",
+      "tooBig": "The file is larger than 4 MB.",
+      "notAllowed": "Choose a PDF, PNG or JPEG file.",
+      "send": "Read the file",
+      "read": "File read.",
+      "duplicate": "This file was read before. Showing the earlier result.",
+      "status": {
+        "REVIEW": "To check",
+        "CONFIRMED": "Confirmed",
+        "REJECTED": "Rejected"
+      },
+      "keep": "kept until {{date}}",
+      "conf": "{{n}}% sure",
+      "check": "check this",
+      "line": "Line {{n}}",
+      "noIssues": "No problems found by the checks.",
+      "useDraft": "Use as product draft",
+      "reject": "Reject",
+      "rejected": "Rejected.",
+      "confirmed": "Done.",
+      "draftTitle": "Prefilled product form",
+      "notCreated": "No product was created. Open the product form to add it.",
+      "billNote": "This only reads the bill. Making a draft purchase bill from it is done on the purchase screens."
+    },
+    "ac": {
+      "title": "Forecast accuracy",
+      "measured": "{{n}} of {{total}} products measured",
+      "error": "Error {{pct}} (lower is better)",
+      "naive": "Plain 'same as last week' error: {{pct}}",
+      "beats": "Forecast beat 'same as last week' on {{n}}% of products",
+      "how": "Checked by pretending to forecast past weeks and comparing with what sold.",
+      "worst": "Least accurate products",
+      "drift": "Getting worse",
+      "noDrift": "No product is getting clearly worse.",
+      "scan": "Flag worsening products",
+      "scanned": "Done. Worsening products are flagged for a person to review.",
+      "noSwitch": "Nothing is switched by itself. A person decides.",
+      "history": "Last readings",
+      "none": "No data yet."
+    },
+    "pc": {
+      "title": "Check one product",
+      "search": "Search product (2+ letters)",
+      "none": "No product found.",
+      "change": "Change product",
+      "tab": {
+        "explain": "Why",
+        "accuracy": "Accuracy",
+        "drift": "Drift",
+        "seasonal": "Season",
+        "compare": "Methods"
+      },
+      "beatsYes": "Better than 'same as last week'",
+      "beatsNo": "Not better than 'same as last week'",
+      "folds": "{{n}} past weeks tested",
+      "over": "Forecasts ran {{pct}} too high",
+      "under": "Forecasts ran {{pct}} too low",
+      "drifted": "Forecast is getting less accurate",
+      "steady": "Accuracy is steady",
+      "driftNums": "Error before {{before}}, now {{now}}",
+      "above": "Selling much more than the same weeks last year",
+      "below": "Selling much less than the same weeks last year",
+      "normal": "In line with last year",
+      "vsLastYear": "Last 4 weeks {{now}}, same weeks last year {{then}}",
+      "champion": "Current",
+      "challenger": "Challenger",
+      "review": "A person may review adopting the challenger.",
+      "keep": "Keep the current method.",
+      "save": "Save this comparison",
+      "saved": "Saved. No forecast was changed."
+    },
+    "cu": {
+      "title": "Customer insights",
+      "note": "Scores explain themselves and only help a person decide. Nothing is blocked, changed or sent.",
+      "tab": {
+        "credit": "Credit risk",
+        "collect": "Who to call",
+        "inactive": "Stopped buying"
+      },
+      "none": "No customers to score.",
+      "noneCollect": "No customer has overdue money.",
+      "noneChurn": "No customer looks inactive or at risk.",
+      "band": {
+        "LOW": "Low risk",
+        "MEDIUM": "Medium risk",
+        "HIGH": "High risk"
+      },
+      "score": "score {{n}} of 100",
+      "overdue": "Overdue {{amount}}, oldest {{days}} days",
+      "bestDay": "Usually pays on {{day}}",
+      "noPattern": "Not enough payments to see a pattern.",
+      "st": {
+        "INACTIVE": "No purchase for 90+ days",
+        "AT_RISK": "Buying less"
+      },
+      "spend": "Spend change vs the 90 days before: {{n}}%"
+    },
+    "cf": {
+      "title": "Cash outlook",
+      "none": "No data.",
+      "now": "Cash and bank now: {{amount}}",
+      "problem": "Cash may run short within {{n}} days.",
+      "fine": "No shortfall expected in 30 days.",
+      "notMoney": "A projection to help you plan. It does not move any money.",
+      "inDays": "In {{n}} days",
+      "in": "coming in {{amount}}",
+      "out": "going out {{amount}}",
+      "st": {
+        "OK": "fine",
+        "BELOW_BUFFER": "below your cash buffer",
+        "SHORTFALL": "shortfall"
+      },
+      "noPayroll": "Payroll not included: {{reason}}",
+      "noTax": "GST payment not included: {{reason}}"
+    },
+    "pa": {
+      "title": "Price advice",
+      "intro": "Rules only: your cost, floor margin, MRP, and how sales are moving. Nothing is changed.",
+      "none": "No price advice.",
+      "now": "Price now: {{price}}",
+      "suggest": "Suggested price {{price}}",
+      "mustFix": "The current price breaks a rule (above MRP or below the floor margin).",
+      "noChange": "No change suggested.",
+      "propose": "Suggest this price",
+      "proposed": "Saved as a suggestion for approval."
+    },
+    "mk": {
+      "title": "Message drafts",
+      "intro": "Choose a reviewed template, language and channel. The text is made from facts; nothing is sent from here.",
+      "none": "No templates.",
+      "make": "Make the text",
+      "done": "Text made.",
+      "length": "{{n}} of {{limit}} characters",
+      "problems": "{{n}} rule problem(s) in the text. Do not use it.",
+      "notSent": "Nothing was sent or saved.",
+      "lang": {
+        "en": "English",
+        "hi": "Hindi",
+        "mr": "Marathi"
+      }
+    },
+    "cd": {
+      "title": "Crop doctor",
+      "intro": "Matches only against approved knowledge. Always check the field before acting.",
+      "crop": "Crop",
+      "cropBad": "Enter the crop (2 to 80 letters).",
+      "stage": "Stage (optional)",
+      "symptoms": "Symptoms",
+      "symptomsBad": "Describe in 3 to 1000 characters.",
+      "needOne": "Add a photo or describe the symptoms.",
+      "noPhotoService": "Photo identification is not set up on the server. Describe the symptoms instead.",
+      "addPhoto": "Add a photo",
+      "changePhoto": "Change photo",
+      "removePhoto": "Remove photo",
+      "photoChosen": "{{name}} ({{kb}} KB)",
+      "tooBig": "The photo is larger than 3 MB.",
+      "notImage": "Choose a JPEG, PNG or WebP photo.",
+      "run": "Find the problem",
+      "done": "Done.",
+      "basedOn": "Based on: {{source}}",
+      "kind": {
+        "PEST": "Pest",
+        "DISEASE": "Disease",
+        "DEFICIENCY": "Deficiency",
+        "WEED": "Weed"
+      },
+      "level": {
+        "high": "High confidence",
+        "medium": "Medium confidence",
+        "low": "Low confidence"
+      },
+      "cultural": "Cultural: {{text}}",
+      "biological": "Biological: {{text}}",
+      "chemical": "Chemical: {{text}}",
+      "ingredients": "Ingredients: {{list}}",
+      "dose": "Dose: {{text}} (source: {{source}})",
+      "source": "Source: {{name}}, {{ref}}",
+      "products": "Products for this problem",
+      "askExpert": "Ask an expert",
+      "note": "Note for the expert",
+      "defaultNote": "Please advise.",
+      "ask": "Send to expert",
+      "asked": "Sent to the expert."
+    },
+    "pp": {
+      "title": "Products for {{name}}",
+      "none": "No products.",
+      "stock": "stock {{n}}",
+      "matches": "Has: {{list}}",
+      "excluded": "Left out"
+    },
+    "av": {
+      "title": "Crop advisory",
+      "anySeason": "Any season",
+      "season": {
+        "KHARIF": "Kharif",
+        "RABI": "Rabi",
+        "ZAID": "Zaid"
+      },
+      "show": "Show advisory",
+      "none": "No approved advice for this crop yet."
+    },
+    "wx": {
+      "title": "Weather alerts",
+      "none": "No branch locations.",
+      "noProvider": "No weather service is set up on the server.",
+      "noLocation": "No weather location",
+      "source": "{{source}}, fetched {{time}}",
+      "summary": "Next 24 hours: rain {{rain}} mm, {{min}} to {{max}} C, wind up to {{wind}} km/h",
+      "calm": "No alerts.",
+      "note": "Alerts come from fixed rules on the stored forecast. Nothing is sent."
+    },
+    "sr": {
+      "title": "Smart search",
+      "intro": "Finds products by name, local name, brand, category or crop, including shop nicknames.",
+      "box": "Search product",
+      "none": "No product found.",
+      "because": "Matched on: {{list}}"
+    },
+    "vo": {
+      "title": "Spoken order draft",
+      "intro": "Type or dictate with your phone keyboard. This app has no built-in microphone reading. The result is a draft only; nothing is billed.",
+      "intent": {
+        "cart": "Order",
+        "search": "Search"
+      },
+      "lang": {
+        "en": "English",
+        "hi": "Hindi",
+        "mr": "Marathi"
+      },
+      "words": "What was said",
+      "bad": "Enter 1 to 600 characters.",
+      "run": "Read it",
+      "done": "Read.",
+      "customer": "Customer: {{name}}",
+      "noLines": "No product lines found.",
+      "qty": "Quantity {{qty}} {{unit}}",
+      "assumed": "quantity assumed, check it"
+    },
+    "cl": {
+      "title": "File a document",
+      "intro": "The suggestion is only a suggestion. You choose the category and the file is stored only after you confirm.",
+      "pick": "Choose a file",
+      "change": "Choose another file",
+      "chosen": "{{name}} ({{kb}} KB)",
+      "tooBig": "The file is larger than 4 MB.",
+      "notRead": "The file could not be read. Choose a PDF, PNG or JPEG.",
+      "upload": "Read the file",
+      "read": "File read.",
+      "suggested": "Suggested: {{cat}}",
+      "pickCat": "Category",
+      "file": "File it",
+      "filed": "Filed.",
+      "done": "Filed as {{cat}}.",
+      "cat": {
+        "PURCHASE_INVOICE": "Purchase invoice",
+        "DELIVERY_CHALLAN": "Delivery challan",
+        "LICENCE": "Licence",
+        "GST_CERTIFICATE": "GST certificate",
+        "KYC": "KYC",
+        "OTHER": "Other"
+      }
+    },
+    "tr": {
+      "title": "Staff training",
+      "tab": {
+        "ask": "Ask",
+        "items": "Notes",
+        "mine": "My results"
+      },
+      "question": "Your question",
+      "bad": "Write 2 to 300 characters.",
+      "ask": "Find the answer",
+      "none": "No answer.",
+      "from": "Source: {{source}}, version {{version}}",
+      "noItems": "No training notes yet.",
+      "noMine": "You have not taken a quiz yet.",
+      "quiz": "Take the quiz",
+      "noQuiz": "No quiz.",
+      "submit": "Send answers",
+      "sent": "Answers sent.",
+      "passed": "passed",
+      "notPassed": "not passed"
+    },
+    "rp": {
+      "title": "Ask a report",
+      "intro": "Ask in your own words, for example: sales last month by village. The report is run with your own access.",
+      "question": "Your question",
+      "questionBad": "Write 3 to 500 characters.",
+      "run": "Get the report",
+      "followUp": "Ask as a follow-up",
+      "done": "Done.",
+      "drafts": "Saved drafts",
+      "understood": "Understood: {{text}}",
+      "truncated": "Only the first rows are shown.",
+      "save": "Save as a draft",
+      "savedShort": "Saved",
+      "saved": "Draft saved.",
+      "note": "The text is made from the figures above. Check them before you share."
+    },
+    "rd": {
+      "title": "Saved report drafts",
+      "none": "No saved drafts.",
+      "meta": "Version {{v}}, {{date}}, {{source}}",
+      "note": "Editing a draft is not available in the app yet."
+    },
+    "st": {
+      "title": "Strategy and health",
+      "intro": "A draft made by fixed rules from the last two months or quarters. Nothing is set until the owner approves it.",
+      "none": "No strategy drafts yet.",
+      "kind": {
+        "MONTHLY": "Monthly",
+        "QUARTERLY": "Quarterly"
+      },
+      "status": {
+        "DRAFT": "Draft",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected"
+      },
+      "area": {
+        "GROWTH": "Growth",
+        "MARGIN": "Margin",
+        "STOCK": "Stock",
+        "COLLECTIONS": "Collections"
+      },
+      "action": "Action: {{text}}",
+      "milestone": "Month {{n}} sales target: {{amount}}",
+      "skipped": "Not read: {{text}}",
+      "note": "Note (needed to reject)",
+      "approve": "Approve this draft",
+      "reject": "Reject",
+      "approved": "Approved.",
+      "rejected": "Rejected.",
+      "genMonthly": "Make monthly strategy",
+      "genQuarterly": "Make quarterly roadmap",
+      "generated": "Draft made.",
+      "score": "Shop health {{n}} of 100",
+      "noScore": "Shop health cannot be scored yet",
+      "partial": "Some parts could not be measured and are left out of the score.",
+      "notMeasured": "not measured"
+    },
+    "bc": {
+      "title": "Compare branches",
+      "intro": "Pick a product to see which branch is short, which has extra, and suggested moves.",
+      "none": "No data.",
+      "st": {
+        "SHORT": "Short",
+        "OK": "Fine",
+        "SURPLUS": "Extra stock",
+        "NO_DEMAND": "No sales"
+      },
+      "free": "free {{n}}",
+      "cover": "covers {{n}} days",
+      "noMoves": "No move is suggested.",
+      "move": "Move {{n}} from {{from}} to {{to}}",
+      "cost": "Cost about {{amount}}",
+      "noCost": "Cost not set (the owner sets a cost per unit).",
+      "note": "Suggestions only. Nothing is moved."
+    },
+    "ex2": {
+      "title": "Expansion what-if",
+      "intro": "Your own assumptions, 24 months. Not a forecast.",
+      "investment": "Investment (₹)",
+      "fixed": "Fixed cost per month (₹)",
+      "sales": "Sales per month once mature (₹)",
+      "ramp": "Ramp-up % by month, comma separated",
+      "margin": "Gross margin % (empty = your own last 12 months)",
+      "wc": "Working capital days",
+      "bad": "Check this value.",
+      "run": "Run what-if",
+      "done": "Done.",
+      "never": "not within 24 months",
+      "month": "month {{n}}",
+      "breakEven": "Monthly break-even: {{m}}",
+      "payback": "Payback: {{m}}",
+      "cash24": "Cash after 24 months: {{amount}}",
+      "peak": "Most money tied up: {{amount}}",
+      "name": "Name to save",
+      "save": "Save this what-if",
+      "saved": "Saved.",
+      "delete": "Delete",
+      "deleted": "Deleted."
+    },
+    "sh": {
+      "title": "Shelf photo check",
+      "intro": "Photograph one shelf or rack. The photo is read for an estimate and compared with system stock. Stock is not changed.",
+      "pick": "Choose photo",
+      "run": "Estimate from photo",
+      "done": "Estimate made.",
+      "estimate": "An estimate from a photo, not a count.",
+      "flag": {
+        "MATCH": "Matches",
+        "SHORT": "Looks short",
+        "OVER": "Looks more",
+        "LOW_CONFIDENCE": "Not sure",
+        "NOT_SEEN": "Not seen in the photo",
+        "UNMATCHED": "Not in stock list"
+      },
+      "counts": "Photo {{est}}, system {{sys}}",
+      "openCount": "Open a stock count for the differences",
+      "opened": "Stock count opened for recount."
+    },
+    "vl": {
+      "title": "Village trends",
+      "none": "No villages.",
+      "trend": {
+        "RISING": "Buying more",
+        "STEADY": "Steady",
+        "FALLING": "Buying less",
+        "INSUFFICIENT_DATA": "Not enough data"
+      },
+      "facts": "{{customers}} customers, {{bills}} bills, sales {{spend}}, overdue {{overdue}}",
+      "season": {
+        "KHARIF": "Kharif",
+        "RABI": "Rabi",
+        "ZAID": "Zaid"
+      },
+      "hidden": "{{n}} village(s) with too few customers are not shown."
+    },
+    "cm": {
+      "title": "Crop map and shortage",
+      "none": "Nothing to show.",
+      "tab": {
+        "map": "Crop map",
+        "short": "Shortage"
+      },
+      "acres": "{{n}} acres",
+      "lead": "Order takes {{n}} days",
+      "noFactors": "No crop requirement factors are entered yet, so no shortage can be predicted.",
+      "short": "Short by {{n}}",
+      "covered": "Covered",
+      "figures": "Need {{need}}, in stock {{have}}, on order {{order}}",
+      "unassigned": "{{n}} crop plan(s) could not be assigned to a product."
+    },
+    "cs": {
+      "title": "Crop doctor cases",
+      "none": "No cases.",
+      "f": {
+        "ALL": "All",
+        "REQUESTED": "Waiting for expert",
+        "ANSWERED": "Answered"
+      },
+      "via": {
+        "PHOTO": "Photo",
+        "TEXT": "Text"
+      },
+      "esc": {
+        "NONE": "Not escalated",
+        "REQUESTED": "Waiting for expert",
+        "ANSWERED": "Answered"
+      },
+      "asked": "Question: {{note}}",
+      "answer": "Expert: {{text}}",
+      "reply": "Write the answer",
+      "write": "Expert answer",
+      "short": "Write at least 3 characters.",
+      "send": "Send answer",
+      "sent": "Answer saved."
+    },
+    "rk": {
+      "title": "Risk register",
+      "note": "Note",
+      "summary": "Open: {{high}} high, {{medium}} medium, {{low}} low",
+      "all": "All",
+      "scan": "Scan now",
+      "scanned": "Scan done.",
+      "none": "No risks here.",
+      "due": "due {{date}}",
+      "kind": {
+        "STOCKOUT": "Stock-out",
+        "EXPIRY": "Expiry",
+        "CASH_FLOW": "Cash flow",
+        "COLLECTION": "Collection",
+        "CHURN": "Customer left",
+        "SEASONAL_ANOMALY": "Seasonal anomaly",
+        "DRIFT": "Forecast drift",
+        "COMPLIANCE": "Compliance"
+      },
+      "st": {
+        "OPEN": "Open",
+        "ACKNOWLEDGED": "Acknowledged",
+        "RESOLVED": "Resolved",
+        "DISMISSED": "Dismissed"
+      },
+      "timeline": "Timeline",
+      "noNotes": "No notes yet.",
+      "evidence": "Evidence",
+      "addNote": "Add note",
+      "noted": "Note added.",
+      "dueLabel": "Due date",
+      "dueBad": "Use a date like 2026-12-31.",
+      "setDue": "Set due date",
+      "dueSet": "Due date set.",
+      "reasonLabel": "Reason (3 to 500 characters)",
+      "reasonBad": "Give a reason of 3 to 500 characters.",
+      "reason": "Reason: {{text}}",
+      "ack": "Acknowledge",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "changed": "Case updated.",
+      "reopenNote": "A closed case can be reopened by a different person than the one who closed it.",
+      "reopen": "Reopen",
+      "reopened": "Case reopened.",
+      "noteLabel": "Note"
+    },
+    "dq": {
+      "title": "Data quality",
+      "none": "No data.",
+      "noScore": "Not enough data to score.",
+      "overall": "Overall {{n}} of 100",
+      "checked": "{{n}} checked",
+      "notScanned": "Not scanned: {{list}}",
+      "src": {
+        "STOCK_HISTORY": "Stock history",
+        "CUSTOMERS": "Customers",
+        "PRICES": "Prices",
+        "SUPPLIERS": "Suppliers"
+      }
+    },
+    "gv": {
+      "title": "AI usage and evaluation",
+      "none": "No data.",
+      "used": "Used {{used}} of {{quota}} AI calls this month",
+      "remaining": "{{n}} left",
+      "limitedBy": "Limit set by: {{by}}",
+      "days": "{{n}} days",
+      "report": "Evaluation, last {{n}} days",
+      "model": "Model version {{v}}",
+      "counts": "{{comparisons}} method comparisons, {{promotions}} promotions, {{drift}} drift cases, {{methods}} methods in force",
+      "trend": "{{branch}}: {{n}} accuracy points",
+      "csvNote": "The CSV download is not in the app yet."
+    },
+    "po": {
+      "title": "Approval policy",
+      "intro": "Approval cannot be switched off. These rules make it stricter.",
+      "none": "No policies.",
+      "default": "Default rules (never changed).",
+      "action": {},
+      "distinct": "The approver must be a different person than the one who asked",
+      "second": "A second person must also approve",
+      "yes": "Yes",
+      "no": "No",
+      "ttl": "Approval valid for (1 to 15 minutes)",
+      "ttlBad": "Whole number from 1 to 15.",
+      "ownerAbove": "Owner must approve above (blank = no limit)",
+      "secondAbove": "Second approver above (blank = no limit)",
+      "limitBad": "Leave blank or enter a number above 0.",
+      "save": "Save",
+      "saved": "Saved.",
+      "settings": "Action limits",
+      "budget": "Reorder budget (blank = none)",
+      "transfer": "Transfer cost per unit (blank = not set)"
+    },
+    "fu": {
+      "title": "Feedback and outcome",
+      "feedback": "Was this suggestion useful?",
+      "v": {
+        "HELPFUL": "Helpful",
+        "NOT_HELPFUL": "Not helpful",
+        "WRONG": "Wrong",
+        "ALREADY_KNEW": "Already knew"
+      },
+      "note": "Note (optional)",
+      "send": "Send feedback",
+      "sent": "Thank you. Feedback saved.",
+      "outcome": "Measure the outcome",
+      "outcomeNote": "Reads goods received and stock-outs since the suggestion. You may enter a quantity received outside the system.",
+      "received": "Quantity received (optional)",
+      "qtyBad": "Enter a number.",
+      "measure": "Measure now",
+      "measured": "Outcome saved.",
+      "result": "Received {{qty}}; ran out: {{out}}",
+      "yes": "yes",
+      "no": "no",
+      "src": {
+        "STOCK_LEDGER": "from the stock ledger",
+        "ENTERED_BY_REVIEWER": "entered by you"
+      }
+    },
+    "au": {
+      "title": "AI decision log",
+      "note": "Every AI call is recorded. Inputs and outputs are kept as hashes, not text.",
+      "all": "All",
+      "none": "No records."
     }
   }
 }

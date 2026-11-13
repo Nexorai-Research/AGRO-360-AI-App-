@@ -1,0 +1,7 @@
+{
+  "aiReport": "/ai-report",
+  "aiReportDrafts": "/ai-report-drafts",
+  "aiStrategy": "/ai-strategy",
+  "aiBranchCompare": "/ai-branch-compare",
+  "aiExpansion": "/ai-expansion"
+}

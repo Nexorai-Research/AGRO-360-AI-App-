@@ -1,0 +1,383 @@
+{
+  "en": {
+    "nav": {
+      "aiBillScan": "Scan supplier bill",
+      "aiLabelScan": "Scan product label",
+      "aiShelf": "Shelf photo check",
+      "aiVillages": "Village trends",
+      "aiCropMap": "Crop map and shortage",
+      "aiCases": "Crop doctor cases"
+    },
+    "featureDesc": {
+      "aiBillScan": "Read a supplier bill photo or PDF and check it",
+      "aiLabelScan": "Read a product label into a prefilled product form",
+      "aiShelf": "Estimate shelf stock from a photo",
+      "aiVillages": "Buying power and demand by village",
+      "aiCropMap": "Crop area by village and predicted shortage",
+      "aiCases": "Crop doctor questions and expert answers"
+    },
+    "ai": {
+      "sc": {
+        "billTitle": "Scan supplier bill",
+        "labelTitle": "Scan product label",
+        "billIntro": "Choose a PDF, PNG or JPEG up to 4 MB. The fields are read for you to check. No bill is made.",
+        "labelIntro": "Choose a photo or PDF of the label. The fields are read for you to check. No product is created.",
+        "pick": "Choose file",
+        "change": "Change file",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "The file is larger than 4 MB.",
+        "notAllowed": "Choose a PDF, PNG or JPEG file.",
+        "send": "Read the file",
+        "read": "File read.",
+        "duplicate": "This file was read before. Showing the earlier result.",
+        "status": {
+          "REVIEW": "To check",
+          "CONFIRMED": "Confirmed",
+          "REJECTED": "Rejected"
+        },
+        "keep": "kept until {{date}}",
+        "conf": "{{n}}% sure",
+        "check": "check this",
+        "line": "Line {{n}}",
+        "noIssues": "No problems found by the checks.",
+        "useDraft": "Use as product draft",
+        "reject": "Reject",
+        "rejected": "Rejected.",
+        "confirmed": "Done.",
+        "draftTitle": "Prefilled product form",
+        "notCreated": "No product was created. Open the product form to add it.",
+        "billNote": "This only reads the bill. Making a draft purchase bill from it is done on the purchase screens."
+      },
+      "sh": {
+        "title": "Shelf photo check",
+        "intro": "Photograph one shelf or rack. The photo is read for an estimate and compared with system stock. Stock is not changed.",
+        "pick": "Choose photo",
+        "run": "Estimate from photo",
+        "done": "Estimate made.",
+        "estimate": "An estimate from a photo, not a count.",
+        "flag": {
+          "MATCH": "Matches",
+          "SHORT": "Looks short",
+          "OVER": "Looks more",
+          "LOW_CONFIDENCE": "Not sure",
+          "NOT_SEEN": "Not seen in the photo",
+          "UNMATCHED": "Not in stock list"
+        },
+        "counts": "Photo {{est}}, system {{sys}}",
+        "openCount": "Open a stock count for the differences",
+        "opened": "Stock count opened for recount."
+      },
+      "vl": {
+        "title": "Village trends",
+        "none": "No villages.",
+        "trend": {
+          "RISING": "Buying more",
+          "STEADY": "Steady",
+          "FALLING": "Buying less",
+          "INSUFFICIENT_DATA": "Not enough data"
+        },
+        "facts": "{{customers}} customers, {{bills}} bills, sales {{spend}}, overdue {{overdue}}",
+        "season": {
+          "KHARIF": "Kharif",
+          "RABI": "Rabi",
+          "ZAID": "Zaid"
+        },
+        "hidden": "{{n}} village(s) with too few customers are not shown."
+      },
+      "cm": {
+        "title": "Crop map and shortage",
+        "none": "Nothing to show.",
+        "tab": {
+          "map": "Crop map",
+          "short": "Shortage"
+        },
+        "acres": "{{n}} acres",
+        "lead": "Order takes {{n}} days",
+        "noFactors": "No crop requirement factors are entered yet, so no shortage can be predicted.",
+        "short": "Short by {{n}}",
+        "covered": "Covered",
+        "figures": "Need {{need}}, in stock {{have}}, on order {{order}}",
+        "unassigned": "{{n}} crop plan(s) could not be assigned to a product."
+      },
+      "cs": {
+        "title": "Crop doctor cases",
+        "none": "No cases.",
+        "f": {
+          "ALL": "All",
+          "REQUESTED": "Waiting for expert",
+          "ANSWERED": "Answered"
+        },
+        "via": {
+          "PHOTO": "Photo",
+          "TEXT": "Text"
+        },
+        "esc": {
+          "NONE": "Not escalated",
+          "REQUESTED": "Waiting for expert",
+          "ANSWERED": "Answered"
+        },
+        "asked": "Question: {{note}}",
+        "answer": "Expert: {{text}}",
+        "reply": "Write the answer",
+        "write": "Expert answer",
+        "short": "Write at least 3 characters.",
+        "send": "Send answer",
+        "sent": "Answer saved."
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "aiBillScan": "सप्लायर बिल स्कैन",
+      "aiLabelScan": "प्रोडक्ट लेबल स्कैन",
+      "aiShelf": "शेल्फ फ़ोटो जाँच",
+      "aiVillages": "गाँव के रुझान",
+      "aiCropMap": "फ़सल नक्शा और कमी",
+      "aiCases": "फ़सल डॉक्टर के मामले"
+    },
+    "featureDesc": {
+      "aiBillScan": "सप्लायर बिल की फ़ोटो या PDF पढ़कर जाँचें",
+      "aiLabelScan": "प्रोडक्ट लेबल से भरा हुआ फ़ॉर्म पाएँ",
+      "aiShelf": "फ़ोटो से शेल्फ का स्टॉक अनुमान",
+      "aiVillages": "गाँव के हिसाब से खरीद क्षमता और माँग",
+      "aiCropMap": "गाँव के हिसाब से फ़सल रकबा और अनुमानित कमी",
+      "aiCases": "फ़सल डॉक्टर के सवाल और विशेषज्ञ के जवाब"
+    },
+    "ai": {
+      "sc": {
+        "billTitle": "सप्लायर बिल स्कैन",
+        "labelTitle": "प्रोडक्ट लेबल स्कैन",
+        "billIntro": "4 MB तक की PDF, PNG या JPEG चुनें। खाने जाँचने के लिए पढ़े जाते हैं। कोई बिल नहीं बनता।",
+        "labelIntro": "लेबल की फ़ोटो या PDF चुनें। खाने जाँचने के लिए पढ़े जाते हैं। कोई प्रोडक्ट नहीं बनता।",
+        "pick": "फ़ाइल चुनें",
+        "change": "फ़ाइल बदलें",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फ़ाइल 4 MB से बड़ी है।",
+        "notAllowed": "PDF, PNG या JPEG फ़ाइल चुनें।",
+        "send": "फ़ाइल पढ़ें",
+        "read": "फ़ाइल पढ़ ली।",
+        "duplicate": "यह फ़ाइल पहले पढ़ी जा चुकी है। पिछला नतीजा दिख रहा है।",
+        "status": {
+          "REVIEW": "जाँचना बाकी",
+          "CONFIRMED": "पक्का",
+          "REJECTED": "नामंज़ूर"
+        },
+        "keep": "{{date}} तक सुरक्षित",
+        "conf": "{{n}}% भरोसा",
+        "check": "इसे जाँचें",
+        "line": "लाइन {{n}}",
+        "noIssues": "जाँच में कोई गड़बड़ी नहीं मिली।",
+        "useDraft": "प्रोडक्ट मसौदे के रूप में लें",
+        "reject": "नामंज़ूर करें",
+        "rejected": "नामंज़ूर किया।",
+        "confirmed": "हो गया।",
+        "draftTitle": "भरा हुआ प्रोडक्ट फ़ॉर्म",
+        "notCreated": "कोई प्रोडक्ट नहीं बना। जोड़ने के लिए प्रोडक्ट फ़ॉर्म खोलें।",
+        "billNote": "यह सिर्फ़ बिल पढ़ता है। इससे खरीद बिल का मसौदा खरीद की स्क्रीन पर बनता है।"
+      },
+      "sh": {
+        "title": "शेल्फ फ़ोटो जाँच",
+        "intro": "एक शेल्फ या रैक की फ़ोटो लें। फ़ोटो से अनुमान लगाकर सिस्टम स्टॉक से मिलाया जाता है। स्टॉक बदला नहीं जाता।",
+        "pick": "फ़ोटो चुनें",
+        "run": "फ़ोटो से अनुमान लगाएँ",
+        "done": "अनुमान बन गया।",
+        "estimate": "यह फ़ोटो का अनुमान है, गिनती नहीं।",
+        "flag": {
+          "MATCH": "मेल खाता है",
+          "SHORT": "कम लगता है",
+          "OVER": "ज़्यादा लगता है",
+          "LOW_CONFIDENCE": "पक्का नहीं",
+          "NOT_SEEN": "फ़ोटो में नहीं दिखा",
+          "UNMATCHED": "स्टॉक सूची में नहीं"
+        },
+        "counts": "फ़ोटो {{est}}, सिस्टम {{sys}}",
+        "openCount": "फ़र्क के लिए स्टॉक गिनती खोलें",
+        "opened": "दोबारा गिनने के लिए स्टॉक गिनती खुली।"
+      },
+      "vl": {
+        "title": "गाँव के रुझान",
+        "none": "कोई गाँव नहीं।",
+        "trend": {
+          "RISING": "ज़्यादा खरीद रहे हैं",
+          "STEADY": "स्थिर",
+          "FALLING": "कम खरीद रहे हैं",
+          "INSUFFICIENT_DATA": "डेटा कम है"
+        },
+        "facts": "{{customers}} ग्राहक, {{bills}} बिल, बिक्री {{spend}}, बकाया {{overdue}}",
+        "season": {
+          "KHARIF": "खरीफ़",
+          "RABI": "रबी",
+          "ZAID": "जायद"
+        },
+        "hidden": "बहुत कम ग्राहकों वाले {{n}} गाँव नहीं दिखाए गए।"
+      },
+      "cm": {
+        "title": "फ़सल नक्शा और कमी",
+        "none": "दिखाने को कुछ नहीं।",
+        "tab": {
+          "map": "फ़सल नक्शा",
+          "short": "कमी"
+        },
+        "acres": "{{n}} एकड़",
+        "lead": "ऑर्डर में {{n}} दिन",
+        "noFactors": "फ़सल की ज़रूरत के गुणक अभी नहीं भरे हैं, इसलिए कमी का अनुमान नहीं लग सकता।",
+        "short": "{{n}} की कमी",
+        "covered": "पूरा है",
+        "figures": "ज़रूरत {{need}}, स्टॉक {{have}}, ऑर्डर पर {{order}}",
+        "unassigned": "{{n}} फ़सल योजना किसी प्रोडक्ट से नहीं जुड़ सकी।"
+      },
+      "cs": {
+        "title": "फ़सल डॉक्टर के मामले",
+        "none": "कोई मामला नहीं।",
+        "f": {
+          "ALL": "सभी",
+          "REQUESTED": "विशेषज्ञ का इंतज़ार",
+          "ANSWERED": "जवाब मिला"
+        },
+        "via": {
+          "PHOTO": "फ़ोटो",
+          "TEXT": "लिखित"
+        },
+        "esc": {
+          "NONE": "आगे नहीं भेजा",
+          "REQUESTED": "विशेषज्ञ का इंतज़ार",
+          "ANSWERED": "जवाब मिला"
+        },
+        "asked": "सवाल: {{note}}",
+        "answer": "विशेषज्ञ: {{text}}",
+        "reply": "जवाब लिखें",
+        "write": "विशेषज्ञ का जवाब",
+        "short": "कम से कम 3 अक्षर लिखें।",
+        "send": "जवाब भेजें",
+        "sent": "जवाब सेव हुआ।"
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "aiBillScan": "पुरवठादार बिल स्कॅन",
+      "aiLabelScan": "उत्पादन लेबल स्कॅन",
+      "aiShelf": "शेल्फ फोटो तपासणी",
+      "aiVillages": "गावांचे कल",
+      "aiCropMap": "पीक नकाशा आणि तूट",
+      "aiCases": "पीक डॉक्टरची प्रकरणे"
+    },
+    "featureDesc": {
+      "aiBillScan": "पुरवठादार बिलाचा फोटो किंवा PDF वाचून तपासा",
+      "aiLabelScan": "उत्पादन लेबलवरून भरलेला फॉर्म मिळवा",
+      "aiShelf": "फोटोवरून शेल्फचा साठा अंदाज",
+      "aiVillages": "गावानुसार खरेदी क्षमता आणि मागणी",
+      "aiCropMap": "गावानुसार पीक क्षेत्र आणि अंदाजित तूट",
+      "aiCases": "पीक डॉक्टरचे प्रश्न आणि तज्ञांची उत्तरे"
+    },
+    "ai": {
+      "sc": {
+        "billTitle": "पुरवठादार बिल स्कॅन",
+        "labelTitle": "उत्पादन लेबल स्कॅन",
+        "billIntro": "4 MB पर्यंतची PDF, PNG किंवा JPEG निवडा. रकाने तपासण्यासाठी वाचले जातात. बिल बनत नाही.",
+        "labelIntro": "लेबलचा फोटो किंवा PDF निवडा. रकाने तपासण्यासाठी वाचले जातात. उत्पादन तयार होत नाही.",
+        "pick": "फाइल निवडा",
+        "change": "फाइल बदला",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फाइल 4 MB पेक्षा मोठी आहे.",
+        "notAllowed": "PDF, PNG किंवा JPEG फाइल निवडा.",
+        "send": "फाइल वाचा",
+        "read": "फाइल वाचली.",
+        "duplicate": "ही फाइल आधी वाचली आहे. आधीचा निकाल दाखवला आहे.",
+        "status": {
+          "REVIEW": "तपासायचे",
+          "CONFIRMED": "निश्चित",
+          "REJECTED": "नाकारले"
+        },
+        "keep": "{{date}} पर्यंत जपून",
+        "conf": "{{n}}% खात्री",
+        "check": "हे तपासा",
+        "line": "ओळ {{n}}",
+        "noIssues": "तपासणीत काही चूक आढळली नाही.",
+        "useDraft": "उत्पादन मसुदा म्हणून घ्या",
+        "reject": "नाकारा",
+        "rejected": "नाकारले.",
+        "confirmed": "झाले.",
+        "draftTitle": "भरलेला उत्पादन फॉर्म",
+        "notCreated": "उत्पादन तयार झाले नाही. जोडण्यासाठी उत्पादन फॉर्म उघडा.",
+        "billNote": "हे फक्त बिल वाचते. यावरून खरेदी बिलाचा मसुदा खरेदी स्क्रीनवर बनतो."
+      },
+      "sh": {
+        "title": "शेल्फ फोटो तपासणी",
+        "intro": "एका शेल्फ किंवा रॅकचा फोटो घ्या. फोटोवरून अंदाज करून सिस्टम साठ्याशी जुळवला जातो. साठा बदलला जात नाही.",
+        "pick": "फोटो निवडा",
+        "run": "फोटोवरून अंदाज करा",
+        "done": "अंदाज तयार.",
+        "estimate": "हा फोटोवरून अंदाज आहे, मोजणी नाही.",
+        "flag": {
+          "MATCH": "जुळतो",
+          "SHORT": "कमी वाटतो",
+          "OVER": "जास्त वाटतो",
+          "LOW_CONFIDENCE": "खात्री नाही",
+          "NOT_SEEN": "फोटोत दिसला नाही",
+          "UNMATCHED": "साठा यादीत नाही"
+        },
+        "counts": "फोटो {{est}}, सिस्टम {{sys}}",
+        "openCount": "फरकासाठी साठा मोजणी उघडा",
+        "opened": "पुन्हा मोजण्यासाठी साठा मोजणी उघडली."
+      },
+      "vl": {
+        "title": "गावांचे कल",
+        "none": "गावे नाहीत.",
+        "trend": {
+          "RISING": "जास्त खरेदी",
+          "STEADY": "स्थिर",
+          "FALLING": "कमी खरेदी",
+          "INSUFFICIENT_DATA": "डेटा कमी"
+        },
+        "facts": "{{customers}} ग्राहक, {{bills}} बिले, विक्री {{spend}}, थकबाकी {{overdue}}",
+        "season": {
+          "KHARIF": "खरीप",
+          "RABI": "रब्बी",
+          "ZAID": "उन्हाळी"
+        },
+        "hidden": "खूप कमी ग्राहक असलेली {{n}} गावे दाखवली नाहीत."
+      },
+      "cm": {
+        "title": "पीक नकाशा आणि तूट",
+        "none": "दाखवण्यासारखे काही नाही.",
+        "tab": {
+          "map": "पीक नकाशा",
+          "short": "तूट"
+        },
+        "acres": "{{n}} एकर",
+        "lead": "ऑर्डरला {{n}} दिवस",
+        "noFactors": "पिकाच्या गरजेचे गुणक अजून भरलेले नाहीत, म्हणून तूट सांगता येत नाही.",
+        "short": "{{n}} ची तूट",
+        "covered": "पुरेसे",
+        "figures": "गरज {{need}}, साठा {{have}}, ऑर्डरवर {{order}}",
+        "unassigned": "{{n}} पीक योजना कोणत्याही उत्पादनाशी जोडल्या गेल्या नाहीत."
+      },
+      "cs": {
+        "title": "पीक डॉक्टरची प्रकरणे",
+        "none": "प्रकरणे नाहीत.",
+        "f": {
+          "ALL": "सर्व",
+          "REQUESTED": "तज्ञाची प्रतीक्षा",
+          "ANSWERED": "उत्तर मिळाले"
+        },
+        "via": {
+          "PHOTO": "फोटो",
+          "TEXT": "लिखित"
+        },
+        "esc": {
+          "NONE": "पुढे पाठवले नाही",
+          "REQUESTED": "तज्ञाची प्रतीक्षा",
+          "ANSWERED": "उत्तर मिळाले"
+        },
+        "asked": "प्रश्न: {{note}}",
+        "answer": "तज्ञ: {{text}}",
+        "reply": "उत्तर लिहा",
+        "write": "तज्ञाचे उत्तर",
+        "short": "किमान 3 अक्षरे लिहा.",
+        "send": "उत्तर पाठवा",
+        "sent": "उत्तर सेव्ह झाले."
+      }
+    }
+  }
+}

@@ -582,3 +582,77 @@ NOT built or limits:
 - Recurring expense: no tax amount, branch or cost centre, and no edit besides on/off.
 - Not built yet in Finance: bank statement import and bank line entry, period lock from a voucher post, GRNI report, ITC reconciliation.
 - Dates are typed as YYYY-MM-DD. Hindi and Marathi texts need native review.
+
+## AI and intelligence, slice 1: assistant chat and daily alerts (branch `web-gaps-3`)
+
+Web side: M15 AI & Intelligence, 49 of 49 use cases marked DONE in `docs/modules/M15-status.md` of the web repo (read only). This branch builds the first two screens on the phone. All lines below: mocked API client, NOT run against the real backend, NOT run on a phone or emulator. Request and answer shapes were copied by hand from `apps/api/src/assistant*.ts`, `apps/api/src/ai-insights.controller.ts` and `modules/ai/src/domain/digest.ts` (no OpenAPI file yet). Texts are in `i18n-parts/ai.json` (English, Hindi, Marathi; Hindi and Marathi were written by the app team and need a native speaker review).
+
+| Feature | Route | Status and evidence |
+| --- | --- | --- |
+| AI assistant chat: typed question, answer, new chat; the model's tool calls are run on the phone with the signed-in person's own token (`GET` of allowed areas only, open a screen, open a customer, change language) and their results go back to the model, at most 8 model calls per question | `/assistant` | DONE (mocked client). `__tests__/ai-screens.test.tsx`, `__tests__/ai-tools.test.ts` (41 tests in the two files). Uses `POST /assistant/chat`. |
+| Changes made by the assistant (add customer, record payment, sign out) wait for a Yes card; the customer name is read back from the API; No changes nothing; amounts are decimal strings; every POST has its own Idempotency-Key; no tenant id is sent | `/assistant` | DONE (mocked client). `__tests__/ai-tools.test.ts`, `__tests__/ai-screens.test.tsx`. |
+| Read allow-list and block-list for the assistant's `get` tool (same rules as the web) | `/assistant` | DONE. `__tests__/ai-tools.test.ts`. The server still decides what the person may read. |
+| Daily alerts (digest): all branches or one, findings by severity, summary, hidden count, "not checked" warning, open the evidence screen, hide a finding for 7 days (needs `ai.recommendation.decide`) | `/ai-digest` | DONE (mocked client). `__tests__/ai-screens.test.tsx`. Uses `GET /ai/digest`, `POST /ai/digest/snooze`, `GET /branches`. |
+| Errors: assistant not configured, service unavailable, rate limit, AI off, AI quota used up | both | DONE (texts). `__tests__/ai-screens.test.tsx` covers ASSISTANT_NOT_CONFIGURED; the others are text only. |
+
+NOT built in this slice, and why:
+- Voice input and spoken answers (the web uses the browser's speech); needs a native speech package and a device test.
+- Streaming of words as they are written (`POST /assistant/chat/stream`); the phone waits for the whole answer. A React Native stream reader has not been tried.
+- The assistant tools set_theme and toggle_header: the app has one theme and no top bar; the assistant says so.
+- The assistant's `navigate` only opens screens that exist in the app; web-only names (engagement, territories, customer-tools, import-history, configuration) answer "no such screen".
+- Digest: the inbox of scheduled runs (`/ai/inbox`), un-hide a hidden finding, weekly insights.
+- Every other M15 screen: reports by question, forecast and seasonal planning, reorder suggestions, crop advisory and pest photo, weather alerts, credit risk and collection plan, churn, anomalies, pricing and expiry advice, multilingual search, voice billing, supplier invoice OCR, marketing drafts, AI actions and approvals, AI governance and quota.
+- The conversation is kept in memory only; it is gone when the screen is closed.
+- Link from the home screen: added as the module "AI assistant" in `src/features/home/modules.ts`; not seen on a real home screen.
+
+## AI and intelligence, group 8: search, voice, documents, training (branch `web-gaps-3`)
+
+Same limits: mocked API client, NOT run against the real backend, NOT run on a phone. The document picker is mocked in tests, so it was never tried with a real file. Hindi and Marathi texts were written without a native reader and need review.
+
+| Use case | Route | Status and evidence |
+| --- | --- | --- |
+| UC-264 Smart product search (name, local name, brand, category, crop, shop aliases; shows why each product matched) | `/ai-search` | DONE (mocked client). Needs `product.view`. NOT built: managing aliases (`ai.governance.manage`). Tests: `__tests__/ai-g8.test.tsx`. |
+| UC-265 Voice order draft: the words are parsed to customer and product lines with quantity; lines with an assumed quantity are flagged; nothing is billed | `/ai-voice` | PARTLY. The parsing (`POST /ai/voice/parse`, intent order or search, English, Hindi, Marathi) is DONE (mocked client). NOT built: reading from the microphone (no speech package in the app; the person types or uses the phone keyboard's dictation) and turning the draft lines into a bill. |
+| G10 Document classification: upload a PDF, PNG or JPEG (up to 4 MB), see the suggested category and reason, choose the category, confirm to file it | `/ai-classify` | DONE (mocked client and mocked picker). Needs `ai.assistant.use` and `org.document.manage`. NOT built: camera capture, the list of earlier classifications, reject. |
+| G13 Staff training: ask the shop's training notes (quoted passages with source and version), read the notes, take a quiz, see my results | `/ai-training`, `/ai-training-quiz` | DONE (mocked client). NOT built: adding or editing notes, retired notes and everyone's results (owner, `ai.governance.manage`). |
+
+## AI and intelligence, slice 6: reports, strategy, branches, expansion (branch `web-gaps-3`)
+
+Same limits: mocked API client, NOT run against the real backend, NOT run on a phone. Hindi and Marathi texts were written without a native reader.
+
+| Use case | Route | Status and evidence |
+| --- | --- | --- |
+| UC-250 / UC-380 Ask a report in words: understood plan, summary, table; clarifying options and name choices (branch, product, customer) re-run with the chosen id; follow-up keeps the earlier answer's memory | `/ai-report` | DONE (mocked client). The report runs under the person's own access on the server. Tests: `__tests__/ai-g5.test.tsx`. NOT built: saved filter sets. |
+| UC-379 Save the written summary as a draft; list saved drafts | `/ai-report`, `/ai-report-drafts` | PARTLY. Save and list are DONE (mocked). NOT built: editing a draft as a new version, wording by the model (polish), version history. |
+| UC-268 Monthly strategy and quarterly roadmap draft (findings, targets with formula, milestones), shop health score with its parts; Approve or Reject sends the payloadHash that was on screen, reject needs a reason | `/ai-strategy` | DONE (mocked client). Needs `reports.financial`; deciding needs `ai.recommendation.decide`. NOT built: owner edits to a draft, the weekly insights run. |
+| UC-386 Branch comparison for a product: status per branch, suggested moves with cost per unit; shows "cost not set" when the owner has not set one | `/ai-branch-compare` | PARTLY. View is DONE (mocked). NOT built: turning a move into a transfer suggestion, and the transfer-cost setting. Needs `inventory.view`. |
+| UC-G14 Expansion what-if: investment, fixed cost, mature sales, ramp-up, margin (own history when empty), working capital; break-even, payback, sensitivity; save and delete | `/ai-expansion` | DONE (mocked client). The server needs JSON numbers for these what-if assumptions, so they are sent as numbers after the text is checked; results are shown, never added up in the app. |
+
+## AI and intelligence, group 4 rest: scans, shelf photo, villages, crop map, cases (branch `web-gaps-3`)
+
+Same limits: mocked API client and mocked file picker, NOT run against the real backend, NOT run on a phone, no file was ever picked on a real device. Tests: `__tests__/ai-g4.test.tsx` (14). Hindi and Marathi texts were written without a native reader and need review. Nothing here posts a bill, creates a product or changes stock.
+
+| Use case | Route | Status and evidence |
+| --- | --- | --- |
+| UC-266 Supplier bill scan: PDF, PNG or JPEG up to 4 MB (base64), fields with how sure each is, low ones flagged, checks (sum, GSTIN, date, duplicate) listed, same file again shows the earlier result, reject | `/ai-bill-scan` | PARTLY (mocked). Needs `purchase.bill.create`. NOT built: correcting the fields (`PUT /ai/ocr/documents/:id/review`), choosing the supplier and receipt lines, and confirming into a draft purchase bill. The camera is not used; files only. |
+| UC-G09 Product label scan: same read and checks; "Use as product draft" shows the prefilled form | `/ai-label-scan` | PARTLY (mocked). Needs `product.create`. NOT built: correcting fields, and opening the product form with the draft filled in; no product is created. |
+| UC-G16 Shelf photo check: pick a warehouse and a photo (JPEG, PNG, WebP up to 4 MB), estimate next to system stock with a flag per product; "Open a stock count" for the differences (once) | `/ai-shelf-check` | DONE (mocked). Needs `inventory.view`; the count button needs `inventory.adjust.create`. The camera is not used; files only. Stock is never changed. |
+| UC-G11 Village trends: trend, change, customers, bills, sales, overdue, season demand, villages hidden for too few customers | `/ai-villages` | DONE (mocked). NOT built: choosing the period length and number of periods. |
+| UC-G12 Crop map (acres per village and crop as bars) and predicted shortage with an order lead-time choice; says so when no requirement factors are entered | `/ai-crop-map` | DONE (mocked). NOT built: entering requirement factors (admin, `ai.governance.manage`), horizon choice. |
+| Crop doctor cases: list by escalation state; a person with `ai.governance.manage` writes the expert answer | `/ai-cases` | DONE (mocked). NOT built: opening one case, and the knowledge base review. |
+
+## AI and intelligence, slice 6 and 7: risks, data quality, governance (branch `web-gaps-3`)
+
+Same limits: mocked API client, NOT run against the real backend, NOT run on a phone. Shapes copied by hand from the controllers; tests in `__tests__/ai-g67.test.tsx`. Hindi and Marathi texts were written without a native reader and need review. Policy thresholds and budgets are plain numbers on the wire (not money strings) and are sent as numbers.
+
+| Use case | Route | Status and evidence |
+| --- | --- | --- |
+| UC-385 Risk register: open counts by severity, filter by status, "Scan now" (needs `ai.recommendation.decide`) | `/ai-risks` | DONE (mocked client). |
+| UC-389 Risk case: timeline notes, acknowledge, resolve or dismiss with a reason of 3 to 500 characters, due date, reopen by a person with `ai.governance.manage`; evidence is listed read-only | `/ai-risk?id=` | PARTLY. Notes, status, due date, reopen are DONE (mocked). NOT built: assigning to a person (needs a user picker), adding evidence, overdue list and risk trend. |
+| UC-261 Transaction anomaly findings | `/ai-risks` | PARTLY. They appear as register entries and in the daily digest; there is no separate anomaly screen for discount, return and cashier patterns. |
+| UC-381 Data-quality dashboard: overall score, score per source with issues, branches not scanned (needs `inventory.view`) | `/ai-quality` | DONE (mocked client). NOT built: history chart and per-branch stock detail. |
+| UC-270 Governance: monthly quota used and left, who sets the limit, evaluation report counts for 30, 90, 180 days (needs `ai.governance.manage`) | `/ai-governance` | PARTLY. Quota and report summary DONE (mocked). NOT built: the CSV download, editing the franchise quota (`PUT /ai/settings`), the full evaluation tables. |
+| UC-383 Approval policy per action (distinct approver, second approver, validity minutes, owner and second-approver limits) saved with `If-Match` version; action limits (reorder budget, transfer cost) | `/ai-policies` | PARTLY. Policies and action limits DONE (mocked). NOT built: designated approvers (`GET/PUT /ai/approvers`, needs a user picker). |
+| UC-382 Feedback on a suggestion (helpful, not helpful, wrong, already knew, note) | `/ai-rec-followup?id=` | DONE (mocked client). NOT linked yet from the suggestion detail screen (another slice's file); open it with the suggestion id. |
+| UC-388 Outcome of a suggestion: measured from the stock ledger, or the received quantity entered by the person, with the source shown | `/ai-rec-followup?id=` | DONE (mocked client). Needs `ai.recommendation.decide`. Same link limit as above. |
+| UC-390 Decision log: summary by tool, model and outcome; latest 50 calls filtered by outcome (needs `ai.audit.view`) | `/ai-audit` | PARTLY. Summary and log DONE (mocked). NOT built: filters by tool, person and date, and the per-recommendation provenance view. |

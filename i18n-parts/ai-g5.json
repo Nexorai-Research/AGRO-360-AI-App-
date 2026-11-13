@@ -1,0 +1,350 @@
+{
+  "en": {
+    "nav": {
+      "aiReport": "Ask a report",
+      "aiReportDrafts": "Saved report drafts",
+      "aiStrategy": "Strategy and health",
+      "aiBranchCompare": "Compare branches",
+      "aiExpansion": "Expansion what-if"
+    },
+    "featureDesc": {
+      "aiReport": "Ask for a report in your own words",
+      "aiStrategy": "Monthly strategy draft, roadmap and shop health score",
+      "aiBranchCompare": "Which branch is short, which has extra, and what a move costs",
+      "aiExpansion": "What-if for opening a new branch"
+    },
+    "ai": {
+      "rp": {
+        "title": "Ask a report",
+        "intro": "Ask in your own words, for example: sales last month by village. The report is run with your own access.",
+        "question": "Your question",
+        "questionBad": "Write 3 to 500 characters.",
+        "run": "Get the report",
+        "followUp": "Ask as a follow-up",
+        "done": "Done.",
+        "drafts": "Saved drafts",
+        "understood": "Understood: {{text}}",
+        "truncated": "Only the first rows are shown.",
+        "save": "Save as a draft",
+        "savedShort": "Saved",
+        "saved": "Draft saved.",
+        "note": "The text is made from the figures above. Check them before you share."
+      },
+      "rd": {
+        "title": "Saved report drafts",
+        "none": "No saved drafts.",
+        "meta": "Version {{v}}, {{date}}, {{source}}",
+        "note": "Editing a draft is not available in the app yet."
+      },
+      "st": {
+        "title": "Strategy and health",
+        "intro": "A draft made by fixed rules from the last two months or quarters. Nothing is set until the owner approves it.",
+        "none": "No strategy drafts yet.",
+        "kind": {
+          "MONTHLY": "Monthly",
+          "QUARTERLY": "Quarterly"
+        },
+        "status": {
+          "DRAFT": "Draft",
+          "APPROVED": "Approved",
+          "REJECTED": "Rejected"
+        },
+        "area": {
+          "GROWTH": "Growth",
+          "MARGIN": "Margin",
+          "STOCK": "Stock",
+          "COLLECTIONS": "Collections"
+        },
+        "action": "Action: {{text}}",
+        "milestone": "Month {{n}} sales target: {{amount}}",
+        "skipped": "Not read: {{text}}",
+        "note": "Note (needed to reject)",
+        "approve": "Approve this draft",
+        "reject": "Reject",
+        "approved": "Approved.",
+        "rejected": "Rejected.",
+        "genMonthly": "Make monthly strategy",
+        "genQuarterly": "Make quarterly roadmap",
+        "generated": "Draft made.",
+        "score": "Shop health {{n}} of 100",
+        "noScore": "Shop health cannot be scored yet",
+        "partial": "Some parts could not be measured and are left out of the score.",
+        "notMeasured": "not measured"
+      },
+      "bc": {
+        "title": "Compare branches",
+        "intro": "Pick a product to see which branch is short, which has extra, and suggested moves.",
+        "none": "No data.",
+        "st": {
+          "SHORT": "Short",
+          "OK": "Fine",
+          "SURPLUS": "Extra stock",
+          "NO_DEMAND": "No sales"
+        },
+        "free": "free {{n}}",
+        "cover": "covers {{n}} days",
+        "noMoves": "No move is suggested.",
+        "move": "Move {{n}} from {{from}} to {{to}}",
+        "cost": "Cost about {{amount}}",
+        "noCost": "Cost not set (the owner sets a cost per unit).",
+        "note": "Suggestions only. Nothing is moved."
+      },
+      "ex2": {
+        "title": "Expansion what-if",
+        "intro": "Your own assumptions, 24 months. Not a forecast.",
+        "investment": "Investment (₹)",
+        "fixed": "Fixed cost per month (₹)",
+        "sales": "Sales per month once mature (₹)",
+        "ramp": "Ramp-up % by month, comma separated",
+        "margin": "Gross margin % (empty = your own last 12 months)",
+        "wc": "Working capital days",
+        "bad": "Check this value.",
+        "run": "Run what-if",
+        "done": "Done.",
+        "never": "not within 24 months",
+        "month": "month {{n}}",
+        "breakEven": "Monthly break-even: {{m}}",
+        "payback": "Payback: {{m}}",
+        "cash24": "Cash after 24 months: {{amount}}",
+        "peak": "Most money tied up: {{amount}}",
+        "name": "Name to save",
+        "save": "Save this what-if",
+        "saved": "Saved.",
+        "delete": "Delete",
+        "deleted": "Deleted."
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "aiReport": "रिपोर्ट पूछें",
+      "aiReportDrafts": "सहेजे रिपोर्ट मसौदे",
+      "aiStrategy": "रणनीति और सेहत",
+      "aiBranchCompare": "शाखाओं की तुलना",
+      "aiExpansion": "विस्तार का अनुमान"
+    },
+    "featureDesc": {
+      "aiReport": "अपने शब्दों में रिपोर्ट माँगें",
+      "aiStrategy": "मासिक रणनीति का मसौदा, रोडमैप और दुकान की सेहत",
+      "aiBranchCompare": "कौन सी शाखा में कमी, किसके पास ज़्यादा, और ले जाने का खर्च",
+      "aiExpansion": "नई शाखा खोलने का अनुमान"
+    },
+    "ai": {
+      "rp": {
+        "title": "रिपोर्ट पूछें",
+        "intro": "अपने शब्दों में पूछें, जैसे: पिछले महीने गाँव के हिसाब से बिक्री। रिपोर्ट आपकी अपनी अनुमति से चलती है।",
+        "question": "आपका सवाल",
+        "questionBad": "3 से 500 अक्षर लिखें।",
+        "run": "रिपोर्ट लाएँ",
+        "followUp": "अगले सवाल के रूप में पूछें",
+        "done": "हो गया।",
+        "drafts": "सहेजे मसौदे",
+        "understood": "समझा: {{text}}",
+        "truncated": "सिर्फ़ शुरुआती पंक्तियाँ दिखाई गई हैं।",
+        "save": "मसौदे के रूप में सहेजें",
+        "savedShort": "सहेजा गया",
+        "saved": "मसौदा सहेजा गया।",
+        "note": "पाठ ऊपर के आँकड़ों से बना है। साझा करने से पहले जाँच लें।"
+      },
+      "rd": {
+        "title": "सहेजे रिपोर्ट मसौदे",
+        "none": "कोई सहेजा मसौदा नहीं।",
+        "meta": "संस्करण {{v}}, {{date}}, {{source}}",
+        "note": "मसौदा बदलना अभी ऐप में नहीं है।"
+      },
+      "st": {
+        "title": "रणनीति और सेहत",
+        "intro": "पिछले दो महीनों या तिमाहियों से तय नियमों द्वारा बना मसौदा। मालिक की मंज़ूरी तक कुछ लागू नहीं होता।",
+        "none": "अभी कोई रणनीति मसौदा नहीं।",
+        "kind": {
+          "MONTHLY": "मासिक",
+          "QUARTERLY": "तिमाही"
+        },
+        "status": {
+          "DRAFT": "मसौदा",
+          "APPROVED": "मंज़ूर",
+          "REJECTED": "नामंज़ूर"
+        },
+        "area": {
+          "GROWTH": "वृद्धि",
+          "MARGIN": "मार्जिन",
+          "STOCK": "स्टॉक",
+          "COLLECTIONS": "वसूली"
+        },
+        "action": "कदम: {{text}}",
+        "milestone": "महीना {{n}} बिक्री लक्ष्य: {{amount}}",
+        "skipped": "पढ़ा नहीं जा सका: {{text}}",
+        "note": "टिप्पणी (नामंज़ूर करने के लिए ज़रूरी)",
+        "approve": "यह मसौदा मंज़ूर करें",
+        "reject": "नामंज़ूर करें",
+        "approved": "मंज़ूर हुआ।",
+        "rejected": "नामंज़ूर हुआ।",
+        "genMonthly": "मासिक रणनीति बनाएँ",
+        "genQuarterly": "तिमाही रोडमैप बनाएँ",
+        "generated": "मसौदा बन गया।",
+        "score": "दुकान की सेहत 100 में से {{n}}",
+        "noScore": "दुकान की सेहत अभी आँकी नहीं जा सकती",
+        "partial": "कुछ हिस्से नापे नहीं जा सके और स्कोर में शामिल नहीं हैं।",
+        "notMeasured": "नापा नहीं गया"
+      },
+      "bc": {
+        "title": "शाखाओं की तुलना",
+        "intro": "उत्पाद चुनें: किस शाखा में कमी है, किसके पास ज़्यादा है और सुझाए गए बदलाव।",
+        "none": "डेटा नहीं।",
+        "st": {
+          "SHORT": "कमी",
+          "OK": "ठीक",
+          "SURPLUS": "ज़्यादा स्टॉक",
+          "NO_DEMAND": "बिक्री नहीं"
+        },
+        "free": "खाली {{n}}",
+        "cover": "{{n}} दिन चलेगा",
+        "noMoves": "कोई स्थानांतरण नहीं सुझाया।",
+        "move": "{{from}} से {{to}} को {{n}} भेजें",
+        "cost": "खर्च लगभग {{amount}}",
+        "noCost": "खर्च तय नहीं (मालिक प्रति इकाई खर्च तय करता है)।",
+        "note": "सिर्फ़ सुझाव। कुछ हिलाया नहीं जाता।"
+      },
+      "ex2": {
+        "title": "विस्तार का अनुमान",
+        "intro": "आपकी अपनी मान्यताएँ, 24 महीने। यह पूर्वानुमान नहीं है।",
+        "investment": "निवेश (₹)",
+        "fixed": "महीने का स्थायी खर्च (₹)",
+        "sales": "परिपक्व होने पर महीने की बिक्री (₹)",
+        "ramp": "महीने के हिसाब से बढ़त %, कॉमा से अलग",
+        "margin": "सकल मार्जिन % (खाली = आपके पिछले 12 महीने)",
+        "wc": "कार्यशील पूँजी के दिन",
+        "bad": "यह मान जाँचें।",
+        "run": "अनुमान चलाएँ",
+        "done": "हो गया।",
+        "never": "24 महीने में नहीं",
+        "month": "महीना {{n}}",
+        "breakEven": "मासिक ब्रेक-ईवन: {{m}}",
+        "payback": "निवेश वापसी: {{m}}",
+        "cash24": "24 महीने बाद नकद: {{amount}}",
+        "peak": "सबसे ज़्यादा फँसा पैसा: {{amount}}",
+        "name": "सहेजने के लिए नाम",
+        "save": "यह अनुमान सहेजें",
+        "saved": "सहेजा गया।",
+        "delete": "हटाएँ",
+        "deleted": "हटा दिया।"
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "aiReport": "अहवाल विचारा",
+      "aiReportDrafts": "जतन केलेले अहवाल मसुदे",
+      "aiStrategy": "धोरण आणि आरोग्य",
+      "aiBranchCompare": "शाखांची तुलना",
+      "aiExpansion": "विस्ताराचा अंदाज"
+    },
+    "featureDesc": {
+      "aiReport": "स्वतःच्या शब्दांत अहवाल मागा",
+      "aiStrategy": "मासिक धोरण मसुदा, रोडमॅप आणि दुकानाचे आरोग्य",
+      "aiBranchCompare": "कोणत्या शाखेत कमतरता, कुठे जास्त, आणि हलवण्याचा खर्च",
+      "aiExpansion": "नवी शाखा उघडण्याचा अंदाज"
+    },
+    "ai": {
+      "rp": {
+        "title": "अहवाल विचारा",
+        "intro": "स्वतःच्या शब्दांत विचारा, उदा. मागील महिन्याची गावानुसार विक्री. अहवाल तुमच्या स्वतःच्या परवानगीने चालतो.",
+        "question": "तुमचा प्रश्न",
+        "questionBad": "3 ते 500 अक्षरे लिहा.",
+        "run": "अहवाल आणा",
+        "followUp": "पुढचा प्रश्न म्हणून विचारा",
+        "done": "झाले.",
+        "drafts": "जतन केलेले मसुदे",
+        "understood": "समजले: {{text}}",
+        "truncated": "फक्त सुरुवातीच्या ओळी दाखवल्या आहेत.",
+        "save": "मसुदा म्हणून जतन करा",
+        "savedShort": "जतन केले",
+        "saved": "मसुदा जतन केला.",
+        "note": "मजकूर वरील आकड्यांवरून बनला आहे. शेअर करण्यापूर्वी तपासा."
+      },
+      "rd": {
+        "title": "जतन केलेले अहवाल मसुदे",
+        "none": "जतन केलेला मसुदा नाही.",
+        "meta": "आवृत्ती {{v}}, {{date}}, {{source}}",
+        "note": "मसुदा बदलणे अजून ॲपमध्ये नाही."
+      },
+      "st": {
+        "title": "धोरण आणि आरोग्य",
+        "intro": "मागील दोन महिने किंवा तिमाहींवरून ठरलेल्या नियमांनी बनलेला मसुदा. मालकाच्या मंजुरीपर्यंत काही लागू होत नाही.",
+        "none": "अजून धोरण मसुदा नाही.",
+        "kind": {
+          "MONTHLY": "मासिक",
+          "QUARTERLY": "तिमाही"
+        },
+        "status": {
+          "DRAFT": "मसुदा",
+          "APPROVED": "मंजूर",
+          "REJECTED": "नामंजूर"
+        },
+        "area": {
+          "GROWTH": "वाढ",
+          "MARGIN": "मार्जिन",
+          "STOCK": "साठा",
+          "COLLECTIONS": "वसुली"
+        },
+        "action": "कृती: {{text}}",
+        "milestone": "महिना {{n}} विक्री लक्ष्य: {{amount}}",
+        "skipped": "वाचता आले नाही: {{text}}",
+        "note": "टीप (नामंजूर करण्यासाठी आवश्यक)",
+        "approve": "हा मसुदा मंजूर करा",
+        "reject": "नामंजूर करा",
+        "approved": "मंजूर झाले.",
+        "rejected": "नामंजूर झाले.",
+        "genMonthly": "मासिक धोरण बनवा",
+        "genQuarterly": "तिमाही रोडमॅप बनवा",
+        "generated": "मसुदा तयार.",
+        "score": "दुकानाचे आरोग्य 100 पैकी {{n}}",
+        "noScore": "दुकानाचे आरोग्य अजून मोजता येत नाही",
+        "partial": "काही भाग मोजता आले नाहीत आणि गुणांत धरलेले नाहीत.",
+        "notMeasured": "मोजले नाही"
+      },
+      "bc": {
+        "title": "शाखांची तुलना",
+        "intro": "उत्पादन निवडा: कोणत्या शाखेत कमतरता, कुठे जास्त आणि सुचवलेले बदल.",
+        "none": "डेटा नाही.",
+        "st": {
+          "SHORT": "कमतरता",
+          "OK": "ठीक",
+          "SURPLUS": "जास्त साठा",
+          "NO_DEMAND": "विक्री नाही"
+        },
+        "free": "मोकळे {{n}}",
+        "cover": "{{n}} दिवस पुरेल",
+        "noMoves": "कोणतेही स्थानांतर सुचवलेले नाही.",
+        "move": "{{from}} कडून {{to}} कडे {{n}} पाठवा",
+        "cost": "खर्च अंदाजे {{amount}}",
+        "noCost": "खर्च ठरलेला नाही (मालक प्रति नग खर्च ठरवतो).",
+        "note": "फक्त सूचना. काही हलवले जात नाही."
+      },
+      "ex2": {
+        "title": "विस्ताराचा अंदाज",
+        "intro": "तुमच्या स्वतःच्या गृहितकांवर, 24 महिने. हा अंदाज नाही, फक्त काय-जर.",
+        "investment": "गुंतवणूक (₹)",
+        "fixed": "महिन्याचा स्थिर खर्च (₹)",
+        "sales": "परिपक्व झाल्यावर महिन्याची विक्री (₹)",
+        "ramp": "महिन्यानुसार वाढ %, स्वल्पविरामाने वेगळे",
+        "margin": "एकूण मार्जिन % (रिकामे = तुमचे मागील 12 महिने)",
+        "wc": "खेळत्या भांडवलाचे दिवस",
+        "bad": "ही किंमत तपासा.",
+        "run": "अंदाज चालवा",
+        "done": "झाले.",
+        "never": "24 महिन्यांत नाही",
+        "month": "महिना {{n}}",
+        "breakEven": "मासिक ब्रेक-ईव्हन: {{m}}",
+        "payback": "गुंतवणूक परतावा: {{m}}",
+        "cash24": "24 महिन्यांनंतर रोख: {{amount}}",
+        "peak": "सर्वाधिक अडकलेले पैसे: {{amount}}",
+        "name": "जतन करण्यासाठी नाव",
+        "save": "हा अंदाज जतन करा",
+        "saved": "जतन केले.",
+        "delete": "काढा",
+        "deleted": "काढले."
+      }
+    }
+  }
+}

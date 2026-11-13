@@ -1,0 +1,269 @@
+{
+  "en": {
+    "nav": {
+      "aiSearch": "Smart search",
+      "aiVoice": "Spoken order draft",
+      "aiClassify": "File a document",
+      "aiTraining": "Staff training"
+    },
+    "featureDesc": {
+      "aiSearch": "Find a product by local name, brand or crop",
+      "aiVoice": "Turn words into a draft order (check before billing)",
+      "aiClassify": "Upload a document and file it under the right category",
+      "aiTraining": "Ask the shop's own training notes and take a quiz"
+    },
+    "ai": {
+      "sr": {
+        "title": "Smart search",
+        "intro": "Finds products by name, local name, brand, category or crop, including shop nicknames.",
+        "box": "Search product",
+        "none": "No product found.",
+        "because": "Matched on: {{list}}"
+      },
+      "vo": {
+        "title": "Spoken order draft",
+        "intro": "Type or dictate with your phone keyboard. This app has no built-in microphone reading. The result is a draft only; nothing is billed.",
+        "intent": {
+          "cart": "Order",
+          "search": "Search"
+        },
+        "lang": {
+          "en": "English",
+          "hi": "Hindi",
+          "mr": "Marathi"
+        },
+        "words": "What was said",
+        "bad": "Enter 1 to 600 characters.",
+        "run": "Read it",
+        "done": "Read.",
+        "customer": "Customer: {{name}}",
+        "noLines": "No product lines found.",
+        "qty": "Quantity {{qty}} {{unit}}",
+        "assumed": "quantity assumed, check it"
+      },
+      "cl": {
+        "title": "File a document",
+        "intro": "The suggestion is only a suggestion. You choose the category and the file is stored only after you confirm.",
+        "pick": "Choose a file",
+        "change": "Choose another file",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "The file is larger than 4 MB.",
+        "notRead": "The file could not be read. Choose a PDF, PNG or JPEG.",
+        "upload": "Read the file",
+        "read": "File read.",
+        "suggested": "Suggested: {{cat}}",
+        "pickCat": "Category",
+        "file": "File it",
+        "filed": "Filed.",
+        "done": "Filed as {{cat}}.",
+        "cat": {
+          "PURCHASE_INVOICE": "Purchase invoice",
+          "DELIVERY_CHALLAN": "Delivery challan",
+          "LICENCE": "Licence",
+          "GST_CERTIFICATE": "GST certificate",
+          "KYC": "KYC",
+          "OTHER": "Other"
+        }
+      },
+      "tr": {
+        "title": "Staff training",
+        "tab": {
+          "ask": "Ask",
+          "items": "Notes",
+          "mine": "My results"
+        },
+        "question": "Your question",
+        "bad": "Write 2 to 300 characters.",
+        "ask": "Find the answer",
+        "none": "No answer.",
+        "from": "Source: {{source}}, version {{version}}",
+        "noItems": "No training notes yet.",
+        "noMine": "You have not taken a quiz yet.",
+        "quiz": "Take the quiz",
+        "noQuiz": "No quiz.",
+        "submit": "Send answers",
+        "sent": "Answers sent.",
+        "passed": "passed",
+        "notPassed": "not passed"
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "aiSearch": "स्मार्ट खोज",
+      "aiVoice": "बोलकर ऑर्डर का मसौदा",
+      "aiClassify": "दस्तावेज़ दर्ज करें",
+      "aiTraining": "स्टाफ़ प्रशिक्षण"
+    },
+    "featureDesc": {
+      "aiSearch": "स्थानीय नाम, ब्रांड या फ़सल से उत्पाद खोजें",
+      "aiVoice": "बोले शब्दों से ऑर्डर का मसौदा (बिल से पहले जाँचें)",
+      "aiClassify": "दस्तावेज़ अपलोड करें और सही श्रेणी में रखें",
+      "aiTraining": "दुकान के अपने प्रशिक्षण नोट पूछें और प्रश्नोत्तरी दें"
+    },
+    "ai": {
+      "sr": {
+        "title": "स्मार्ट खोज",
+        "intro": "नाम, स्थानीय नाम, ब्रांड, श्रेणी या फ़सल से उत्पाद खोजता है, दुकान के उपनामों समेत।",
+        "box": "उत्पाद खोजें",
+        "none": "कोई उत्पाद नहीं मिला।",
+        "because": "मिलान: {{list}}"
+      },
+      "vo": {
+        "title": "बोलकर ऑर्डर का मसौदा",
+        "intro": "फ़ोन के कीबोर्ड से लिखें या बोलकर लिखवाएँ। इस ऐप में माइक्रोफ़ोन से सीधा पढ़ना नहीं है। नतीजा सिर्फ़ मसौदा है; बिल कुछ नहीं बनता।",
+        "intent": {
+          "cart": "ऑर्डर",
+          "search": "खोज"
+        },
+        "lang": {
+          "en": "अंग्रेज़ी",
+          "hi": "हिंदी",
+          "mr": "मराठी"
+        },
+        "words": "जो बोला गया",
+        "bad": "1 से 600 अक्षर लिखें।",
+        "run": "पढ़ें",
+        "done": "पढ़ लिया।",
+        "customer": "ग्राहक: {{name}}",
+        "noLines": "कोई उत्पाद पंक्ति नहीं मिली।",
+        "qty": "मात्रा {{qty}} {{unit}}",
+        "assumed": "मात्रा अनुमान से, जाँचें"
+      },
+      "cl": {
+        "title": "दस्तावेज़ दर्ज करें",
+        "intro": "सुझाव सिर्फ़ सुझाव है। श्रेणी आप चुनते हैं और फ़ाइल पुष्टि के बाद ही रखी जाती है।",
+        "pick": "फ़ाइल चुनें",
+        "change": "दूसरी फ़ाइल चुनें",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फ़ाइल 4 MB से बड़ी है।",
+        "notRead": "फ़ाइल पढ़ी नहीं जा सकी। PDF, PNG या JPEG चुनें।",
+        "upload": "फ़ाइल पढ़ें",
+        "read": "फ़ाइल पढ़ ली।",
+        "suggested": "सुझाव: {{cat}}",
+        "pickCat": "श्रेणी",
+        "file": "दर्ज करें",
+        "filed": "दर्ज हो गया।",
+        "done": "{{cat}} के रूप में दर्ज।",
+        "cat": {
+          "PURCHASE_INVOICE": "खरीद बिल",
+          "DELIVERY_CHALLAN": "डिलीवरी चालान",
+          "LICENCE": "लाइसेंस",
+          "GST_CERTIFICATE": "GST प्रमाणपत्र",
+          "KYC": "KYC",
+          "OTHER": "अन्य"
+        }
+      },
+      "tr": {
+        "title": "स्टाफ़ प्रशिक्षण",
+        "tab": {
+          "ask": "पूछें",
+          "items": "नोट",
+          "mine": "मेरे नतीजे"
+        },
+        "question": "आपका सवाल",
+        "bad": "2 से 300 अक्षर लिखें।",
+        "ask": "जवाब खोजें",
+        "none": "कोई जवाब नहीं।",
+        "from": "स्रोत: {{source}}, संस्करण {{version}}",
+        "noItems": "अभी कोई प्रशिक्षण नोट नहीं।",
+        "noMine": "आपने अभी कोई प्रश्नोत्तरी नहीं दी।",
+        "quiz": "प्रश्नोत्तरी दें",
+        "noQuiz": "कोई प्रश्नोत्तरी नहीं।",
+        "submit": "उत्तर भेजें",
+        "sent": "उत्तर भेज दिए।",
+        "passed": "पास",
+        "notPassed": "पास नहीं"
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "aiSearch": "स्मार्ट शोध",
+      "aiVoice": "बोलून ऑर्डरचा मसुदा",
+      "aiClassify": "कागदपत्र नोंदवा",
+      "aiTraining": "कर्मचारी प्रशिक्षण"
+    },
+    "featureDesc": {
+      "aiSearch": "स्थानिक नाव, ब्रँड किंवा पिकावरून उत्पादन शोधा",
+      "aiVoice": "बोललेल्या शब्दांतून ऑर्डरचा मसुदा (बिलाआधी तपासा)",
+      "aiClassify": "कागदपत्र अपलोड करा आणि योग्य वर्गात ठेवा",
+      "aiTraining": "दुकानाच्या स्वतःच्या प्रशिक्षण नोंदी विचारा आणि प्रश्नमंजुषा द्या"
+    },
+    "ai": {
+      "sr": {
+        "title": "स्मार्ट शोध",
+        "intro": "नाव, स्थानिक नाव, ब्रँड, वर्ग किंवा पिकावरून उत्पादने शोधते, दुकानाच्या टोपणनावांसह.",
+        "box": "उत्पादन शोधा",
+        "none": "उत्पादन सापडले नाही.",
+        "because": "जुळले: {{list}}"
+      },
+      "vo": {
+        "title": "बोलून ऑर्डरचा मसुदा",
+        "intro": "फोनच्या कीबोर्डने लिहा किंवा बोलून लिहवा. या ॲपमध्ये मायक्रोफोनवरून थेट वाचन नाही. निकाल फक्त मसुदा आहे; बिल काहीही होत नाही.",
+        "intent": {
+          "cart": "ऑर्डर",
+          "search": "शोध"
+        },
+        "lang": {
+          "en": "इंग्रजी",
+          "hi": "हिंदी",
+          "mr": "मराठी"
+        },
+        "words": "जे बोलले गेले",
+        "bad": "1 ते 600 अक्षरे लिहा.",
+        "run": "वाचा",
+        "done": "वाचले.",
+        "customer": "ग्राहक: {{name}}",
+        "noLines": "उत्पादन ओळी सापडल्या नाहीत.",
+        "qty": "प्रमाण {{qty}} {{unit}}",
+        "assumed": "प्रमाण अंदाजे, तपासा"
+      },
+      "cl": {
+        "title": "कागदपत्र नोंदवा",
+        "intro": "सूचना ही फक्त सूचना आहे. वर्ग तुम्ही निवडता आणि फाइल खात्रीनंतरच ठेवली जाते.",
+        "pick": "फाइल निवडा",
+        "change": "दुसरी फाइल निवडा",
+        "chosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फाइल 4 MB पेक्षा मोठी आहे.",
+        "notRead": "फाइल वाचता आली नाही. PDF, PNG किंवा JPEG निवडा.",
+        "upload": "फाइल वाचा",
+        "read": "फाइल वाचली.",
+        "suggested": "सूचना: {{cat}}",
+        "pickCat": "वर्ग",
+        "file": "नोंदवा",
+        "filed": "नोंदवले.",
+        "done": "{{cat}} म्हणून नोंदवले.",
+        "cat": {
+          "PURCHASE_INVOICE": "खरेदी बिल",
+          "DELIVERY_CHALLAN": "डिलिव्हरी चलन",
+          "LICENCE": "परवाना",
+          "GST_CERTIFICATE": "GST प्रमाणपत्र",
+          "KYC": "KYC",
+          "OTHER": "इतर"
+        }
+      },
+      "tr": {
+        "title": "कर्मचारी प्रशिक्षण",
+        "tab": {
+          "ask": "विचारा",
+          "items": "नोंदी",
+          "mine": "माझे निकाल"
+        },
+        "question": "तुमचा प्रश्न",
+        "bad": "2 ते 300 अक्षरे लिहा.",
+        "ask": "उत्तर शोधा",
+        "none": "उत्तर नाही.",
+        "from": "स्रोत: {{source}}, आवृत्ती {{version}}",
+        "noItems": "अजून प्रशिक्षण नोंदी नाहीत.",
+        "noMine": "तुम्ही अजून प्रश्नमंजुषा दिलेली नाही.",
+        "quiz": "प्रश्नमंजुषा द्या",
+        "noQuiz": "प्रश्नमंजुषा नाही.",
+        "submit": "उत्तरे पाठवा",
+        "sent": "उत्तरे पाठवली.",
+        "passed": "उत्तीर्ण",
+        "notPassed": "अनुत्तीर्ण"
+      }
+    }
+  }
+}

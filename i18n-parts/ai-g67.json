@@ -1,0 +1,434 @@
+{
+  "en": {
+    "nav": {
+      "aiRisks": "Risk register",
+      "aiQuality": "Data quality",
+      "aiGovern": "AI usage and evaluation",
+      "aiPolicies": "Approval policy",
+      "aiAudit": "AI decision log"
+    },
+    "featureDesc": {
+      "aiRisks": "Open risks found by the scan, with case notes",
+      "aiQuality": "How complete and clean your data is",
+      "aiGovern": "Monthly AI quota and the evaluation report",
+      "aiPolicies": "Who must approve AI actions, and limits",
+      "aiAudit": "Every AI call: who, which tool, which model"
+    },
+    "ai": {
+      "rk": {
+        "title": "Risk register",
+        "note": "Note",
+        "summary": "Open: {{high}} high, {{medium}} medium, {{low}} low",
+        "all": "All",
+        "scan": "Scan now",
+        "scanned": "Scan done.",
+        "none": "No risks here.",
+        "due": "due {{date}}",
+        "kind": {
+          "STOCKOUT": "Stock-out",
+          "EXPIRY": "Expiry",
+          "CASH_FLOW": "Cash flow",
+          "COLLECTION": "Collection",
+          "CHURN": "Customer left",
+          "SEASONAL_ANOMALY": "Seasonal anomaly",
+          "DRIFT": "Forecast drift",
+          "COMPLIANCE": "Compliance"
+        },
+        "st": {
+          "OPEN": "Open",
+          "ACKNOWLEDGED": "Acknowledged",
+          "RESOLVED": "Resolved",
+          "DISMISSED": "Dismissed"
+        },
+        "timeline": "Timeline",
+        "noNotes": "No notes yet.",
+        "evidence": "Evidence",
+        "addNote": "Add note",
+        "noted": "Note added.",
+        "dueLabel": "Due date",
+        "dueBad": "Use a date like 2026-12-31.",
+        "setDue": "Set due date",
+        "dueSet": "Due date set.",
+        "reasonLabel": "Reason (3 to 500 characters)",
+        "reasonBad": "Give a reason of 3 to 500 characters.",
+        "reason": "Reason: {{text}}",
+        "ack": "Acknowledge",
+        "resolve": "Resolve",
+        "dismiss": "Dismiss",
+        "changed": "Case updated.",
+        "reopenNote": "A closed case can be reopened by a different person than the one who closed it.",
+        "reopen": "Reopen",
+        "reopened": "Case reopened.",
+        "noteLabel": "Note"
+      },
+      "dq": {
+        "title": "Data quality",
+        "none": "No data.",
+        "noScore": "Not enough data to score.",
+        "overall": "Overall {{n}} of 100",
+        "checked": "{{n}} checked",
+        "notScanned": "Not scanned: {{list}}",
+        "src": {
+          "STOCK_HISTORY": "Stock history",
+          "CUSTOMERS": "Customers",
+          "PRICES": "Prices",
+          "SUPPLIERS": "Suppliers"
+        }
+      },
+      "gv": {
+        "title": "AI usage and evaluation",
+        "none": "No data.",
+        "used": "Used {{used}} of {{quota}} AI calls this month",
+        "remaining": "{{n}} left",
+        "limitedBy": "Limit set by: {{by}}",
+        "days": "{{n}} days",
+        "report": "Evaluation, last {{n}} days",
+        "model": "Model version {{v}}",
+        "counts": "{{comparisons}} method comparisons, {{promotions}} promotions, {{drift}} drift cases, {{methods}} methods in force",
+        "trend": "{{branch}}: {{n}} accuracy points",
+        "csvNote": "The CSV download is not in the app yet."
+      },
+      "po": {
+        "title": "Approval policy",
+        "intro": "Approval cannot be switched off. These rules make it stricter.",
+        "none": "No policies.",
+        "default": "Default rules (never changed).",
+        "action": {},
+        "distinct": "The approver must be a different person than the one who asked",
+        "second": "A second person must also approve",
+        "yes": "Yes",
+        "no": "No",
+        "ttl": "Approval valid for (1 to 15 minutes)",
+        "ttlBad": "Whole number from 1 to 15.",
+        "ownerAbove": "Owner must approve above (blank = no limit)",
+        "secondAbove": "Second approver above (blank = no limit)",
+        "limitBad": "Leave blank or enter a number above 0.",
+        "save": "Save",
+        "saved": "Saved.",
+        "settings": "Action limits",
+        "budget": "Reorder budget (blank = none)",
+        "transfer": "Transfer cost per unit (blank = not set)"
+      },
+      "fu": {
+        "title": "Feedback and outcome",
+        "feedback": "Was this suggestion useful?",
+        "v": {
+          "HELPFUL": "Helpful",
+          "NOT_HELPFUL": "Not helpful",
+          "WRONG": "Wrong",
+          "ALREADY_KNEW": "Already knew"
+        },
+        "note": "Note (optional)",
+        "send": "Send feedback",
+        "sent": "Thank you. Feedback saved.",
+        "outcome": "Measure the outcome",
+        "outcomeNote": "Reads goods received and stock-outs since the suggestion. You may enter a quantity received outside the system.",
+        "received": "Quantity received (optional)",
+        "qtyBad": "Enter a number.",
+        "measure": "Measure now",
+        "measured": "Outcome saved.",
+        "result": "Received {{qty}}; ran out: {{out}}",
+        "yes": "yes",
+        "no": "no",
+        "src": {
+          "STOCK_LEDGER": "from the stock ledger",
+          "ENTERED_BY_REVIEWER": "entered by you"
+        }
+      },
+      "au": {
+        "title": "AI decision log",
+        "note": "Every AI call is recorded. Inputs and outputs are kept as hashes, not text.",
+        "all": "All",
+        "none": "No records."
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "aiRisks": "जोखिम रजिस्टर",
+      "aiQuality": "डेटा की गुणवत्ता",
+      "aiGovern": "AI उपयोग और मूल्यांकन",
+      "aiPolicies": "मंज़ूरी नीति",
+      "aiAudit": "AI फ़ैसलों का लॉग"
+    },
+    "featureDesc": {
+      "aiRisks": "स्कैन में मिले खुले जोखिम, केस नोट के साथ",
+      "aiQuality": "आपका डेटा कितना पूरा और साफ़ है",
+      "aiGovern": "मासिक AI कोटा और मूल्यांकन रिपोर्ट",
+      "aiPolicies": "AI कार्यों को कौन मंज़ूर करे, और सीमाएँ",
+      "aiAudit": "हर AI कॉल: किसने, कौन सा टूल, कौन सा मॉडल"
+    },
+    "ai": {
+      "rk": {
+        "title": "जोखिम रजिस्टर",
+        "note": "नोट",
+        "summary": "खुले: {{high}} ज़्यादा, {{medium}} मध्यम, {{low}} कम",
+        "all": "सभी",
+        "scan": "अभी स्कैन करें",
+        "scanned": "स्कैन हो गया।",
+        "none": "यहाँ कोई जोखिम नहीं।",
+        "due": "अंतिम तिथि {{date}}",
+        "kind": {
+          "STOCKOUT": "स्टॉक खत्म",
+          "EXPIRY": "एक्सपायरी",
+          "CASH_FLOW": "नकदी प्रवाह",
+          "COLLECTION": "वसूली",
+          "CHURN": "ग्राहक छूटा",
+          "SEASONAL_ANOMALY": "मौसमी गड़बड़ी",
+          "DRIFT": "पूर्वानुमान में भटकाव",
+          "COMPLIANCE": "अनुपालन"
+        },
+        "st": {
+          "OPEN": "खुला",
+          "ACKNOWLEDGED": "देखा गया",
+          "RESOLVED": "सुलझा",
+          "DISMISSED": "खारिज"
+        },
+        "timeline": "समयरेखा",
+        "noNotes": "अभी कोई नोट नहीं।",
+        "evidence": "सबूत",
+        "addNote": "नोट जोड़ें",
+        "noted": "नोट जुड़ गया।",
+        "dueLabel": "अंतिम तिथि",
+        "dueBad": "2026-12-31 जैसी तारीख लिखें।",
+        "setDue": "अंतिम तिथि तय करें",
+        "dueSet": "अंतिम तिथि तय हुई।",
+        "reasonLabel": "कारण (3 से 500 अक्षर)",
+        "reasonBad": "3 से 500 अक्षर का कारण लिखें।",
+        "reason": "कारण: {{text}}",
+        "ack": "देख लिया",
+        "resolve": "सुलझाएँ",
+        "dismiss": "खारिज करें",
+        "changed": "केस अपडेट हुआ।",
+        "reopenNote": "बंद केस को वही व्यक्ति दोबारा नहीं खोल सकता जिसने बंद किया था।",
+        "reopen": "दोबारा खोलें",
+        "reopened": "केस दोबारा खुला।",
+        "noteLabel": "नोट"
+      },
+      "dq": {
+        "title": "डेटा की गुणवत्ता",
+        "none": "डेटा नहीं।",
+        "noScore": "स्कोर के लिए डेटा कम है।",
+        "overall": "कुल 100 में से {{n}}",
+        "checked": "{{n}} जाँचे गए",
+        "notScanned": "जाँचे नहीं गए: {{list}}",
+        "src": {
+          "STOCK_HISTORY": "स्टॉक इतिहास",
+          "CUSTOMERS": "ग्राहक",
+          "PRICES": "दाम",
+          "SUPPLIERS": "आपूर्तिकर्ता"
+        }
+      },
+      "gv": {
+        "title": "AI उपयोग और मूल्यांकन",
+        "none": "डेटा नहीं।",
+        "used": "इस महीने {{quota}} में से {{used}} AI कॉल इस्तेमाल हुए",
+        "remaining": "{{n}} बाकी",
+        "limitedBy": "सीमा तय करने वाला: {{by}}",
+        "days": "{{n}} दिन",
+        "report": "मूल्यांकन, पिछले {{n}} दिन",
+        "model": "मॉडल संस्करण {{v}}",
+        "counts": "{{comparisons}} तरीकों की तुलना, {{promotions}} प्रमोशन, {{drift}} भटकाव केस, {{methods}} चालू तरीके",
+        "trend": "{{branch}}: {{n}} सटीकता बिंदु",
+        "csvNote": "CSV डाउनलोड अभी ऐप में नहीं है।"
+      },
+      "po": {
+        "title": "मंज़ूरी नीति",
+        "intro": "मंज़ूरी बंद नहीं की जा सकती। ये नियम उसे और सख़्त करते हैं।",
+        "none": "कोई नीति नहीं।",
+        "default": "डिफ़ॉल्ट नियम (कभी बदले नहीं गए)।",
+        "action": {},
+        "distinct": "मंज़ूर करने वाला माँगने वाले से अलग व्यक्ति हो",
+        "second": "दूसरे व्यक्ति की मंज़ूरी भी ज़रूरी",
+        "yes": "हाँ",
+        "no": "नहीं",
+        "ttl": "मंज़ूरी कितनी देर मान्य (1 से 15 मिनट)",
+        "ttlBad": "1 से 15 तक पूरी संख्या।",
+        "ownerAbove": "इससे ऊपर मालिक मंज़ूर करे (खाली = कोई सीमा नहीं)",
+        "secondAbove": "इससे ऊपर दूसरा मंज़ूरीकर्ता (खाली = कोई सीमा नहीं)",
+        "limitBad": "खाली छोड़ें या 0 से बड़ी संख्या लिखें।",
+        "save": "सेव करें",
+        "saved": "सेव हो गया।",
+        "settings": "कार्य सीमाएँ",
+        "budget": "रीऑर्डर बजट (खाली = नहीं)",
+        "transfer": "प्रति इकाई स्थानांतरण लागत (खाली = तय नहीं)"
+      },
+      "fu": {
+        "title": "प्रतिक्रिया और नतीजा",
+        "feedback": "क्या यह सुझाव काम का था?",
+        "v": {
+          "HELPFUL": "काम का",
+          "NOT_HELPFUL": "काम का नहीं",
+          "WRONG": "गलत",
+          "ALREADY_KNEW": "पहले से पता था"
+        },
+        "note": "टिप्पणी (वैकल्पिक)",
+        "send": "प्रतिक्रिया भेजें",
+        "sent": "धन्यवाद। प्रतिक्रिया सेव हुई।",
+        "outcome": "नतीजा मापें",
+        "outcomeNote": "सुझाव के बाद आया माल और स्टॉक खत्म होना पढ़ता है। सिस्टम के बाहर मिला माल आप खुद लिख सकते हैं।",
+        "received": "मिली मात्रा (वैकल्पिक)",
+        "qtyBad": "संख्या लिखें।",
+        "measure": "अभी मापें",
+        "measured": "नतीजा सेव हुआ।",
+        "result": "मिला {{qty}}; स्टॉक खत्म हुआ: {{out}}",
+        "yes": "हाँ",
+        "no": "नहीं",
+        "src": {
+          "STOCK_LEDGER": "स्टॉक बही से",
+          "ENTERED_BY_REVIEWER": "आपने लिखा"
+        }
+      },
+      "au": {
+        "title": "AI फ़ैसलों का लॉग",
+        "note": "हर AI कॉल दर्ज होती है। इनपुट और आउटपुट हैश के रूप में रखे जाते हैं, पाठ नहीं।",
+        "all": "सभी",
+        "none": "कोई रिकॉर्ड नहीं।"
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "aiRisks": "जोखीम नोंदवही",
+      "aiQuality": "डेटाची गुणवत्ता",
+      "aiGovern": "AI वापर आणि मूल्यमापन",
+      "aiPolicies": "मंजुरी धोरण",
+      "aiAudit": "AI निर्णय लॉग"
+    },
+    "featureDesc": {
+      "aiRisks": "स्कॅनमध्ये सापडलेले खुले धोके, केस नोंदींसह",
+      "aiQuality": "तुमचा डेटा किती पूर्ण आणि स्वच्छ आहे",
+      "aiGovern": "मासिक AI कोटा आणि मूल्यमापन अहवाल",
+      "aiPolicies": "AI कृतींना कोणी मंजुरी द्यायची, आणि मर्यादा",
+      "aiAudit": "प्रत्येक AI कॉल: कोणी, कोणते टूल, कोणते मॉडेल"
+    },
+    "ai": {
+      "rk": {
+        "title": "जोखीम नोंदवही",
+        "note": "नोंद",
+        "summary": "खुले: {{high}} जास्त, {{medium}} मध्यम, {{low}} कमी",
+        "all": "सर्व",
+        "scan": "आता स्कॅन करा",
+        "scanned": "स्कॅन झाले.",
+        "none": "इथे कोणताही धोका नाही.",
+        "due": "मुदत {{date}}",
+        "kind": {
+          "STOCKOUT": "साठा संपला",
+          "EXPIRY": "मुदत संपणे",
+          "CASH_FLOW": "रोख प्रवाह",
+          "COLLECTION": "वसुली",
+          "CHURN": "ग्राहक गेला",
+          "SEASONAL_ANOMALY": "हंगामी विसंगती",
+          "DRIFT": "अंदाजात भरकटणे",
+          "COMPLIANCE": "अनुपालन"
+        },
+        "st": {
+          "OPEN": "खुले",
+          "ACKNOWLEDGED": "पाहिले",
+          "RESOLVED": "सुटले",
+          "DISMISSED": "फेटाळले"
+        },
+        "timeline": "कालरेषा",
+        "noNotes": "अजून नोंदी नाहीत.",
+        "evidence": "पुरावा",
+        "addNote": "नोंद जोडा",
+        "noted": "नोंद जोडली.",
+        "dueLabel": "मुदत",
+        "dueBad": "2026-12-31 सारखी तारीख लिहा.",
+        "setDue": "मुदत ठरवा",
+        "dueSet": "मुदत ठरली.",
+        "reasonLabel": "कारण (3 ते 500 अक्षरे)",
+        "reasonBad": "3 ते 500 अक्षरांचे कारण लिहा.",
+        "reason": "कारण: {{text}}",
+        "ack": "पाहिले",
+        "resolve": "सोडवा",
+        "dismiss": "फेटाळा",
+        "changed": "केस अपडेट झाली.",
+        "reopenNote": "बंद केस ज्याने बंद केली त्याच्याशिवाय दुसरी व्यक्ती पुन्हा उघडू शकते.",
+        "reopen": "पुन्हा उघडा",
+        "reopened": "केस पुन्हा उघडली.",
+        "noteLabel": "नोंद"
+      },
+      "dq": {
+        "title": "डेटाची गुणवत्ता",
+        "none": "डेटा नाही.",
+        "noScore": "गुणांसाठी डेटा अपुरा आहे.",
+        "overall": "एकूण 100 पैकी {{n}}",
+        "checked": "{{n}} तपासले",
+        "notScanned": "तपासले नाही: {{list}}",
+        "src": {
+          "STOCK_HISTORY": "साठा इतिहास",
+          "CUSTOMERS": "ग्राहक",
+          "PRICES": "दर",
+          "SUPPLIERS": "पुरवठादार"
+        }
+      },
+      "gv": {
+        "title": "AI वापर आणि मूल्यमापन",
+        "none": "डेटा नाही.",
+        "used": "या महिन्यात {{quota}} पैकी {{used}} AI कॉल वापरले",
+        "remaining": "{{n}} शिल्लक",
+        "limitedBy": "मर्यादा ठरवणारा: {{by}}",
+        "days": "{{n}} दिवस",
+        "report": "मूल्यमापन, मागील {{n}} दिवस",
+        "model": "मॉडेल आवृत्ती {{v}}",
+        "counts": "{{comparisons}} पद्धतींची तुलना, {{promotions}} प्रमोशन, {{drift}} भरकटणे केस, {{methods}} चालू पद्धती",
+        "trend": "{{branch}}: {{n}} अचूकता बिंदू",
+        "csvNote": "CSV डाउनलोड अजून अ‍ॅपमध्ये नाही."
+      },
+      "po": {
+        "title": "मंजुरी धोरण",
+        "intro": "मंजुरी बंद करता येत नाही. हे नियम ती अधिक कडक करतात.",
+        "none": "धोरणे नाहीत.",
+        "default": "डिफॉल्ट नियम (कधी बदलले नाहीत).",
+        "action": {},
+        "distinct": "मंजूर करणारा मागणाऱ्यापेक्षा वेगळी व्यक्ती असावी",
+        "second": "दुसऱ्या व्यक्तीची मंजुरीही हवी",
+        "yes": "हो",
+        "no": "नाही",
+        "ttl": "मंजुरी किती वेळ वैध (1 ते 15 मिनिटे)",
+        "ttlBad": "1 ते 15 पूर्ण संख्या.",
+        "ownerAbove": "यापेक्षा जास्त असल्यास मालकाने मंजूर करावे (रिकामे = मर्यादा नाही)",
+        "secondAbove": "यापेक्षा जास्त असल्यास दुसरा मंजुरीदार (रिकामे = मर्यादा नाही)",
+        "limitBad": "रिकामे ठेवा किंवा 0 पेक्षा मोठी संख्या लिहा.",
+        "save": "सेव्ह करा",
+        "saved": "सेव्ह झाले.",
+        "settings": "कृती मर्यादा",
+        "budget": "रीऑर्डर बजेट (रिकामे = नाही)",
+        "transfer": "प्रति एकक हस्तांतर खर्च (रिकामे = ठरवले नाही)"
+      },
+      "fu": {
+        "title": "अभिप्राय आणि निकाल",
+        "feedback": "ही सूचना उपयोगी होती का?",
+        "v": {
+          "HELPFUL": "उपयोगी",
+          "NOT_HELPFUL": "उपयोगी नाही",
+          "WRONG": "चुकीची",
+          "ALREADY_KNEW": "आधीच माहीत होते"
+        },
+        "note": "टीप (ऐच्छिक)",
+        "send": "अभिप्राय पाठवा",
+        "sent": "धन्यवाद. अभिप्राय सेव्ह झाला.",
+        "outcome": "निकाल मोजा",
+        "outcomeNote": "सूचनेनंतर आलेला माल आणि साठा संपणे वाचते. सिस्टमबाहेर मिळालेला माल तुम्ही स्वतः लिहू शकता.",
+        "received": "मिळालेली मात्रा (ऐच्छिक)",
+        "qtyBad": "संख्या लिहा.",
+        "measure": "आता मोजा",
+        "measured": "निकाल सेव्ह झाला.",
+        "result": "मिळाले {{qty}}; साठा संपला: {{out}}",
+        "yes": "हो",
+        "no": "नाही",
+        "src": {
+          "STOCK_LEDGER": "साठा वहीवरून",
+          "ENTERED_BY_REVIEWER": "तुम्ही लिहिले"
+        }
+      },
+      "au": {
+        "title": "AI निर्णय लॉग",
+        "note": "प्रत्येक AI कॉल नोंदवला जातो. इनपुट आणि आउटपुट हॅश म्हणून ठेवले जातात, मजकूर नाही.",
+        "all": "सर्व",
+        "none": "नोंदी नाहीत."
+      }
+    }
+  }
+}

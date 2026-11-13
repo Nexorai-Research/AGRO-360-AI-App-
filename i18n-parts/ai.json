@@ -1,0 +1,1364 @@
+{
+  "en": {
+    "modules": {
+      "ai": {
+        "title": "AI assistant",
+        "sub": "Ask, act and get daily alerts"
+      }
+    },
+    "nav": {
+      "assistant": "AI assistant",
+      "aiDigest": "Daily alerts",
+      "aiForecast": "Demand forecast",
+      "aiSeason": "Season plan",
+      "aiReorder": "Reorder suggestions",
+      "aiRecs": "AI suggestions",
+      "aiExpiry": "Expiry advice",
+      "aiSupplierPrices": "Supplier rate check",
+      "aiScenario": "Budget what-if",
+      "aiAccuracy": "Forecast accuracy",
+      "aiProductCheck": "Check one product",
+      "aiCustomers": "Customer insights",
+      "aiCash": "Cash outlook",
+      "aiPricing": "Price advice",
+      "aiMarketing": "Message drafts",
+      "aiCropDoctor": "Crop doctor",
+      "aiAdvisory": "Crop advisory",
+      "aiWeather": "Weather alerts"
+    },
+    "featureDesc": {
+      "assistant": "Ask in your own words; it reads data and does tasks",
+      "aiDigest": "What needs your attention today",
+      "aiForecast": "Expected sales for the next weeks, product by product",
+      "aiSeason": "What to buy before the season and the last day to order",
+      "aiReorder": "What to reorder now, with supplier and budget",
+      "aiRecs": "Suggestions waiting for a person to approve",
+      "aiExpiry": "Stock about to expire: discount, move or return",
+      "aiSupplierPrices": "Which suppliers charged more than usual",
+      "aiScenario": "See what a purchase budget can buy",
+      "aiAccuracy": "How right the forecasts were, and which are getting worse",
+      "aiProductCheck": "Why, how accurate, drifting, unusual for the season, or beaten by another method",
+      "aiCustomers": "Who may not pay, who to call first, who stopped buying",
+      "aiCash": "Cash for the next 7, 14 and 30 days",
+      "aiPricing": "Price advice by customer category",
+      "aiMarketing": "Make a message text from a reviewed template",
+      "aiCropDoctor": "Describe or photograph a crop problem and see approved matches",
+      "aiAdvisory": "Approved sowing, nutrition and care notes for a crop",
+      "aiWeather": "Forecast and alerts for each branch"
+    },
+    "errors": {
+      "ASSISTANT_NOT_CONFIGURED": "The AI assistant is not switched on for this server yet.",
+      "ASSISTANT_UNAVAILABLE": "The AI service could not answer. Try again in a moment. Reference: {{correlationId}}",
+      "RATE_LIMITED": "Too many requests. Wait a minute and try again.",
+      "AI_DISABLED": "AI is switched off for this shop.",
+      "AI_QUOTA_EXCEEDED": "This month's AI limit is used up.",
+      "AI_LIMIT_REACHED": "This month's AI limit is used up."
+    },
+    "ai": {
+      "intro": "Ask a question or tell me what to do. I read the same data your role can see.",
+      "tryTitle": "You can try",
+      "try1": "Today's sales",
+      "try2": "Which batches expire in 60 days?",
+      "try3": "Record 500 rupees cash from Ramesh",
+      "you": "You",
+      "bot": "Assistant",
+      "thinking": "Thinking...",
+      "input": "Type your question",
+      "send": "Send",
+      "clear": "New chat",
+      "yes": "Yes, do it",
+      "no": "No",
+      "tooLong": "That took too many steps. Please ask in a narrower way.",
+      "offline": "No connection. Check the network and try again. Pull down on a list to refresh.",
+      "note": "The assistant can be wrong. Money and customers are shown to you to confirm before anything is saved. Voice input and streaming of words are not in the app yet.",
+      "denied": "You do not have permission for this screen.",
+      "digestTitle": "Daily alerts",
+      "allBranches": "All branches",
+      "counts": "High {{high}} · Medium {{medium}} · Low {{low}}",
+      "snoozedCount": "{{n}} hidden for now",
+      "notScanned": "Not checked: {{parts}}. A short list is not a clean bill of health.",
+      "advice": "These are suggestions from rules over your data, not facts.",
+      "digestNone": "Nothing needs attention right now.",
+      "open": "Open",
+      "snooze": "Hide for 7 days",
+      "snoozed": "Hidden for 7 days.",
+      "snoozeReason": "Hidden for a week from the phone",
+      "sev": {
+        "HIGH": "High",
+        "MEDIUM": "Medium",
+        "LOW": "Low"
+      },
+      "fc": {
+        "title": "Demand forecast",
+        "weeks": "{{n}} weeks",
+        "onHand": "In stock: {{n}}",
+        "total": "Expected sales: {{n}}",
+        "range": "likely {{low}} to {{high}}",
+        "noRange": "range could not be measured",
+        "method": "Method: {{method}}",
+        "error": "past error {{pct}}",
+        "insufficient": "Not enough data: {{reason}}",
+        "fellBack": "A newer method was tried but the basic method is shown.",
+        "adopted": "Approved method in use: {{method}}",
+        "summary": "{{n}} of {{total}} products forecast",
+        "few": "{{n}} could not be planned (not enough data).",
+        "none": "No products to forecast.",
+        "showMore": "Show more products"
+      },
+      "se": {
+        "title": "Season plan",
+        "startsIn": "Season starts in",
+        "length": "Season length",
+        "summary": "{{n}} of {{total}} products planned",
+        "totalBuy": "Total to buy: {{n}} units",
+        "earliest": "Order the first ones by {{date}}",
+        "expected": "Expected sales: {{n}}",
+        "toBuy": "To buy: {{n}}",
+        "orderBy": "order by {{date}}",
+        "lastYear": "Same weeks last year: {{n}}",
+        "growth": "change this year {{n}}"
+      },
+      "ro": {
+        "title": "Reorder suggestions",
+        "lines": "{{n}} products to reorder",
+        "wanted": "Wanted {{value}}",
+        "funded": "Covered {{value}}",
+        "budget": "Budget {{value}}",
+        "shortAll": "Left out for want of budget: {{value}}",
+        "noOrder": "Nothing is ordered from here. Saving suggestions only lists them for a person to approve.",
+        "propose": "Save as suggestions",
+        "proposed": "Saved. A person must approve each one.",
+        "none": "Nothing needs reordering now.",
+        "qty": "{{n}} of {{want}} units",
+        "cost": "Cost {{cost}} (rate {{unit}})",
+        "cover": "stock lasts {{n}} days",
+        "supplier": "Supplier: {{name}}",
+        "lead": "{{n}} days to arrive",
+        "noSupplier": "No supplier chosen: {{reason}}",
+        "short": "Short by {{n}} units ({{value}})",
+        "skipped": "Not planned",
+        "st": {
+          "FUNDED": "covered",
+          "TRIMMED": "reduced",
+          "UNFUNDED": "not covered",
+          "COST_UNKNOWN": "cost not known"
+        }
+      },
+      "rec": {
+        "title": "AI suggestions",
+        "intro": "Nothing here has happened yet. A person approves a suggestion, and then only a draft is made.",
+        "none": "No suggestions in this list.",
+        "expires": "valid till {{date}}",
+        "confidence": "confidence {{n}}%",
+        "st": {
+          "PRESENTED": "Waiting",
+          "ACCEPTED": "Approved",
+          "OUTCOME_PENDING": "Draft made",
+          "REJECTED": "Rejected",
+          "EXPIRED": "Expired"
+        },
+        "kind": {
+          "inventory": {
+            "reorder": "Reorder",
+            "transfer": "Move stock between branches"
+          },
+          "pricing": {
+            "revision": "Price change"
+          },
+          "expiry": {
+            "discount": "Expiry discount"
+          },
+          "procurement": {
+            "return": "Return to supplier"
+          },
+          "finance": {
+            "voucher": "Accounting entry"
+          },
+          "comms": {
+            "message": "Customer message"
+          }
+        },
+        "draftIn": "Makes a draft in: {{where}}",
+        "draftMade": "A draft has been made.",
+        "because": "Rejected: {{reason}}",
+        "details": "Details",
+        "evidence": "Based on {{n}} facts",
+        "approvedBy": "Approved by {{n}} person(s) so far",
+        "twoPeople": "This needs two different people to approve.",
+        "check": "Check first",
+        "checked": "Checked. Nothing was changed.",
+        "allPass": "All checks pass",
+        "someFail": "Some checks fail",
+        "nothingWritten": "Checking writes nothing.",
+        "approve": "Approve",
+        "approved": "Approved.",
+        "execute": "Make the draft",
+        "executed": "The draft was made.",
+        "reject": "Reject",
+        "confirmReject": "Reject now",
+        "rejected": "Rejected.",
+        "reason": "Reason (at least 3 letters)",
+        "reasonBad": "Write a reason of 3 to 500 letters.",
+        "note": "Approving shows you the same details the server checks. If the suggestion changed meanwhile, it will not be approved."
+      },
+      "ex": {
+        "title": "Expiry advice",
+        "days": "within {{n}} days",
+        "none": "No stock is at risk in this period.",
+        "noCost": "You cannot see stock cost, so discounts cannot be checked against it.",
+        "expires": "expires {{date}} ({{n}} days)",
+        "qty": "in stock {{n}}",
+        "atRisk": "likely unsold: {{n}}",
+        "sev": {
+          "EXPIRED": "expired",
+          "HIGH": "high risk",
+          "MEDIUM": "medium risk",
+          "LOW": "low risk",
+          "NONE": "no risk"
+        },
+        "discount": "Suggested discount {{pct}}%",
+        "margin": "margin {{pct}}",
+        "locked": "Fixed-price product: no discount allowed.",
+        "transfer": "Another branch can sell it: {{to}}, {{n}} units",
+        "return": "Can be returned: {{n}} units to {{who}}",
+        "pDiscount": "Suggest discount",
+        "pTransfer": "Suggest move",
+        "pReturn": "Suggest return",
+        "proposed": "Saved as a suggestion for approval."
+      },
+      "sp": {
+        "title": "Supplier rate check",
+        "intro": "Suppliers whose rates were above their own usual rates in posted bills.",
+        "judged": "{{n}} bill lines checked, {{skipped}} skipped",
+        "none": "No supplier stands out.",
+        "flagged": "{{flagged}} of {{lines}} lines higher than usual ({{share}}%)",
+        "avg": "average gap {{pct}}%",
+        "products": "{{n}} products"
+      },
+      "sc": {
+        "title": "Budget what-if",
+        "intro": "See which open reorder suggestions a budget can pay for. Nothing is ordered or saved.",
+        "budget": "Budget in rupees (leave blank to use cash only)",
+        "budgetBad": "Enter an amount above 0 with up to 2 decimals.",
+        "change": "Purchase price change in percent (-50 to 200)",
+        "changeBad": "Enter a number from -50 to 200.",
+        "cash": "Also limit by the cash the books can spare?",
+        "yes": "Yes",
+        "needLimit": "Give a budget, or choose to limit by cash.",
+        "run": "Run",
+        "done": "Done.",
+        "funded": "Covered {{funded}} of {{wanted}}",
+        "limit": "Limit {{value}} ({{by}})",
+        "left": "left {{value}}",
+        "by": {
+          "BUDGET": "your budget",
+          "CASH": "cash available"
+        },
+        "st": {
+          "FUNDED": "covered",
+          "PARTIAL": "partly covered",
+          "NOT_FUNDED": "not covered",
+          "NOT_PRICED": "no rate known",
+          "NOT_NEEDED": "not needed"
+        },
+        "nothing": "This is a trial only. Nothing was ordered."
+      },
+      "ac": {
+        "title": "Forecast accuracy",
+        "measured": "{{n}} of {{total}} products measured",
+        "error": "Error {{pct}} (lower is better)",
+        "naive": "Plain 'same as last week' error: {{pct}}",
+        "beats": "Forecast beat 'same as last week' on {{n}}% of products",
+        "how": "Checked by pretending to forecast past weeks and comparing with what sold.",
+        "worst": "Least accurate products",
+        "drift": "Getting worse",
+        "noDrift": "No product is getting clearly worse.",
+        "scan": "Flag worsening products",
+        "scanned": "Done. Worsening products are flagged for a person to review.",
+        "noSwitch": "Nothing is switched by itself. A person decides.",
+        "history": "Last readings",
+        "none": "No data yet."
+      },
+      "pc": {
+        "title": "Check one product",
+        "search": "Search product (2+ letters)",
+        "none": "No product found.",
+        "change": "Change product",
+        "tab": {
+          "explain": "Why",
+          "accuracy": "Accuracy",
+          "drift": "Drift",
+          "seasonal": "Season",
+          "compare": "Methods"
+        },
+        "beatsYes": "Better than 'same as last week'",
+        "beatsNo": "Not better than 'same as last week'",
+        "folds": "{{n}} past weeks tested",
+        "over": "Forecasts ran {{pct}} too high",
+        "under": "Forecasts ran {{pct}} too low",
+        "drifted": "Forecast is getting less accurate",
+        "steady": "Accuracy is steady",
+        "driftNums": "Error before {{before}}, now {{now}}",
+        "above": "Selling much more than the same weeks last year",
+        "below": "Selling much less than the same weeks last year",
+        "normal": "In line with last year",
+        "vsLastYear": "Last 4 weeks {{now}}, same weeks last year {{then}}",
+        "champion": "Current",
+        "challenger": "Challenger",
+        "review": "A person may review adopting the challenger.",
+        "keep": "Keep the current method.",
+        "save": "Save this comparison",
+        "saved": "Saved. No forecast was changed."
+      },
+      "cu": {
+        "title": "Customer insights",
+        "note": "Scores explain themselves and only help a person decide. Nothing is blocked, changed or sent.",
+        "tab": {
+          "credit": "Credit risk",
+          "collect": "Who to call",
+          "inactive": "Stopped buying"
+        },
+        "none": "No customers to score.",
+        "noneCollect": "No customer has overdue money.",
+        "noneChurn": "No customer looks inactive or at risk.",
+        "band": {
+          "LOW": "Low risk",
+          "MEDIUM": "Medium risk",
+          "HIGH": "High risk"
+        },
+        "score": "score {{n}} of 100",
+        "overdue": "Overdue {{amount}}, oldest {{days}} days",
+        "bestDay": "Usually pays on {{day}}",
+        "noPattern": "Not enough payments to see a pattern.",
+        "st": {
+          "INACTIVE": "No purchase for 90+ days",
+          "AT_RISK": "Buying less"
+        },
+        "spend": "Spend change vs the 90 days before: {{n}}%"
+      },
+      "cf": {
+        "title": "Cash outlook",
+        "none": "No data.",
+        "now": "Cash and bank now: {{amount}}",
+        "problem": "Cash may run short within {{n}} days.",
+        "fine": "No shortfall expected in 30 days.",
+        "notMoney": "A projection to help you plan. It does not move any money.",
+        "inDays": "In {{n}} days",
+        "in": "coming in {{amount}}",
+        "out": "going out {{amount}}",
+        "st": {
+          "OK": "fine",
+          "BELOW_BUFFER": "below your cash buffer",
+          "SHORTFALL": "shortfall"
+        },
+        "noPayroll": "Payroll not included: {{reason}}",
+        "noTax": "GST payment not included: {{reason}}"
+      },
+      "pa": {
+        "title": "Price advice",
+        "intro": "Rules only: your cost, floor margin, MRP, and how sales are moving. Nothing is changed.",
+        "none": "No price advice.",
+        "now": "Price now: {{price}}",
+        "suggest": "Suggested price {{price}}",
+        "mustFix": "The current price breaks a rule (above MRP or below the floor margin).",
+        "noChange": "No change suggested.",
+        "propose": "Suggest this price",
+        "proposed": "Saved as a suggestion for approval."
+      },
+      "mk": {
+        "title": "Message drafts",
+        "intro": "Choose a reviewed template, language and channel. The text is made from facts; nothing is sent from here.",
+        "none": "No templates.",
+        "make": "Make the text",
+        "done": "Text made.",
+        "length": "{{n}} of {{limit}} characters",
+        "problems": "{{n}} rule problem(s) in the text. Do not use it.",
+        "notSent": "Nothing was sent or saved.",
+        "lang": {
+          "en": "English",
+          "hi": "Hindi",
+          "mr": "Marathi"
+        }
+      },
+      "cd": {
+        "title": "Crop doctor",
+        "intro": "Matches only against approved knowledge. Always check the field before acting.",
+        "crop": "Crop",
+        "cropBad": "Enter the crop (2 to 80 letters).",
+        "stage": "Stage (optional)",
+        "symptoms": "Symptoms",
+        "symptomsBad": "Describe in 3 to 1000 characters.",
+        "needOne": "Add a photo or describe the symptoms.",
+        "noPhotoService": "Photo identification is not set up on the server. Describe the symptoms instead.",
+        "addPhoto": "Add a photo",
+        "changePhoto": "Change photo",
+        "removePhoto": "Remove photo",
+        "photoChosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "The photo is larger than 3 MB.",
+        "notImage": "Choose a JPEG, PNG or WebP photo.",
+        "run": "Find the problem",
+        "done": "Done.",
+        "basedOn": "Based on: {{source}}",
+        "kind": {
+          "PEST": "Pest",
+          "DISEASE": "Disease",
+          "DEFICIENCY": "Deficiency",
+          "WEED": "Weed"
+        },
+        "level": {
+          "high": "High confidence",
+          "medium": "Medium confidence",
+          "low": "Low confidence"
+        },
+        "cultural": "Cultural: {{text}}",
+        "biological": "Biological: {{text}}",
+        "chemical": "Chemical: {{text}}",
+        "ingredients": "Ingredients: {{list}}",
+        "dose": "Dose: {{text}} (source: {{source}})",
+        "source": "Source: {{name}}, {{ref}}",
+        "products": "Products for this problem",
+        "askExpert": "Ask an expert",
+        "note": "Note for the expert",
+        "defaultNote": "Please advise.",
+        "ask": "Send to expert",
+        "asked": "Sent to the expert."
+      },
+      "pp": {
+        "title": "Products for {{name}}",
+        "none": "No products.",
+        "stock": "stock {{n}}",
+        "matches": "Has: {{list}}",
+        "excluded": "Left out"
+      },
+      "av": {
+        "title": "Crop advisory",
+        "anySeason": "Any season",
+        "season": {
+          "KHARIF": "Kharif",
+          "RABI": "Rabi",
+          "ZAID": "Zaid"
+        },
+        "show": "Show advisory",
+        "none": "No approved advice for this crop yet."
+      },
+      "wx": {
+        "title": "Weather alerts",
+        "none": "No branch locations.",
+        "noProvider": "No weather service is set up on the server.",
+        "noLocation": "No weather location",
+        "source": "{{source}}, fetched {{time}}",
+        "summary": "Next 24 hours: rain {{rain}} mm, {{min}} to {{max}} C, wind up to {{wind}} km/h",
+        "calm": "No alerts.",
+        "note": "Alerts come from fixed rules on the stored forecast. Nothing is sent."
+      }
+    }
+  },
+  "hi": {
+    "modules": {
+      "ai": {
+        "title": "AI सहायक",
+        "sub": "पूछें, काम करवाएँ, रोज़ के अलर्ट"
+      }
+    },
+    "nav": {
+      "assistant": "AI सहायक",
+      "aiDigest": "रोज़ के अलर्ट",
+      "aiForecast": "माँग का अनुमान",
+      "aiSeason": "सीज़न योजना",
+      "aiReorder": "दोबारा मँगाने के सुझाव",
+      "aiRecs": "AI सुझाव",
+      "aiExpiry": "एक्सपायरी सलाह",
+      "aiSupplierPrices": "सप्लायर रेट जाँच",
+      "aiScenario": "बजट में क्या आएगा",
+      "aiAccuracy": "अनुमान की सटीकता",
+      "aiProductCheck": "एक प्रोडक्ट जाँचें",
+      "aiCustomers": "ग्राहक जानकारी",
+      "aiCash": "नकदी का अनुमान",
+      "aiPricing": "दाम की सलाह",
+      "aiMarketing": "संदेश का मसौदा",
+      "aiCropDoctor": "फ़सल डॉक्टर",
+      "aiAdvisory": "फ़सल सलाह",
+      "aiWeather": "मौसम चेतावनी"
+    },
+    "featureDesc": {
+      "assistant": "अपने शब्दों में पूछें; यह डेटा पढ़ता और काम करता है",
+      "aiDigest": "आज किस पर ध्यान देना है",
+      "aiForecast": "अगले हफ़्तों की संभावित बिक्री, प्रोडक्ट के हिसाब से",
+      "aiSeason": "सीज़न से पहले क्या खरीदें और ऑर्डर की आखिरी तारीख",
+      "aiReorder": "अभी क्या मँगाएँ, सप्लायर और बजट के साथ",
+      "aiRecs": "जिन सुझावों पर किसी की मंज़ूरी बाकी है",
+      "aiExpiry": "जल्द एक्सपायर होने वाला स्टॉक: छूट, भेजना या वापसी",
+      "aiSupplierPrices": "किन सप्लायरों ने रोज़ से ज़्यादा रेट लगाया",
+      "aiScenario": "देखें कि खरीद के बजट में क्या आ सकता है",
+      "aiAccuracy": "अनुमान कितने सही निकले, और कौन से बिगड़ रहे हैं",
+      "aiProductCheck": "क्यों, कितना सटीक, बिगड़ता हुआ, सीज़न से अलग, या दूसरे तरीके से पीछे",
+      "aiCustomers": "किसका भुगतान अटक सकता है, पहले किसे फ़ोन करें, किसने खरीदना बंद किया",
+      "aiCash": "अगले 7, 14 और 30 दिन की नकदी",
+      "aiPricing": "ग्राहक श्रेणी के हिसाब से दाम की सलाह",
+      "aiMarketing": "जाँचे हुए टेम्पलेट से संदेश का पाठ बनाएँ",
+      "aiCropDoctor": "फ़सल की समस्या बताएँ या फ़ोटो लें और मंज़ूर मिलान देखें",
+      "aiAdvisory": "फ़सल के लिए मंज़ूर बुवाई, पोषण और देखभाल की बातें",
+      "aiWeather": "हर शाखा का पूर्वानुमान और चेतावनी"
+    },
+    "errors": {
+      "ASSISTANT_NOT_CONFIGURED": "इस सर्वर पर AI सहायक अभी चालू नहीं है।",
+      "ASSISTANT_UNAVAILABLE": "AI सेवा जवाब नहीं दे सकी। थोड़ी देर में फिर कोशिश करें। संदर्भ: {{correlationId}}",
+      "RATE_LIMITED": "बहुत ज़्यादा अनुरोध। एक मिनट रुककर फिर कोशिश करें।",
+      "AI_DISABLED": "इस दुकान के लिए AI बंद है।",
+      "AI_QUOTA_EXCEEDED": "इस महीने की AI सीमा पूरी हो गई है।",
+      "AI_LIMIT_REACHED": "इस महीने की AI सीमा पूरी हो गई है।"
+    },
+    "ai": {
+      "intro": "सवाल पूछें या बताएँ क्या करना है। मैं वही डेटा पढ़ता हूँ जो आपकी भूमिका देख सकती है।",
+      "tryTitle": "आप आज़मा सकते हैं",
+      "try1": "आज की बिक्री",
+      "try2": "60 दिन में कौन से बैच एक्सपायर होंगे?",
+      "try3": "रमेश से 500 रुपये नकद दर्ज करो",
+      "you": "आप",
+      "bot": "सहायक",
+      "thinking": "सोच रहा हूँ...",
+      "input": "अपना सवाल लिखें",
+      "send": "भेजें",
+      "clear": "नई चैट",
+      "yes": "हाँ, करो",
+      "no": "नहीं",
+      "tooLong": "इसमें बहुत कदम लग गए। कृपया थोड़ा सीधा पूछें।",
+      "offline": "कनेक्शन नहीं है। नेटवर्क देखकर फिर कोशिश करें। सूची में नीचे खींचकर ताज़ा करें।",
+      "note": "सहायक गलत भी हो सकता है। कुछ भी सेव होने से पहले पैसे और ग्राहक की जानकारी आपको पक्की करने के लिए दिखती है। आवाज़ से इनपुट और शब्द-दर-शब्द स्ट्रीमिंग अभी ऐप में नहीं है।",
+      "denied": "इस स्क्रीन की आपको अनुमति नहीं है।",
+      "digestTitle": "रोज़ के अलर्ट",
+      "allBranches": "सभी शाखाएँ",
+      "counts": "ज़्यादा {{high}} · मध्यम {{medium}} · कम {{low}}",
+      "snoozedCount": "{{n}} अभी छिपाए गए",
+      "notScanned": "जाँचा नहीं गया: {{parts}}। छोटी सूची का मतलब सब ठीक होना नहीं है।",
+      "advice": "ये आपके डेटा पर नियमों से बने सुझाव हैं, पक्के तथ्य नहीं।",
+      "digestNone": "अभी किसी पर ध्यान देने की ज़रूरत नहीं।",
+      "open": "खोलें",
+      "snooze": "7 दिन छिपाएँ",
+      "snoozed": "7 दिन के लिए छिपा दिया।",
+      "snoozeReason": "फ़ोन से एक हफ़्ते के लिए छिपाया",
+      "sev": {
+        "HIGH": "ज़्यादा",
+        "MEDIUM": "मध्यम",
+        "LOW": "कम"
+      },
+      "fc": {
+        "title": "माँग का अनुमान",
+        "weeks": "{{n}} हफ़्ते",
+        "onHand": "स्टॉक में: {{n}}",
+        "total": "संभावित बिक्री: {{n}}",
+        "range": "संभावित {{low}} से {{high}}",
+        "noRange": "दायरा नापा नहीं जा सका",
+        "method": "तरीका: {{method}}",
+        "error": "पिछली गलती {{pct}}",
+        "insufficient": "डेटा कम है: {{reason}}",
+        "fellBack": "नया तरीका आज़माया गया पर बुनियादी तरीका दिख रहा है।",
+        "adopted": "मंज़ूर तरीका चल रहा है: {{method}}",
+        "summary": "{{total}} में से {{n}} प्रोडक्ट का अनुमान",
+        "few": "{{n}} का अनुमान नहीं बन सका (डेटा कम)।",
+        "none": "अनुमान के लिए कोई प्रोडक्ट नहीं।",
+        "showMore": "और प्रोडक्ट दिखाएँ"
+      },
+      "se": {
+        "title": "सीज़न योजना",
+        "startsIn": "सीज़न शुरू होगा",
+        "length": "सीज़न की लंबाई",
+        "summary": "{{total}} में से {{n}} प्रोडक्ट की योजना",
+        "totalBuy": "कुल खरीदना है: {{n}} इकाई",
+        "earliest": "पहले वाले {{date}} तक मँगाएँ",
+        "expected": "संभावित बिक्री: {{n}}",
+        "toBuy": "खरीदना है: {{n}}",
+        "orderBy": "{{date}} तक ऑर्डर करें",
+        "lastYear": "पिछले साल इन्हीं हफ़्तों में: {{n}}",
+        "growth": "इस साल बदलाव {{n}}"
+      },
+      "ro": {
+        "title": "दोबारा मँगाने के सुझाव",
+        "lines": "{{n}} प्रोडक्ट मँगाने हैं",
+        "wanted": "चाहिए {{value}}",
+        "funded": "पूरा हुआ {{value}}",
+        "budget": "बजट {{value}}",
+        "shortAll": "बजट कम होने से छूटा: {{value}}",
+        "noOrder": "यहाँ से कुछ ऑर्डर नहीं होता। सुझाव सेव करने पर वे सिर्फ़ मंज़ूरी के लिए सूची में आते हैं।",
+        "propose": "सुझाव के रूप में सेव करें",
+        "proposed": "सेव हुआ। हर एक को कोई व्यक्ति मंज़ूर करेगा।",
+        "none": "अभी कुछ मँगाने की ज़रूरत नहीं।",
+        "qty": "{{want}} में से {{n}} इकाई",
+        "cost": "लागत {{cost}} (रेट {{unit}})",
+        "cover": "स्टॉक {{n}} दिन चलेगा",
+        "supplier": "सप्लायर: {{name}}",
+        "lead": "पहुँचने में {{n}} दिन",
+        "noSupplier": "सप्लायर नहीं चुना गया: {{reason}}",
+        "short": "{{n}} इकाई कम ({{value}})",
+        "skipped": "योजना में नहीं",
+        "st": {
+          "FUNDED": "पूरा",
+          "TRIMMED": "घटाया गया",
+          "UNFUNDED": "पूरा नहीं",
+          "COST_UNKNOWN": "लागत पता नहीं"
+        }
+      },
+      "rec": {
+        "title": "AI सुझाव",
+        "intro": "यहाँ अभी कुछ हुआ नहीं है। कोई व्यक्ति सुझाव मंज़ूर करे, तब भी सिर्फ़ ड्राफ्ट बनता है।",
+        "none": "इस सूची में कोई सुझाव नहीं।",
+        "expires": "{{date}} तक मान्य",
+        "confidence": "भरोसा {{n}}%",
+        "st": {
+          "PRESENTED": "इंतज़ार में",
+          "ACCEPTED": "मंज़ूर",
+          "OUTCOME_PENDING": "ड्राफ्ट बना",
+          "REJECTED": "नामंज़ूर",
+          "EXPIRED": "समय पूरा"
+        },
+        "kind": {
+          "inventory": {
+            "reorder": "दोबारा मँगाना",
+            "transfer": "शाखाओं के बीच स्टॉक भेजना"
+          },
+          "pricing": {
+            "revision": "दाम बदलना"
+          },
+          "expiry": {
+            "discount": "एक्सपायरी पर छूट"
+          },
+          "procurement": {
+            "return": "सप्लायर को वापसी"
+          },
+          "finance": {
+            "voucher": "लेखा प्रविष्टि"
+          },
+          "comms": {
+            "message": "ग्राहक को संदेश"
+          }
+        },
+        "draftIn": "ड्राफ्ट यहाँ बनेगा: {{where}}",
+        "draftMade": "ड्राफ्ट बन चुका है।",
+        "because": "नामंज़ूर: {{reason}}",
+        "details": "विवरण",
+        "evidence": "{{n}} तथ्यों पर आधारित",
+        "approvedBy": "अब तक {{n}} व्यक्ति ने मंज़ूर किया",
+        "twoPeople": "इसे दो अलग लोगों को मंज़ूर करना होगा।",
+        "check": "पहले जाँचें",
+        "checked": "जाँच हो गई। कुछ बदला नहीं।",
+        "allPass": "सब जाँच ठीक",
+        "someFail": "कुछ जाँच ठीक नहीं",
+        "nothingWritten": "जाँच से कुछ नहीं लिखा जाता।",
+        "approve": "मंज़ूर करें",
+        "approved": "मंज़ूर हो गया।",
+        "execute": "ड्राफ्ट बनाएँ",
+        "executed": "ड्राफ्ट बन गया।",
+        "reject": "नामंज़ूर करें",
+        "confirmReject": "अभी नामंज़ूर करें",
+        "rejected": "नामंज़ूर किया।",
+        "reason": "कारण (कम से कम 3 अक्षर)",
+        "reasonBad": "3 से 500 अक्षर का कारण लिखें।",
+        "note": "मंज़ूरी में वही विवरण दिखता है जो सर्वर जाँचता है। बीच में सुझाव बदल गया तो मंज़ूर नहीं होगा।"
+      },
+      "ex": {
+        "title": "एक्सपायरी सलाह",
+        "days": "{{n}} दिन के अंदर",
+        "none": "इस अवधि में कोई स्टॉक जोखिम में नहीं।",
+        "noCost": "आप स्टॉक की लागत नहीं देख सकते, इसलिए छूट को लागत से जाँचा नहीं जा सकता।",
+        "expires": "{{date}} को एक्सपायर ({{n}} दिन)",
+        "qty": "स्टॉक {{n}}",
+        "atRisk": "बिकने की उम्मीद कम: {{n}}",
+        "sev": {
+          "EXPIRED": "एक्सपायर हो चुका",
+          "HIGH": "ज़्यादा जोखिम",
+          "MEDIUM": "मध्यम जोखिम",
+          "LOW": "कम जोखिम",
+          "NONE": "जोखिम नहीं"
+        },
+        "discount": "सुझाई गई छूट {{pct}}%",
+        "margin": "मार्जिन {{pct}}",
+        "locked": "तय दाम का प्रोडक्ट: छूट नहीं दी जा सकती।",
+        "transfer": "दूसरी शाखा बेच सकती है: {{to}}, {{n}} इकाई",
+        "return": "वापसी हो सकती है: {{who}} को {{n}} इकाई",
+        "pDiscount": "छूट सुझाएँ",
+        "pTransfer": "भेजना सुझाएँ",
+        "pReturn": "वापसी सुझाएँ",
+        "proposed": "मंज़ूरी के लिए सुझाव के रूप में सेव हुआ।"
+      },
+      "sp": {
+        "title": "सप्लायर रेट जाँच",
+        "intro": "वे सप्लायर जिनके पोस्ट बिलों में रेट उनके अपने सामान्य रेट से ऊपर रहे।",
+        "judged": "{{n}} बिल लाइन जाँची, {{skipped}} छोड़ी",
+        "none": "कोई सप्लायर अलग नहीं दिखता।",
+        "flagged": "{{lines}} में से {{flagged}} लाइन सामान्य से महँगी ({{share}}%)",
+        "avg": "औसत अंतर {{pct}}%",
+        "products": "{{n}} प्रोडक्ट"
+      },
+      "sc": {
+        "title": "बजट में क्या आएगा",
+        "intro": "देखें कि कौन से खुले सुझाव एक बजट से पूरे हो सकते हैं। कुछ ऑर्डर या सेव नहीं होता।",
+        "budget": "बजट रुपये में (सिर्फ़ नकदी से सीमा लगानी हो तो खाली छोड़ें)",
+        "budgetBad": "0 से ऊपर राशि लिखें, दशमलव के 2 अंक तक।",
+        "change": "खरीद दाम में बदलाव प्रतिशत में (-50 से 200)",
+        "changeBad": "-50 से 200 के बीच संख्या लिखें।",
+        "cash": "क्या खातों की खाली नकदी से भी सीमा लगाएँ?",
+        "yes": "हाँ",
+        "needLimit": "बजट दें, या नकदी से सीमा चुनें।",
+        "run": "चलाएँ",
+        "done": "हो गया।",
+        "funded": "{{wanted}} में से {{funded}} पूरा",
+        "limit": "सीमा {{value}} ({{by}})",
+        "left": "बचा {{value}}",
+        "by": {
+          "BUDGET": "आपका बजट",
+          "CASH": "उपलब्ध नकदी"
+        },
+        "st": {
+          "FUNDED": "पूरा",
+          "PARTIAL": "आंशिक पूरा",
+          "NOT_FUNDED": "पूरा नहीं",
+          "NOT_PRICED": "रेट पता नहीं",
+          "NOT_NEEDED": "ज़रूरत नहीं"
+        },
+        "nothing": "यह सिर्फ़ आज़माइश है। कुछ ऑर्डर नहीं हुआ।"
+      },
+      "ac": {
+        "title": "अनुमान की सटीकता",
+        "measured": "{{total}} में से {{n}} प्रोडक्ट नापे गए",
+        "error": "गलती {{pct}} (जितनी कम उतना अच्छा)",
+        "naive": "सादा 'पिछले हफ़्ते जितना' तरीके की गलती: {{pct}}",
+        "beats": "{{n}}% प्रोडक्ट पर अनुमान 'पिछले हफ़्ते जितना' से बेहतर रहा",
+        "how": "पिछले हफ़्तों का अनुमान लगाने का अभ्यास करके असली बिक्री से मिलाकर जाँचा गया।",
+        "worst": "सबसे कम सटीक प्रोडक्ट",
+        "drift": "बिगड़ रहे हैं",
+        "noDrift": "कोई प्रोडक्ट साफ़ तौर पर बिगड़ता नहीं दिख रहा।",
+        "scan": "बिगड़ते प्रोडक्ट चिह्नित करें",
+        "scanned": "हो गया। बिगड़ते प्रोडक्ट किसी के देखने के लिए चिह्नित हुए।",
+        "noSwitch": "कुछ अपने आप नहीं बदलता। फ़ैसला व्यक्ति करता है।",
+        "history": "पिछली रीडिंग",
+        "none": "अभी डेटा नहीं है।"
+      },
+      "pc": {
+        "title": "एक प्रोडक्ट जाँचें",
+        "search": "प्रोडक्ट खोजें (2+ अक्षर)",
+        "none": "कोई प्रोडक्ट नहीं मिला।",
+        "change": "प्रोडक्ट बदलें",
+        "tab": {
+          "explain": "क्यों",
+          "accuracy": "सटीकता",
+          "drift": "बिगड़ना",
+          "seasonal": "सीज़न",
+          "compare": "तरीके"
+        },
+        "beatsYes": "'पिछले हफ़्ते जितना' से बेहतर",
+        "beatsNo": "'पिछले हफ़्ते जितना' से बेहतर नहीं",
+        "folds": "{{n}} पिछले हफ़्ते जाँचे",
+        "over": "अनुमान {{pct}} ज़्यादा रहे",
+        "under": "अनुमान {{pct}} कम रहे",
+        "drifted": "अनुमान कम सटीक होता जा रहा है",
+        "steady": "सटीकता स्थिर है",
+        "driftNums": "पहले गलती {{before}}, अब {{now}}",
+        "above": "पिछले साल इन्हीं हफ़्तों से बहुत ज़्यादा बिक रहा है",
+        "below": "पिछले साल इन्हीं हफ़्तों से बहुत कम बिक रहा है",
+        "normal": "पिछले साल के अनुसार सामान्य",
+        "vsLastYear": "पिछले 4 हफ़्ते {{now}}, पिछले साल इन्हीं हफ़्तों में {{then}}",
+        "champion": "मौजूदा",
+        "challenger": "चुनौती देने वाला",
+        "review": "कोई व्यक्ति नए तरीके को अपनाने पर विचार कर सकता है।",
+        "keep": "मौजूदा तरीका ही रखें।",
+        "save": "यह तुलना सेव करें",
+        "saved": "सेव हुआ। कोई अनुमान नहीं बदला।"
+      },
+      "cu": {
+        "title": "ग्राहक जानकारी",
+        "note": "स्कोर अपनी वजह खुद बताते हैं और सिर्फ़ फ़ैसले में मदद करते हैं। कुछ रोका, बदला या भेजा नहीं जाता।",
+        "tab": {
+          "credit": "उधार जोखिम",
+          "collect": "किसे फ़ोन करें",
+          "inactive": "खरीदना बंद"
+        },
+        "none": "स्कोर के लिए कोई ग्राहक नहीं।",
+        "noneCollect": "किसी ग्राहक का पैसा बकाया नहीं।",
+        "noneChurn": "कोई ग्राहक निष्क्रिय या जोखिम में नहीं दिखता।",
+        "band": {
+          "LOW": "कम जोखिम",
+          "MEDIUM": "मध्यम जोखिम",
+          "HIGH": "ज़्यादा जोखिम"
+        },
+        "score": "100 में से स्कोर {{n}}",
+        "overdue": "बकाया {{amount}}, सबसे पुराना {{days}} दिन",
+        "bestDay": "आम तौर पर {{day}} को भुगतान करता है",
+        "noPattern": "पैटर्न देखने लायक भुगतान नहीं।",
+        "st": {
+          "INACTIVE": "90+ दिन से खरीद नहीं",
+          "AT_RISK": "कम खरीद रहा है"
+        },
+        "spend": "पिछले 90 दिन के मुकाबले खर्च में बदलाव: {{n}}%"
+      },
+      "cf": {
+        "title": "नकदी का अनुमान",
+        "none": "डेटा नहीं।",
+        "now": "अभी नकद और बैंक: {{amount}}",
+        "problem": "{{n}} दिन के अंदर नकदी कम पड़ सकती है।",
+        "fine": "30 दिन में कमी की उम्मीद नहीं।",
+        "notMoney": "यह योजना बनाने में मदद के लिए अनुमान है। इससे कोई पैसा नहीं हिलता।",
+        "inDays": "{{n}} दिन में",
+        "in": "आएगा {{amount}}",
+        "out": "जाएगा {{amount}}",
+        "st": {
+          "OK": "ठीक",
+          "BELOW_BUFFER": "आपके नकद बफ़र से नीचे",
+          "SHORTFALL": "कमी"
+        },
+        "noPayroll": "वेतन शामिल नहीं: {{reason}}",
+        "noTax": "GST भुगतान शामिल नहीं: {{reason}}"
+      },
+      "pa": {
+        "title": "दाम की सलाह",
+        "intro": "सिर्फ़ नियम: आपकी लागत, न्यूनतम मार्जिन, MRP और बिक्री का रुझान। कुछ बदला नहीं जाता।",
+        "none": "दाम की कोई सलाह नहीं।",
+        "now": "अभी दाम: {{price}}",
+        "suggest": "सुझाया दाम {{price}}",
+        "mustFix": "मौजूदा दाम नियम तोड़ता है (MRP से ऊपर या न्यूनतम मार्जिन से नीचे)।",
+        "noChange": "बदलाव का सुझाव नहीं।",
+        "propose": "यह दाम सुझाएँ",
+        "proposed": "मंज़ूरी के लिए सुझाव के रूप में सेव हुआ।"
+      },
+      "mk": {
+        "title": "संदेश का मसौदा",
+        "intro": "जाँचा हुआ टेम्पलेट, भाषा और माध्यम चुनें। पाठ तथ्यों से बनता है; यहाँ से कुछ भेजा नहीं जाता।",
+        "none": "कोई टेम्पलेट नहीं।",
+        "make": "पाठ बनाएँ",
+        "done": "पाठ बन गया।",
+        "length": "{{limit}} में से {{n}} अक्षर",
+        "problems": "पाठ में {{n}} नियम-समस्या। इसे इस्तेमाल न करें।",
+        "notSent": "कुछ भेजा या सेव नहीं हुआ।",
+        "lang": {
+          "en": "अंग्रेज़ी",
+          "hi": "हिंदी",
+          "mr": "मराठी"
+        }
+      },
+      "cd": {
+        "title": "फ़सल डॉक्टर",
+        "intro": "सिर्फ़ मंज़ूर जानकारी से मिलान होता है। कुछ करने से पहले खेत में जाँच लें।",
+        "crop": "फ़सल",
+        "cropBad": "फ़सल लिखें (2 से 80 अक्षर)।",
+        "stage": "अवस्था (वैकल्पिक)",
+        "symptoms": "लक्षण",
+        "symptomsBad": "3 से 1000 अक्षर में बताएँ।",
+        "needOne": "फ़ोटो जोड़ें या लक्षण बताएँ।",
+        "noPhotoService": "सर्वर पर फ़ोटो पहचान चालू नहीं है। लक्षण लिखकर बताएँ।",
+        "addPhoto": "फ़ोटो जोड़ें",
+        "changePhoto": "फ़ोटो बदलें",
+        "removePhoto": "फ़ोटो हटाएँ",
+        "photoChosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फ़ोटो 3 MB से बड़ी है।",
+        "notImage": "JPEG, PNG या WebP फ़ोटो चुनें।",
+        "run": "समस्या खोजें",
+        "done": "हो गया।",
+        "basedOn": "आधार: {{source}}",
+        "kind": {
+          "PEST": "कीट",
+          "DISEASE": "रोग",
+          "DEFICIENCY": "कमी",
+          "WEED": "खरपतवार"
+        },
+        "level": {
+          "high": "ज़्यादा भरोसा",
+          "medium": "मध्यम भरोसा",
+          "low": "कम भरोसा"
+        },
+        "cultural": "कृषि उपाय: {{text}}",
+        "biological": "जैविक: {{text}}",
+        "chemical": "रासायनिक: {{text}}",
+        "ingredients": "सक्रिय तत्व: {{list}}",
+        "dose": "मात्रा: {{text}} (स्रोत: {{source}})",
+        "source": "स्रोत: {{name}}, {{ref}}",
+        "products": "इस समस्या के उत्पाद",
+        "askExpert": "विशेषज्ञ से पूछें",
+        "note": "विशेषज्ञ के लिए टिप्पणी",
+        "defaultNote": "कृपया सलाह दें।",
+        "ask": "विशेषज्ञ को भेजें",
+        "asked": "विशेषज्ञ को भेज दिया।"
+      },
+      "pp": {
+        "title": "{{name}} के उत्पाद",
+        "none": "कोई उत्पाद नहीं।",
+        "stock": "स्टॉक {{n}}",
+        "matches": "इसमें है: {{list}}",
+        "excluded": "छोड़े गए"
+      },
+      "av": {
+        "title": "फ़सल सलाह",
+        "anySeason": "कोई भी मौसम",
+        "season": {
+          "KHARIF": "खरीफ़",
+          "RABI": "रबी",
+          "ZAID": "जायद"
+        },
+        "show": "सलाह दिखाएँ",
+        "none": "इस फ़सल की मंज़ूर सलाह अभी नहीं है।"
+      },
+      "wx": {
+        "title": "मौसम चेतावनी",
+        "none": "शाखा का कोई स्थान नहीं।",
+        "noProvider": "सर्वर पर मौसम सेवा चालू नहीं है।",
+        "noLocation": "मौसम स्थान नहीं",
+        "source": "{{source}}, लिया गया {{time}}",
+        "summary": "अगले 24 घंटे: बारिश {{rain}} मिमी, {{min}} से {{max}} C, हवा {{wind}} किमी/घं तक",
+        "calm": "कोई चेतावनी नहीं।",
+        "note": "चेतावनी सहेजे गए पूर्वानुमान पर तय नियमों से बनती है। कुछ भेजा नहीं जाता।"
+      }
+    }
+  },
+  "mr": {
+    "modules": {
+      "ai": {
+        "title": "AI सहाय्यक",
+        "sub": "विचारा, कामे सांगा, रोजचे अलर्ट"
+      }
+    },
+    "nav": {
+      "assistant": "AI सहाय्यक",
+      "aiDigest": "रोजचे अलर्ट",
+      "aiForecast": "मागणीचा अंदाज",
+      "aiSeason": "हंगाम योजना",
+      "aiReorder": "पुन्हा मागवण्याचे सुचवणे",
+      "aiRecs": "AI सूचना",
+      "aiExpiry": "एक्सपायरी सल्ला",
+      "aiSupplierPrices": "पुरवठादार दर तपासणी",
+      "aiScenario": "बजेटमध्ये काय बसेल",
+      "aiAccuracy": "अंदाजाची अचूकता",
+      "aiProductCheck": "एक उत्पादन तपासा",
+      "aiCustomers": "ग्राहक माहिती",
+      "aiCash": "रोखीचा अंदाज",
+      "aiPricing": "दर सल्ला",
+      "aiMarketing": "संदेशाचा मसुदा",
+      "aiCropDoctor": "पीक डॉक्टर",
+      "aiAdvisory": "पीक सल्ला",
+      "aiWeather": "हवामान इशारे"
+    },
+    "featureDesc": {
+      "assistant": "तुमच्या शब्दांत विचारा; तो डेटा वाचतो आणि कामे करतो",
+      "aiDigest": "आज कशाकडे लक्ष द्यायचे",
+      "aiForecast": "पुढील आठवड्यांची संभाव्य विक्री, उत्पादनानुसार",
+      "aiSeason": "हंगामापूर्वी काय खरेदी करायचे आणि ऑर्डरची शेवटची तारीख",
+      "aiReorder": "आता काय मागवायचे, पुरवठादार आणि बजेटसह",
+      "aiRecs": "ज्यांना कोणाच्या मंजुरीची प्रतीक्षा आहे त्या सूचना",
+      "aiExpiry": "लवकर एक्सपायर होणारा साठा: सवलत, हलवणे किंवा परत",
+      "aiSupplierPrices": "कोणत्या पुरवठादारांनी नेहमीपेक्षा जास्त दर लावला",
+      "aiScenario": "खरेदी बजेटमध्ये काय येईल ते पहा",
+      "aiAccuracy": "अंदाज किती बरोबर निघाले, आणि कोणते बिघडत आहेत",
+      "aiProductCheck": "का, किती अचूक, बिघडणारे, हंगामापेक्षा वेगळे, किंवा दुसऱ्या पद्धतीपेक्षा मागे",
+      "aiCustomers": "कोणाचे पैसे अडकू शकतात, आधी कोणाला फोन करायचा, कोणी खरेदी थांबवली",
+      "aiCash": "पुढील 7, 14 आणि 30 दिवसांची रोख",
+      "aiPricing": "ग्राहक वर्गानुसार दर सल्ला",
+      "aiMarketing": "तपासलेल्या टेम्पलेटवरून संदेशाचा मजकूर बनवा",
+      "aiCropDoctor": "पिकाची समस्या सांगा किंवा फोटो घ्या आणि मंजूर जुळणी पहा",
+      "aiAdvisory": "पिकासाठी मंजूर पेरणी, पोषण आणि निगा माहिती",
+      "aiWeather": "प्रत्येक शाखेचा अंदाज आणि इशारे"
+    },
+    "errors": {
+      "ASSISTANT_NOT_CONFIGURED": "या सर्व्हरवर AI सहाय्यक अजून सुरू नाही.",
+      "ASSISTANT_UNAVAILABLE": "AI सेवा उत्तर देऊ शकली नाही. थोड्या वेळाने पुन्हा प्रयत्न करा. संदर्भ: {{correlationId}}",
+      "RATE_LIMITED": "खूप विनंत्या. एक मिनिट थांबून पुन्हा प्रयत्न करा.",
+      "AI_DISABLED": "या दुकानासाठी AI बंद आहे.",
+      "AI_QUOTA_EXCEEDED": "या महिन्याची AI मर्यादा संपली आहे.",
+      "AI_LIMIT_REACHED": "या महिन्याची AI मर्यादा संपली आहे."
+    },
+    "ai": {
+      "intro": "प्रश्न विचारा किंवा काय करायचे ते सांगा. तुमच्या भूमिकेला दिसणारा तोच डेटा मी वाचतो.",
+      "tryTitle": "हे करून पहा",
+      "try1": "आजची विक्री",
+      "try2": "60 दिवसांत कोणते बॅच एक्सपायर होतील?",
+      "try3": "रमेशकडून 500 रुपये रोख नोंदवा",
+      "you": "तुम्ही",
+      "bot": "सहाय्यक",
+      "thinking": "विचार करतो आहे...",
+      "input": "तुमचा प्रश्न लिहा",
+      "send": "पाठवा",
+      "clear": "नवीन चॅट",
+      "yes": "हो, करा",
+      "no": "नाही",
+      "tooLong": "यात खूप पायऱ्या लागल्या. कृपया थोडे सरळ विचारा.",
+      "offline": "कनेक्शन नाही. नेटवर्क तपासून पुन्हा प्रयत्न करा. यादीत खाली ओढून रिफ्रेश करा.",
+      "note": "सहाय्यक चुकू शकतो. काहीही सेव्ह होण्यापूर्वी पैसे आणि ग्राहकाची माहिती तुम्हाला खात्री करण्यासाठी दाखवली जाते. आवाजाने इनपुट आणि शब्द-शब्द स्ट्रीमिंग अजून अॅपमध्ये नाही.",
+      "denied": "या स्क्रीनची तुम्हाला परवानगी नाही.",
+      "digestTitle": "रोजचे अलर्ट",
+      "allBranches": "सर्व शाखा",
+      "counts": "जास्त {{high}} · मध्यम {{medium}} · कमी {{low}}",
+      "snoozedCount": "{{n}} सध्या लपवले",
+      "notScanned": "तपासले नाही: {{parts}}. छोटी यादी म्हणजे सर्व ठीक असे नाही.",
+      "advice": "हे तुमच्या डेटावर नियमांनी तयार केलेले सुचवणे आहे, पक्के तथ्य नाही.",
+      "digestNone": "सध्या कशाकडेही लक्ष द्यायची गरज नाही.",
+      "open": "उघडा",
+      "snooze": "7 दिवस लपवा",
+      "snoozed": "7 दिवसांसाठी लपवले.",
+      "snoozeReason": "फोनवरून आठवडाभर लपवले",
+      "sev": {
+        "HIGH": "जास्त",
+        "MEDIUM": "मध्यम",
+        "LOW": "कमी"
+      },
+      "fc": {
+        "title": "मागणीचा अंदाज",
+        "weeks": "{{n}} आठवडे",
+        "onHand": "साठ्यात: {{n}}",
+        "total": "संभाव्य विक्री: {{n}}",
+        "range": "शक्यतो {{low}} ते {{high}}",
+        "noRange": "मर्यादा मोजता आली नाही",
+        "method": "पद्धत: {{method}}",
+        "error": "मागील चूक {{pct}}",
+        "insufficient": "डेटा कमी आहे: {{reason}}",
+        "fellBack": "नवी पद्धत वापरून पाहिली पण मूळ पद्धत दाखवली आहे.",
+        "adopted": "मंजूर पद्धत वापरात: {{method}}",
+        "summary": "{{total}} पैकी {{n}} उत्पादनांचा अंदाज",
+        "few": "{{n}} चा अंदाज करता आला नाही (डेटा कमी).",
+        "none": "अंदाजासाठी उत्पादने नाहीत.",
+        "showMore": "आणखी उत्पादने दाखवा"
+      },
+      "se": {
+        "title": "हंगाम योजना",
+        "startsIn": "हंगाम सुरू होईल",
+        "length": "हंगामाची लांबी",
+        "summary": "{{total}} पैकी {{n}} उत्पादनांची योजना",
+        "totalBuy": "एकूण खरेदी: {{n}} एकक",
+        "earliest": "पहिले {{date}} पर्यंत मागवा",
+        "expected": "संभाव्य विक्री: {{n}}",
+        "toBuy": "खरेदी करायची: {{n}}",
+        "orderBy": "{{date}} पर्यंत ऑर्डर करा",
+        "lastYear": "गेल्या वर्षी याच आठवड्यांत: {{n}}",
+        "growth": "यंदा बदल {{n}}"
+      },
+      "ro": {
+        "title": "पुन्हा मागवण्याचे सुचवणे",
+        "lines": "{{n}} उत्पादने मागवायची",
+        "wanted": "हवे {{value}}",
+        "funded": "पूर्ण {{value}}",
+        "budget": "बजेट {{value}}",
+        "shortAll": "बजेट कमी पडल्याने राहिले: {{value}}",
+        "noOrder": "इथून काही ऑर्डर होत नाही. सूचना सेव्ह केल्यास त्या फक्त मंजुरीसाठी यादीत येतात.",
+        "propose": "सूचना म्हणून सेव्ह करा",
+        "proposed": "सेव्ह झाले. प्रत्येकाला एखादी व्यक्ती मंजूर करेल.",
+        "none": "आता काही मागवण्याची गरज नाही.",
+        "qty": "{{want}} पैकी {{n}} एकक",
+        "cost": "किंमत {{cost}} (दर {{unit}})",
+        "cover": "साठा {{n}} दिवस पुरेल",
+        "supplier": "पुरवठादार: {{name}}",
+        "lead": "पोहोचायला {{n}} दिवस",
+        "noSupplier": "पुरवठादार निवडला नाही: {{reason}}",
+        "short": "{{n}} एकक कमी ({{value}})",
+        "skipped": "योजनेत नाही",
+        "st": {
+          "FUNDED": "पूर्ण",
+          "TRIMMED": "कमी केले",
+          "UNFUNDED": "पूर्ण नाही",
+          "COST_UNKNOWN": "किंमत माहीत नाही"
+        }
+      },
+      "rec": {
+        "title": "AI सूचना",
+        "intro": "इथे अजून काही घडलेले नाही. कोणी सूचना मंजूर केली तरी फक्त मसुदा तयार होतो.",
+        "none": "या यादीत सूचना नाहीत.",
+        "expires": "{{date}} पर्यंत वैध",
+        "confidence": "खात्री {{n}}%",
+        "st": {
+          "PRESENTED": "प्रतीक्षेत",
+          "ACCEPTED": "मंजूर",
+          "OUTCOME_PENDING": "मसुदा तयार",
+          "REJECTED": "नाकारले",
+          "EXPIRED": "मुदत संपली"
+        },
+        "kind": {
+          "inventory": {
+            "reorder": "पुन्हा मागवणे",
+            "transfer": "शाखांमध्ये साठा हलवणे"
+          },
+          "pricing": {
+            "revision": "दर बदल"
+          },
+          "expiry": {
+            "discount": "एक्सपायरीवर सवलत"
+          },
+          "procurement": {
+            "return": "पुरवठादाराला परत"
+          },
+          "finance": {
+            "voucher": "लेखा नोंद"
+          },
+          "comms": {
+            "message": "ग्राहकाला संदेश"
+          }
+        },
+        "draftIn": "मसुदा इथे तयार होईल: {{where}}",
+        "draftMade": "मसुदा तयार झाला आहे.",
+        "because": "नाकारले: {{reason}}",
+        "details": "तपशील",
+        "evidence": "{{n}} तथ्यांवर आधारित",
+        "approvedBy": "आतापर्यंत {{n}} व्यक्तींनी मंजूर केले",
+        "twoPeople": "यासाठी दोन वेगळ्या व्यक्तींची मंजुरी लागते.",
+        "check": "आधी तपासा",
+        "checked": "तपासले. काही बदलले नाही.",
+        "allPass": "सर्व तपासण्या ठीक",
+        "someFail": "काही तपासण्या ठीक नाहीत",
+        "nothingWritten": "तपासणीने काही लिहिले जात नाही.",
+        "approve": "मंजूर करा",
+        "approved": "मंजूर झाले.",
+        "execute": "मसुदा तयार करा",
+        "executed": "मसुदा तयार झाला.",
+        "reject": "नाकारा",
+        "confirmReject": "आता नाकारा",
+        "rejected": "नाकारले.",
+        "reason": "कारण (किमान 3 अक्षरे)",
+        "reasonBad": "3 ते 500 अक्षरांचे कारण लिहा.",
+        "note": "मंजुरीत सर्व्हर तपासतो तोच तपशील दिसतो. मध्येच सूचना बदलली तर मंजूर होणार नाही."
+      },
+      "ex": {
+        "title": "एक्सपायरी सल्ला",
+        "days": "{{n}} दिवसांत",
+        "none": "या काळात कोणताही साठा धोक्यात नाही.",
+        "noCost": "तुम्हाला साठ्याची किंमत दिसत नाही, म्हणून सवलत किमतीशी तपासता येत नाही.",
+        "expires": "{{date}} रोजी एक्सपायर ({{n}} दिवस)",
+        "qty": "साठा {{n}}",
+        "atRisk": "न विकले जाण्याची शक्यता: {{n}}",
+        "sev": {
+          "EXPIRED": "एक्सपायर झाले",
+          "HIGH": "जास्त धोका",
+          "MEDIUM": "मध्यम धोका",
+          "LOW": "कमी धोका",
+          "NONE": "धोका नाही"
+        },
+        "discount": "सुचवलेली सवलत {{pct}}%",
+        "margin": "मार्जिन {{pct}}",
+        "locked": "ठरलेल्या दराचे उत्पादन: सवलत देता येत नाही.",
+        "transfer": "दुसरी शाखा विकू शकते: {{to}}, {{n}} एकक",
+        "return": "परत करता येईल: {{who}} ला {{n}} एकक",
+        "pDiscount": "सवलत सुचवा",
+        "pTransfer": "हलवणे सुचवा",
+        "pReturn": "परत सुचवा",
+        "proposed": "मंजुरीसाठी सूचना म्हणून सेव्ह झाले."
+      },
+      "sp": {
+        "title": "पुरवठादार दर तपासणी",
+        "intro": "ज्यांचे पोस्ट केलेल्या बिलांतील दर त्यांच्याच नेहमीच्या दरांपेक्षा जास्त होते ते पुरवठादार.",
+        "judged": "{{n}} बिल ओळी तपासल्या, {{skipped}} वगळल्या",
+        "none": "कोणताही पुरवठादार वेगळा दिसत नाही.",
+        "flagged": "{{lines}} पैकी {{flagged}} ओळी नेहमीपेक्षा महाग ({{share}}%)",
+        "avg": "सरासरी फरक {{pct}}%",
+        "products": "{{n}} उत्पादने"
+      },
+      "sc": {
+        "title": "बजेटमध्ये काय बसेल",
+        "intro": "कोणत्या खुल्या सूचना एका बजेटमध्ये पूर्ण होतील ते पहा. काही ऑर्डर किंवा सेव्ह होत नाही.",
+        "budget": "बजेट रुपयांत (फक्त रोखीची मर्यादा हवी असल्यास रिकामे सोडा)",
+        "budgetBad": "0 पेक्षा जास्त रक्कम लिहा, दशांशाचे 2 अंकांपर्यंत.",
+        "change": "खरेदी दरातील बदल टक्क्यांत (-50 ते 200)",
+        "changeBad": "-50 ते 200 मधील संख्या लिहा.",
+        "cash": "हिशेबातील मोकळ्या रोखीनेही मर्यादा घालायची का?",
+        "yes": "हो",
+        "needLimit": "बजेट द्या, किंवा रोखीची मर्यादा निवडा.",
+        "run": "चालवा",
+        "done": "झाले.",
+        "funded": "{{wanted}} पैकी {{funded}} पूर्ण",
+        "limit": "मर्यादा {{value}} ({{by}})",
+        "left": "उरले {{value}}",
+        "by": {
+          "BUDGET": "तुमचे बजेट",
+          "CASH": "उपलब्ध रोख"
+        },
+        "st": {
+          "FUNDED": "पूर्ण",
+          "PARTIAL": "अंशतः पूर्ण",
+          "NOT_FUNDED": "पूर्ण नाही",
+          "NOT_PRICED": "दर माहीत नाही",
+          "NOT_NEEDED": "गरज नाही"
+        },
+        "nothing": "हा फक्त प्रयोग आहे. काही ऑर्डर झाले नाही."
+      },
+      "ac": {
+        "title": "अंदाजाची अचूकता",
+        "measured": "{{total}} पैकी {{n}} उत्पादने मोजली",
+        "error": "चूक {{pct}} (जितकी कमी तितके चांगले)",
+        "naive": "साध्या 'गेल्या आठवड्याइतके' पद्धतीची चूक: {{pct}}",
+        "beats": "{{n}}% उत्पादनांवर अंदाज 'गेल्या आठवड्याइतके' पेक्षा चांगला ठरला",
+        "how": "मागील आठवड्यांचा अंदाज बांधण्याचा सराव करून प्रत्यक्ष विक्रीशी जुळवून तपासले.",
+        "worst": "सर्वात कमी अचूक उत्पादने",
+        "drift": "बिघडत आहेत",
+        "noDrift": "कोणतेही उत्पादन स्पष्टपणे बिघडत नाही.",
+        "scan": "बिघडणारी उत्पादने चिन्हांकित करा",
+        "scanned": "झाले. बिघडणारी उत्पादने कोणाच्या तपासणीसाठी चिन्हांकित झाली.",
+        "noSwitch": "काही आपोआप बदलत नाही. निर्णय व्यक्ती घेते.",
+        "history": "मागील नोंदी",
+        "none": "अजून डेटा नाही."
+      },
+      "pc": {
+        "title": "एक उत्पादन तपासा",
+        "search": "उत्पादन शोधा (2+ अक्षरे)",
+        "none": "उत्पादन सापडले नाही.",
+        "change": "उत्पादन बदला",
+        "tab": {
+          "explain": "का",
+          "accuracy": "अचूकता",
+          "drift": "बिघडणे",
+          "seasonal": "हंगाम",
+          "compare": "पद्धती"
+        },
+        "beatsYes": "'गेल्या आठवड्याइतके' पेक्षा चांगले",
+        "beatsNo": "'गेल्या आठवड्याइतके' पेक्षा चांगले नाही",
+        "folds": "{{n}} मागील आठवडे तपासले",
+        "over": "अंदाज {{pct}} जास्त आले",
+        "under": "अंदाज {{pct}} कमी आले",
+        "drifted": "अंदाज कमी अचूक होत आहे",
+        "steady": "अचूकता स्थिर आहे",
+        "driftNums": "आधी चूक {{before}}, आता {{now}}",
+        "above": "गेल्या वर्षीच्या याच आठवड्यांपेक्षा खूप जास्त विकत आहे",
+        "below": "गेल्या वर्षीच्या याच आठवड्यांपेक्षा खूप कमी विकत आहे",
+        "normal": "गेल्या वर्षाप्रमाणे सामान्य",
+        "vsLastYear": "मागील 4 आठवडे {{now}}, गेल्या वर्षी याच आठवड्यांत {{then}}",
+        "champion": "सध्याची",
+        "challenger": "आव्हान देणारी",
+        "review": "एखादी व्यक्ती नवी पद्धत स्वीकारण्याचा विचार करू शकते.",
+        "keep": "सध्याची पद्धतच ठेवा.",
+        "save": "ही तुलना सेव्ह करा",
+        "saved": "सेव्ह झाले. कोणताही अंदाज बदलला नाही."
+      },
+      "cu": {
+        "title": "ग्राहक माहिती",
+        "note": "गुण स्वतःचे कारण सांगतात आणि फक्त निर्णयाला मदत करतात. काही अडवले, बदलले किंवा पाठवले जात नाही.",
+        "tab": {
+          "credit": "उधारी धोका",
+          "collect": "कोणाला फोन करायचा",
+          "inactive": "खरेदी थांबली"
+        },
+        "none": "गुणांकनासाठी ग्राहक नाहीत.",
+        "noneCollect": "कोणाचेही पैसे थकलेले नाहीत.",
+        "noneChurn": "कोणताही ग्राहक निष्क्रिय किंवा धोक्यात दिसत नाही.",
+        "band": {
+          "LOW": "कमी धोका",
+          "MEDIUM": "मध्यम धोका",
+          "HIGH": "जास्त धोका"
+        },
+        "score": "100 पैकी गुण {{n}}",
+        "overdue": "थकबाकी {{amount}}, सर्वात जुनी {{days}} दिवस",
+        "bestDay": "सहसा {{day}} रोजी पैसे देतो",
+        "noPattern": "पॅटर्न दिसण्याइतके व्यवहार नाहीत.",
+        "st": {
+          "INACTIVE": "90+ दिवस खरेदी नाही",
+          "AT_RISK": "कमी खरेदी करतो"
+        },
+        "spend": "मागील 90 दिवसांच्या तुलनेत खर्चातील बदल: {{n}}%"
+      },
+      "cf": {
+        "title": "रोखीचा अंदाज",
+        "none": "डेटा नाही.",
+        "now": "आता रोख आणि बँक: {{amount}}",
+        "problem": "{{n}} दिवसांत रोख कमी पडू शकते.",
+        "fine": "30 दिवसांत तूट अपेक्षित नाही.",
+        "notMoney": "नियोजनासाठी अंदाज आहे. यातून कोणताही पैसा हलत नाही.",
+        "inDays": "{{n}} दिवसांत",
+        "in": "येणार {{amount}}",
+        "out": "जाणार {{amount}}",
+        "st": {
+          "OK": "ठीक",
+          "BELOW_BUFFER": "तुमच्या रोख बफरखाली",
+          "SHORTFALL": "तूट"
+        },
+        "noPayroll": "पगार समाविष्ट नाही: {{reason}}",
+        "noTax": "GST भरणा समाविष्ट नाही: {{reason}}"
+      },
+      "pa": {
+        "title": "दर सल्ला",
+        "intro": "फक्त नियम: तुमची किंमत, किमान मार्जिन, MRP आणि विक्रीचा कल. काही बदलले जात नाही.",
+        "none": "दर सल्ला नाही.",
+        "now": "आताचा दर: {{price}}",
+        "suggest": "सुचवलेला दर {{price}}",
+        "mustFix": "सध्याचा दर नियम मोडतो (MRP पेक्षा जास्त किंवा किमान मार्जिनखाली).",
+        "noChange": "बदल सुचवलेला नाही.",
+        "propose": "हा दर सुचवा",
+        "proposed": "मंजुरीसाठी सूचना म्हणून सेव्ह झाले."
+      },
+      "mk": {
+        "title": "संदेशाचा मसुदा",
+        "intro": "तपासलेले टेम्पलेट, भाषा आणि माध्यम निवडा. मजकूर तथ्यांवरून बनतो; इथून काही पाठवले जात नाही.",
+        "none": "टेम्पलेट नाहीत.",
+        "make": "मजकूर बनवा",
+        "done": "मजकूर तयार.",
+        "length": "{{limit}} पैकी {{n}} अक्षरे",
+        "problems": "मजकुरात {{n}} नियम-समस्या. वापरू नका.",
+        "notSent": "काही पाठवले किंवा सेव्ह केले नाही.",
+        "lang": {
+          "en": "इंग्रजी",
+          "hi": "हिंदी",
+          "mr": "मराठी"
+        }
+      },
+      "cd": {
+        "title": "पीक डॉक्टर",
+        "intro": "फक्त मंजूर माहितीशी जुळवले जाते. काही करण्यापूर्वी शेतात तपासा.",
+        "crop": "पीक",
+        "cropBad": "पीक लिहा (2 ते 80 अक्षरे).",
+        "stage": "अवस्था (ऐच्छिक)",
+        "symptoms": "लक्षणे",
+        "symptomsBad": "3 ते 1000 अक्षरांत सांगा.",
+        "needOne": "फोटो जोडा किंवा लक्षणे सांगा.",
+        "noPhotoService": "सर्व्हरवर फोटो ओळख सुरू नाही. लक्षणे लिहून सांगा.",
+        "addPhoto": "फोटो जोडा",
+        "changePhoto": "फोटो बदला",
+        "removePhoto": "फोटो काढा",
+        "photoChosen": "{{name}} ({{kb}} KB)",
+        "tooBig": "फोटो 3 MB पेक्षा मोठा आहे.",
+        "notImage": "JPEG, PNG किंवा WebP फोटो निवडा.",
+        "run": "समस्या शोधा",
+        "done": "झाले.",
+        "basedOn": "आधार: {{source}}",
+        "kind": {
+          "PEST": "कीड",
+          "DISEASE": "रोग",
+          "DEFICIENCY": "कमतरता",
+          "WEED": "तण"
+        },
+        "level": {
+          "high": "जास्त खात्री",
+          "medium": "मध्यम खात्री",
+          "low": "कमी खात्री"
+        },
+        "cultural": "मशागत उपाय: {{text}}",
+        "biological": "जैविक: {{text}}",
+        "chemical": "रासायनिक: {{text}}",
+        "ingredients": "सक्रिय घटक: {{list}}",
+        "dose": "मात्रा: {{text}} (स्रोत: {{source}})",
+        "source": "स्रोत: {{name}}, {{ref}}",
+        "products": "या समस्येची उत्पादने",
+        "askExpert": "तज्ञांना विचारा",
+        "note": "तज्ञांसाठी टीप",
+        "defaultNote": "कृपया सल्ला द्या.",
+        "ask": "तज्ञांना पाठवा",
+        "asked": "तज्ञांना पाठवले."
+      },
+      "pp": {
+        "title": "{{name}} ची उत्पादने",
+        "none": "उत्पादने नाहीत.",
+        "stock": "साठा {{n}}",
+        "matches": "यात आहे: {{list}}",
+        "excluded": "वगळलेली"
+      },
+      "av": {
+        "title": "पीक सल्ला",
+        "anySeason": "कोणताही हंगाम",
+        "season": {
+          "KHARIF": "खरीप",
+          "RABI": "रब्बी",
+          "ZAID": "उन्हाळी"
+        },
+        "show": "सल्ला दाखवा",
+        "none": "या पिकाचा मंजूर सल्ला अजून नाही."
+      },
+      "wx": {
+        "title": "हवामान इशारे",
+        "none": "शाखेचे ठिकाण नाही.",
+        "noProvider": "सर्व्हरवर हवामान सेवा सुरू नाही.",
+        "noLocation": "हवामान ठिकाण नाही",
+        "source": "{{source}}, घेतले {{time}}",
+        "summary": "पुढील 24 तास: पाऊस {{rain}} मिमी, {{min}} ते {{max}} C, वारा {{wind}} किमी/तास पर्यंत",
+        "calm": "इशारे नाहीत.",
+        "note": "इशारे साठवलेल्या अंदाजावर ठरलेल्या नियमांनी बनतात. काही पाठवले जात नाही."
+      }
+    }
+  }
+}
