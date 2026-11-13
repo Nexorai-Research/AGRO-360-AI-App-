@@ -1,0 +1,8 @@
+{
+  "aiBillScan": "/ai-bill-scan",
+  "aiLabelScan": "/ai-label-scan",
+  "aiShelf": "/ai-shelf-check",
+  "aiVillages": "/ai-villages",
+  "aiCropMap": "/ai-crop-map",
+  "aiCases": "/ai-cases"
+}

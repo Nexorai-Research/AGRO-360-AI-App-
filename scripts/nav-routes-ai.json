@@ -1,0 +1,20 @@
+{
+  "assistant": "/assistant",
+  "aiDigest": "/ai-digest",
+  "aiRecs": "/ai-recommendations",
+  "aiReorder": "/ai-reorder",
+  "aiForecast": "/ai-forecast",
+  "aiSeason": "/ai-season",
+  "aiExpiry": "/ai-expiry",
+  "aiSupplierPrices": "/ai-supplier-prices",
+  "aiScenario": "/ai-scenario",
+  "aiAccuracy": "/ai-accuracy",
+  "aiProductCheck": "/ai-product-check",
+  "aiCustomers": "/ai-customers",
+  "aiCash": "/ai-cashflow",
+  "aiPricing": "/ai-pricing",
+  "aiMarketing": "/ai-marketing",
+  "aiCropDoctor": "/ai-crop-doctor",
+  "aiAdvisory": "/ai-advisory",
+  "aiWeather": "/ai-weather"
+}
