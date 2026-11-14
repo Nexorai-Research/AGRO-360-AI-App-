@@ -38,6 +38,23 @@ export async function restore(): Promise<boolean> {
 export const isSignedIn = () => tokens !== null;
 
 /**
+ * The name of the signed-in user for the profile card, read from the access token already on the phone (nothing is sent or logged).
+ * Null when it cannot be read; the card then shows a neutral title.
+ */
+export function signedInName(): string | null {
+  try {
+    const part = tokens?.accessToken.split('.')[1];
+    if (!part) return null;
+    const json = atob(part.replace(/-/g, '+').replace(/_/g, '/').padEnd(Math.ceil(part.length / 4) * 4, '='));
+    const c = JSON.parse(json) as { preferred_username?: unknown; name?: unknown };
+    const v = typeof c.preferred_username === 'string' ? c.preferred_username : typeof c.name === 'string' ? c.name : '';
+    return v.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Opens Keycloak in the system browser. `loginHint` is `<username>@<franchise code>` and only pre-fills the login page.
  * Returns true when signed in, false when the user cancelled.
  */

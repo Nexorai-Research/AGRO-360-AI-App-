@@ -5412,5 +5412,13 @@
     "menu": "Menu",
     "menuTitle": "All modules",
     "close": "Close menu"
+  },
+  "profile": {
+    "signedInAs": "Signed in as",
+    "account": "Your account",
+    "permissions": "Permissions",
+    "systemRoles": "System roles",
+    "search": "Search permissions",
+    "noMatch": "No permission matches \"{{q}}\"."
   }
 }

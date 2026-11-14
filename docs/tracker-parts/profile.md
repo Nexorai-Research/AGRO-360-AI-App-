@@ -1,0 +1,6 @@
+# Tracker: home profile card (branch `profile-ui`)
+| Item | Status | Evidence / limit |
+| --- | --- | --- |
+| Profile card: avatar with initials, user name, readable role chips, counts, system roles kept apart | DONE (mocked auth) + checked by hand on the emulator | `__tests__/profile.test.tsx`. The name is read from the access token already on the phone (`preferred_username`, else `name`); nothing is sent or logged. When it cannot be read the card says "Your account". `franchise_admin` shows as "Franchise admin"; `offline_access`, `uma_authorization` and `default-roles-*` are listed as system roles. |
+| Permissions grouped by module (Agri, AI, Compliance ...) with counts, open one group, search across all | DONE (mocked auth) + checked by hand on the emulator | `__tests__/profile.test.tsx` and `__tests__/home.test.tsx`. On the emulator 236 permissions showed in groups; searching "audit" opened AI and showed only `ai.audit.view`. The button is hidden when the server sends no permission list. |
+| Language picker and Sign out kept on the card; sign out still clears cached numbers | DONE (mocked auth) | `__tests__/profile.test.tsx`. English, Hindi and Marathi texts written by the app team, native review still needed. Not run on a real phone. |

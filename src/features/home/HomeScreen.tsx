@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Switch, Text, View } from 'react-native';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
@@ -9,8 +9,8 @@ import { ApiError, errorMessage } from '@/api/errors';
 import { dec } from '@/money';
 import { ModuleGrid } from './ModuleGrid';
 import HomeExtras from './HomeExtras';
+import { ProfileCard } from './ProfileCard';
 import { Button } from '@/ui/Button';
-import { LanguagePicker } from '@/ui/LanguagePicker';
 import { colors, radius } from '@/ui/theme';
 import {
   OWNER_DASHBOARD_PERMISSION,
@@ -105,45 +105,6 @@ function Trend({ data }: { data: OwnerDashboard['trend'] }) {
           </View>
         );
       })}
-    </View>
-  );
-}
-
-function Profile() {
-  const { t } = useTranslation();
-  const { me, signOut } = useAuth();
-  const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
-  if (!me) return null;
-  const perms = me.permissions ?? [];
-  return (
-    <View style={s.card}>
-      <Text style={s.h}>{t('home.profile')}</Text>
-      <Text style={s.line}>{t('home.hello', { name: me.userId })}</Text>
-      <Text style={s.line}>
-        {t('home.roles')}: {me.roles.join(', ') || '—'}
-      </Text>
-      <Text style={s.line}>
-        {t('home.permissions')}: {perms.length}
-      </Text>
-      {perms.length > 0 ? (
-        <Button
-          kind="ghost"
-          label={open ? t('home.hidePermissions') : t('home.showPermissions')}
-          onPress={() => setOpen(!open)}
-        />
-      ) : null}
-      {open ? <Text style={s.perms}>{perms.join('\n')}</Text> : null}
-      <LanguagePicker />
-      <Button
-        kind="ghost"
-        label={t('home.signOut')}
-        onPress={() => {
-          // another user on this phone must never see this user's cached numbers
-          queryClient.clear();
-          void signOut();
-        }}
-      />
     </View>
   );
 }
@@ -264,7 +225,7 @@ export default function HomeScreen() {
         <View style={s.footer}>
           {q.data && !denied && showSummary ? <Trend data={q.data.trend} /> : null}
           {q.data && !denied && showSummary ? <HomeExtras /> : null}
-          <Profile />
+          <ProfileCard />
         </View>
       }
     />
