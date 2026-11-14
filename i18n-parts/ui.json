@@ -9,7 +9,9 @@
     },
     "modules": {
       "off": "Off",
-      "toggle": "Show {{name}} on home"
+      "toggle": "Show {{name}} on home",
+      "showAll": "Show all modules",
+      "hiddenNote": "All modules are hidden. Switch on to show them all again."
     },
     "login": {
       "client": "This app is not set up on the server yet (sign-in client missing). Ask your administrator."
@@ -25,7 +27,9 @@
     },
     "modules": {
       "off": "बंद",
-      "toggle": "होम पर {{name}} दिखाएँ"
+      "toggle": "होम पर {{name}} दिखाएँ",
+      "showAll": "सभी मॉड्यूल दिखाएँ",
+      "hiddenNote": "सभी मॉड्यूल छिपे हैं। सब दोबारा दिखाने के लिए स्विच ऑन करें।"
     },
     "login": {
       "client": "यह ऐप सर्वर पर अभी सेट नहीं है (साइन-इन क्लाइंट नहीं मिला)। अपने एडमिनिस्ट्रेटर से पूछें।"
@@ -41,7 +45,9 @@
     },
     "modules": {
       "off": "बंद",
-      "toggle": "होमवर {{name}} दाखवा"
+      "toggle": "होमवर {{name}} दाखवा",
+      "showAll": "सर्व मॉड्यूल दाखवा",
+      "hiddenNote": "सर्व मॉड्यूल लपवलेले आहेत. सर्व पुन्हा दाखवण्यासाठी स्विच सुरू करा."
     },
     "login": {
       "client": "हे अॅप सर्व्हरवर अजून सेट केलेले नाही (साइन-इन क्लायंट सापडला नाही). तुमच्या अॅडमिनिस्ट्रेटरला विचारा."

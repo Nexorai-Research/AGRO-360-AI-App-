@@ -2027,7 +2027,9 @@
       "sub": "Ask, act and get daily alerts"
     },
     "off": "Off",
-    "toggle": "Show {{name}} on home"
+    "toggle": "Show {{name}} on home",
+    "showAll": "Show all modules",
+    "hiddenNote": "All modules are hidden. Switch on to show them all again."
   },
   "sec": {
     "title": "Security centre",

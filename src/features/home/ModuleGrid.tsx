@@ -57,24 +57,49 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
 /** The home menu: one card per module, like the web top menu. */
 export function ModuleGrid() {
   const { t } = useTranslation();
-  const { isOn, setOn } = useModuleFlags();
+  const { isOn, setOn, showAll, setShowAll } = useModuleFlags();
   return (
     <View style={s.wrap}>
-      <Text style={s.heading} accessibilityRole="header">
-        {t('modules.all')}
-      </Text>
-      <View style={s.grid}>
-        {MODULES.map((m) => (
-          <ModuleCard key={m.id} m={m} on={isOn(m.id)} onToggle={(v) => setOn(m.id, v)} />
-        ))}
+      <View style={s.headRow}>
+        <Text style={s.heading} accessibilityRole="header">
+          {t('modules.all')}
+        </Text>
+        <Switch
+          testID="modules-master-switch"
+          value={showAll}
+          onValueChange={setShowAll}
+          accessibilityLabel={t('modules.showAll')}
+          trackColor={{ false: '#c3d0d3', true: colors.brand }}
+          thumbColor="#fff"
+        />
       </View>
+      {showAll ? (
+        <View style={s.grid}>
+          {MODULES.map((m) => (
+            <ModuleCard key={m.id} m={m} on={isOn(m.id)} onToggle={(v) => setOn(m.id, v)} />
+          ))}
+        </View>
+      ) : (
+        <View style={s.hiddenNote} testID="modules-hidden-note">
+          <Text style={s.hiddenTxt}>{t('modules.hiddenNote')}</Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const s = StyleSheet.create({
   wrap: { gap: 12, marginBottom: 8 },
+  headRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   heading: { fontSize: 20, fontWeight: '800', color: colors.ink, letterSpacing: -0.4, marginTop: 4 },
+  hiddenNote: {
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    padding: 16,
+  },
+  hiddenTxt: { color: colors.muted, fontSize: 14, lineHeight: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
   cell: { width: '47.8%', flexGrow: 1 },
   // Dimming the whole cell with opacity draws a box around the elevation shadow on Android, so only the contents are dimmed.
