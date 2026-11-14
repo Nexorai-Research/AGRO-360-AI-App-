@@ -56,6 +56,16 @@ describe('password sign in (test servers only)', () => {
     expect(await loadTokens()).toBeNull();
   });
 
+  it('a missing client on the server returns client, not a wrong password message', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 401,
+      json: async () => ({ error: 'invalid_client' }),
+    });
+    expect(await auth.signInWithPassword('a.owner', 'secret')).toBe('client');
+    expect(await loadTokens()).toBeNull();
+  });
+
   it('no network returns network and stores nothing', async () => {
     fetchMock.mockRejectedValueOnce(new Error('offline'));
     expect(await auth.signInWithPassword('a.owner', 'x')).toBe('network');

@@ -66,7 +66,7 @@ export async function signIn(loginHint?: string): Promise<boolean> {
   return true;
 }
 
-export type PasswordResult = 'ok' | 'invalid' | 'network' | 'server';
+export type PasswordResult = 'ok' | 'invalid' | 'client' | 'network' | 'server';
 
 /**
  * TEST SERVERS ONLY (EXPO_PUBLIC_PASSWORD_LOGIN=true, never in production): signs in with username and password against the Keycloak
@@ -98,7 +98,11 @@ async function passwordGrant(username: string, password: string): Promise<Passwo
   } catch {
     return 'network';
   }
-  if (res.status === 400 || res.status === 401) return 'invalid';
+  if (res.status === 400 || res.status === 401) {
+    // Keycloak answers invalid_client when the app's client id does not exist (or is not allowed). The password is not the problem then.
+    const body = (await res.json().catch(() => null)) as { error?: string } | null;
+    return body?.error === 'invalid_client' || body?.error === 'unauthorized_client' ? 'client' : 'invalid';
+  }
   if (!res.ok) return 'server';
   let j: { access_token?: string; refresh_token?: string; id_token?: string; expires_in?: number };
   try {

@@ -1,14 +1,50 @@
 {
   "en": {
-    "bottomNav": { "back": "Back", "home": "Home", "menu": "Menu", "menuTitle": "All modules", "close": "Close menu" },
-    "modules": { "off": "Off", "toggle": "Show {{name}} on home" }
+    "bottomNav": {
+      "back": "Back",
+      "home": "Home",
+      "menu": "Menu",
+      "menuTitle": "All modules",
+      "close": "Close menu"
+    },
+    "modules": {
+      "off": "Off",
+      "toggle": "Show {{name}} on home"
+    },
+    "login": {
+      "client": "This app is not set up on the server yet (sign-in client missing). Ask your administrator."
+    }
   },
   "hi": {
-    "bottomNav": { "back": "पीछे", "home": "होम", "menu": "मेन्यू", "menuTitle": "सभी मॉड्यूल", "close": "मेन्यू बंद करें" },
-    "modules": { "off": "बंद", "toggle": "होम पर {{name}} दिखाएँ" }
+    "bottomNav": {
+      "back": "पीछे",
+      "home": "होम",
+      "menu": "मेन्यू",
+      "menuTitle": "सभी मॉड्यूल",
+      "close": "मेन्यू बंद करें"
+    },
+    "modules": {
+      "off": "बंद",
+      "toggle": "होम पर {{name}} दिखाएँ"
+    },
+    "login": {
+      "client": "यह ऐप सर्वर पर अभी सेट नहीं है (साइन-इन क्लाइंट नहीं मिला)। अपने एडमिनिस्ट्रेटर से पूछें।"
+    }
   },
   "mr": {
-    "bottomNav": { "back": "मागे", "home": "होम", "menu": "मेनू", "menuTitle": "सर्व मॉड्यूल", "close": "मेनू बंद करा" },
-    "modules": { "off": "बंद", "toggle": "होमवर {{name}} दाखवा" }
+    "bottomNav": {
+      "back": "मागे",
+      "home": "होम",
+      "menu": "मेनू",
+      "menuTitle": "सर्व मॉड्यूल",
+      "close": "मेनू बंद करा"
+    },
+    "modules": {
+      "off": "बंद",
+      "toggle": "होमवर {{name}} दाखवा"
+    },
+    "login": {
+      "client": "हे अॅप सर्व्हरवर अजून सेट केलेले नाही (साइन-इन क्लायंट सापडला नाही). तुमच्या अॅडमिनिस्ट्रेटरला विचारा."
+    }
   }
 }
