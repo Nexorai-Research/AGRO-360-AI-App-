@@ -2024,7 +2024,9 @@
     "ai": {
       "title": "AI assistant",
       "sub": "Ask, act and get daily alerts"
-    }
+    },
+    "off": "Off",
+    "toggle": "Show {{name}} on home"
   },
   "sec": {
     "title": "Security centre",
@@ -5400,5 +5402,12 @@
       "all": "All",
       "none": "No records."
     }
+  },
+  "bottomNav": {
+    "back": "Back",
+    "home": "Home",
+    "menu": "Menu",
+    "menuTitle": "All modules",
+    "close": "Close menu"
   }
 }

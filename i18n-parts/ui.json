@@ -1,0 +1,14 @@
+{
+  "en": {
+    "bottomNav": { "back": "Back", "home": "Home", "menu": "Menu", "menuTitle": "All modules", "close": "Close menu" },
+    "modules": { "off": "Off", "toggle": "Show {{name}} on home" }
+  },
+  "hi": {
+    "bottomNav": { "back": "पीछे", "home": "होम", "menu": "मेन्यू", "menuTitle": "सभी मॉड्यूल", "close": "मेन्यू बंद करें" },
+    "modules": { "off": "बंद", "toggle": "होम पर {{name}} दिखाएँ" }
+  },
+  "mr": {
+    "bottomNav": { "back": "मागे", "home": "होम", "menu": "मेनू", "menuTitle": "सर्व मॉड्यूल", "close": "मेनू बंद करा" },
+    "modules": { "off": "बंद", "toggle": "होमवर {{name}} दाखवा" }
+  }
+}

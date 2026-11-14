@@ -164,11 +164,16 @@ export default function HomeScreen() {
   });
 
   const header = (
-    <View style={s.head}>
+    <View style={s.hero}>
+      <View pointerEvents="none" style={[s.eye, s.eyeOuter]} />
+      <View pointerEvents="none" style={[s.eye, s.eyeMid]} />
+      <View pointerEvents="none" style={[s.eye, s.eyeIn]} />
+      <View pointerEvents="none" style={[s.eye, s.eyeCore]} />
       <Text style={s.title}>{t('home.title')}</Text>
       {q.data ? (
-        <Text style={s.sub}>{t('home.updated', { time: formatClock(q.data.asOf, i18n.language) })}</Text>
+        <Text style={s.heroSub}>{t('home.updated', { time: formatClock(q.data.asOf, i18n.language) })}</Text>
       ) : null}
+      <View style={s.goldLine} />
     </View>
   );
 
@@ -268,7 +273,23 @@ const s = StyleSheet.create({
   list: { backgroundColor: colors.bg },
   content: { padding: 16, gap: 12 },
   col: { gap: 12 },
-  head: { gap: 2, marginBottom: 8 },
+  hero: {
+    backgroundColor: colors.deep,
+    borderRadius: 28,
+    padding: 22,
+    paddingTop: 34,
+    gap: 4,
+    marginBottom: 14,
+    overflow: 'hidden',
+    elevation: 6,
+  },
+  eye: { position: 'absolute', borderRadius: 999 },
+  eyeOuter: { width: 170, height: 170, right: -50, top: -50, backgroundColor: colors.gold, opacity: 0.9 },
+  eyeMid: { width: 136, height: 136, right: -33, top: -33, backgroundColor: colors.brand2 },
+  eyeIn: { width: 96, height: 96, right: -13, top: -13, backgroundColor: colors.sapphire },
+  eyeCore: { width: 46, height: 46, right: 12, top: 12, backgroundColor: colors.plum },
+  heroSub: { color: 'rgba(255,255,255,0.8)', fontSize: 14 },
+  goldLine: { width: 56, height: 3, borderRadius: 2, backgroundColor: colors.gold, marginTop: 10 },
   switchRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -282,7 +303,7 @@ const s = StyleSheet.create({
     marginVertical: 8,
   },
   switchLabel: { fontSize: 16, fontWeight: '700', color: colors.ink },
-  title: { fontSize: 24, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 28, fontWeight: '800', color: '#fff', letterSpacing: -0.6, maxWidth: '72%' },
   sub: { color: colors.muted },
   center: { alignItems: 'center', gap: 8, padding: 24 },
   tile: {
