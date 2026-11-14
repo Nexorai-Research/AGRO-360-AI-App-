@@ -22,7 +22,8 @@
     "server": "The server gave an unexpected answer. Try again in a moment.",
     "denied": "Signed in, but this account cannot use the app.",
     "show": "Show password",
-    "hide": "Hide password"
+    "hide": "Hide password",
+    "client": "This app is not set up on the server yet (sign-in client missing). Ask your administrator."
   },
   "home": {
     "hello": "Hello, {{name}}",
@@ -2026,7 +2027,9 @@
       "sub": "Ask, act and get daily alerts"
     },
     "off": "Off",
-    "toggle": "Show {{name}} on home"
+    "toggle": "Show {{name}} on home",
+    "showAll": "Show all modules",
+    "hiddenNote": "All modules are hidden. Switch on to show them all again."
   },
   "sec": {
     "title": "Security centre",

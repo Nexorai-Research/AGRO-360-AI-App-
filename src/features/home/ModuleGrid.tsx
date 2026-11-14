@@ -14,7 +14,7 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
       ? t('modules.open')
       : t('modules.screens', { count: m.features.length });
   return (
-    <View style={[s.cell, !on && s.cellOff]}>
+    <View style={s.cell}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`${title}, ${meta}`}
@@ -23,19 +23,21 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
         disabled={!on}
         onPress={() => router.push(moduleTarget(m) as never)}
         android_ripple={{ color: tint(m.color, '22') }}
-        style={({ pressed }) => [s.card, pressed && s.pressed]}
+        style={({ pressed }) => [s.card, !on && s.cardOff, pressed && s.pressed]}
       >
         <View pointerEvents="none" style={[s.glow, { backgroundColor: tint(m.color, '1a') }]} />
-        <View style={[s.iconBox, { backgroundColor: tint(m.color, '1f'), borderColor: tint(m.color, '33') }]}>
+        <View
+          style={[s.iconBox, { backgroundColor: tint(m.color, '1f'), borderColor: tint(m.color, '33') }, !on && s.dim]}
+        >
           <Text style={s.icon}>{m.icon}</Text>
         </View>
-        <Text style={s.title} numberOfLines={2}>
+        <Text style={[s.title, !on && s.dim]} numberOfLines={2}>
           {title}
         </Text>
-        <Text style={s.sub} numberOfLines={2}>
+        <Text style={[s.sub, !on && s.dim]} numberOfLines={2}>
           {t(`modules.${m.id}.sub`)}
         </Text>
-        <View style={[s.chip, { backgroundColor: tint(m.color) }]}>
+        <View style={[s.chip, { backgroundColor: tint(m.color) }, !on && s.dim]}>
           <Text style={[s.chipTxt, { color: m.color }]}>{on ? `${meta} ›` : meta}</Text>
         </View>
       </Pressable>
@@ -55,28 +57,56 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
 /** The home menu: one card per module, like the web top menu. */
 export function ModuleGrid() {
   const { t } = useTranslation();
-  const { isOn, setOn } = useModuleFlags();
+  const { isOn, setOn, showAll, setShowAll } = useModuleFlags();
   return (
     <View style={s.wrap}>
-      <Text style={s.heading} accessibilityRole="header">
-        {t('modules.all')}
-      </Text>
-      <View style={s.grid}>
-        {MODULES.map((m) => (
-          <ModuleCard key={m.id} m={m} on={isOn(m.id)} onToggle={(v) => setOn(m.id, v)} />
-        ))}
+      <View style={s.headRow}>
+        <Text style={s.heading} accessibilityRole="header">
+          {t('modules.all')}
+        </Text>
+        <Switch
+          testID="modules-master-switch"
+          value={showAll}
+          onValueChange={setShowAll}
+          accessibilityLabel={t('modules.showAll')}
+          trackColor={{ false: '#c3d0d3', true: colors.brand }}
+          thumbColor="#fff"
+        />
       </View>
+      {showAll ? (
+        <View style={s.grid}>
+          {MODULES.map((m) => (
+            <ModuleCard key={m.id} m={m} on={isOn(m.id)} onToggle={(v) => setOn(m.id, v)} />
+          ))}
+        </View>
+      ) : (
+        <View style={s.hiddenNote} testID="modules-hidden-note">
+          <Text style={s.hiddenTxt}>{t('modules.hiddenNote')}</Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const s = StyleSheet.create({
   wrap: { gap: 12, marginBottom: 8 },
+  headRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   heading: { fontSize: 20, fontWeight: '800', color: colors.ink, letterSpacing: -0.4, marginTop: 4 },
+  hiddenNote: {
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    padding: 16,
+  },
+  hiddenTxt: { color: colors.muted, fontSize: 14, lineHeight: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
   cell: { width: '47.8%', flexGrow: 1 },
-  cellOff: { opacity: 0.55 },
-  toggle: { position: 'absolute', top: 6, right: 4, transform: [{ scale: 0.8 }] },
+  // Dimming the whole cell with opacity draws a box around the elevation shadow on Android, so only the contents are dimmed.
+  cardOff: { backgroundColor: '#eaf0f1', elevation: 0, shadowOpacity: 0 },
+  dim: { opacity: 0.45 },
+  // The card has an elevation, and Android hands touches to the highest elevation first: the switch must sit above the card.
+  toggle: { position: 'absolute', top: 6, right: 4, zIndex: 10, elevation: 10, transform: [{ scale: 0.8 }] },
   card: {
     flex: 1,
     backgroundColor: '#fff',

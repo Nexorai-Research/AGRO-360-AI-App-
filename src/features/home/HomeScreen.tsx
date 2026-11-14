@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Switch, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage } from '@/api/errors';
@@ -149,6 +150,7 @@ function Profile() {
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { me, client } = useAuth();
   const userId = me?.userId ?? '';
   const [showSummary, setShowSummary] = useSummaryFlag();
@@ -226,7 +228,7 @@ export default function HomeScreen() {
     <FlatList
       testID="home-list"
       style={s.list}
-      contentContainerStyle={s.content}
+      contentContainerStyle={[s.content, { paddingTop: 16 + insets.top }]}
       data={denied || !showSummary ? [] : tiles}
       keyExtractor={(x) => x.id}
       numColumns={2}

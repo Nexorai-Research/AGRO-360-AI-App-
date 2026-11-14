@@ -36,6 +36,7 @@ beforeEach(async () => {
   mockCanGoBack = true;
   mockPath = '/';
   await SecureStore.deleteItemAsync('agro360.home.modules.off');
+  await SecureStore.deleteItemAsync('agro360.home.modules.hidden');
   await setLanguage('en');
 });
 
@@ -81,6 +82,54 @@ describe('module on/off switches', () => {
     await render(<ModuleGrid />);
     await fireEvent(screen.getByTestId('module-switch-ops'), 'valueChange', false);
     expect(screen.getByText('बंद')).toBeTruthy();
+  });
+});
+
+describe('master switch for all modules', () => {
+  const cards = () => MODULES.map((m) => screen.queryByTestId(`module-${m.id}`));
+
+  it('is on by default and every card is shown', async () => {
+    await render(<ModuleGrid />);
+    expect(screen.getByTestId('modules-master-switch').props.value).toBe(true);
+    expect(cards().every((c) => c !== null)).toBe(true);
+    expect(screen.queryByTestId('modules-hidden-note')).toBeNull();
+  });
+
+  it('off hides every module card and says so; on shows them all again', async () => {
+    await render(<ModuleGrid />);
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', false);
+    expect(cards().every((c) => c === null)).toBe(true);
+    expect(screen.getByTestId('modules-hidden-note')).toBeTruthy();
+    expect(screen.getByText('All modules are hidden. Switch on to show them all again.')).toBeTruthy();
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', true);
+    expect(cards().every((c) => c !== null)).toBe(true);
+  });
+
+  it('on shows every module, also the ones switched off one by one', async () => {
+    await render(<ModuleGrid />);
+    await fireEvent(screen.getByTestId('module-switch-ops'), 'valueChange', false);
+    await fireEvent(screen.getByTestId('module-switch-staff'), 'valueChange', false);
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', false);
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', true);
+    for (const m of MODULES) expect(screen.getByTestId(`module-switch-${m.id}`).props.value).toBe(true);
+    expect(await SecureStore.getItemAsync('agro360.home.modules.off')).toBe('[]');
+  });
+
+  it('remembers hidden after the app is opened again', async () => {
+    const first = await render(<ModuleGrid />);
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', false);
+    expect(await SecureStore.getItemAsync('agro360.home.modules.hidden')).toBe('1');
+    await first.unmount();
+    await render(<ModuleGrid />);
+    await waitFor(() => expect(screen.getByTestId('modules-master-switch').props.value).toBe(false));
+    expect(screen.queryByTestId('module-ops')).toBeNull();
+  });
+
+  it('shows Hindi text', async () => {
+    await setLanguage('hi');
+    await render(<ModuleGrid />);
+    await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', false);
+    expect(screen.getByText('सभी मॉड्यूल छिपे हैं। सब दोबारा दिखाने के लिए स्विच ऑन करें।')).toBeTruthy();
   });
 });
 
