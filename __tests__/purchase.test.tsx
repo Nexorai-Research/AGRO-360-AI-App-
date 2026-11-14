@@ -157,16 +157,16 @@ describe('purchase logic', () => {
     expect(countScan(c1, 'sku-1')!.lines[0]!.received).toBe('2');
     expect(countScan(d, 'other')).toBeNull();
     const bad = { ...c1, lines: [{ ...c1.lines[0]!, rejected: '1' }] };
-    expect(receiveErrors(bad, '2026-11-11')).toContain('reason');
+    expect(receiveErrors(bad, d.receiptDate)).toContain('reason');
     const ok = { ...c1, lines: [{ ...c1.lines[0]!, received: '3', rejected: '1', reason: 'DAMAGED' }] };
-    expect(receiveErrors(ok, '2026-11-11')).toEqual([]);
+    expect(receiveErrors(ok, d.receiptDate)).toEqual([]);
     expect(buildGrnBody('po-1', ok).lines[0]).toEqual({
       poLineId: 'l-1',
       receivedQty: '3',
       rejectedQty: '1',
       rejectReason: 'DAMAGED',
     });
-    expect(receiveErrors({ ...ok, lines: [{ ...ok.lines[0]!, rejected: '4' }] }, '2026-11-11')).toContain(
+    expect(receiveErrors({ ...ok, lines: [{ ...ok.lines[0]!, rejected: '4' }] }, d.receiptDate)).toContain(
       'rejected',
     );
   });

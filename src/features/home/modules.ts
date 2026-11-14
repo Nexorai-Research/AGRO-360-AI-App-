@@ -21,7 +21,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'ops',
     icon: '📦',
-    color: '#15803d',
+    color: '#0b7a75',
     features: [
       { key: 'pos', href: '/pos', icon: '🧾' },
       { key: 'invoices', href: '/invoices', icon: '📄' },
@@ -54,7 +54,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'customers',
     icon: '🌾',
-    color: '#0369a1',
+    color: '#1565a8',
     features: [
       { key: 'customers', href: '/customers', icon: '👨‍🌾' },
       { key: 'collections', href: '/collections', icon: '💰' },
@@ -71,7 +71,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'accounts',
     icon: '💳',
-    color: '#be123c',
+    color: '#7b3fa0',
     features: [
       { key: 'accounts', href: '/accounts', icon: '📒' },
       { key: 'statements', href: '/statements', icon: '📑' },
@@ -95,7 +95,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'reports',
     icon: '📊',
-    color: '#0f766e',
+    color: '#0e8f7a',
     features: [
       { key: 'reports', href: '/reports', icon: '📊' },
       { key: 'reportsMore', href: '/reports-more', icon: '📑' },
@@ -108,7 +108,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'ai',
     icon: '🤖',
-    color: '#6d28d9',
+    color: '#4f46b8',
     features: [
       { key: 'assistant', href: '/assistant', icon: '💬' },
       { key: 'aiDigest', href: '/ai-digest', icon: '🔔' },
@@ -133,7 +133,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'staff',
     icon: '👥',
-    color: '#c2410c',
+    color: '#b8860b',
     features: [
       { key: 'attendance', href: '/attendance', icon: '📍' },
       { key: 'leave', href: '/leave', icon: '🏖️' },
@@ -152,7 +152,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'admin',
     icon: '🛡️',
-    color: '#b45309',
+    color: '#073b4c',
     features: [
       { key: 'users', href: '/users', icon: '🧑‍💼' },
       { key: 'roles', href: '/roles', icon: '🔑' },
@@ -165,7 +165,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'setup',
     icon: '⚙️',
-    color: '#475569',
+    color: '#3d6b73',
     features: [
       { key: 'setupBranches', href: '/setup-branches', icon: '🏬' },
       { key: 'setupWarehouses', href: '/setup-warehouses', icon: '🏭' },
@@ -188,7 +188,7 @@ export const MODULES: AppModule[] = [
   {
     id: 'account',
     icon: '👤',
-    color: '#7c3aed',
+    color: '#8a3f8f',
     features: [
       { key: 'account', href: '/account', icon: '👤' },
       { key: 'devices', href: '/devices', icon: '📱' },
