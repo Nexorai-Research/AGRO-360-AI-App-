@@ -2724,7 +2724,8 @@
       "byCategory": "वर्गानुसार",
       "bySeverity": "तीव्रतेनुसार",
       "none": "अजून तक्रारी नाहीत.",
-      "complaints": "{{count}} तक्रारी"
+      "complaints_one": "{{count}} तक्रार",
+      "complaints_other": "{{count}} तक्रारी"
     }
   },
   "cheques": {

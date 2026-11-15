@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -27,7 +27,6 @@ export default function RecommendationsScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiRecs') }} />
       <Text style={k.title}>{t('ai.rec.title')}</Text>
       <Text style={k.sub}>{t('ai.rec.intro')}</Text>
       <Chips

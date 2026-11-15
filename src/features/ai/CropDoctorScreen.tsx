@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -82,7 +82,6 @@ export default function CropDoctorScreen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiCropDoctor') }} />
       <Text style={k.title}>{t('ai.cd.title')}</Text>
       <Text style={k.sub}>{status.data?.disclaimer ?? t('ai.cd.intro')}</Text>
       {status.data?.message ? <Text style={k.warn}>{status.data.message}</Text> : null}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { formatINR } from '@/money';
@@ -102,7 +102,6 @@ export default function PurchaseScreen() {
         <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.purchase') }} />
       <Text style={k.title}>{t('purchase.title')}</Text>
       <Chips options={tabs} value={tab} onChange={(v) => setTab(v as Tab)} />
 

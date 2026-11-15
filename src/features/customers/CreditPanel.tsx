@@ -7,7 +7,7 @@ import { errorMessage, type ErrorMessage } from '../../api/errors';
 import { newId } from '../../device';
 import { dec, formatINR } from '../../money';
 import { Button } from '../../ui/Button';
-import { colors, radius } from '../../ui/theme';
+import { colors, radius, lineStrong, surface } from '../../ui/theme';
 import {
   CRPERM,
   fetchCredit,
@@ -243,11 +243,8 @@ export function CreditPanel({ customerId }: { customerId: string }) {
 
 const s = StyleSheet.create({
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 8,
+    ...surface.card,
+    padding: 12,
     gap: 6,
   },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -260,7 +257,7 @@ const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,

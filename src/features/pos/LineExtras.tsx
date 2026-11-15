@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { errorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong } from '@/ui/theme';
 import { retryNetworkOnce } from '../purchase/Gate';
 import type { CartLine } from './cart';
 
@@ -163,7 +163,7 @@ const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,

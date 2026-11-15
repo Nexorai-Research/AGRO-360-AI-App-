@@ -8,7 +8,7 @@ import { ApiError, errorMessage } from '@/api/errors';
 import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
 import { Field } from '@/ui/kit';
-import { colors, radius } from '@/ui/theme';
+import { colors, surface } from '@/ui/theme';
 import { todayIST } from '../collections/receipt';
 import { shortDate } from '../hr/logic';
 import { formatINRShort } from './format';
@@ -362,10 +362,7 @@ function Goal({
 const s = StyleSheet.create({
   wrap: { gap: 12, marginTop: 4 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 16,
     gap: 8,
   },

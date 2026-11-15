@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -89,7 +88,6 @@ export default function ProductCheckScreen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiProductCheck') }} />
       <Text style={k.title}>{t('ai.pc.title')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}

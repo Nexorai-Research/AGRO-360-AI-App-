@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -38,7 +37,6 @@ export default function AuditScreen() {
         />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiAudit') }} />
       <Text style={k.title}>{t('ai.au.title')}</Text>
       <Text style={k.sub}>{t('ai.au.note')}</Text>
       {(sum.data ?? []).slice(0, 8).map((x, i) => (

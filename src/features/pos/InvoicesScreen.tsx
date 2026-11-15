@@ -17,7 +17,7 @@ import { config } from '@/config';
 import { newId } from '@/device';
 import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
 import { printInvoice, shareInvoicePdf } from './print';
 import { todayIST } from '../collections/receipt';
@@ -338,13 +338,10 @@ export default function InvoicesScreen() {
 
 const s = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
-  title: { fontSize: 22, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 12,
+    ...surface.card,
+    padding: 14,
     gap: 8,
   },
   panel: { gap: 8, paddingTop: 8 },
@@ -356,7 +353,7 @@ const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,
@@ -367,7 +364,7 @@ const s = StyleSheet.create({
   chip: {
     minHeight: 48,
     paddingHorizontal: 14,
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     justifyContent: 'center',

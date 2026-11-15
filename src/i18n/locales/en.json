@@ -2724,7 +2724,8 @@
       "byCategory": "By category",
       "bySeverity": "By severity",
       "none": "No complaints yet.",
-      "complaints": "{{count}} complaints"
+      "complaints_one": "{{count}} complaint",
+      "complaints_other": "{{count}} complaints"
     }
   },
   "cheques": {

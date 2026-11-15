@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -34,7 +33,6 @@ export default function ScenarioScreen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiScenario') }} />
       <Text style={k.title}>{t('ai.sc.title')}</Text>
       <Text style={k.sub}>{t('ai.sc.intro')}</Text>
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}

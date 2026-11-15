@@ -136,7 +136,6 @@ export default function AccountScreen() {
           maxLength={120}
         />
         {nameBad ? <Text style={k.error}>{t('account.badName')}</Text> : null}
-        <Text style={k.sub}>{t('account.language')}</Text>
         <Chips value={shownLang} options={LANGS} onChange={setLang} label={t('account.language')} />
         <Button label={t('account.save')} disabled={busy || !changed || nameBad} onPress={save} />
       </Card>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -130,7 +129,6 @@ export default function YearsScreen() {
         <RefreshControl refreshing={years.isRefetching} onRefresh={() => void years.refetch()} />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.setupYears') }} />
       <Text style={k.title}>{t('setup.years.title')}</Text>
       <Text style={k.sub}>{t('setup.years.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

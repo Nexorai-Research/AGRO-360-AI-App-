@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -24,6 +24,7 @@ export default function QuizG8Screen() {
     retry: retryNetworkOnce,
   });
   if (!s.can(G8.assistant)) return <StateView state="denied" message={t('ai.denied')} />;
+  if (!id) return <StateView state="empty" message={t('modules.notFound')} />;
   const qs = q.data?.questions ?? [];
   const all = qs.length > 0 && qs.every((x) => picked[x.id] !== undefined);
   function send() {
@@ -36,7 +37,6 @@ export default function QuizG8Screen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page}>
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiTraining') }} />
       <Text style={k.title}>{q.data?.title ?? t('ai.tr.quiz')}</Text>
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}
       <Gate q={q} ns="ai" emptyKey="ai.tr.noQuiz" isEmpty={false}>

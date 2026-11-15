@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { errorMessage } from '@/api/errors';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong, pressedOpacity, surface } from '@/ui/theme';
 
 export { useActionKey, Notice } from '@/ui/kit';
 
@@ -33,6 +34,7 @@ export function Field({
   error?: string | null;
   autoCapitalize?: 'none' | 'sentences' | 'characters';
 }) {
+  const [focus, setFocus] = useState(false);
   return (
     <View style={k.field}>
       <Text style={k.label}>{label}</Text>
@@ -41,10 +43,13 @@ export function Field({
         onChangeText={onChange}
         accessibilityLabel={label}
         placeholder={placeholder}
+        placeholderTextColor={colors.muted}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         keyboardType={keyboard ?? 'default'}
         multiline={multiline}
         autoCapitalize={autoCapitalize}
-        style={[k.input, multiline && k.multi]}
+        style={[k.input, multiline && k.multi, focus && k.inputFocus, error ? k.inputError : null]}
       />
       {error ? <Text style={k.error}>{error}</Text> : null}
     </View>
@@ -69,7 +74,7 @@ export function Chips({
           accessibilityLabel={o.label}
           accessibilityState={{ selected: value === o.value }}
           onPress={() => onChange(o.value)}
-          style={[k.chip, value === o.value && k.chipOn]}
+          style={({ pressed }) => [k.chip, value === o.value && k.chipOn, pressed && { opacity: pressedOpacity }]}
         >
           <Text style={[k.chipTxt, value === o.value && k.chipTxtOn]}>{o.label}</Text>
         </Pressable>
@@ -80,14 +85,11 @@ export function Chips({
 
 export const k = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
-  title: { fontSize: 22, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   h2: { fontSize: 17, fontWeight: '700', color: colors.ink },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 12,
+    ...surface.card,
+    padding: 14,
     gap: 6,
   },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -101,19 +103,21 @@ export const k = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,
     backgroundColor: '#fff',
     color: colors.ink,
   },
+  inputFocus: { borderColor: colors.brand, borderWidth: 1.5 },
+  inputError: { borderColor: colors.danger },
   multi: { minHeight: 96, textAlignVertical: 'top', paddingTop: 10 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: {
     minHeight: 48,
     paddingHorizontal: 14,
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     justifyContent: 'center',

@@ -6,7 +6,7 @@ import { useAuth } from '../../auth/AuthProvider';
 import type { ApiClient } from '../../api/client';
 import { dec, formatINR } from '../../money';
 import { Button } from '../../ui/Button';
-import { colors, radius } from '../../ui/theme';
+import { colors, surface } from '../../ui/theme';
 import {
   SECTIONS,
   SECTION_PERM,
@@ -227,11 +227,8 @@ const s = StyleSheet.create({
   wrap: { gap: 8 },
   h: { fontSize: 18, fontWeight: '700', color: colors.ink },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 8,
+    ...surface.card,
+    padding: 12,
     gap: 6,
   },
   item: { paddingVertical: 4, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line, gap: 2 },

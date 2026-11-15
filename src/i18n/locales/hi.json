@@ -2724,7 +2724,8 @@
       "byCategory": "श्रेणी के अनुसार",
       "bySeverity": "गंभीरता के अनुसार",
       "none": "अभी कोई शिकायत नहीं।",
-      "complaints": "{{count}} शिकायतें"
+      "complaints_one": "{{count}} शिकायत",
+      "complaints_other": "{{count}} शिकायतें"
     }
   },
   "cheques": {

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -39,7 +38,6 @@ export default function GovernanceScreen() {
         />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiGovern') }} />
       <Text style={k.title}>{t('ai.gv.title')}</Text>
       <Gate q={quota} ns="ai" emptyKey="ai.gv.none" isEmpty={false}>
         {u ? (

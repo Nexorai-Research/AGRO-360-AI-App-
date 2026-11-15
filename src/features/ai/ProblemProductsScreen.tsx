@@ -1,6 +1,6 @@
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -26,13 +26,13 @@ export default function ProblemProductsScreen() {
     retry: retryNetworkOnce,
   });
   if (!s.can(AP.digest)) return <StateView state="denied" message={t('ai.denied')} />;
+  if (!id || !branch) return <StateView state="empty" message={t('modules.notFound')} />;
   const d = q.data;
   return (
     <ScrollView
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiCropDoctor') }} />
       <Text style={k.title}>{t('ai.pp.title', { name: name ?? '' })}</Text>
       <Gate q={q} ns="ai" emptyKey="ai.pp.none" isEmpty={false}>
         {d ? (

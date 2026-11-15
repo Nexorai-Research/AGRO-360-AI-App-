@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Stack } from 'expo-router';
 import { Card, Notice, kit, useActionKey } from '@/ui/kit';
 import { Button } from '@/ui/Button';
 import { formatINR } from '@/money';
@@ -52,7 +51,6 @@ export default function EngagementScreen() {
   if (shown.length === 0) return <StateView state="denied" message={t('cus.denied')} />;
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('cus.eng.title') }} />
       <Text style={kit.title}>{t('cus.eng.title')}</Text>
       <Text style={kit.sub}>{t('cus.eng.intro')}</Text>
       <Tabs value={tab} onChange={setTab} tabs={shown} />

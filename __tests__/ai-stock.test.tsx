@@ -157,7 +157,7 @@ describe('forecast screen', () => {
     expect(screen.getByText('1 of 2 products forecast')).toBeTruthy();
     expect(screen.getByText('1 could not be planned (not enough data).')).toBeTruthy();
     const call = mockGet.mock.calls.find((c) => c[0] === '/ai/forecast/table')!;
-    expect(call[1].query).toEqual({ branch: undefined, weeks: 4, limit: 40 });
+    expect(call[1].query).toEqual({ branch: 'b1', weeks: 4, limit: 40 });
   });
   test('weeks chip and branch chip re-read the table', async () => {
     route({ '/branches': BR, '/ai/forecast/table': fc });

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -115,12 +114,6 @@ export default function ScanScreen({ kind }: { kind: Kind }) {
   const errors = doc?.validation.issues.filter((i) => i.severity === 'ERROR') ?? [];
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          title: t(kind === 'PURCHASE_BILL' ? 'nav.aiBillScan' : 'nav.aiLabelScan'),
-        }}
-      />
       <Text style={k.title}>{t(kind === 'PURCHASE_BILL' ? 'ai.sc.billTitle' : 'ai.sc.labelTitle')}</Text>
       <Text style={k.sub}>{t(kind === 'PURCHASE_BILL' ? 'ai.sc.billIntro' : 'ai.sc.labelIntro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

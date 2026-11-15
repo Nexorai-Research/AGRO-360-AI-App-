@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
@@ -43,7 +42,6 @@ export default function CreditScreen() {
   const a = credit.data?.account;
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.credit') }} />
       <Text style={k.title}>{t('credit.scrTitle')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}

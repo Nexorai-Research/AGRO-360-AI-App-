@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, surface } from '@/ui/theme';
 import { useSal } from '../collections/sal-hook';
 import { pkey } from './plans-api';
 import { StateView, isDenied, isNetwork } from './ui';
@@ -46,11 +46,8 @@ export function usePanel<T>(
 
 export const s = StyleSheet.create({
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 10,
+    ...surface.card,
+    padding: 12,
     gap: 8,
   },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

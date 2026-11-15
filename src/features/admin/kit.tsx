@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { Chips as KitChips, useActionKey } from '@/ui/kit';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
 
 export const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
@@ -78,14 +78,11 @@ export function Chips<T extends string>({
 
 export const k = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
-  title: { fontSize: 22, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   h2: { fontSize: 17, fontWeight: '700', color: colors.ink, marginTop: 6 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 12,
+    ...surface.card,
+    padding: 14,
     gap: 8,
   },
   name: { fontSize: 16, color: colors.ink, fontWeight: '600' },
@@ -95,7 +92,7 @@ export const k = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,
@@ -106,7 +103,7 @@ export const k = StyleSheet.create({
   chip: {
     minHeight: 44,
     paddingHorizontal: 14,
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     justifyContent: 'center',

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Stack } from 'expo-router';
 import { Button } from '@/ui/Button';
 import { Card, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { formatINR } from '@/money';
@@ -53,7 +52,6 @@ export default function ToolsScreen() {
   if (shown.length === 0) return <StateView state="denied" message={t('cus.denied')} />;
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('cus.tools.title') }} />
       <Text style={kit.title}>{t('cus.tools.title')}</Text>
       <Text style={kit.sub}>{t('cus.tools.intro')}</Text>
       <Tabs value={tab} onChange={setTab} tabs={shown} />

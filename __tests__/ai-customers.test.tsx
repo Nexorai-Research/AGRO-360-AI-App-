@@ -164,7 +164,7 @@ describe('cash outlook', () => {
     await render(<CashFlowScreen />, { wrapper });
     await screen.findByText('Cash and bank now: ₹1,20,000');
     expect(screen.getByText('Cash may run short within 14 days.')).toBeTruthy();
-    expect(screen.getByText('In 14 days: ₹-20,000 · shortfall')).toBeTruthy();
+    expect(screen.getByText('In 14 days: -₹20,000 · shortfall')).toBeTruthy();
     expect(screen.getByText('Payroll not included: needs hr.salary.view')).toBeTruthy();
     expect(screen.queryByText(/GST payment not included/)).toBeNull();
     expect(screen.getByText('A projection to help you plan. It does not move any money.')).toBeTruthy();

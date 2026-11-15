@@ -318,18 +318,18 @@ describe('receipt form', () => {
   async function fill(amount = '1500') {
     await fireEvent.changeText(await screen.findByLabelText('Search customer by name or mobile'), 'ram');
     await fireEvent.press(await screen.findByLabelText('Ramesh Patil'));
-    await fireEvent.press(await screen.findByLabelText('CASH'));
+    await fireEvent.press(await screen.findByLabelText('Cash'));
     await fireEvent.changeText(screen.getByLabelText('Amount (₹)'), amount);
   }
 
   it('lists only enabled payment modes and never "CREDIT"', async () => {
     route();
     await show();
-    expect(await screen.findByLabelText('CASH')).toBeTruthy();
+    expect(await screen.findByLabelText('Cash')).toBeTruthy();
     expect(screen.getByLabelText('UPI')).toBeTruthy();
-    expect(screen.getByLabelText('CHEQUE')).toBeTruthy();
-    expect(screen.queryByLabelText('CARD')).toBeNull(); // switched off
-    expect(screen.queryByLabelText('CREDIT')).toBeNull(); // the server refuses a receipt on credit
+    expect(screen.getByLabelText('Cheque')).toBeTruthy();
+    expect(screen.queryByLabelText('Card')).toBeNull(); // switched off
+    expect(screen.queryByLabelText('Credit')).toBeNull(); // the server refuses a receipt on credit
   });
 
   it('sends the receipt with a string amount, today in India, and the single branch chosen for the user, then shows the result', async () => {
@@ -426,7 +426,7 @@ describe('receipt form', () => {
     await screen.findByText(/You are offline/);
     online = true;
     await fireEvent.press(screen.getByLabelText('Check again'));
-    expect(await screen.findByLabelText('CASH')).toBeTruthy();
+    expect(await screen.findByLabelText('Cash')).toBeTruthy();
     expect(screen.queryByText(/You are offline/)).toBeNull();
   });
 
@@ -450,7 +450,7 @@ describe('receipt form', () => {
   it('asks for the customer and the mode when they are missing', async () => {
     route();
     await show();
-    await screen.findByLabelText('CASH');
+    await screen.findByLabelText('Cash');
     await fireEvent.changeText(screen.getByLabelText('Amount (₹)'), '100');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     expect(await screen.findAllByText('This is required.')).toHaveLength(2); // customer and mode
@@ -463,7 +463,7 @@ describe('receipt form', () => {
     await show();
     await fireEvent.changeText(await screen.findByLabelText('Search customer by name or mobile'), 'ram');
     await fireEvent.press(await screen.findByLabelText('Ramesh Patil'));
-    await fireEvent.press(await screen.findByLabelText('CHEQUE'));
+    await fireEvent.press(await screen.findByLabelText('Cheque'));
     await fireEvent.changeText(screen.getByLabelText('Amount (₹)'), '2000');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     expect(await screen.findAllByText('This is required.')).toHaveLength(3);
@@ -523,7 +523,7 @@ describe('receipt form', () => {
     await show();
     await fireEvent.changeText(await screen.findByLabelText('Search customer by name or mobile'), 'ram');
     await fireEvent.press(await screen.findByLabelText('Ramesh Patil'));
-    await fireEvent.press(await screen.findByLabelText('CASH'));
+    await fireEvent.press(await screen.findByLabelText('Cash'));
     await fireEvent.changeText(screen.getByLabelText('Amount (₹)'), '100');
     await fireEvent.press(screen.getByLabelText('Save receipt'));
     expect(await screen.findByText('This is required.')).toBeTruthy(); // branch not chosen yet

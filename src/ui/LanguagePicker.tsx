@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { setLanguage, type LangCode } from '@/i18n';
-import { colors, radius } from './theme';
+import { colors } from './theme';
 
 const LANGS: [string, string][] = [
   ['en', 'English'],
@@ -37,7 +37,7 @@ const s = StyleSheet.create({
     minHeight: 44,
     paddingHorizontal: 16,
     justifyContent: 'center',
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.card,

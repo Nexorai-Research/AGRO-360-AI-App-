@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { formatINR } from '@/money';
@@ -164,7 +163,6 @@ export default function FollowUpScreen() {
         <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.followup') }} />
       <Text style={k.title}>{t('followup.title')}</Text>
       <Chips options={tabs} value={shown} onChange={(v) => setTab(v as Tab)} />
       {msg ? <Notice tone="ok" text={msg} /> : null}

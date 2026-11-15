@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -31,7 +30,6 @@ export default function VoiceG8Screen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiVoice') }} />
       <Text style={k.title}>{t('ai.vo.title')}</Text>
       <Text style={k.sub}>{t('ai.vo.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

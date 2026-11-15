@@ -151,6 +151,19 @@ describe('stock counts', () => {
       return v;
     });
 
+  test('the real server sends the list as a plain array: empty and with rows, no crash', async () => {
+    answers({ '/inventory/counts': [] });
+    const a = await render(<CountsScreen />, { wrapper });
+    expect(await screen.findByText('No stock counts.')).toBeTruthy();
+    await a.unmount();
+    qc.clear();
+    answers({ '/inventory/counts': [count({ lines: undefined })] });
+    const b = await render(<CountsScreen />, { wrapper });
+    expect(await screen.findByText('CNT-1 · Counting')).toBeTruthy();
+    await b.unmount();
+    qc.clear();
+  });
+
   test('list, empty, offline, error with reference, denied', async () => {
     answers();
     const a = await render(<CountsScreen />, { wrapper });
@@ -273,10 +286,10 @@ describe('ledger', () => {
       currentBalance: null,
     });
     await render(<LedgerScreen />, { wrapper });
-    expect(await screen.findByText('SALE_ISSUE · -2')).toBeTruthy();
+    expect(await screen.findByText('Sale issue · -2')).toBeTruthy();
     expect(screen.getByText('INVOICE · Balance 8')).toBeTruthy();
     expect(screen.getByText('Pick one product to see its balance.')).toBeTruthy();
-    await press('ADJUST_PLUS');
+    await press('Adjust plus');
     await waitFor(() =>
       expect(mockGet.mock.calls.at(-1)![1].query).toEqual({ limit: 100, type: 'ADJUST_PLUS' }),
     );

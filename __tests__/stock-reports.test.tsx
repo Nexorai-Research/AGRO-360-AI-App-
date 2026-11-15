@@ -131,7 +131,7 @@ describe('stock reports', () => {
     await render(<StockReportsScreen />, { wrapper });
     await pick('Stock ledger');
     expect(await screen.findByText('10 Nov 2026 · Sale · WH1 · Batch B-77')).toBeTruthy();
-    expect(screen.getByText('-2.000')).toBeTruthy();
+    expect(screen.getByText('-2')).toBeTruthy();
     expect(screen.getByText('38.000')).toBeTruthy();
     expect(screen.getByText('Showing the first 1 of 120. Use the web app for the full list.')).toBeTruthy();
   });

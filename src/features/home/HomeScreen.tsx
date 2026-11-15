@@ -11,7 +11,7 @@ import { ModuleGrid } from './ModuleGrid';
 import HomeExtras from './HomeExtras';
 import { ProfileCard } from './ProfileCard';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, surface } from '@/ui/theme';
 import {
   OWNER_DASHBOARD_PERMISSION,
   fetchOwnerDashboard,
@@ -284,10 +284,7 @@ const s = StyleSheet.create({
   tileValue: { color: colors.ink, fontSize: 22, fontWeight: '700' },
   note: { color: colors.muted, fontSize: 12 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 16,
     gap: 8,
     marginTop: 4,

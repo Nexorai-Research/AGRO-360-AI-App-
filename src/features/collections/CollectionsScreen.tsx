@@ -16,7 +16,7 @@ import { useAuth } from '@/auth/AuthProvider';
 import { ApiError, errorMessage } from '@/api/errors';
 import { dec, formatINR, sub, sum } from '@/money';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, surface } from '@/ui/theme';
 import { formatClock } from '@/features/home/format';
 import {
   PERM,
@@ -270,10 +270,7 @@ const s = StyleSheet.create({
   sub: { color: colors.muted, fontSize: 13 },
   center: { alignItems: 'center', gap: 8, padding: 24 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 16,
     gap: 6,
   },

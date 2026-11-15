@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -60,10 +59,12 @@ export default function ForecastScreen() {
     enabled: ok,
     retry: retryNetworkOnce,
   });
+  // the server needs a branch: use the first one until the user picks another
+  const cur = branch || branches.data?.[0]?.id || '';
   const q = useQuery({
-    queryKey: akey(s.userId, 'forecast', `${branch}|${weeks}|${more}`),
-    queryFn: ({ signal }) => fetchForecastTable(s.client!, { branch, weeks, limit: more ? 200 : 40 }, signal),
-    enabled: ok,
+    queryKey: akey(s.userId, 'forecast', `${cur}|${weeks}|${more}`),
+    queryFn: ({ signal }) => fetchForecastTable(s.client!, { branch: cur, weeks, limit: more ? 200 : 40 }, signal),
+    enabled: ok && (cur !== '' || branches.isError),
     retry: retryNetworkOnce,
   });
   if (!s.can(AP.digest) || !s.can(AI_INV)) return <StateView state="denied" message={t('ai.denied')} />;
@@ -73,12 +74,11 @@ export default function ForecastScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiForecast') }} />
       <Text style={k.title}>{t('ai.fc.title')}</Text>
       {(branches.data ?? []).length > 1 ? (
         <Chips
           options={(branches.data ?? []).map((b) => ({ value: b.id, label: b.name }))}
-          value={branch || d?.branchId || ''}
+          value={cur || d?.branchId || ''}
           onChange={setBranch}
         />
       ) : null}

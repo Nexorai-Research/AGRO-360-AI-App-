@@ -250,11 +250,14 @@ export default function CountsScreen() {
             value={status}
             onChange={setStatus}
           />
-          <Read<{ items: CountHead[] }> path="/inventory/counts" query={{ status: status || undefined }}>
-            {(d) => (
+          <Read<{ items?: CountHead[] } | CountHead[]> path="/inventory/counts" query={{ status: status || undefined }}>
+            {(d) => {
+              // the list can come as { items } or as a plain array; never crash on a missing list
+              const items: CountHead[] = Array.isArray(d) ? d : (d?.items ?? []);
+              return (
               <>
-                {d.items.length === 0 ? <Empty text={t('stkCounts.empty')} /> : null}
-                {d.items.map((c) => (
+                {items.length === 0 ? <Empty text={t('stkCounts.empty')} /> : null}
+                {items.map((c) => (
                   <Card key={c.id}>
                     <Text style={kit.name}>
                       {c.number} · {t(`stkCounts.status_${c.status}`)}
@@ -268,7 +271,8 @@ export default function CountsScreen() {
                   </Card>
                 ))}
               </>
-            )}
+              );
+            }}
           </Read>
         </>
       )}

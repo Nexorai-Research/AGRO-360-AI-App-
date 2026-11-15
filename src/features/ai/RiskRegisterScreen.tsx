@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Pressable, RefreshControl, ScrollView, Text } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { colors } from '@/ui/theme';
@@ -40,7 +40,6 @@ export default function RiskRegisterScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiRisks') }} />
       <Text style={k.title}>{t('ai.rk.title')}</Text>
       <Text style={k.sub}>{t('ai.rk.note')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

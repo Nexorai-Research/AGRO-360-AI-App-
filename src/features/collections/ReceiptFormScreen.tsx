@@ -8,7 +8,7 @@ import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { newId } from '@/device';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import {
   PERM,
   branchesKey,
@@ -32,6 +32,7 @@ import {
   type DraftField,
   type ReceiptDraft,
 } from './receipt';
+import { humanCode } from '@/format';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
 
@@ -214,7 +215,7 @@ export default function ReceiptFormScreen() {
   const loading =
     (modes.isPending && modes.fetchStatus !== 'idle') ||
     (branches.isPending && branches.fetchStatus !== 'idle' && branchChoices.length === 0);
-  const modeOptions = (modes.data ?? []).map((m) => ({ id: m.code, label: m.code }));
+  const modeOptions = (modes.data ?? []).map((m) => ({ id: m.code, label: humanCode(m.code) }));
   const err = (k: DraftField) =>
     errors[k] ? <Text style={s.fieldError}>{t(`collections.v.${errors[k]}`)}</Text> : null;
   const loadFailure = !offline && modes.error ? errorMessage(modes.error) : null;
@@ -418,10 +419,7 @@ const s = StyleSheet.create({
   center: { alignItems: 'center', gap: 8, padding: 16 },
   gap: { gap: 8 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 16,
     gap: 6,
   },
@@ -429,7 +427,7 @@ const s = StyleSheet.create({
     minHeight: 48,
     borderRadius: radius,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     backgroundColor: '#fff',
     paddingHorizontal: 14,
     fontSize: 16,
@@ -440,7 +438,7 @@ const s = StyleSheet.create({
     minHeight: 44,
     paddingHorizontal: 16,
     justifyContent: 'center',
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.card,
