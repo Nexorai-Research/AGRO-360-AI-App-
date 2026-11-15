@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Stack } from 'expo-router';
 import { Card, Notice, kit, useActionKey } from '@/ui/kit';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -21,7 +20,6 @@ export default function ComplaintInsightsScreen() {
   if (!ok) return <StateView state="denied" message={t('cus.denied')} />;
   return (
     <ScrollView contentContainerStyle={kit.page}>
-      <Stack.Screen options={{ headerShown: true, title: t('cus.insights.title') }} />
       <Text style={kit.title}>{t('cus.insights.title')}</Text>
       <Button
         label={act.busy ? t('common.loading') : t('cus.insights.sweep')}

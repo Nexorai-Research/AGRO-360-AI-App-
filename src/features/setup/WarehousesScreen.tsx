@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -139,7 +138,6 @@ export default function WarehousesScreen() {
     const bErr = bin ? binErrors(bin) : [];
     return (
       <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-        <Stack.Screen options={{ headerShown: true, title: t('nav.setupWarehouses') }} />
         <Button kind="ghost" label={t('setup.back')} onPress={() => (close(), setBinsOf(null))} />
         <Text style={k.title}>{t('setup.wh.binsOf', { name: binsOf.name })}</Text>
         {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
@@ -215,7 +213,6 @@ export default function WarehousesScreen() {
       keyboardShouldPersistTaps="handled"
       refreshControl={<RefreshControl refreshing={whs.isRefetching} onRefresh={() => void whs.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.setupWarehouses') }} />
       <Text style={k.title}>{t('setup.wh.title')}</Text>
       <Text style={k.sub}>{t('setup.wh.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

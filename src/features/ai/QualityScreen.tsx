@@ -1,6 +1,5 @@
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { colors } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
@@ -28,7 +27,6 @@ export default function QualityScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiQuality') }} />
       <Text style={k.title}>{t('ai.dq.title')}</Text>
       <Gate q={q} ns="ai" emptyKey="ai.dq.none" isEmpty={false}>
         {d ? (

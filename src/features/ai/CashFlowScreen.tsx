@@ -1,6 +1,5 @@
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { colors } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
@@ -31,7 +30,6 @@ export default function CashFlowScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiCash') }} />
       <Text style={k.title}>{t('ai.cf.title')}</Text>
       <Gate q={q} ns="ai" emptyKey="ai.cf.none" isEmpty={false}>
         {d ? (

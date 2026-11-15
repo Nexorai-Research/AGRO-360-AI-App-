@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -27,7 +26,6 @@ export default function BranchCompareScreen() {
   const d = q.data;
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiBranchCompare') }} />
       <Text style={k.title}>{t('ai.bc.title')}</Text>
       <Text style={k.sub}>{t('ai.bc.intro')}</Text>
       <ProductPicker value={product} onPick={setProduct} />

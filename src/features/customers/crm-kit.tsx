@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import type { ApiClient } from '@/api/client';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong } from '@/ui/theme';
 import { Card, Check, Chips, Field, Notice, useActionKey } from '@/ui/kit';
 import { Gate, isNetwork, useAction, useCan } from '../hr/kit';
 import type { Errors } from './crm-logic';
@@ -293,7 +293,7 @@ export const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,

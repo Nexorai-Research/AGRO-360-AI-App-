@@ -1,0 +1,32 @@
+{
+  "en": {
+    "profile": {
+      "signedInAs": "Signed in as",
+      "account": "Your account",
+      "permissions": "Permissions",
+      "systemRoles": "System roles",
+      "search": "Search permissions",
+      "noMatch": "No permission matches \"{{q}}\"."
+    }
+  },
+  "hi": {
+    "profile": {
+      "signedInAs": "इस रूप में साइन इन",
+      "account": "आपका खाता",
+      "permissions": "अनुमतियाँ",
+      "systemRoles": "सिस्टम भूमिकाएँ",
+      "search": "अनुमतियाँ खोजें",
+      "noMatch": "\"{{q}}\" से कोई अनुमति मेल नहीं खाती।"
+    }
+  },
+  "mr": {
+    "profile": {
+      "signedInAs": "या नावाने साइन इन",
+      "account": "तुमचे खाते",
+      "permissions": "परवानग्या",
+      "systemRoles": "सिस्टम भूमिका",
+      "search": "परवानग्या शोधा",
+      "noMatch": "\"{{q}}\" शी जुळणारी परवानगी नाही."
+    }
+  }
+}

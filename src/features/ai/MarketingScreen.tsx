@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -69,7 +68,6 @@ export default function MarketingScreen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiMarketing') }} />
       <Text style={k.title}>{t('ai.mk.title')}</Text>
       <Text style={k.sub}>{t('ai.mk.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

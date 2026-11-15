@@ -7,7 +7,7 @@ import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { newId } from '@/device';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
-import { colors, radius } from '@/ui/theme';
+import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import { BarcodeScanner } from '../stock/BarcodeScanner';
 import { StateView } from '../stock/StateView';
 import { todayIST } from '../collections/receipt';
@@ -43,6 +43,7 @@ import {
   type Cart,
   type TenderInputs,
 } from './cart';
+import { humanCode } from '@/format';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
 
@@ -659,7 +660,7 @@ export default function PosScreen() {
           <Text style={s.sub}>{customer ? t('pos.creditHint') : t('pos.walkInHint')}</Text>
           {(modes.data ?? []).map((m) => (
             <View key={m.code} style={s.row}>
-              <Text style={[s.name, s.grow]}>{m.code}</Text>
+              <Text style={[s.name, s.grow]}>{humanCode(m.code)}</Text>
               <TextInput
                 value={tender[m.code] ?? ''}
                 onChangeText={(v) => {
@@ -710,13 +711,10 @@ export default function PosScreen() {
 
 const s = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
-  title: { fontSize: 22, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 12,
+    ...surface.card,
+    padding: 14,
     gap: 8,
   },
   row: { flexDirection: 'row', gap: 8, alignItems: 'flex-end' },
@@ -725,7 +723,7 @@ const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,
@@ -754,7 +752,7 @@ const s = StyleSheet.create({
   chip: {
     minHeight: 48,
     paddingHorizontal: 16,
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     justifyContent: 'center',

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Stack } from 'expo-router';
 import { Button } from '@/ui/Button';
 import { Card, Check, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { StateView } from '../stock/StateView';
@@ -36,7 +35,6 @@ export default function VillagesScreen() {
   if (!can(CRMPERM.view)) return <StateView state="denied" message={t('cus.denied')} />;
   return (
     <ScrollView contentContainerStyle={kit.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('cus.villages.title') }} />
       <Text style={kit.title}>{t('cus.villages.title')}</Text>
       <Text style={kit.sub}>{t('cus.villages.intro')}</Text>
       <Tabs

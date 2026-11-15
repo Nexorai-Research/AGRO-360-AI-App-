@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/auth/AuthProvider';
 import { config, isConfigured } from '@/config';
 import { LanguagePicker } from '@/ui/LanguagePicker';
@@ -24,6 +25,7 @@ const MONO = Platform.select({ ios: 'Menlo', default: 'monospace' });
 
 export default function Login() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { signIn, signInWithPassword } = useAuth();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -64,7 +66,7 @@ export default function Login() {
           </View>
         </View>
 
-        <View style={s.sheet}>
+        <View style={[s.sheet, { paddingBottom: 24 + insets.bottom }]}>
           <Text style={s.sheetTitle}>{t('login.title')}</Text>
           <TextInput
             value={name}
@@ -147,7 +149,7 @@ const s = StyleSheet.create({
     backgroundColor: '#d7ddd9',
     paddingHorizontal: 24,
     paddingTop: 56,
-    paddingBottom: 64,
+    paddingBottom: 96,
     overflow: 'hidden',
   },
   hillBack: {

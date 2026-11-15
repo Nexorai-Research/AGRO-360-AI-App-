@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
@@ -28,7 +27,6 @@ export default function SearchG8Screen() {
   if (!allowed) return <StateView state="denied" message={t('ai.denied')} />;
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiSearch') }} />
       <Text style={k.title}>{t('ai.sr.title')}</Text>
       <Text style={k.sub}>{t('ai.sr.intro')}</Text>
       <Field label={t('ai.sr.box')} value={text} onChange={setText} />

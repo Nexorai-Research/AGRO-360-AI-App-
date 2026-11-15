@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -49,6 +49,7 @@ export default function RiskCaseScreen() {
     retry: retryNetworkOnce,
   });
   if (!allowed) return <StateView state="denied" message={t('ai.denied')} />;
+  if (!id) return <StateView state="empty" message={t('modules.notFound')} />;
   const r = q.data;
   const refresh = () => void qc.invalidateQueries({ queryKey: ['ai'] });
   const closed = r?.status === 'RESOLVED' || r?.status === 'DISMISSED';
@@ -91,7 +92,6 @@ export default function RiskCaseScreen() {
   };
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiRisks') }} />
       <Gate q={q} ns="ai" emptyKey="ai.rk.none" isEmpty={false}>
         {r ? (
           <>

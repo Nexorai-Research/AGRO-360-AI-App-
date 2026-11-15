@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FlatList, Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../src/auth/AuthProvider';
 import { MAX_LIMIT, PAGE } from '../../src/features/customers/api';
@@ -8,7 +8,7 @@ import { useCustomerSearch, useDebounced } from '../../src/features/customers/ho
 import type { CustomerSummary } from '../../src/features/customers/types';
 import { StaleBanner, StateView, isDenied } from '../../src/features/customers/ui';
 import { Button } from '../../src/ui/Button';
-import { colors, radius } from '../../src/ui/theme';
+import { colors, radius, lineStrong } from '../../src/ui/theme';
 
 function Row({ c, onOpen }: { c: CustomerSummary; onOpen: () => void }) {
   const { t } = useTranslation();
@@ -96,7 +96,9 @@ export default function CustomersScreen() {
 
   return (
     <View style={s.wrap}>
-      <Stack.Screen options={{ headerShown: true, title: t('customers.title') }} />
+      <Text style={s.title} accessibilityRole="header">
+        {t('customers.title')}
+      </Text>
       <TextInput
         value={text}
         onChangeText={(v) => {
@@ -120,11 +122,12 @@ export default function CustomersScreen() {
 
 const s = StyleSheet.create({
   wrap: { flex: 1, backgroundColor: colors.bg, padding: 16, gap: 12 },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   input: {
     minHeight: 48,
     borderRadius: radius,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     backgroundColor: '#fff',
     paddingHorizontal: 14,
     fontSize: 16,

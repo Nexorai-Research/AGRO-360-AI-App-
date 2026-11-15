@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, TextInput } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
@@ -35,7 +35,6 @@ export default function ComplaintsScreen() {
       keyboardShouldPersistTaps="handled"
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.complaints') }} />
       <Text style={k.title}>{t('complaints.title')}</Text>
       <Chips
         options={[

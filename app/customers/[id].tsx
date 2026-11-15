@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FlatList, Linking, StyleSheet, Text, View } from 'react-native';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../src/auth/AuthProvider';
 import { useCustomer360, useCustomerLedger } from '../../src/features/customers/hooks';
@@ -16,7 +16,7 @@ import { ServicePanel } from '../../src/features/customers/ServicePanel';
 import { StaleBanner, StateView, fmtDate, isDenied, useErrorText } from '../../src/features/customers/ui';
 import { dec, formatINR } from '../../src/money';
 import { Button } from '../../src/ui/Button';
-import { colors, radius } from '../../src/ui/theme';
+import { colors, surface } from '../../src/ui/theme';
 
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null;
@@ -185,7 +185,6 @@ export default function Customer360Screen() {
   const q = useCustomer360(allowed ? id : '');
   const ledger = useCustomerLedger(id, showLedger && canLedger);
 
-  const title = q.data?.profile.name ?? t('customers.title');
   let body: React.ReactNode;
   if (!allowed || (q.isError && isDenied(q.error))) body = <StateView kind="denied" />;
   else if (q.isPending) body = <StateView kind="loading" />;
@@ -239,7 +238,6 @@ export default function Customer360Screen() {
 
   return (
     <View style={s.wrap}>
-      <Stack.Screen options={{ headerShown: true, title }} />
       {body}
       {q.isFetching && q.data ? <Text style={s.refresh}>{t('common.loading')}</Text> : null}
       {ledger.isError && !isDenied(ledger.error) && ledger.data ? (
@@ -254,10 +252,7 @@ const s = StyleSheet.create({
   list: { padding: 16, paddingBottom: 32 },
   header: { gap: 12, marginBottom: 12 },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 14,
     gap: 6,
   },

@@ -375,7 +375,7 @@ describe('pay a supplier', () => {
     await render(<PaySupplierScreen />, { wrapper });
     await press('Agro Seeds');
     await press('Main');
-    await press('BANK');
+    await press('Bank');
     await type('Amount', '12500.50');
     expect(await screen.findByText('Due on open bills: ₹10,000.00')).toBeTruthy();
     expect(await screen.findByText(/The extra ₹2,500.50 will be kept as an advance/)).toBeTruthy();

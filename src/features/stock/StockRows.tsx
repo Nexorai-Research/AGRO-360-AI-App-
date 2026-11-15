@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { formatINR } from '../../money';
-import { colors, radius } from '../../ui/theme';
+import { colors, surface } from '../../ui/theme';
 import { expiryLevel, formatQty, hasQty } from './format';
 import type { BatchRow, StockRow } from './types';
 
@@ -97,10 +97,7 @@ export const BatchItem = memo(function BatchItem({ row }: { row: BatchRow }) {
 
 const s = StyleSheet.create({
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...surface.card,
     padding: 14,
     gap: 6,
     marginBottom: 10,

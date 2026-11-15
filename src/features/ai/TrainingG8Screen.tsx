@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -52,7 +52,6 @@ export default function TrainingG8Screen() {
         )
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiTraining') }} />
       <Text style={k.title}>{t('ai.tr.title')}</Text>
       <Chips
         options={(['ask', 'items', 'mine'] as const).map((x) => ({ value: x, label: t(`ai.tr.tab.${x}`) }))}

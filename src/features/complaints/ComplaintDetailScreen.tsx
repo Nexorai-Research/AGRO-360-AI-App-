@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
@@ -69,7 +69,6 @@ export default function ComplaintDetailScreen() {
 
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('complaints.detailTitle') }} />
       <Gate q={q} ns="complaints" emptyKey="complaints.empty" isEmpty={false}>
         {c ? (
           <>

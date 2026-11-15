@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { useActionKey } from '@/ui/kit';
 import { formatINR } from '@/money';
+import { humanCode } from '@/format';
+import { formatQty } from '../stock/format';
 import { shortDate } from '../hr/logic';
 import { Line, useFailureText } from '../hr/kit';
 import {
@@ -66,7 +68,7 @@ export function LedgerScreen() {
         label={t('stkLedger.type')}
         options={[
           { id: '', label: t('stkLedger.allTypes') },
-          ...MOVES.map((m) => ({ id: m as string, label: m })),
+          ...MOVES.map((m) => ({ id: m as string, label: humanCode(m) })),
         ]}
         value={type}
         onChange={setType}
@@ -85,7 +87,7 @@ export function LedgerScreen() {
             {d.items.map((m, i) => (
               <Card key={i}>
                 <Text style={kit.name}>
-                  {m.movementType} · {m.qty}
+                  {humanCode(m.movementType)} · {formatQty(m.qty)}
                 </Text>
                 <Text style={kit.sub}>
                   {[
@@ -97,7 +99,7 @@ export function LedgerScreen() {
                 <Text style={kit.sub}>
                   {[
                     m.sourceType ? m.sourceType + (m.reasonCode ? ` (${m.reasonCode})` : '') : null,
-                    m.runningBalance !== null ? t('stkLedger.balance', { qty: m.runningBalance }) : null,
+                    m.runningBalance !== null ? t('stkLedger.balance', { qty: formatQty(m.runningBalance) }) : null,
                     money(m.value),
                   ]
                     .filter(Boolean)
@@ -108,7 +110,7 @@ export function LedgerScreen() {
             {d.items.length >= 100 ? <Text style={kit.sub}>{t('stkLedger.more')}</Text> : null}
             <Text style={kit.sub}>
               {d.currentBalance !== null
-                ? t('stkLedger.current', { qty: d.currentBalance })
+                ? t('stkLedger.current', { qty: formatQty(d.currentBalance) })
                 : t('stkLedger.pickOne')}
             </Text>
           </>
@@ -421,7 +423,7 @@ function BatchList({ items }: { items: ExpBatch[] }) {
               .filter(Boolean)
               .join(' · ')}
           </Text>
-          <Line label={t('stkExpiry.onHand')} value={b.onHand} />
+          <Line label={t('stkExpiry.onHand')} value={formatQty(b.onHand)} />
           {money(b.valueAtRisk) ? <Line label={t('stkExpiry.atRisk')} value={money(b.valueAtRisk)!} /> : null}
           {can('inventory.batch.manage') && ['EXPIRED', 'ACTIVE', 'QUARANTINED'].includes(b.status) ? (
             <Btn
@@ -681,8 +683,8 @@ export function ReorderScreen() {
                 <Text style={kit.sub}>
                   {[
                     a.branchName,
-                    t('stkReorder.avail', { qty: a.qty }),
-                    t('stkReorder.levelIs', { qty: a.threshold }),
+                    t('stkReorder.avail', { qty: formatQty(a.qty) }),
+                    t('stkReorder.levelIs', { qty: formatQty(a.threshold) }),
                     shortDate(a.openedAt),
                   ].join(' · ')}
                 </Text>
@@ -711,10 +713,10 @@ export function ReorderScreen() {
                   {r.skuCode} {r.skuName}
                 </Text>
                 <Text style={kit.sub}>{r.branchName ?? t('stkReorder.allBranches')}</Text>
-                <Line label={t('stkReorder.min')} value={r.minQty} />
+                <Line label={t('stkReorder.min')} value={formatQty(r.minQty)} />
                 <Line label={t('stkReorder.level')} value={r.reorderLevel} />
-                <Line label={t('stkReorder.max')} value={r.maxQty} />
-                <Line label={t('stkReorder.qty')} value={r.reorderQty} />
+                <Line label={t('stkReorder.max')} value={formatQty(r.maxQty)} />
+                <Line label={t('stkReorder.qty')} value={formatQty(r.reorderQty)} />
                 {manage ? (
                   <View style={kit.row}>
                     <Btn kind="ghost" label={t('stkReorder.edit')} onPress={() => setForm(r)} />
@@ -799,7 +801,7 @@ export function ValuationScreen() {
                 value={formatINR(d.totalValue)}
                 strong
               />
-              <Line label={t('stkValuation.qty')} value={d.totalQty} />
+              <Line label={t('stkValuation.qty')} value={formatQty(d.totalQty)} />
               <Text style={kit.sub}>
                 {t('stkValuation.valuedBy', { method: d.valuedBy.replace('_', ' ').toLowerCase() })}
               </Text>
@@ -811,7 +813,7 @@ export function ValuationScreen() {
                   {r.skuCode} {r.skuName}
                 </Text>
                 <Text style={kit.sub}>{r.branchName + (r.warehouseCode ? ` / ${r.warehouseCode}` : '')}</Text>
-                <Line label={t('stkValuation.qty')} value={r.qty} />
+                <Line label={t('stkValuation.qty')} value={formatQty(r.qty)} />
                 {r.avgCost !== null ? (
                   <Line label={t('stkValuation.avg')} value={formatINR(r.avgCost, 4)} />
                 ) : null}

@@ -2724,7 +2724,8 @@
       "byCategory": "श्रेणी के अनुसार",
       "bySeverity": "गंभीरता के अनुसार",
       "none": "अभी कोई शिकायत नहीं।",
-      "complaints": "{{count}} शिकायतें"
+      "complaints_one": "{{count}} शिकायत",
+      "complaints_other": "{{count}} शिकायतें"
     }
   },
   "cheques": {
@@ -5412,5 +5413,13 @@
     "menu": "मेन्यू",
     "menuTitle": "सभी मॉड्यूल",
     "close": "मेन्यू बंद करें"
+  },
+  "profile": {
+    "signedInAs": "इस रूप में साइन इन",
+    "account": "आपका खाता",
+    "permissions": "अनुमतियाँ",
+    "systemRoles": "सिस्टम भूमिकाएँ",
+    "search": "अनुमतियाँ खोजें",
+    "noMatch": "\"{{q}}\" से कोई अनुमति मेल नहीं खाती।"
   }
 }

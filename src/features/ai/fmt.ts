@@ -10,7 +10,7 @@ export const pct = (n: number | null | undefined): string =>
 export const rupee = (n: number | null | undefined): string =>
   n === null || n === undefined || !Number.isFinite(n)
     ? '-'
-    : `₹${n.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
+    : `${n < 0 ? '-' : ''}₹${Math.abs(n).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
 
 /** Payload fields shown on a recommendation card: short readable values only, never ids, hashes or nested data. */
 export function payloadRows(p: Record<string, unknown>): [string, string][] {

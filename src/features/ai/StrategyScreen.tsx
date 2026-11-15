@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { colors } from '@/ui/theme';
@@ -147,7 +146,6 @@ export default function StrategyScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={list.isRefetching} onRefresh={() => void list.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiStrategy') }} />
       <Text style={k.title}>{t('ai.st.title')}</Text>
       <Text style={k.sub}>{t('ai.st.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

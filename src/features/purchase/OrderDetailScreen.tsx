@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { dec, formatINR } from '@/money';
@@ -80,7 +80,6 @@ export default function OrderDetailScreen() {
 
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('purchase.orderTitle') }} />
       <Gate q={q} ns="purchase" emptyKey="purchase.emptyOrders" isEmpty={false}>
         {o && a ? (
           <>

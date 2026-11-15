@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -141,7 +140,6 @@ export default function PoliciesScreen() {
   };
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiPolicies') }} />
       <Text style={k.title}>{t('ai.po.title')}</Text>
       <Text style={k.sub}>{t('ai.po.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

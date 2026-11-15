@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { currentLanguage, setLanguage } from '@/i18n';
@@ -122,8 +122,8 @@ export default function AssistantScreen() {
       style={{ flex: 1, backgroundColor: colors.bg }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.assistant') }} />
       <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
+        <Text style={k.title}>{t('nav.assistant')}</Text>
         <Text style={k.sub}>{t('ai.intro')}</Text>
         {lines.length === 0 ? (
           <View style={k.card}>

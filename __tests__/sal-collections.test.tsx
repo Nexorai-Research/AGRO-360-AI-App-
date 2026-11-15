@@ -530,7 +530,7 @@ describe('collection desk', () => {
     await fireEvent.press(await screen.findByLabelText('Write-offs'));
     await fireEvent.press(await screen.findByLabelText('Record recovery WO-1'));
     await fireEvent.changeText(screen.getByLabelText('Amount'), '100');
-    await fireEvent.press(await screen.findByLabelText('CASH'));
+    await fireEvent.press(await screen.findByLabelText('Cash'));
     await fireEvent.changeText(screen.getByLabelText('Date (YYYY-MM-DD)'), '2026-11-12');
     await fireEvent.press(screen.getAllByLabelText('Record recovery').at(-1)!);
     expect(await screen.findByText('Recovery recorded.')).toBeTruthy();

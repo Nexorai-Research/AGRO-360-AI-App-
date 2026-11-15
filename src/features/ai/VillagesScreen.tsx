@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { colors } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
@@ -38,7 +37,6 @@ export default function VillagesScreen() {
       contentContainerStyle={k.page}
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiVillages') }} />
       <Text style={k.title}>{t('ai.vl.title')}</Text>
       {(branches.data ?? []).length > 1 ? (
         <Chips

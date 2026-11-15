@@ -6,7 +6,7 @@ import { useAuth } from '../../auth/AuthProvider';
 import { errorMessage, type ErrorMessage } from '../../api/errors';
 import { newId } from '../../device';
 import { Button } from '../../ui/Button';
-import { colors, radius } from '../../ui/theme';
+import { colors, radius, lineStrong, surface } from '../../ui/theme';
 import { LOYALTY_PERM, adjustPoints, validPoints, validPointsReason } from './loyalty-api';
 
 /** Add or take away loyalty points with a reason. Needs crm.loyalty.manage. The server refuses a result below zero. */
@@ -98,11 +98,8 @@ export function LoyaltyAdjust({ customerId }: { customerId: string }) {
 
 const s = StyleSheet.create({
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 8,
+    ...surface.card,
+    padding: 12,
     gap: 6,
   },
   form: { gap: 8 },
@@ -111,7 +108,7 @@ const s = StyleSheet.create({
   input: {
     minHeight: 48,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     borderRadius: radius,
     paddingHorizontal: 12,
     fontSize: 16,

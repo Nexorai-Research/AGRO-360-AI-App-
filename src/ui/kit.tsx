@@ -1,7 +1,7 @@
-import { useRef, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View, type KeyboardTypeOptions } from 'react-native';
 import { newId } from '@/device';
-import { colors, radius } from './theme';
+import { colors, radius, lineStrong, pressedOpacity, surface } from './theme';
 
 /**
  * One Idempotency-Key per user action. The same key comes back while the request (path + body) is unchanged, so a retry after a lost
@@ -35,6 +35,7 @@ export function Field({
   placeholder?: string;
   error?: string | null;
 }) {
+  const [focus, setFocus] = useState(false);
   return (
     <View style={s.gap}>
       <Text style={s.label}>{label}</Text>
@@ -42,10 +43,13 @@ export function Field({
         value={value}
         onChangeText={onChange}
         placeholder={placeholder}
+        placeholderTextColor={colors.muted}
         accessibilityLabel={label}
         keyboardType={keyboard}
         autoCorrect={false}
-        style={s.input}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={[s.input, focus && s.inputFocus, error ? s.inputError : null]}
       />
       {error ? <Text style={s.error}>{error}</Text> : null}
     </View>
@@ -74,7 +78,7 @@ export function Chips<T extends string>({
             accessibilityLabel={o.label}
             accessibilityState={{ selected: value === o.id }}
             onPress={() => onChange(o.id)}
-            style={[s.chip, value === o.id && s.chipOn]}
+            style={({ pressed }) => [s.chip, value === o.id && s.chipOn, pressed && { opacity: pressedOpacity }]}
           >
             <Text style={[s.chipTxt, value === o.id && s.chipTxtOn]}>{o.label}</Text>
           </Pressable>
@@ -114,7 +118,7 @@ export function Notice({ text, tone }: { text: string; tone: 'ok' | 'error' | 'w
 
 export const kit = StyleSheet.create({
   page: { padding: 16, gap: 10, backgroundColor: colors.bg },
-  title: { fontSize: 22, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
   name: { fontSize: 16, color: colors.ink, fontWeight: '600' },
   sub: { fontSize: 14, color: colors.muted },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -123,14 +127,16 @@ export const kit = StyleSheet.create({
 const s = StyleSheet.create({
   gap: { gap: 4 },
   label: { fontSize: 14, color: colors.muted, fontWeight: '600' },
-  input: { minHeight: 48, borderWidth: 1, borderColor: colors.line, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  input: { minHeight: 48, borderWidth: 1, borderColor: lineStrong, borderRadius: radius, paddingHorizontal: 12, fontSize: 16, backgroundColor: '#fff', color: colors.ink },
+  inputFocus: { borderColor: colors.brand, borderWidth: 1.5 },
+  inputError: { borderColor: colors.danger },
   error: { fontSize: 14, color: colors.danger },
   ok: { fontSize: 16, color: colors.ok, fontWeight: '600' },
   warn: { fontSize: 15, color: colors.warn },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { minHeight: 48, paddingHorizontal: 14, borderRadius: radius, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.card },
+  chip: { minHeight: 48, paddingHorizontal: 14, borderRadius: 999, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.card },
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { fontSize: 15, color: colors.ink },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },
-  card: { backgroundColor: colors.card, borderRadius: radius, borderWidth: 1, borderColor: colors.line, padding: 12, gap: 8 },
+  card: { ...surface.card, padding: 14, gap: 8 },
 });

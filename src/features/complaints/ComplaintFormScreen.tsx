@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
@@ -63,7 +63,7 @@ export default function ComplaintFormScreen() {
 
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('complaints.new') }} />
+      <Text style={k.title}>{t('complaints.new')}</Text>
       <Field label={t('complaints.customer')} value={term} onChange={setTerm} />
       {picked ? <Text style={k.ok}>{t('complaints.picked', { name: picked })}</Text> : null}
       {(found.data ?? []).map((c) => (

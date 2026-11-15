@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
@@ -28,6 +27,7 @@ import {
 } from './sal-api';
 import { recoveryErrors, staffName, validReason, writeOffErrors } from './sal-logic';
 import { useSal } from './sal-hook';
+import { humanCode } from '@/format';
 
 type Tab = 'tasks' | 'writeoffs' | 'settlements';
 
@@ -254,7 +254,6 @@ export default function DeskScreen() {
         <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
       }
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.desk') }} />
       <Text style={k.title}>{t('desk.title')}</Text>
       <Chips options={tabs} value={shown} onChange={(v) => (resetForms(), setTab(v as Tab))} />
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
@@ -423,7 +422,7 @@ export default function DeskScreen() {
                     <Chips
                       options={(modes.data ?? [])
                         .filter((m) => m.code !== 'CREDIT')
-                        .map((m) => ({ value: m.code, label: m.code }))}
+                        .map((m) => ({ value: m.code, label: humanCode(m.code) }))}
                       value={rMode}
                       onChange={setRMode}
                     />

@@ -174,10 +174,11 @@ describe('home dashboard', () => {
     mockGet.mockResolvedValue(dashboard());
     await show();
     await screen.findByText('₹12.35 L');
-    expect(screen.getByText('Hello, u-1')).toBeTruthy();
-    expect(screen.getByText('Roles: OWNER')).toBeTruthy();
-    expect(screen.getByText('Your permissions: 2')).toBeTruthy();
+    expect(screen.getByText('Your account')).toBeTruthy();
+    expect(screen.getByText('Owner')).toBeTruthy();
+    expect(screen.getByText('Permissions')).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Show permissions'));
+    await fireEvent.press(screen.getByLabelText('Reports, 1'));
     expect(screen.getByText(/reports\.sales/)).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Sign out'));
     expect(mockSignOut).toHaveBeenCalledTimes(1);

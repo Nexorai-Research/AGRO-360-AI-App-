@@ -27,6 +27,7 @@ import {
   validDec,
   type PickedProduct,
 } from './kit';
+import { humanCode } from '@/format';
 
 // Procurement screens the web "Purchase" page has and the first purchase screens did not. Paths and permissions come from
 // apps/api/src/procurement.controller.ts and apps/web/src/pages/purchase.js. Money and quantities are text; the server matches and posts.
@@ -1032,7 +1033,7 @@ export function PaySupplierScreen() {
         />
         <Chips
           label={t('stkPay.mode')}
-          options={(modes.data ?? []).map((m) => ({ id: m.code, label: m.code }))}
+          options={(modes.data ?? []).map((m) => ({ id: m.code, label: humanCode(m.code) }))}
           value={mode}
           onChange={setMode}
         />

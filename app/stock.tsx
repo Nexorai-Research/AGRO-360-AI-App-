@@ -10,7 +10,7 @@ import { Banner, StateView } from '../src/features/stock/StateView';
 import { BatchItem, StockItem } from '../src/features/stock/StockRows';
 import type { BatchRow, BatchView, StockRow } from '../src/features/stock/types';
 import { Button } from '../src/ui/Button';
-import { colors, radius } from '../src/ui/theme';
+import { colors, radius, lineStrong } from '../src/ui/theme';
 
 type Tab = 'stock' | 'batches';
 
@@ -201,7 +201,7 @@ export default function StockScreen() {
       ) : null}
 
       {tab === 'stock' && branches.data && branches.data.length > 1 ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.row}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.strip} contentContainerStyle={s.row}>
           <Chip
             label={t('stock.allBranches')}
             on={!branch}
@@ -218,7 +218,7 @@ export default function StockScreen() {
         </ScrollView>
       ) : null}
       {branch && warehouses.data && warehouses.data.length > 1 ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.row}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.strip} contentContainerStyle={s.row}>
           <Chip label={t('stock.allWarehouses')} on={!warehouse} onPress={() => setWarehouse(undefined)} />
           {warehouses.data.map((w) => (
             <Chip key={w.id} label={w.name} on={warehouse === w.id} onPress={() => setWarehouse(w.id)} />
@@ -247,7 +247,7 @@ const s = StyleSheet.create({
     minHeight: 48,
     borderRadius: radius,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: lineStrong,
     backgroundColor: '#fff',
     paddingHorizontal: 14,
     fontSize: 16,
@@ -257,7 +257,7 @@ const s = StyleSheet.create({
     minHeight: 44,
     paddingHorizontal: 14,
     justifyContent: 'center',
-    borderRadius: radius,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.card,
@@ -265,6 +265,8 @@ const s = StyleSheet.create({
   chipOn: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipTxt: { color: colors.ink, fontSize: 15 },
   chipTxtOn: { color: colors.brandInk, fontWeight: '600' },
+  // a horizontal ScrollView grows by default and would take half of the free height
+  strip: { flexGrow: 0 },
   body: { flex: 1 },
   list: { paddingBottom: 24 },
   foot: { textAlign: 'center', color: colors.muted, fontSize: 12, paddingVertical: 8 },

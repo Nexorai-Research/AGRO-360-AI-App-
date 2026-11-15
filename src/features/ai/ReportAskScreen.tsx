@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -54,7 +54,6 @@ export default function ReportAskScreen() {
   }
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiReport') }} />
       <Text style={k.title}>{t('ai.rp.title')}</Text>
       <Text style={k.sub}>{t('ai.rp.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

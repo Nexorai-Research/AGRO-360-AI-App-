@@ -3,6 +3,7 @@ import { ScrollView, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { formatINR } from '@/money';
+import { formatQty } from '../stock/format';
 import { MoreNote, ReadBox } from '@/ui/ReadBox';
 import { StateView } from '../stock/StateView';
 import { Card, Chips, Line, kit, useCan } from '../hr/kit';
@@ -91,7 +92,7 @@ export default function StockReportsScreen() {
                               : '-'
                           }
                         />
-                        <Line label={t('stockReports.onHand')} value={b.onHand} strong />
+                        <Line label={t('stockReports.onHand')} value={formatQty(b.onHand)} strong />
                         {b.valueAtRisk !== null ? (
                           <Line label={t('stockReports.valueAtRisk')} value={formatINR(b.valueAtRisk)} />
                         ) : null}
@@ -127,7 +128,7 @@ export default function StockReportsScreen() {
                           .filter(Boolean)
                           .join(' · ')}
                       </Text>
-                      <Line label={t('stockReports.qty')} value={m.qty} strong />
+                      <Line label={t('stockReports.qty')} value={formatQty(m.qty)} strong />
                       <Line label={t('stockReports.balance')} value={m.runningBalance} />
                       {m.value !== null ? (
                         <Line label={t('stockReports.value')} value={formatINR(m.value)} />
@@ -158,9 +159,9 @@ export default function StockReportsScreen() {
                         {r.skuCode} · {r.branchName ?? t('stockReports.allBranches')}
                       </Text>
                       <Line label={t('stockReports.reorderLevel')} value={r.reorderLevel} strong />
-                      <Line label={t('stockReports.minQty')} value={r.minQty} />
-                      <Line label={t('stockReports.maxQty')} value={r.maxQty} />
-                      <Line label={t('stockReports.reorderQty')} value={r.reorderQty} />
+                      <Line label={t('stockReports.minQty')} value={formatQty(r.minQty)} />
+                      <Line label={t('stockReports.maxQty')} value={formatQty(r.maxQty)} />
+                      <Line label={t('stockReports.reorderQty')} value={formatQty(r.reorderQty)} />
                     </Card>
                   ))}
                   <MoreNote textKey="stockReports.more" shown={d.items.length} total={d.total} />
@@ -178,7 +179,7 @@ export default function StockReportsScreen() {
                 <>
                   <Card>
                     <Line label={t('stockReports.totalValue')} value={formatINR(d.totalValue)} strong />
-                    <Line label={t('stockReports.totalQty')} value={d.totalQty} />
+                    <Line label={t('stockReports.totalQty')} value={formatQty(d.totalQty)} />
                     <Text style={kit.sub}>{t('stockReports.asOn', { date: shortDate(d.asOn) })}</Text>
                     {d.warning ? <Text style={kit.sub}>{d.warning}</Text> : null}
                   </Card>
@@ -191,7 +192,7 @@ export default function StockReportsScreen() {
                       <Text style={kit.sub}>
                         {r.skuCode} · {r.branchName}
                       </Text>
-                      <Line label={t('stockReports.qty')} value={r.qty} />
+                      <Line label={t('stockReports.qty')} value={formatQty(r.qty)} />
                       <Line label={t('stockReports.value')} value={formatINR(r.value)} strong />
                       {r.avgCost !== null ? (
                         <Line label={t('stockReports.avgCost')} value={formatINR(r.avgCost)} />

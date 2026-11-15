@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
@@ -79,7 +78,6 @@ export default function NumberingScreen() {
       keyboardShouldPersistTaps="handled"
       refreshControl={<RefreshControl refreshing={list.isRefetching} onRefresh={() => void list.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.setupNumbering') }} />
       <Text style={k.title}>{t('setup.num.title')}</Text>
       <Text style={k.sub}>{t('setup.num.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}

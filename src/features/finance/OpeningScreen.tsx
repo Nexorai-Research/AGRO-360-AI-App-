@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { formatINR } from '@/money';
 import { Button } from '@/ui/Button';
@@ -93,7 +92,6 @@ export default function OpeningScreen() {
       keyboardShouldPersistTaps="handled"
       refreshControl={<RefreshControl refreshing={op.isRefetching} onRefresh={() => void op.refetch()} />}
     >
-      <Stack.Screen options={{ headerShown: true, title: t('nav.finOpening') }} />
       <Text style={k.title}>{t('fx.opening.title')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}

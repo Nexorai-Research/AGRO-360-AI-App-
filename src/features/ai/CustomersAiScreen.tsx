@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
 import { colors } from '@/ui/theme';
@@ -46,7 +46,6 @@ export default function CustomersAiScreen() {
   const active = tab === 'credit' ? credit : tab === 'collect' ? plan : churn;
   const head = (
     <>
-      <Stack.Screen options={{ headerShown: true, title: t('nav.aiCustomers') }} />
       <Text style={k.title}>{t('ai.cu.title')}</Text>
       <Chips
         options={(['credit', 'collect', 'inactive'] as const).map((x) => ({
