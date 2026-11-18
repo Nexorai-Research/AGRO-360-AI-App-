@@ -34,6 +34,7 @@ import {
   type TabDef,
 } from './cmp-api';
 import { HUBS } from './cmp-tabs';
+import { ComplianceSettingsCard } from './SettingsCard';
 
 const MIN_REASON = 3;
 
@@ -105,6 +106,7 @@ export default function HubScreen({ hub }: { hub: string }) {
         {t(`cmp.hub.${def.titleKey}`)}
       </Text>
       <Text style={kit.sub}>{t('cmp.serverFigures')}</Text>
+      {hub === 'taxRecords' ? <ComplianceSettingsCard /> : null}
       {tabs.length > 0 && tab ? (
         <>
           <Chips

@@ -68,7 +68,9 @@
         "samples": "Samples",
         "authenticity": "Authenticity",
         "evaluations": "Sale checks",
-        "rules": "Rules"
+        "rules": "Rules",
+        "itcRecon": "GSTR-2B match",
+        "rcmRules": "Reverse charge rules"
       },
       "empty": {
         "any": "Nothing to show yet.",
@@ -76,7 +78,9 @@
         "rcm": "No reverse-charge entries.",
         "blocks": "No blocked credit set up.",
         "alerts": "Nothing is about to expire.",
-        "snapshots": "Nothing frozen yet."
+        "snapshots": "Nothing frozen yet.",
+        "itcRecon": "Nothing to reconcile. Import GSTR-2B on the web for this month.",
+        "rcmRules": "No rules yet."
       },
       "act": {
         "removeBlock": "Remove",
@@ -86,14 +90,18 @@
         "restore": "Restore",
         "revoke": "Revoke",
         "acknowledge": "Acknowledge",
-        "complete": "Mark done"
+        "complete": "Mark done",
+        "switchOff": "Switch off",
+        "switchOn": "Switch on"
       },
       "ask": {
         "removeBlock": "Remove this blocked-credit rule?",
         "reverseEntry": "Reverse this reverse-charge entry?",
         "withdraw": "Withdraw this restriction. Say why.",
         "suspend": "Suspend this registration. Say why.",
-        "revoke": "Revoke this authorisation. Say why."
+        "revoke": "Revoke this authorisation. Say why.",
+        "switchOff": "Switch this reverse charge rule off?",
+        "switchOn": "Switch this reverse charge rule on?"
       },
       "v": {
         "ACTIVE": "Active",
@@ -115,7 +123,10 @@
         "BLOCK": "Blocked",
         "WARN": "Warning",
         "EXPIRING": "Expiring",
-        "WITHDRAWN": "Withdrawn"
+        "WITHDRAWN": "Withdrawn",
+        "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+        "SUPPLIER": "One supplier",
+        "CATEGORY": "A product category"
       },
       "f": {
         "returnType": "Return",
@@ -213,7 +224,16 @@
         "net": "Net",
         "before": "Before",
         "after": "After",
-        "tax": "Tax"
+        "tax": "Tax",
+        "supplierGstin": "Supplier GSTIN",
+        "invoiceNo": "Invoice",
+        "bookTax": "Books",
+        "portalTax": "Portal",
+        "difference": "Difference",
+        "note": "What to do",
+        "appliesTo": "Applies to",
+        "refName": "For",
+        "active": "Active"
       }
     },
     "nav": {
@@ -300,7 +320,9 @@
         "samples": "नमूने",
         "authenticity": "असलियत जांच",
         "evaluations": "बिक्री जांच",
-        "rules": "नियम"
+        "rules": "नियम",
+        "itcRecon": "GSTR-2B मिलान",
+        "rcmRules": "रिवर्स चार्ज नियम"
       },
       "empty": {
         "any": "अभी दिखाने को कुछ नहीं है।",
@@ -308,7 +330,9 @@
         "rcm": "कोई रिवर्स चार्ज प्रविष्टि नहीं।",
         "blocks": "कोई रुका क्रेडिट नहीं।",
         "alerts": "कुछ भी समाप्त होने वाला नहीं।",
-        "snapshots": "अभी कुछ फ्रीज नहीं हुआ।"
+        "snapshots": "अभी कुछ फ्रीज नहीं हुआ।",
+        "itcRecon": "मिलान के लिए कुछ नहीं। इस महीने का GSTR-2B वेब पर इम्पोर्ट करें।",
+        "rcmRules": "अभी कोई नियम नहीं।"
       },
       "act": {
         "removeBlock": "हटाएं",
@@ -318,14 +342,18 @@
         "restore": "बहाल करें",
         "revoke": "रद्द करें",
         "acknowledge": "स्वीकार करें",
-        "complete": "पूरा करें"
+        "complete": "पूरा करें",
+        "switchOff": "बंद करें",
+        "switchOn": "चालू करें"
       },
       "ask": {
         "removeBlock": "यह रुका क्रेडिट नियम हटाएं?",
         "reverseEntry": "यह रिवर्स चार्ज प्रविष्टि उलटें?",
         "withdraw": "यह प्रतिबंध वापस लें। कारण लिखें।",
         "suspend": "यह पंजीकरण निलंबित करें। कारण लिखें।",
-        "revoke": "यह प्राधिकरण रद्द करें। कारण लिखें।"
+        "revoke": "यह प्राधिकरण रद्द करें। कारण लिखें।",
+        "switchOff": "यह रिवर्स चार्ज नियम बंद करें?",
+        "switchOn": "यह रिवर्स चार्ज नियम चालू करें?"
       },
       "v": {
         "ACTIVE": "सक्रिय",
@@ -347,7 +375,10 @@
         "BLOCK": "रोका गया",
         "WARN": "चेतावनी",
         "EXPIRING": "जल्द समाप्त",
-        "WITHDRAWN": "वापस लिया"
+        "WITHDRAWN": "वापस लिया",
+        "UNREGISTERED_SUPPLIER": "बिना पंजीकरण के सप्लायर",
+        "SUPPLIER": "एक सप्लायर",
+        "CATEGORY": "एक उत्पाद श्रेणी"
       },
       "f": {
         "returnType": "रिटर्न",
@@ -445,7 +476,16 @@
         "net": "शुद्ध",
         "before": "पहले",
         "after": "बाद में",
-        "tax": "कर"
+        "tax": "कर",
+        "supplierGstin": "सप्लायर GSTIN",
+        "invoiceNo": "बिल",
+        "bookTax": "खाते में",
+        "portalTax": "पोर्टल पर",
+        "difference": "अंतर",
+        "note": "क्या करें",
+        "appliesTo": "किस पर लागू",
+        "refName": "किसके लिए",
+        "active": "चालू"
       }
     },
     "nav": {
@@ -532,7 +572,9 @@
         "samples": "नमुने",
         "authenticity": "अस्सलपणा तपासणी",
         "evaluations": "विक्री तपासण्या",
-        "rules": "नियम"
+        "rules": "नियम",
+        "itcRecon": "GSTR-2B जुळवणी",
+        "rcmRules": "रिव्हर्स चार्ज नियम"
       },
       "empty": {
         "any": "अजून दाखवण्यासारखे काही नाही.",
@@ -540,7 +582,9 @@
         "rcm": "रिव्हर्स चार्ज नोंदी नाहीत.",
         "blocks": "अडवलेले क्रेडिट नाही.",
         "alerts": "काहीही संपत आलेले नाही.",
-        "snapshots": "अजून काही गोठवलेले नाही."
+        "snapshots": "अजून काही गोठवलेले नाही.",
+        "itcRecon": "जुळवण्यासाठी काही नाही. या महिन्याचा GSTR-2B वेबवर आयात करा.",
+        "rcmRules": "अजून नियम नाहीत."
       },
       "act": {
         "removeBlock": "काढा",
@@ -550,14 +594,18 @@
         "restore": "पुन्हा चालू करा",
         "revoke": "रद्द करा",
         "acknowledge": "मान्य करा",
-        "complete": "पूर्ण करा"
+        "complete": "पूर्ण करा",
+        "switchOff": "बंद करा",
+        "switchOn": "चालू करा"
       },
       "ask": {
         "removeBlock": "हा अडवलेले क्रेडिट नियम काढायचा?",
         "reverseEntry": "ही रिव्हर्स चार्ज नोंद उलटवायची?",
         "withdraw": "हा प्रतिबंध मागे घ्या. कारण लिहा.",
         "suspend": "ही नोंदणी स्थगित करा. कारण लिहा.",
-        "revoke": "हे अधिकारपत्र रद्द करा. कारण लिहा."
+        "revoke": "हे अधिकारपत्र रद्द करा. कारण लिहा.",
+        "switchOff": "हा रिव्हर्स चार्ज नियम बंद करायचा?",
+        "switchOn": "हा रिव्हर्स चार्ज नियम चालू करायचा?"
       },
       "v": {
         "ACTIVE": "सक्रिय",
@@ -579,7 +627,10 @@
         "BLOCK": "अडवले",
         "WARN": "इशारा",
         "EXPIRING": "लवकर संपणारे",
-        "WITHDRAWN": "मागे घेतले"
+        "WITHDRAWN": "मागे घेतले",
+        "UNREGISTERED_SUPPLIER": "नोंदणी नसलेले पुरवठादार",
+        "SUPPLIER": "एक पुरवठादार",
+        "CATEGORY": "एक उत्पादन श्रेणी"
       },
       "f": {
         "returnType": "रिटर्न",
@@ -677,7 +728,16 @@
         "net": "निव्वळ",
         "before": "आधी",
         "after": "नंतर",
-        "tax": "कर"
+        "tax": "कर",
+        "supplierGstin": "पुरवठादार GSTIN",
+        "invoiceNo": "बिल",
+        "bookTax": "वह्यांमध्ये",
+        "portalTax": "पोर्टलवर",
+        "difference": "फरक",
+        "note": "काय करावे",
+        "appliesTo": "कशाला लागू",
+        "refName": "कोणासाठी",
+        "active": "चालू"
       }
     },
     "nav": {

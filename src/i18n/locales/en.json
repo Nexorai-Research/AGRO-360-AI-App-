@@ -2303,7 +2303,9 @@
       "samples": "Samples",
       "authenticity": "Authenticity",
       "evaluations": "Sale checks",
-      "rules": "Rules"
+      "rules": "Rules",
+      "itcRecon": "GSTR-2B match",
+      "rcmRules": "Reverse charge rules"
     },
     "empty": {
       "any": "Nothing to show yet.",
@@ -2311,7 +2313,9 @@
       "rcm": "No reverse-charge entries.",
       "blocks": "No blocked credit set up.",
       "alerts": "Nothing is about to expire.",
-      "snapshots": "Nothing frozen yet."
+      "snapshots": "Nothing frozen yet.",
+      "itcRecon": "Nothing to reconcile. Import GSTR-2B on the web for this month.",
+      "rcmRules": "No rules yet."
     },
     "act": {
       "removeBlock": "Remove",
@@ -2321,14 +2325,18 @@
       "restore": "Restore",
       "revoke": "Revoke",
       "acknowledge": "Acknowledge",
-      "complete": "Mark done"
+      "complete": "Mark done",
+      "switchOff": "Switch off",
+      "switchOn": "Switch on"
     },
     "ask": {
       "removeBlock": "Remove this blocked-credit rule?",
       "reverseEntry": "Reverse this reverse-charge entry?",
       "withdraw": "Withdraw this restriction. Say why.",
       "suspend": "Suspend this registration. Say why.",
-      "revoke": "Revoke this authorisation. Say why."
+      "revoke": "Revoke this authorisation. Say why.",
+      "switchOff": "Switch this reverse charge rule off?",
+      "switchOn": "Switch this reverse charge rule on?"
     },
     "v": {
       "ACTIVE": "Active",
@@ -2350,7 +2358,10 @@
       "BLOCK": "Blocked",
       "WARN": "Warning",
       "EXPIRING": "Expiring",
-      "WITHDRAWN": "Withdrawn"
+      "WITHDRAWN": "Withdrawn",
+      "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+      "SUPPLIER": "One supplier",
+      "CATEGORY": "A product category"
     },
     "f": {
       "returnType": "Return",
@@ -2448,7 +2459,16 @@
       "net": "Net",
       "before": "Before",
       "after": "After",
-      "tax": "Tax"
+      "tax": "Tax",
+      "supplierGstin": "Supplier GSTIN",
+      "invoiceNo": "Invoice",
+      "bookTax": "Books",
+      "portalTax": "Portal",
+      "difference": "Difference",
+      "note": "What to do",
+      "appliesTo": "Applies to",
+      "refName": "For",
+      "active": "Active"
     }
   },
   "cus": {
@@ -5697,6 +5717,66 @@
         "date": "Enter a real date as YYYY-MM-DD.",
         "reason": "Give a reason of 3 to 500 letters."
       }
+    }
+  },
+  "wp3": {
+    "gstr1": {
+      "json": "Download GSTR-1 (JSON)",
+      "csv": "Download GSTR-1 (CSV)",
+      "saved": "File ready to share."
+    },
+    "set": {
+      "title": "Compliance settings",
+      "hsn": "HSN digits in the summary",
+      "digits": "{{n}} digits",
+      "tolerance": "GSTR-2B match tolerance",
+      "b2c": "Large B2C invoice above",
+      "rcm": "Reverse charge",
+      "rcmOn": "Reverse charge on",
+      "tds": "TDS / TCS",
+      "on": "on",
+      "off": "off",
+      "days": "Expiry alerts (days before)",
+      "daysEdit": "Alert lead times in days (comma separated)",
+      "change": "Change",
+      "save": "Save settings",
+      "saved": "Settings saved.",
+      "v": {
+        "tolerance": "Enter an amount with up to 2 decimals.",
+        "b2c": "Enter an amount with up to 2 decimals.",
+        "days": "Alert lead times must be whole numbers of days separated by commas, for example 60,30,7."
+      }
+    },
+    "bank": {
+      "entryButton": "Record charge / interest: {{n}}",
+      "charge": "Record a bank charge",
+      "interest": "Record bank interest",
+      "entryHint": "Makes a voucher dated the statement date and matches it to this line.",
+      "expenseAccount": "Expense account",
+      "incomeAccount": "Income account",
+      "record": "Record",
+      "recorded": "Recorded and matched.",
+      "cancel": "Cancel",
+      "importTitle": "Import a bank statement",
+      "importHint": "A CSV file. Tell us the name of each column as it is in the file. The same file, or a line already imported, is never counted twice.",
+      "pick": "Choose the statement file (CSV)",
+      "readFailed": "The file could not be read.",
+      "colDate": "Date column",
+      "colNarration": "Narration column",
+      "colReference": "Reference / cheque column",
+      "colWithdrawal": "Withdrawal column",
+      "colDeposit": "Deposit column",
+      "colAmount": "Signed amount column (instead of withdrawal / deposit)",
+      "colBalance": "Balance column",
+      "mappingBad": "Give the date column and either a signed amount column or both withdrawal and deposit columns.",
+      "import": "Import",
+      "importDone": "Statement imported.",
+      "imported": "{{imported}} lines imported ({{skippedDuplicates}} already known): {{autoMatched}} matched, {{suggested}} suggested, {{unmatched}} open.",
+      "close": "Close"
+    },
+    "print": {
+      "preview": "Preview",
+      "ready": "Preview ready to share."
     }
   }
 }

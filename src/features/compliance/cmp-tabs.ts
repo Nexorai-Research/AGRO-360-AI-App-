@@ -341,12 +341,60 @@ const rules: TabDef = {
   ],
 };
 
+// ---- web parity 3.4 / 3.6 (apps/web/src/pages/compliance.js itcTab, rcm rules) ----
+const itcRecon: TabDef = {
+  id: 'itcRecon',
+  perm: 'compliance.gst.view',
+  path: '/gst/itc-reconciliation',
+  query: 'period',
+  itemsKey: 'rows',
+  title: [{ k: 'supplierGstin' }, { k: 'invoiceNo' }],
+  fields: [
+    { k: 'status', kind: 'status' },
+    { k: 'bookTax', kind: 'money' },
+    { k: 'portalTax', kind: 'money' },
+    { k: 'difference', kind: 'money' },
+    { k: 'note' },
+  ],
+};
+const rcmRules: TabDef = {
+  id: 'rcmRules',
+  perm: 'compliance.gst.view',
+  path: '/rcm/rules',
+  query: 'none',
+  title: [{ k: 'name' }],
+  fields: [{ k: 'appliesTo', kind: 'status' }, { k: 'refName' }, { k: 'active', kind: 'bool' }],
+  actions: [
+    act({
+      id: 'switchOff',
+      perm: 'compliance.rcm.manage',
+      method: 'patch',
+      path: (r) => `/rcm/rules/${id(r)}`,
+      body: () => ({ active: false }),
+      confirm: true,
+      show: (r) => r.active === true,
+    }),
+    act({
+      id: 'switchOn',
+      perm: 'compliance.rcm.manage',
+      method: 'patch',
+      path: (r) => `/rcm/rules/${id(r)}`,
+      body: () => ({ active: true }),
+      confirm: true,
+      show: (r) => r.active !== true,
+    }),
+  ],
+};
+
 export interface HubDef {
   titleKey: string;
   tabs: TabDef[];
 }
 export const HUBS: Record<string, HubDef> = {
-  taxRecords: { titleKey: 'taxRecords', tabs: [rcm, blocks, tdsReport, tdsSections, snapshots] },
+  taxRecords: {
+    titleKey: 'taxRecords',
+    tabs: [rcm, rcmRules, itcRecon, blocks, tdsReport, tdsSections, snapshots],
+  },
   agriRegisters: {
     titleKey: 'agriRegisters',
     tabs: [

@@ -49,6 +49,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setMe(await c.get<Me>('/me'));
       setStatus('signedIn');
+      // like the web (main.js): lets the security centre and audit trail show this sign-in; best effort, never blocks
+      void c.post('/me/sign-in-seen', { body: {} }).catch(() => undefined);
       return true;
     } catch {
       await auth.signOut();

@@ -10,7 +10,16 @@ import { StateView } from '../stock/StateView';
 import { previousMonth } from '../accounts/compliance-api';
 import { shortDate } from '../hr/logic';
 import { Card, Chips, Gate, Line, Notice, isNetwork, kit, useAction, useActionKey, useCan } from '../hr/kit';
-import { GST_SNAPSHOT, GST_VIEW, fetchGstr1, freezeReturn, humanise, type Gstr1 } from './cmp-api';
+import { saveTextAndShare } from '../admin/usr-files';
+import {
+  GST_SNAPSHOT,
+  GST_VIEW,
+  fetchGstr1,
+  fetchGstr1Export,
+  freezeReturn,
+  humanise,
+  type Gstr1,
+} from './cmp-api';
 
 type Sec = 'b2b' | 'b2cl' | 'b2cs' | 'cdn' | 'exempt' | 'hsn' | 'docs' | 'amend';
 const SECS: Sec[] = ['b2b', 'b2cl', 'b2cs', 'cdn', 'exempt', 'hsn', 'docs', 'amend'];
@@ -37,6 +46,11 @@ export default function Gstr1Screen() {
     retry: (n, e) => isNetwork(e) && n < 1,
   });
   const g: Gstr1 | undefined = q.data;
+  const download = (format: 'json' | 'csv') =>
+    act.run(async () => {
+      const f = await fetchGstr1Export(client!, period, format);
+      if (!(await saveTextAndShare(f.fileName, f.mimeType, f.content))) throw new Error('NO_SHARE');
+    }, t('wp3.gstr1.saved'));
 
   const freeze = (r: 'gstr1' | 'gstr3b') => {
     const body: Record<string, unknown> = {
@@ -218,6 +232,19 @@ export default function Gstr1Screen() {
               <Line label={t('cmp.invoices')} value={String(g.summary.invoices)} />
               <Line label={t('cmp.creditNotes')} value={String(g.summary.notes)} />
             </Card>
+            {/* web parity 3.3: the portal file, saved and shared from the phone */}
+            <Button
+              kind="ghost"
+              label={t('wp3.gstr1.json')}
+              disabled={act.busy}
+              onPress={() => void download('json')}
+            />
+            <Button
+              kind="ghost"
+              label={t('wp3.gstr1.csv')}
+              disabled={act.busy}
+              onPress={() => void download('csv')}
+            />
             <Text style={kit.sub}>
               {g.snapshot
                 ? t('cmp.frozenAs', { v: g.snapshot.version, date: shortDate(g.snapshot.createdAt) })
