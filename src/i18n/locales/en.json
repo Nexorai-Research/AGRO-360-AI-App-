@@ -5611,5 +5611,92 @@
       "whatsapp": "WhatsApp: {{status}}{{reason}}.",
       "open": "Open the link"
     }
+  },
+  "wp2": {
+    "po": {
+      "edit": "Edit draft",
+      "editTitle": "Edit order {{number}}",
+      "notDraft": "Only a draft order can be edited. Use revise on an approved order.",
+      "saveEdit": "Save changes"
+    },
+    "assign": {
+      "button": "Assignments",
+      "hint": "One per line: CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>. The list replaces the current assignments.",
+      "lines": "Assignments",
+      "badLine": "Line {{n}} is not CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>, or is given twice.",
+      "save": "Save assignments",
+      "saved": "Assignments saved."
+    },
+    "tax": {
+      "title": "Bulk tax update",
+      "hint": "Choose products by category (with sub-categories) or HSN prefix, set the new mapping from a date. Preview first.",
+      "from": "Effective from (YYYY-MM-DD)",
+      "category": "Category",
+      "anyCategory": "No category",
+      "fromHsn": "or current HSN starts with (4 to 8 digits)",
+      "newHsn": "New HSN (4, 6 or 8 digits)",
+      "newTax": "New tax category (for example GST5, EXEMPT)",
+      "confirmHsn": "HSN not in library - confirm",
+      "preview": "Preview only (no changes)",
+      "runPreview": "Preview",
+      "runNow": "Update now",
+      "previewDone": "Preview: {{matched}} matched, {{changed}} would change, {{unchanged}} unchanged.",
+      "done": "Done: {{matched}} matched, {{changed}} changed, {{unchanged}} unchanged.",
+      "v": {
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "pick": "Choose a category or an HSN prefix.",
+        "fromHsn": "The HSN prefix is 4 to 8 digits.",
+        "set": "Give a new HSN, a new tax category, or both.",
+        "hsn": "HSN must be 4, 6 or 8 digits.",
+        "tax": "Tax category is 2 to 20 capital letters, digits or _."
+      }
+    },
+    "note": {
+      "title": "Supplier notes",
+      "tabBills": "Bills",
+      "show": "Show",
+      "new": "New supplier note",
+      "empty": "No supplier notes yet.",
+      "posted": "Note posted.",
+      "intro": "Credit note: pick the bill it lowers. Debit note: leave the bill empty. Tick \"GST document\" only if the supplier issued one, and key the number, date and tax exactly as printed on it.",
+      "branch": "Branch",
+      "kind": "Type",
+      "reduction": "Credit note - we owe less",
+      "increase": "Debit note - we owe more",
+      "bill": "Bill lowered (credit note only)",
+      "due": "due {{amount}}",
+      "noBills": "No posted bill with money due for this supplier.",
+      "taxable": "Amount before tax",
+      "account": "Account",
+      "defaultAccount": "Default",
+      "acc": {
+        "5040": "Purchase variance",
+        "6030": "Expense (debit note)"
+      },
+      "gstDoc": "Backed by the supplier GST document",
+      "docNo": "Supplier document number",
+      "docDate": "Supplier document date (YYYY-MM-DD)",
+      "cgst": "CGST (as printed)",
+      "sgst": "SGST (as printed)",
+      "igst": "IGST (as printed)",
+      "date": "Date (YYYY-MM-DD)",
+      "reason": "Reason (3 to 500 letters)",
+      "post": "Post note",
+      "close": "Close",
+      "v": {
+        "supplier": "Choose a supplier.",
+        "branch": "Choose a branch.",
+        "bill": "A credit note must name the bill it lowers.",
+        "noBill": "A debit note creates its own bill; leave the bill empty.",
+        "taxable": "Enter an amount above 0 with up to 2 decimals.",
+        "account": "This account is not allowed for this type.",
+        "tax": "Tax amounts have up to 2 decimals.",
+        "taxNeedsDoc": "Tax can be entered only with the supplier GST document.",
+        "doc": "Enter the supplier document number (up to 60 letters) and a real date.",
+        "both": "A note carries IGST or CGST + SGST, not both.",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "reason": "Give a reason of 3 to 500 letters."
+      }
+    }
   }
 }

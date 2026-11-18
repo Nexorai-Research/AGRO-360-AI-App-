@@ -1,1 +1,1 @@
-export { BillsScreen as default } from '@/features/stk/PurchaseScreens';
+export { BillsAndNotesScreen as default } from '@/features/stk/Parity2';

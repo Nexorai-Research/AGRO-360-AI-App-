@@ -177,6 +177,18 @@ export const productByBarcode = (c: ApiClient, code: string, signal?: AbortSigna
 // ---- writes. The caller owns the key so that a retry of the same action reuses it.
 export const createOrder = (c: ApiClient, body: OrderBody, idempotencyKey: string) =>
   c.post<OrderDetail>('/procurement/purchase-orders', { body, idempotencyKey });
+/** Web parity 2.2: edit a DRAFT order (PATCH with If-Match; same body as create, apps/web purchase.js orderDialog). */
+export const updateOrder = (
+  c: ApiClient,
+  o: { id: string; version: number },
+  body: OrderBody,
+  idempotencyKey: string,
+) =>
+  c.patch<OrderDetail>(`/procurement/purchase-orders/${encodeURIComponent(o.id)}`, {
+    body,
+    version: o.version,
+    idempotencyKey,
+  });
 export const submitOrder = (c: ApiClient, o: OrderRow, idempotencyKey: string) =>
   c.post<OrderDetail>(`/procurement/purchase-orders/${o.id}/submit`, {
     body: {},

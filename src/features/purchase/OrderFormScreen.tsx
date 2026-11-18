@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { ApiError } from '@/api/errors';
-import { formatINR } from '@/money';
+import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
 import { BarcodeScanner } from '../stock/BarcodeScanner';
 import { StateView } from '../stock/StateView';
@@ -15,14 +15,19 @@ import {
   fetchBranches,
   fetchSuppliers,
   fetchWarehouses,
+  getOrder,
   key,
   productByBarcode,
   searchProducts,
+  updateOrder,
   type ProductLite,
 } from './api';
 import { Gate, retryNetworkOnce } from './Gate';
 import { buildOrderBody, lineEstimate, orderErrors, orderEstimate, todayIST, type OrderDraft } from './logic';
 import { Chips, Field, Notice, k, useActionKey, useErrorText } from './ui';
+
+/** "10.000" -> "10", "12.5000" -> "12.5": the server's fixed decimals shown the way a person types them. */
+const plain = (v: string) => dec(v).toString();
 
 export default function OrderFormScreen() {
   const { t } = useTranslation();
@@ -50,6 +55,36 @@ export default function OrderFormScreen() {
   const [failure, setFailure] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [tried, setTried] = useState(false);
+  // edit mode (web parity 2.2): /purchase/order-new?edit=<draft order id>
+  const { edit: editId = '' } = useLocalSearchParams<{ edit?: string }>();
+  const [loaded, setLoaded] = useState<{ id: string; version: number } | null>(null);
+  const editing = useQuery({
+    queryKey: key(userId, 'order-edit', editId),
+    queryFn: ({ signal }) => getOrder(client!, editId, signal),
+    enabled: ready && editId !== '',
+    retry: retryNetworkOnce,
+  });
+  // the draft is copied into the form once, when it first arrives (state adjusted during render, no effect)
+  const o = editing.data;
+  if (o && loaded?.id !== o.id) {
+    setLoaded({ id: o.id, version: o.version });
+    setD({
+      supplierId: o.supplierId,
+      branchId: o.branchId,
+      warehouseId: o.warehouseId,
+      orderDate: o.orderDate,
+      expectedDate: o.expectedDate ?? '',
+      notes: o.notes ?? '',
+      lines: o.lines.map((l) => ({
+        skuId: l.skuId,
+        label: `${l.skuCode} ${l.skuName}`,
+        qty: plain(l.qty),
+        rate: plain(l.rate),
+        discountPct: dec(l.discountPct).isZero() ? '' : plain(l.discountPct),
+      })),
+    });
+  }
+  const notDraft = editing.data !== undefined && editing.data.status !== 'DRAFT';
 
   const suppliers = useQuery({
     queryKey: key(userId, 'suppliers-active'),
@@ -116,7 +151,14 @@ export default function OrderFormScreen() {
     try {
       const body = buildOrderBody(d);
       // same body: same key (a retry after a lost answer cannot make a second order); changed body: new key
-      const r = await createOrder(client!, body, actionKey.keyFor(JSON.stringify(body)));
+      const r = loaded
+        ? await updateOrder(
+            client!,
+            loaded,
+            body,
+            actionKey.keyFor(`e|${loaded.version}|${JSON.stringify(body)}`),
+          )
+        : await createOrder(client!, body, actionKey.keyFor(JSON.stringify(body)));
       actionKey.reset();
       router.replace({ pathname: '/purchase/[id]', params: { id: r.id } });
     } catch (e) {
@@ -128,7 +170,14 @@ export default function OrderFormScreen() {
 
   return (
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
-      <Text style={k.title}>{t('purchase.newOrder')}</Text>
+      <Text style={k.title}>
+        {editId
+          ? t('wp2.po.editTitle', { number: editing.data?.number ?? t('purchase.draft') })
+          : t('purchase.newOrder')}
+      </Text>
+      {editId && editing.isPending ? <StateView state="loading" /> : null}
+      {editId && editing.isError ? <Notice tone="error" text={errText(editing.error)} /> : null}
+      {notDraft ? <Notice tone="warn" text={t('wp2.po.notDraft')} /> : null}
       <Gate q={suppliers} ns="purchase" emptyKey="purchase.emptySuppliers" isEmpty={false}>
         <Text style={k.label}>{t('purchase.supplier')}</Text>
         <Chips
@@ -236,7 +285,11 @@ export default function OrderFormScreen() {
         <Text style={k.sub}>{t('purchase.serverTotals')}</Text>
 
         {failure ? <Notice tone="error" text={failure} /> : null}
-        <Button label={t('purchase.saveOrder')} disabled={busy} onPress={() => void save()} />
+        <Button
+          label={editId ? t('wp2.po.saveEdit') : t('purchase.saveOrder')}
+          disabled={busy || (editId !== '' && (!loaded || notDraft))}
+          onPress={() => void save()}
+        />
       </Gate>
       <BarcodeScanner visible={scan} onScanned={(c) => void onScanned(c)} onClose={() => setScan(false)} />
     </ScrollView>

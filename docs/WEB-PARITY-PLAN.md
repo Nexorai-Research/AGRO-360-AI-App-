@@ -37,7 +37,7 @@ Rules for every item:
 |---|---|---|---|---|
 | 2.1 | Supplier debit/credit notes: list, create | `GET/POST /procurement/supplier-adjustments` | view `purchase.supplier.ledger.view`; create `purchase.supplier.adjustment` | `stk/PurchaseScreens.tsx` (supplier money) |
 | 2.2 | Edit a draft purchase order | `PATCH /procurement/purchase-orders/:id` | `purchase.order.create` | `purchase/OrderFormScreen.tsx` |
-| 2.3 | Delete a draft purchase bill | `DELETE /procurement/purchase-bills/:id` | `purchase.bill.create` | purchase bills screen |
+| 2.3 | Delete a draft purchase bill | `DELETE /procurement/purchase-bills/:id` | `purchase.bill.create` | Found already built (`stk/PurchaseScreens.tsx`, via the `w.del` helper the scan did not read) |
 | 2.4 | Price list customer assignments | `PUT /price-lists/:id/assignments` | `pricing.manage` | price list screen in `stk/CatalogueScreens.tsx` |
 | 2.5 | Bulk HSN/tax update | `POST /products/bulk-tax-update` | `product.tax.manage` | missing-HSN screen in `stk/CatalogueScreens.tsx` |
 

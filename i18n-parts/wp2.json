@@ -1,0 +1,260 @@
+{
+  "en": {
+    "wp2": {
+      "po": {
+        "edit": "Edit draft",
+        "editTitle": "Edit order {{number}}",
+        "notDraft": "Only a draft order can be edited. Use revise on an approved order.",
+        "saveEdit": "Save changes"
+      },
+      "assign": {
+        "button": "Assignments",
+        "hint": "One per line: CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>. The list replaces the current assignments.",
+        "lines": "Assignments",
+        "badLine": "Line {{n}} is not CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>, or is given twice.",
+        "save": "Save assignments",
+        "saved": "Assignments saved."
+      },
+      "tax": {
+        "title": "Bulk tax update",
+        "hint": "Choose products by category (with sub-categories) or HSN prefix, set the new mapping from a date. Preview first.",
+        "from": "Effective from (YYYY-MM-DD)",
+        "category": "Category",
+        "anyCategory": "No category",
+        "fromHsn": "or current HSN starts with (4 to 8 digits)",
+        "newHsn": "New HSN (4, 6 or 8 digits)",
+        "newTax": "New tax category (for example GST5, EXEMPT)",
+        "confirmHsn": "HSN not in library - confirm",
+        "preview": "Preview only (no changes)",
+        "runPreview": "Preview",
+        "runNow": "Update now",
+        "previewDone": "Preview: {{matched}} matched, {{changed}} would change, {{unchanged}} unchanged.",
+        "done": "Done: {{matched}} matched, {{changed}} changed, {{unchanged}} unchanged.",
+        "v": {
+          "date": "Enter a real date as YYYY-MM-DD.",
+          "pick": "Choose a category or an HSN prefix.",
+          "fromHsn": "The HSN prefix is 4 to 8 digits.",
+          "set": "Give a new HSN, a new tax category, or both.",
+          "hsn": "HSN must be 4, 6 or 8 digits.",
+          "tax": "Tax category is 2 to 20 capital letters, digits or _."
+        }
+      },
+      "note": {
+        "title": "Supplier notes",
+        "tabBills": "Bills",
+        "show": "Show",
+        "new": "New supplier note",
+        "empty": "No supplier notes yet.",
+        "posted": "Note posted.",
+        "intro": "Credit note: pick the bill it lowers. Debit note: leave the bill empty. Tick \"GST document\" only if the supplier issued one, and key the number, date and tax exactly as printed on it.",
+        "branch": "Branch",
+        "kind": "Type",
+        "reduction": "Credit note - we owe less",
+        "increase": "Debit note - we owe more",
+        "bill": "Bill lowered (credit note only)",
+        "due": "due {{amount}}",
+        "noBills": "No posted bill with money due for this supplier.",
+        "taxable": "Amount before tax",
+        "account": "Account",
+        "defaultAccount": "Default",
+        "acc": { "5040": "Purchase variance", "6030": "Expense (debit note)" },
+        "gstDoc": "Backed by the supplier GST document",
+        "docNo": "Supplier document number",
+        "docDate": "Supplier document date (YYYY-MM-DD)",
+        "cgst": "CGST (as printed)",
+        "sgst": "SGST (as printed)",
+        "igst": "IGST (as printed)",
+        "date": "Date (YYYY-MM-DD)",
+        "reason": "Reason (3 to 500 letters)",
+        "post": "Post note",
+        "close": "Close",
+        "v": {
+          "supplier": "Choose a supplier.",
+          "branch": "Choose a branch.",
+          "bill": "A credit note must name the bill it lowers.",
+          "noBill": "A debit note creates its own bill; leave the bill empty.",
+          "taxable": "Enter an amount above 0 with up to 2 decimals.",
+          "account": "This account is not allowed for this type.",
+          "tax": "Tax amounts have up to 2 decimals.",
+          "taxNeedsDoc": "Tax can be entered only with the supplier GST document.",
+          "doc": "Enter the supplier document number (up to 60 letters) and a real date.",
+          "both": "A note carries IGST or CGST + SGST, not both.",
+          "date": "Enter a real date as YYYY-MM-DD.",
+          "reason": "Give a reason of 3 to 500 letters."
+        }
+      }
+    }
+  },
+  "hi": {
+    "wp2": {
+      "po": {
+        "edit": "ड्राफ़्ट बदलें",
+        "editTitle": "ऑर्डर {{number}} बदलें",
+        "notDraft": "केवल ड्राफ़्ट ऑर्डर बदला जा सकता है। मंज़ूर ऑर्डर के लिए संशोधन (revise) करें।",
+        "saveEdit": "बदलाव सहेजें"
+      },
+      "assign": {
+        "button": "किसे लागू",
+        "hint": "हर लाइन में एक: CUSTOMER:<id> या CUSTOMER_CATEGORY:<id>। यह सूची मौजूदा सूची की जगह लेगी।",
+        "lines": "किसे लागू",
+        "badLine": "लाइन {{n}} CUSTOMER:<id> या CUSTOMER_CATEGORY:<id> नहीं है, या दो बार है।",
+        "save": "सहेजें",
+        "saved": "सहेजा गया।"
+      },
+      "tax": {
+        "title": "एक साथ टैक्स बदलें",
+        "hint": "श्रेणी (उप-श्रेणियों सहित) या HSN शुरुआत से उत्पाद चुनें, और एक तारीख से नया टैक्स लगाएँ। पहले पूर्वावलोकन देखें।",
+        "from": "लागू तारीख (YYYY-MM-DD)",
+        "category": "श्रेणी",
+        "anyCategory": "कोई श्रेणी नहीं",
+        "fromHsn": "या मौजूदा HSN की शुरुआत (4 से 8 अंक)",
+        "newHsn": "नया HSN (4, 6 या 8 अंक)",
+        "newTax": "नई टैक्स श्रेणी (जैसे GST5, EXEMPT)",
+        "confirmHsn": "HSN सूची में नहीं - पुष्टि करें",
+        "preview": "केवल पूर्वावलोकन (कोई बदलाव नहीं)",
+        "runPreview": "पूर्वावलोकन",
+        "runNow": "अभी बदलें",
+        "previewDone": "पूर्वावलोकन: {{matched}} मिले, {{changed}} बदलेंगे, {{unchanged}} वैसे ही।",
+        "done": "हो गया: {{matched}} मिले, {{changed}} बदले, {{unchanged}} वैसे ही।",
+        "v": {
+          "date": "सही तारीख YYYY-MM-DD में लिखें।",
+          "pick": "श्रेणी या HSN शुरुआत चुनें।",
+          "fromHsn": "HSN शुरुआत 4 से 8 अंक की हो।",
+          "set": "नया HSN, नई टैक्स श्रेणी, या दोनों दें।",
+          "hsn": "HSN 4, 6 या 8 अंक का हो।",
+          "tax": "टैक्स श्रेणी 2 से 20 बड़े अक्षर, अंक या _ हो।"
+        }
+      },
+      "note": {
+        "title": "सप्लायर नोट",
+        "tabBills": "बिल",
+        "show": "दिखाएँ",
+        "new": "नया सप्लायर नोट",
+        "empty": "अभी कोई सप्लायर नोट नहीं।",
+        "posted": "नोट दर्ज हुआ।",
+        "intro": "क्रेडिट नोट: वह बिल चुनें जिसे यह घटाता है। डेबिट नोट: बिल खाली छोड़ें। \"GST दस्तावेज़\" तभी चुनें जब सप्लायर ने दिया हो, और नंबर, तारीख व टैक्स वैसे ही लिखें जैसे छपे हैं।",
+        "branch": "शाखा",
+        "kind": "प्रकार",
+        "reduction": "क्रेडिट नोट - हमें कम देना है",
+        "increase": "डेबिट नोट - हमें ज़्यादा देना है",
+        "bill": "घटने वाला बिल (केवल क्रेडिट नोट)",
+        "due": "बकाया {{amount}}",
+        "noBills": "इस सप्लायर का कोई बकाया वाला दर्ज बिल नहीं।",
+        "taxable": "टैक्स से पहले राशि",
+        "account": "खाता",
+        "defaultAccount": "डिफ़ॉल्ट",
+        "acc": { "5040": "खरीद अंतर", "6030": "खर्च (डेबिट नोट)" },
+        "gstDoc": "सप्लायर के GST दस्तावेज़ पर आधारित",
+        "docNo": "सप्लायर दस्तावेज़ नंबर",
+        "docDate": "सप्लायर दस्तावेज़ तारीख (YYYY-MM-DD)",
+        "cgst": "CGST (जैसा छपा है)",
+        "sgst": "SGST (जैसा छपा है)",
+        "igst": "IGST (जैसा छपा है)",
+        "date": "तारीख (YYYY-MM-DD)",
+        "reason": "कारण (3 से 500 अक्षर)",
+        "post": "नोट दर्ज करें",
+        "close": "बंद करें",
+        "v": {
+          "supplier": "सप्लायर चुनें।",
+          "branch": "शाखा चुनें।",
+          "bill": "क्रेडिट नोट में घटने वाला बिल चुनना ज़रूरी है।",
+          "noBill": "डेबिट नोट अपना बिल बनाता है; बिल खाली छोड़ें।",
+          "taxable": "0 से अधिक राशि लिखें, 2 दशमलव तक।",
+          "account": "यह खाता इस प्रकार के लिए मान्य नहीं।",
+          "tax": "टैक्स राशि 2 दशमलव तक।",
+          "taxNeedsDoc": "टैक्स केवल सप्लायर के GST दस्तावेज़ के साथ लिखा जा सकता है।",
+          "doc": "सप्लायर दस्तावेज़ नंबर (60 अक्षर तक) और सही तारीख लिखें।",
+          "both": "नोट में IGST या CGST + SGST हो, दोनों नहीं।",
+          "date": "सही तारीख YYYY-MM-DD में लिखें।",
+          "reason": "3 से 500 अक्षर का कारण लिखें।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "wp2": {
+      "po": {
+        "edit": "मसुदा बदला",
+        "editTitle": "ऑर्डर {{number}} बदला",
+        "notDraft": "फक्त मसुदा ऑर्डर बदलता येतो. मंजूर ऑर्डरसाठी सुधारणा (revise) करा.",
+        "saveEdit": "बदल जतन करा"
+      },
+      "assign": {
+        "button": "कोणाला लागू",
+        "hint": "प्रत्येक ओळीत एक: CUSTOMER:<id> किंवा CUSTOMER_CATEGORY:<id>. ही यादी सध्याच्या यादीऐवजी लागू होईल.",
+        "lines": "कोणाला लागू",
+        "badLine": "ओळ {{n}} CUSTOMER:<id> किंवा CUSTOMER_CATEGORY:<id> नाही, किंवा दोनदा आहे.",
+        "save": "जतन करा",
+        "saved": "जतन केले."
+      },
+      "tax": {
+        "title": "एकत्रित कर बदल",
+        "hint": "श्रेणी (उप-श्रेणींसह) किंवा HSN सुरुवातीने उत्पादने निवडा आणि एका तारखेपासून नवा कर लावा. आधी पूर्वावलोकन पहा.",
+        "from": "लागू तारीख (YYYY-MM-DD)",
+        "category": "श्रेणी",
+        "anyCategory": "श्रेणी नाही",
+        "fromHsn": "किंवा सध्याच्या HSN ची सुरुवात (4 ते 8 अंक)",
+        "newHsn": "नवा HSN (4, 6 किंवा 8 अंक)",
+        "newTax": "नवी कर श्रेणी (उदा. GST5, EXEMPT)",
+        "confirmHsn": "HSN यादीत नाही - खात्री करा",
+        "preview": "फक्त पूर्वावलोकन (बदल नाही)",
+        "runPreview": "पूर्वावलोकन",
+        "runNow": "आत्ता बदला",
+        "previewDone": "पूर्वावलोकन: {{matched}} जुळले, {{changed}} बदलतील, {{unchanged}} तसेच.",
+        "done": "झाले: {{matched}} जुळले, {{changed}} बदलले, {{unchanged}} तसेच.",
+        "v": {
+          "date": "योग्य तारीख YYYY-MM-DD मध्ये लिहा.",
+          "pick": "श्रेणी किंवा HSN सुरुवात निवडा.",
+          "fromHsn": "HSN सुरुवात 4 ते 8 अंकी असावी.",
+          "set": "नवा HSN, नवी कर श्रेणी किंवा दोन्ही द्या.",
+          "hsn": "HSN 4, 6 किंवा 8 अंकी असावा.",
+          "tax": "कर श्रेणी 2 ते 20 मोठी अक्षरे, अंक किंवा _ असावी."
+        }
+      },
+      "note": {
+        "title": "पुरवठादार नोट",
+        "tabBills": "बिले",
+        "show": "दाखवा",
+        "new": "नवीन पुरवठादार नोट",
+        "empty": "अजून पुरवठादार नोट नाही.",
+        "posted": "नोट नोंदवली.",
+        "intro": "क्रेडिट नोट: ज्या बिलाची रक्कम कमी होते ते निवडा. डेबिट नोट: बिल रिकामे ठेवा. \"GST दस्तऐवज\" फक्त पुरवठादाराने दिला असल्यास निवडा आणि क्रमांक, तारीख व कर छापल्याप्रमाणेच लिहा.",
+        "branch": "शाखा",
+        "kind": "प्रकार",
+        "reduction": "क्रेडिट नोट - आपल्याला कमी द्यायचे",
+        "increase": "डेबिट नोट - आपल्याला जास्त द्यायचे",
+        "bill": "कमी होणारे बिल (फक्त क्रेडिट नोट)",
+        "due": "थकबाकी {{amount}}",
+        "noBills": "या पुरवठादाराचे थकबाकी असलेले नोंदवलेले बिल नाही.",
+        "taxable": "करापूर्वीची रक्कम",
+        "account": "खाते",
+        "defaultAccount": "डीफॉल्ट",
+        "acc": { "5040": "खरेदी फरक", "6030": "खर्च (डेबिट नोट)" },
+        "gstDoc": "पुरवठादाराच्या GST दस्तऐवजावर आधारित",
+        "docNo": "पुरवठादार दस्तऐवज क्रमांक",
+        "docDate": "पुरवठादार दस्तऐवज तारीख (YYYY-MM-DD)",
+        "cgst": "CGST (छापल्याप्रमाणे)",
+        "sgst": "SGST (छापल्याप्रमाणे)",
+        "igst": "IGST (छापल्याप्रमाणे)",
+        "date": "तारीख (YYYY-MM-DD)",
+        "reason": "कारण (3 ते 500 अक्षरे)",
+        "post": "नोट नोंदवा",
+        "close": "बंद करा",
+        "v": {
+          "supplier": "पुरवठादार निवडा.",
+          "branch": "शाखा निवडा.",
+          "bill": "क्रेडिट नोटमध्ये कमी होणारे बिल निवडणे आवश्यक आहे.",
+          "noBill": "डेबिट नोट स्वतःचे बिल तयार करते; बिल रिकामे ठेवा.",
+          "taxable": "0 पेक्षा जास्त रक्कम लिहा, 2 दशांशांपर्यंत.",
+          "account": "हे खाते या प्रकारासाठी मान्य नाही.",
+          "tax": "कर रक्कम 2 दशांशांपर्यंत.",
+          "taxNeedsDoc": "कर फक्त पुरवठादाराच्या GST दस्तऐवजासह लिहिता येतो.",
+          "doc": "पुरवठादार दस्तऐवज क्रमांक (60 अक्षरांपर्यंत) आणि योग्य तारीख लिहा.",
+          "both": "नोटमध्ये IGST किंवा CGST + SGST असावा, दोन्ही नाही.",
+          "date": "योग्य तारीख YYYY-MM-DD मध्ये लिहा.",
+          "reason": "3 ते 500 अक्षरांचे कारण लिहा."
+        }
+      }
+    }
+  }
+}
