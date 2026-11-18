@@ -1,0 +1,191 @@
+{
+  "en": {
+    "wp4": {
+      "cancel": "Cancel",
+      "seasons": {
+        "title": "Season months",
+        "change": "Change season months",
+        "hint": "One season per line: code, name, first month (1-12), last month (1-12). A season may run over the year end, for example Rabi: 11 to 3.",
+        "lines": "Seasons",
+        "badLine": "Line {{n}} is not \"CODE, Name, first month, last month\" (months 1 to 12, name 2 to 40 letters, each code once).",
+        "save": "Save seasons",
+        "saved": "Seasons saved."
+      },
+      "branch": {
+        "title": "Branch dashboard (today)",
+        "which": "Branch",
+        "failed": "The branch dashboard could not be read.",
+        "asOf": "{{name}}, {{date}}",
+        "byHour": "Sales by hour",
+        "top": "Today's top products"
+      },
+      "views": {
+        "new": "New custom report",
+        "newTitle": "New custom report",
+        "changeTitle": "Change custom report",
+        "intro": "Pick what to see. Nothing here is typed as a query; the server only accepts the listed fields. It always runs with your own permissions and branches.",
+        "noDatasets": "The report data list could not be read.",
+        "name": "Name (2 to 80 letters)",
+        "data": "Data",
+        "columns": "Columns",
+        "groupBy": "Add up by (optional)",
+        "by": "by",
+        "filterField": "Only rows where (field)",
+        "noFilter": "No filter",
+        "condition": "Condition",
+        "op": {
+          "eq": "equals",
+          "ne": "is not",
+          "gt": "more than",
+          "gte": "at least",
+          "lt": "less than",
+          "lte": "at most",
+          "contains": "contains"
+        },
+        "value": "Value (dates as YYYY-MM-DD)",
+        "limit": "Most rows",
+        "shared": "Share with roles (role keys, comma separated, optional)",
+        "save": "Save report",
+        "saved": "Report saved.",
+        "change": "Change",
+        "delete": "Delete",
+        "deleteSure": "Delete \"{{name}}\"? It will no longer be available.",
+        "deleteNow": "Delete report",
+        "deleted": "Report deleted.",
+        "shared_": "Shared with you",
+        "v": {
+          "name": "Give a name of 2 to 80 letters.",
+          "columns": "Pick at least one column.",
+          "limit": "Most rows is a whole number.",
+          "shared": "Role keys are small letters, digits or _, up to 20 of them."
+        }
+      }
+    }
+  },
+  "hi": {
+    "wp4": {
+      "cancel": "रद्द करें",
+      "seasons": {
+        "title": "मौसम के महीने",
+        "change": "मौसम के महीने बदलें",
+        "hint": "हर लाइन में एक मौसम: कोड, नाम, पहला महीना (1-12), आखिरी महीना (1-12)। मौसम साल के अंत से आगे जा सकता है, जैसे रबी: 11 से 3।",
+        "lines": "मौसम",
+        "badLine": "लाइन {{n}} \"कोड, नाम, पहला महीना, आखिरी महीना\" नहीं है (महीने 1 से 12, नाम 2 से 40 अक्षर, हर कोड एक बार)।",
+        "save": "मौसम सहेजें",
+        "saved": "मौसम सहेजे गए।"
+      },
+      "branch": {
+        "title": "शाखा डैशबोर्ड (आज)",
+        "which": "शाखा",
+        "failed": "शाखा डैशबोर्ड पढ़ा नहीं जा सका।",
+        "asOf": "{{name}}, {{date}}",
+        "byHour": "घंटे के अनुसार बिक्री",
+        "top": "आज के शीर्ष उत्पाद"
+      },
+      "views": {
+        "new": "नई कस्टम रिपोर्ट",
+        "newTitle": "नई कस्टम रिपोर्ट",
+        "changeTitle": "कस्टम रिपोर्ट बदलें",
+        "intro": "क्या देखना है चुनें। यहाँ कोई क्वेरी नहीं लिखी जाती; सर्वर केवल सूची के फ़ील्ड लेता है। यह हमेशा आपकी अपनी अनुमति और शाखाओं से चलती है।",
+        "noDatasets": "रिपोर्ट डेटा सूची पढ़ी नहीं जा सकी।",
+        "name": "नाम (2 से 80 अक्षर)",
+        "data": "डेटा",
+        "columns": "कॉलम",
+        "groupBy": "जोड़ें (वैकल्पिक)",
+        "by": "के अनुसार",
+        "filterField": "केवल वे पंक्तियाँ जहाँ (फ़ील्ड)",
+        "noFilter": "कोई फ़िल्टर नहीं",
+        "condition": "शर्त",
+        "op": {
+          "eq": "बराबर",
+          "ne": "नहीं है",
+          "gt": "से अधिक",
+          "gte": "कम से कम",
+          "lt": "से कम",
+          "lte": "अधिकतम",
+          "contains": "में शामिल"
+        },
+        "value": "मान (तारीख YYYY-MM-DD)",
+        "limit": "अधिकतम पंक्तियाँ",
+        "shared": "भूमिकाओं के साथ साझा करें (रोल की, कॉमा से अलग, वैकल्पिक)",
+        "save": "रिपोर्ट सहेजें",
+        "saved": "रिपोर्ट सहेजी गई।",
+        "change": "बदलें",
+        "delete": "हटाएँ",
+        "deleteSure": "\"{{name}}\" हटाएँ? यह फिर उपलब्ध नहीं होगी।",
+        "deleteNow": "रिपोर्ट हटाएँ",
+        "deleted": "रिपोर्ट हटा दी गई।",
+        "shared_": "आपके साथ साझा",
+        "v": {
+          "name": "2 से 80 अक्षर का नाम दें।",
+          "columns": "कम से कम एक कॉलम चुनें।",
+          "limit": "अधिकतम पंक्तियाँ पूरी संख्या हो।",
+          "shared": "रोल की छोटे अक्षर, अंक या _ हों, अधिकतम 20।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "wp4": {
+      "cancel": "रद्द करा",
+      "seasons": {
+        "title": "हंगामाचे महिने",
+        "change": "हंगामाचे महिने बदला",
+        "hint": "प्रत्येक ओळीत एक हंगाम: कोड, नाव, पहिला महिना (1-12), शेवटचा महिना (1-12). हंगाम वर्षाच्या शेवटापलीकडे जाऊ शकतो, उदा. रब्बी: 11 ते 3.",
+        "lines": "हंगाम",
+        "badLine": "ओळ {{n}} \"कोड, नाव, पहिला महिना, शेवटचा महिना\" नाही (महिने 1 ते 12, नाव 2 ते 40 अक्षरे, प्रत्येक कोड एकदा).",
+        "save": "हंगाम जतन करा",
+        "saved": "हंगाम जतन केले."
+      },
+      "branch": {
+        "title": "शाखा डॅशबोर्ड (आज)",
+        "which": "शाखा",
+        "failed": "शाखा डॅशबोर्ड वाचता आला नाही.",
+        "asOf": "{{name}}, {{date}}",
+        "byHour": "तासानुसार विक्री",
+        "top": "आजची आघाडीची उत्पादने"
+      },
+      "views": {
+        "new": "नवीन सानुकूल अहवाल",
+        "newTitle": "नवीन सानुकूल अहवाल",
+        "changeTitle": "सानुकूल अहवाल बदला",
+        "intro": "काय पाहायचे ते निवडा. येथे कोणतीही क्वेरी लिहिली जात नाही; सर्व्हर फक्त यादीतील फील्ड घेतो. तो नेहमी तुमच्या स्वतःच्या परवानग्या आणि शाखांनुसार चालतो.",
+        "noDatasets": "अहवाल डेटा यादी वाचता आली नाही.",
+        "name": "नाव (2 ते 80 अक्षरे)",
+        "data": "डेटा",
+        "columns": "स्तंभ",
+        "groupBy": "बेरीज करा (ऐच्छिक)",
+        "by": "नुसार",
+        "filterField": "फक्त त्या ओळी जिथे (फील्ड)",
+        "noFilter": "फिल्टर नाही",
+        "condition": "अट",
+        "op": {
+          "eq": "बरोबर",
+          "ne": "नाही",
+          "gt": "पेक्षा जास्त",
+          "gte": "किमान",
+          "lt": "पेक्षा कमी",
+          "lte": "जास्तीत जास्त",
+          "contains": "मध्ये आहे"
+        },
+        "value": "मूल्य (तारीख YYYY-MM-DD)",
+        "limit": "जास्तीत जास्त ओळी",
+        "shared": "भूमिकांसोबत शेअर करा (रोल की, स्वल्पविरामाने वेगळे, ऐच्छिक)",
+        "save": "अहवाल जतन करा",
+        "saved": "अहवाल जतन केला.",
+        "change": "बदला",
+        "delete": "काढा",
+        "deleteSure": "\"{{name}}\" काढायचा? तो पुन्हा उपलब्ध राहणार नाही.",
+        "deleteNow": "अहवाल काढा",
+        "deleted": "अहवाल काढला.",
+        "shared_": "तुमच्यासोबत शेअर केलेला",
+        "v": {
+          "name": "2 ते 80 अक्षरांचे नाव द्या.",
+          "columns": "किमान एक स्तंभ निवडा.",
+          "limit": "जास्तीत जास्त ओळी पूर्ण संख्या असावी.",
+          "shared": "रोल की लहान अक्षरे, अंक किंवा _ असावीत, जास्तीत जास्त 20."
+        }
+      }
+    }
+  }
+}

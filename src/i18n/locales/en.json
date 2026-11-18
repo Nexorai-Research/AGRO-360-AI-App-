@@ -5778,5 +5778,66 @@
       "preview": "Preview",
       "ready": "Preview ready to share."
     }
+  },
+  "wp4": {
+    "cancel": "Cancel",
+    "seasons": {
+      "title": "Season months",
+      "change": "Change season months",
+      "hint": "One season per line: code, name, first month (1-12), last month (1-12). A season may run over the year end, for example Rabi: 11 to 3.",
+      "lines": "Seasons",
+      "badLine": "Line {{n}} is not \"CODE, Name, first month, last month\" (months 1 to 12, name 2 to 40 letters, each code once).",
+      "save": "Save seasons",
+      "saved": "Seasons saved."
+    },
+    "branch": {
+      "title": "Branch dashboard (today)",
+      "which": "Branch",
+      "failed": "The branch dashboard could not be read.",
+      "asOf": "{{name}}, {{date}}",
+      "byHour": "Sales by hour",
+      "top": "Today's top products"
+    },
+    "views": {
+      "new": "New custom report",
+      "newTitle": "New custom report",
+      "changeTitle": "Change custom report",
+      "intro": "Pick what to see. Nothing here is typed as a query; the server only accepts the listed fields. It always runs with your own permissions and branches.",
+      "noDatasets": "The report data list could not be read.",
+      "name": "Name (2 to 80 letters)",
+      "data": "Data",
+      "columns": "Columns",
+      "groupBy": "Add up by (optional)",
+      "by": "by",
+      "filterField": "Only rows where (field)",
+      "noFilter": "No filter",
+      "condition": "Condition",
+      "op": {
+        "eq": "equals",
+        "ne": "is not",
+        "gt": "more than",
+        "gte": "at least",
+        "lt": "less than",
+        "lte": "at most",
+        "contains": "contains"
+      },
+      "value": "Value (dates as YYYY-MM-DD)",
+      "limit": "Most rows",
+      "shared": "Share with roles (role keys, comma separated, optional)",
+      "save": "Save report",
+      "saved": "Report saved.",
+      "change": "Change",
+      "delete": "Delete",
+      "deleteSure": "Delete \"{{name}}\"? It will no longer be available.",
+      "deleteNow": "Delete report",
+      "deleted": "Report deleted.",
+      "shared_": "Shared with you",
+      "v": {
+        "name": "Give a name of 2 to 80 letters.",
+        "columns": "Pick at least one column.",
+        "limit": "Most rows is a whole number.",
+        "shared": "Role keys are small letters, digits or _, up to 20 of them."
+      }
+    }
   }
 }

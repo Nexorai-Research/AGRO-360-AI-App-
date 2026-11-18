@@ -23,6 +23,7 @@ import {
   useFailureText,
 } from '../hr/kit';
 import { rangeOf } from '../reports/api';
+import { BranchDashboard, SeasonsCard, ViewBuilder, ViewManage } from './Parity4';
 import { StateView } from '../stock/StateView';
 import { fetchBranches } from '../staff/api';
 import { shareText } from '../staff/ui';
@@ -301,6 +302,7 @@ function Saved({ ctx }: { ctx: Ctx }) {
   const [run, setRun] = useState<{ id: string; data: SavedRun } | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [building, setBuilding] = useState(false);
   const q = useQuery({
     queryKey: ['stf', ctx.userId, 'more', 'views'],
     queryFn: ({ signal }) => fetchViews(ctx.client!, signal),
@@ -321,6 +323,11 @@ function Saved({ ctx }: { ctx: Ctx }) {
   return (
     <Gate query={q} denied={!ctx.enabled} deniedText={t('reports.denied')} offlineText={t('reports.offline')}>
       <Text style={kit.sub}>{t('stf.rep.savedNote')}</Text>
+      {building ? (
+        <ViewBuilder view={null} onDone={() => setBuilding(false)} />
+      ) : (
+        <Button label={t('wp4.views.new')} onPress={() => setBuilding(true)} />
+      )}
       {err ? <Notice tone="error" text={err} /> : null}
       {(q.data?.items ?? []).length === 0 ? <StateView state="empty" message={t('stf.rep.noViews')} /> : null}
       {(q.data?.items ?? []).map((v) => (
@@ -333,6 +340,7 @@ function Saved({ ctx }: { ctx: Ctx }) {
             disabled={busy !== null}
             onPress={() => void open(v.id)}
           />
+          <ViewManage view={v} />
           {run?.id === v.id ? (
             <>
               {run.data.rows.length === 0 ? <Text style={kit.sub}>{t('stf.rep.noRows')}</Text> : null}
@@ -499,7 +507,9 @@ export default function MoreReportsScreen() {
           {kind === 'purchases' ? <Purchases ctx={ctx} /> : null}
           {kind === 'customers' ? <Customers ctx={ctx} /> : null}
           {kind === 'staff' ? <Staff ctx={ctx} /> : null}
+          {kind === 'branches' ? <BranchDashboard /> : null}
           {kind === 'branches' ? <Branches ctx={ctx} /> : null}
+          {kind === 'seasonal' ? <SeasonsCard /> : null}
           {kind === 'seasonal' ? <SeasonalView ctx={ctx} /> : null}
           {kind === 'saved' ? <Saved ctx={ctx} /> : null}
         </>

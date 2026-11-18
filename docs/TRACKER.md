@@ -742,3 +742,14 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 3.8 "Sign-in seen" sent after every successful `/me`, best effort, like the web | DONE | full suite |
 
 Note: the gap scan read the web's `api('METHOD', path)` calls. Calls made through page-local helpers (for example `post(...)` in `compliance.js`) were not read, so a few web features (such as adding an RCM rule and the GSTR-2B import) were found only while building. A second scan of those helpers is still to do.
+
+## Web parity, phase 4: reports
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `reports.js` (seasonalTab, builder, customTab, branchDashTab) and `modules/reporting/src/application/{seasons,views}.ts`. Texts are in `i18n-parts/wp4.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 4.1 Branch dashboard for today (`GET /reports/dashboard/branch?branchId`): tiles, sales by hour, top products, notes; on the Branches report | DONE | `__tests__/wp4.test.tsx` |
+| 4.2 Season months: view and change (`GET/PUT /reports/seasons`, If-Match), "CODE, Name, first, last" per line; needs `reports.financial` | DONE | `__tests__/wp4.test.tsx` |
+| 4.3 New custom report from the server's dataset list (`GET /reports/custom/datasets`, `POST /reports/views`): columns, add up by, one filter, most rows, shared roles | DONE | `__tests__/wp4.test.tsx` |
+| 4.4 Change (`PATCH /reports/views/:id`, If-Match) and delete (`DELETE`, after a confirm) of your own report; a shared one is only run | DONE | `__tests__/wp4.test.tsx` |
