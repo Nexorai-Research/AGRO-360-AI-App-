@@ -7,6 +7,7 @@ import { useCustomer360, useCustomerLedger } from '../../src/features/customers/
 import type { Customer360, LedgerEntry } from '../../src/features/customers/types';
 import { CreditPanel } from '../../src/features/customers/CreditPanel';
 import { CrmActions } from '../../src/features/customers/CrmActions';
+import { CustomerExtras } from '../../src/features/customers/CustomerExtras';
 import { FarmEditor } from '../../src/features/customers/FarmEditor';
 import { LoyaltyAdjust } from '../../src/features/customers/LoyaltyAdjust';
 import { MoreSections } from '../../src/features/customers/MoreSections';
@@ -141,6 +142,7 @@ function Header({
       <LoyaltyAdjust customerId={p.id} />
       <PlansPanel customerId={p.id} />
       <ServicePanel customerId={p.id} />
+      <CustomerExtras customerId={p.id} />
       <PrivacyPanel customerId={p.id} code={p.code} status={p.status} />
 
       {canLedger ? (

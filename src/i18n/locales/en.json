@@ -5421,5 +5421,195 @@
     "systemRoles": "System roles",
     "search": "Search permissions",
     "noMatch": "No permission matches \"{{q}}\"."
+  },
+  "wp1": {
+    "tasks": {
+      "title": "Open tasks",
+      "none": "No open tasks.",
+      "due": "Due {{date}}",
+      "overdue": "overdue",
+      "done": "Done",
+      "doneMsg": "Task marked done."
+    },
+    "cmp": {
+      "assignTitle": "Assign",
+      "noUsers": "The list of people could not be read.",
+      "assign": "Assign to the chosen person",
+      "assigned": "Assigned.",
+      "claimTitle": "Supplier claim",
+      "claimRef": "Claim reference",
+      "claimBad": "Enter a claim reference of up to 80 letters.",
+      "claim": "Raise the claim",
+      "claimed": "Claim raised. The ticket is now with the supplier."
+    },
+    "res": {
+      "button": "Reserved stock",
+      "intro": "The reserved product and quantity are put on the bill (you can change the quantity). The reservation is used up when the bill is finalized, and the rest of the stock it held goes back to available.",
+      "none": "No active reservation for this branch.",
+      "failed": "Reservations could not be read. Try again.",
+      "use": "Use reservation",
+      "until": "until {{at}}",
+      "using": "Using reservation {{number}}",
+      "drop": "Do not use it"
+    },
+    "adj": {
+      "tab": "Adjustments",
+      "intro": "A credit lowers what the customer owes (oldest dues first). A debit adds a charge. Nothing is edited later: a mistake is corrected by another adjustment. A reason is required and the entry is audited.",
+      "new": "New adjustment",
+      "none": "No adjustments yet.",
+      "branch": "Branch",
+      "kind": "Type",
+      "credit": "Credit - customer owes less",
+      "debit": "Debit - customer owes more",
+      "amount": "Amount",
+      "account": "Account on the other side",
+      "date": "Date (YYYY-MM-DD)",
+      "reason": "Reason (3 to 500 letters)",
+      "post": "Post adjustment",
+      "posted": "Adjustment posted.",
+      "postedOne": "Adjustment {{number}} posted for {{amount}}.",
+      "acc": {
+        "4030": "Discounts and loyalty (contra revenue)",
+        "4040": "Sales adjustments",
+        "4900": "Other income",
+        "4910": "Charges recovered",
+        "5050": "Expense (goodwill)"
+      },
+      "v": {
+        "customer": "Choose a customer.",
+        "branch": "Choose a branch.",
+        "amount": "Enter an amount above 0 with up to 2 decimals.",
+        "account": "Choose an account allowed for this type.",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "reason": "Give a reason of 3 to 500 letters."
+      }
+    },
+    "inputs": {
+      "title": "Inputs applied",
+      "none": "No applications recorded.",
+      "record": "Record an application",
+      "product": "Product",
+      "batch": "Batch number",
+      "qty": "Quantity",
+      "unit": "Unit",
+      "date": "Applied on (YYYY-MM-DD)",
+      "method": "Method (spray, broadcast ...)",
+      "check": "Regulated input check (licence, dose, waiting period)",
+      "saved": "Recorded.",
+      "regulated": "regulated",
+      "verified": "Verified",
+      "verify": "Verify",
+      "verifiedMsg": "Verified.",
+      "notYet": "Not verified yet",
+      "src": {
+        "REPORTED": "reported by farmer",
+        "STAFF_OBSERVED": "seen by staff"
+      },
+      "v": {
+        "product": "Name the product (up to 160 letters).",
+        "batch": "Batch number is up to 60 letters.",
+        "qty": "Enter a quantity above 0 with up to 3 decimals.",
+        "unit": "Enter a unit (up to 20 letters).",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "method": "Method is up to 60 letters.",
+        "check": "Check note is up to 300 letters."
+      }
+    },
+    "docs": {
+      "title": "KYC files",
+      "none": "No KYC document.",
+      "upload": "Upload KYC document",
+      "intro": "The file is stored encrypted; only the last 4 characters of the number are kept. Every view is logged.",
+      "number": "Document number (optional)",
+      "expires": "Expires on (YYYY-MM-DD, optional)",
+      "pick": "Choose a file (PDF / JPEG / PNG up to 2 MB)",
+      "chooseFile": "Choose a file.",
+      "tooBig": "This file is larger than 2 MB. Choose a smaller PDF, JPEG or PNG.",
+      "badType": "Only a PDF, JPEG or PNG file can be uploaded.",
+      "badDate": "Enter a real expiry date as YYYY-MM-DD.",
+      "uploadNow": "Upload",
+      "uploaded": "Uploaded.",
+      "download": "Download",
+      "noShare": "This phone cannot open or share files.",
+      "downloadFailed": "The file could not be downloaded. Try again.",
+      "remove": "Remove",
+      "removeWarn": "The file is erased.",
+      "removeNow": "Remove document",
+      "removed": "Removed.",
+      "expiresOn": "expires {{date}}",
+      "expired": "expired",
+      "type": {
+        "AADHAAR": "Aadhaar",
+        "PAN": "PAN",
+        "VOTER_ID": "Voter ID",
+        "DRIVING_LICENCE": "Driving licence",
+        "PASSPORT": "Passport",
+        "LAND_RECORD": "Land record",
+        "BANK_PASSBOOK": "Bank passbook",
+        "OTHER": "Other"
+      }
+    },
+    "points": {
+      "title": "Points history",
+      "none": "No points yet.",
+      "pts": "points"
+    },
+    "household": {
+      "title": "Household",
+      "has": "Already in household {{name}}.",
+      "name": "Household name",
+      "v": "Enter a household name (up to 120 letters).",
+      "create": "New household",
+      "created": "Household created."
+    },
+    "purchases": {
+      "title": "Purchase history",
+      "all": "All time",
+      "year": "Year",
+      "badYear": "Enter a 4 digit year.",
+      "none": "No purchases in this period.",
+      "batch": "batch {{no}}",
+      "returned": "{{qty}} returned",
+      "st": {
+        "FINALIZED": "final",
+        "CANCELLED": "cancelled",
+        "DRAFT": "draft"
+      }
+    },
+    "guar": {
+      "title": "Guarantors",
+      "none": "No guarantor recorded.",
+      "add": "Add guarantor",
+      "name": "Name",
+      "mobile": "Mobile (10 digits, starts 6-9)",
+      "relationship": "Relationship",
+      "document": "Document reference (optional)",
+      "amount": "Amount covered (optional)",
+      "added": "Guarantor added.",
+      "remove": "Remove",
+      "removed": "Guarantor removed.",
+      "covers": "covers {{amount}}",
+      "overdue": "Overdue {{amount}}",
+      "v": {
+        "name": "Enter a name of 2 to 120 letters.",
+        "mobile": "Mobile must be 10 digits starting 6-9.",
+        "relationship": "Enter the relationship (2 to 60 letters).",
+        "document": "Document reference is up to 200 letters.",
+        "amount": "Enter an amount above 0."
+      }
+    },
+    "share": {
+      "title": "Share the statement",
+      "intro": "Makes a private link that works for a limited time. It can also go to the customer on WhatsApp if they agreed to service messages.",
+      "language": "Language",
+      "customerLang": "Customer's language",
+      "days": "Link works for (days, 1 to 90)",
+      "badDays": "Enter 1 to 90 days.",
+      "send": "Send it on WhatsApp now",
+      "make": "Make the link",
+      "made": "Link made.",
+      "whatsapp": "WhatsApp: {{status}}{{reason}}.",
+      "open": "Open the link"
+    }
   }
 }
