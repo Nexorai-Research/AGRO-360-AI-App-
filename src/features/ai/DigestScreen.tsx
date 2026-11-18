@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AiInbox } from './Parity5';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
@@ -71,6 +72,7 @@ export default function DigestScreen() {
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
       <Text style={k.title}>{t('ai.digestTitle')}</Text>
+      <AiInbox />
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}
       {(branches.data ?? []).length > 1 ? <Chips options={opts} value={branch} onChange={setBranch} /> : null}

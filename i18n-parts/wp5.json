@@ -1,0 +1,368 @@
+{
+  "en": {
+    "wp5": {
+      "cancel": "Cancel",
+      "sev": { "INFO": "info", "WARN": "warning", "CRITICAL": "critical" },
+      "inbox": {
+        "title": "AI inbox ({{count}} unread)",
+        "readAll": "Mark all read",
+        "read": "Mark read",
+        "done": "Done.",
+        "none": "Nothing yet. The scheduled scan fills this once a day."
+      },
+      "set": {
+        "title": "AI settings",
+        "enabled": "AI",
+        "enabledOn": "AI is switched on (off is the kill switch)",
+        "on": "on",
+        "off": "off",
+        "notSet": "not set",
+        "quota": "Calls allowed per month",
+        "margin": "Lowest margin on a sale (%)",
+        "marginEdit": "Lowest margin on a sale, in % (blank = not set)",
+        "cash": "Cash to keep (₹)",
+        "cashEdit": "Cash to keep, in rupees (blank = not set)",
+        "hours": "Shop hours",
+        "openEdit": "Shop opens at hour 0-23 (blank = 7)",
+        "closeEdit": "Shop closes at hour 1-24 (blank = 21)",
+        "change": "Change",
+        "save": "Save AI settings",
+        "saved": "AI settings saved.",
+        "v": {
+          "quota": "Enter a whole number of calls.",
+          "margin": "Enter a percent from 0 to 100.",
+          "cash": "Enter an amount with up to 2 decimals.",
+          "open": "Enter an hour from 0 to 23.",
+          "close": "Enter an hour from 1 to 24."
+        }
+      },
+      "alias": {
+        "title": "Search aliases",
+        "count": "{{defaults}} common farm words are built in. {{own}} added by your franchise.",
+        "add": "Add an alias",
+        "hint": "A word farmers use for a product, crop or pest, and the word your catalogue uses for it. Both find the same products.",
+        "term": "Word farmers use (any script)",
+        "canonical": "Word in your catalogue",
+        "kind": "Kind",
+        "k": {
+          "CROP": "crop",
+          "PEST": "pest",
+          "PRODUCT_TYPE": "product type",
+          "NUTRIENT": "nutrient",
+          "OTHER": "other"
+        },
+        "save": "Save alias",
+        "saved": "Alias added.",
+        "on": "Switch on",
+        "off": "Switch off",
+        "switched": "Alias switched."
+      },
+      "wx": {
+        "title": "Weather setup",
+        "notSet": "not set",
+        "setLocation": "Set location",
+        "fetch": "Fetch now",
+        "fetched": "Weather fetched.",
+        "locHint": "The forecast is taken for this point. Only the latitude and longitude are sent to the weather service.",
+        "place": "Place name",
+        "lat": "Latitude",
+        "lng": "Longitude",
+        "badLatLng": "Latitude is -90 to 90 and longitude -180 to 180.",
+        "saveLoc": "Save location",
+        "saved": "Saved.",
+        "rules": "Weather rules",
+        "change": "Change",
+        "threshold": "Alert threshold",
+        "ruleOn": "Rule is on",
+        "saveRule": "Save rule"
+      },
+      "ask": {
+        "title": "Ask the AI what to reorder",
+        "hint": "It looks at the sales of the last months, the stock now and what is already on order. If there is not enough data it says so instead of guessing.",
+        "product": "Product",
+        "branch": "Branch",
+        "look": "Look at it",
+        "done": "Checked.",
+        "nothing": "Nothing to order ({{state}}).",
+        "made": "Recommendation made: buy {{qty}}."
+      },
+      "kn": {
+        "title": "Import knowledge entries",
+        "hint": "Pick the filled template (CSV). It is checked line by line first and nothing is saved; then the entries are imported as drafts that another person must approve.",
+        "pick": "Choose the CSV file",
+        "checked": "File checked.",
+        "wrong": "{{bad}} of {{all}} rows are wrong. Nothing was imported. Fix the file and try again.",
+        "line": "Line {{n}} ({{name}})",
+        "import": "Import {{count}} entries as drafts",
+        "imported": "Drafts imported."
+      },
+      "cf": {
+        "title": "Requirement factors",
+        "hint": "How much of a product one acre of a crop needs between two ages of the crop (days after sowing). Your own figures; nothing is assumed.",
+        "add": "Add a factor",
+        "crop": "Crop (as named in the crop master)",
+        "product": "Product",
+        "stage": "Stage",
+        "from": "From day after sowing",
+        "to": "To day after sowing",
+        "units": "Units of the product per acre",
+        "save": "Save factor",
+        "saved": "Factor saved.",
+        "change": "Change",
+        "remove": "Remove",
+        "removed": "Factor removed.",
+        "v": {
+          "crop": "Name the crop.",
+          "product": "Pick a product.",
+          "stage": "Name the stage.",
+          "days": "Days are whole numbers and the first is not after the last.",
+          "units": "Enter units per acre above 0."
+        }
+      }
+    }
+  },
+  "hi": {
+    "wp5": {
+      "cancel": "रद्द करें",
+      "sev": { "INFO": "जानकारी", "WARN": "चेतावनी", "CRITICAL": "गंभीर" },
+      "inbox": {
+        "title": "AI इनबॉक्स ({{count}} अपठित)",
+        "readAll": "सब पढ़ा हुआ करें",
+        "read": "पढ़ा हुआ करें",
+        "done": "हो गया।",
+        "none": "अभी कुछ नहीं। तय स्कैन दिन में एक बार इसे भरता है।"
+      },
+      "set": {
+        "title": "AI सेटिंग्स",
+        "enabled": "AI",
+        "enabledOn": "AI चालू है (बंद करना किल स्विच है)",
+        "on": "चालू",
+        "off": "बंद",
+        "notSet": "तय नहीं",
+        "quota": "हर महीने अनुमत कॉल",
+        "margin": "बिक्री पर न्यूनतम मार्जिन (%)",
+        "marginEdit": "बिक्री पर न्यूनतम मार्जिन, % में (खाली = तय नहीं)",
+        "cash": "रखने के लिए नकद (₹)",
+        "cashEdit": "रखने के लिए नकद, रुपये में (खाली = तय नहीं)",
+        "hours": "दुकान का समय",
+        "openEdit": "दुकान खुलने का घंटा 0-23 (खाली = 7)",
+        "closeEdit": "दुकान बंद होने का घंटा 1-24 (खाली = 21)",
+        "change": "बदलें",
+        "save": "AI सेटिंग्स सहेजें",
+        "saved": "AI सेटिंग्स सहेजी गईं।",
+        "v": {
+          "quota": "कॉल की पूरी संख्या लिखें।",
+          "margin": "0 से 100 तक प्रतिशत लिखें।",
+          "cash": "2 दशमलव तक राशि लिखें।",
+          "open": "0 से 23 तक घंटा लिखें।",
+          "close": "1 से 24 तक घंटा लिखें।"
+        }
+      },
+      "alias": {
+        "title": "खोज उपनाम",
+        "count": "{{defaults}} आम खेती शब्द पहले से हैं। {{own}} आपकी फ्रैंचाइज़ी ने जोड़े।",
+        "add": "उपनाम जोड़ें",
+        "hint": "किसान जो शब्द किसी उत्पाद, फसल या कीट के लिए बोलते हैं, और आपके कैटलॉग का शब्द। दोनों एक ही उत्पाद ढूँढते हैं।",
+        "term": "किसान का शब्द (किसी भी लिपि में)",
+        "canonical": "आपके कैटलॉग का शब्द",
+        "kind": "प्रकार",
+        "k": {
+          "CROP": "फसल",
+          "PEST": "कीट",
+          "PRODUCT_TYPE": "उत्पाद प्रकार",
+          "NUTRIENT": "पोषक तत्व",
+          "OTHER": "अन्य"
+        },
+        "save": "उपनाम सहेजें",
+        "saved": "उपनाम जोड़ा गया।",
+        "on": "चालू करें",
+        "off": "बंद करें",
+        "switched": "उपनाम बदला गया।"
+      },
+      "wx": {
+        "title": "मौसम सेटअप",
+        "notSet": "तय नहीं",
+        "setLocation": "स्थान तय करें",
+        "fetch": "अभी लाएँ",
+        "fetched": "मौसम लाया गया।",
+        "locHint": "पूर्वानुमान इस बिंदु के लिए लिया जाता है। मौसम सेवा को केवल अक्षांश और देशांतर भेजे जाते हैं।",
+        "place": "स्थान का नाम",
+        "lat": "अक्षांश",
+        "lng": "देशांतर",
+        "badLatLng": "अक्षांश -90 से 90 और देशांतर -180 से 180 हो।",
+        "saveLoc": "स्थान सहेजें",
+        "saved": "सहेजा गया।",
+        "rules": "मौसम नियम",
+        "change": "बदलें",
+        "threshold": "चेतावनी सीमा",
+        "ruleOn": "नियम चालू है",
+        "saveRule": "नियम सहेजें"
+      },
+      "ask": {
+        "title": "AI से पूछें क्या दोबारा मँगाना है",
+        "hint": "यह पिछले महीनों की बिक्री, अभी का स्टॉक और पहले से ऑर्डर किया माल देखता है। डेटा कम हो तो अंदाज़ा लगाने की जगह यही बताता है।",
+        "product": "उत्पाद",
+        "branch": "शाखा",
+        "look": "देखें",
+        "done": "जाँच हुई।",
+        "nothing": "कुछ मँगाना नहीं ({{state}})।",
+        "made": "सुझाव बना: {{qty}} खरीदें।"
+      },
+      "kn": {
+        "title": "ज्ञान प्रविष्टियाँ इम्पोर्ट करें",
+        "hint": "भरा हुआ टेम्पलेट (CSV) चुनें। पहले हर लाइन जाँची जाती है और कुछ सहेजा नहीं जाता; फिर प्रविष्टियाँ ड्राफ़्ट के रूप में आती हैं जिन्हें कोई दूसरा व्यक्ति मंज़ूर करता है।",
+        "pick": "CSV फ़ाइल चुनें",
+        "checked": "फ़ाइल जाँची गई।",
+        "wrong": "{{all}} में से {{bad}} पंक्तियाँ गलत हैं। कुछ इम्पोर्ट नहीं हुआ। फ़ाइल ठीक करके फिर कोशिश करें।",
+        "line": "लाइन {{n}} ({{name}})",
+        "import": "{{count}} प्रविष्टियाँ ड्राफ़्ट के रूप में इम्पोर्ट करें",
+        "imported": "ड्राफ़्ट इम्पोर्ट हुए।"
+      },
+      "cf": {
+        "title": "आवश्यकता कारक",
+        "hint": "फसल की दो उम्र (बुवाई के बाद के दिन) के बीच एक एकड़ को किसी उत्पाद की कितनी ज़रूरत है। आपके अपने आँकड़े; कुछ माना नहीं जाता।",
+        "add": "कारक जोड़ें",
+        "crop": "फसल (फसल सूची के नाम से)",
+        "product": "उत्पाद",
+        "stage": "अवस्था",
+        "from": "बुवाई के बाद दिन से",
+        "to": "बुवाई के बाद दिन तक",
+        "units": "प्रति एकड़ उत्पाद की इकाइयाँ",
+        "save": "कारक सहेजें",
+        "saved": "कारक सहेजा गया।",
+        "change": "बदलें",
+        "remove": "हटाएँ",
+        "removed": "कारक हटाया गया।",
+        "v": {
+          "crop": "फसल का नाम लिखें।",
+          "product": "उत्पाद चुनें।",
+          "stage": "अवस्था का नाम लिखें।",
+          "days": "दिन पूरी संख्या हों और पहला दिन आखिरी से बाद न हो।",
+          "units": "0 से अधिक प्रति एकड़ इकाइयाँ लिखें।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "wp5": {
+      "cancel": "रद्द करा",
+      "sev": { "INFO": "माहिती", "WARN": "इशारा", "CRITICAL": "गंभीर" },
+      "inbox": {
+        "title": "AI इनबॉक्स ({{count}} न वाचलेले)",
+        "readAll": "सर्व वाचले म्हणून खूण करा",
+        "read": "वाचले म्हणून खूण करा",
+        "done": "झाले.",
+        "none": "अजून काही नाही. ठरलेला स्कॅन दिवसातून एकदा हे भरतो."
+      },
+      "set": {
+        "title": "AI सेटिंग्ज",
+        "enabled": "AI",
+        "enabledOn": "AI चालू आहे (बंद करणे म्हणजे किल स्विच)",
+        "on": "चालू",
+        "off": "बंद",
+        "notSet": "ठरलेले नाही",
+        "quota": "दरमहा परवानगी असलेले कॉल",
+        "margin": "विक्रीवर किमान नफा (%)",
+        "marginEdit": "विक्रीवर किमान नफा, % मध्ये (रिकामे = ठरलेले नाही)",
+        "cash": "ठेवायची रोकड (₹)",
+        "cashEdit": "ठेवायची रोकड, रुपयांमध्ये (रिकामे = ठरलेले नाही)",
+        "hours": "दुकानाची वेळ",
+        "openEdit": "दुकान उघडण्याचा तास 0-23 (रिकामे = 7)",
+        "closeEdit": "दुकान बंद होण्याचा तास 1-24 (रिकामे = 21)",
+        "change": "बदला",
+        "save": "AI सेटिंग्ज जतन करा",
+        "saved": "AI सेटिंग्ज जतन केल्या.",
+        "v": {
+          "quota": "कॉलची पूर्ण संख्या लिहा.",
+          "margin": "0 ते 100 टक्के लिहा.",
+          "cash": "2 दशांशांपर्यंत रक्कम लिहा.",
+          "open": "0 ते 23 तास लिहा.",
+          "close": "1 ते 24 तास लिहा."
+        }
+      },
+      "alias": {
+        "title": "शोध उपनावे",
+        "count": "{{defaults}} सामान्य शेती शब्द आधीच आहेत. {{own}} तुमच्या फ्रँचायझीने जोडले.",
+        "add": "उपनाव जोडा",
+        "hint": "शेतकरी उत्पादन, पीक किंवा किडीसाठी वापरतात तो शब्द आणि तुमच्या कॅटलॉगमधील शब्द. दोन्ही तीच उत्पादने शोधतात.",
+        "term": "शेतकऱ्यांचा शब्द (कोणत्याही लिपीत)",
+        "canonical": "तुमच्या कॅटलॉगमधील शब्द",
+        "kind": "प्रकार",
+        "k": {
+          "CROP": "पीक",
+          "PEST": "कीड",
+          "PRODUCT_TYPE": "उत्पादन प्रकार",
+          "NUTRIENT": "पोषक घटक",
+          "OTHER": "इतर"
+        },
+        "save": "उपनाव जतन करा",
+        "saved": "उपनाव जोडले.",
+        "on": "चालू करा",
+        "off": "बंद करा",
+        "switched": "उपनाव बदलले."
+      },
+      "wx": {
+        "title": "हवामान सेटअप",
+        "notSet": "ठरलेले नाही",
+        "setLocation": "ठिकाण ठरवा",
+        "fetch": "आत्ता आणा",
+        "fetched": "हवामान आणले.",
+        "locHint": "अंदाज या ठिकाणासाठी घेतला जातो. हवामान सेवेला फक्त अक्षांश आणि रेखांश पाठवले जातात.",
+        "place": "ठिकाणाचे नाव",
+        "lat": "अक्षांश",
+        "lng": "रेखांश",
+        "badLatLng": "अक्षांश -90 ते 90 आणि रेखांश -180 ते 180 असावा.",
+        "saveLoc": "ठिकाण जतन करा",
+        "saved": "जतन केले.",
+        "rules": "हवामान नियम",
+        "change": "बदला",
+        "threshold": "इशारा मर्यादा",
+        "ruleOn": "नियम चालू आहे",
+        "saveRule": "नियम जतन करा"
+      },
+      "ask": {
+        "title": "AI ला विचारा काय पुन्हा मागवायचे",
+        "hint": "हे मागील महिन्यांची विक्री, सध्याचा साठा आणि आधीच मागवलेला माल पाहते. डेटा कमी असल्यास अंदाज न लावता तसे सांगते.",
+        "product": "उत्पादन",
+        "branch": "शाखा",
+        "look": "पहा",
+        "done": "तपासले.",
+        "nothing": "काही मागवायचे नाही ({{state}}).",
+        "made": "शिफारस तयार: {{qty}} खरेदी करा."
+      },
+      "kn": {
+        "title": "ज्ञान नोंदी आयात करा",
+        "hint": "भरलेला टेम्पलेट (CSV) निवडा. आधी प्रत्येक ओळ तपासली जाते आणि काहीही जतन होत नाही; नंतर नोंदी मसुदा म्हणून येतात ज्यांना दुसरी व्यक्ती मंजूर करते.",
+        "pick": "CSV फाइल निवडा",
+        "checked": "फाइल तपासली.",
+        "wrong": "{{all}} पैकी {{bad}} ओळी चुकीच्या आहेत. काहीही आयात झाले नाही. फाइल दुरुस्त करून पुन्हा प्रयत्न करा.",
+        "line": "ओळ {{n}} ({{name}})",
+        "import": "{{count}} नोंदी मसुदा म्हणून आयात करा",
+        "imported": "मसुदे आयात झाले."
+      },
+      "cf": {
+        "title": "गरज घटक",
+        "hint": "पिकाच्या दोन वयांदरम्यान (पेरणीनंतरचे दिवस) एका एकराला उत्पादनाची किती गरज आहे. तुमचे स्वतःचे आकडे; काहीही गृहीत धरले जात नाही.",
+        "add": "घटक जोडा",
+        "crop": "पीक (पीक यादीतील नावाप्रमाणे)",
+        "product": "उत्पादन",
+        "stage": "अवस्था",
+        "from": "पेरणीनंतर दिवसापासून",
+        "to": "पेरणीनंतर दिवसापर्यंत",
+        "units": "प्रति एकर उत्पादनाची एकके",
+        "save": "घटक जतन करा",
+        "saved": "घटक जतन केला.",
+        "change": "बदला",
+        "remove": "काढा",
+        "removed": "घटक काढला.",
+        "v": {
+          "crop": "पिकाचे नाव लिहा.",
+          "product": "उत्पादन निवडा.",
+          "stage": "अवस्थेचे नाव लिहा.",
+          "days": "दिवस पूर्ण संख्या असावेत आणि पहिला शेवटच्या नंतर नसावा.",
+          "units": "0 पेक्षा जास्त प्रति एकर एकके लिहा."
+        }
+      }
+    }
+  }
+}

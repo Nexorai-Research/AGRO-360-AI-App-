@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CropFactors } from './Parity5';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -47,6 +48,7 @@ export default function CropMapScreen() {
       refreshControl={<RefreshControl refreshing={act.isRefetching} onRefresh={() => void act.refetch()} />}
     >
       <Text style={k.title}>{t('ai.cm.title')}</Text>
+      <CropFactors />
       <Chips
         options={[
           { value: 'map', label: t('ai.cm.tab.map') },

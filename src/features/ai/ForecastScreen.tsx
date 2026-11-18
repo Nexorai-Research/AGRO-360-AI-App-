@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AskReorder } from './Parity5';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +64,8 @@ export default function ForecastScreen() {
   const cur = branch || branches.data?.[0]?.id || '';
   const q = useQuery({
     queryKey: akey(s.userId, 'forecast', `${cur}|${weeks}|${more}`),
-    queryFn: ({ signal }) => fetchForecastTable(s.client!, { branch: cur, weeks, limit: more ? 200 : 40 }, signal),
+    queryFn: ({ signal }) =>
+      fetchForecastTable(s.client!, { branch: cur, weeks, limit: more ? 200 : 40 }, signal),
     enabled: ok && (cur !== '' || branches.isError),
     retry: retryNetworkOnce,
   });
@@ -75,6 +77,7 @@ export default function ForecastScreen() {
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
       <Text style={k.title}>{t('ai.fc.title')}</Text>
+      <AskReorder />
       {(branches.data ?? []).length > 1 ? (
         <Chips
           options={(branches.data ?? []).map((b) => ({ value: b.id, label: b.name }))}

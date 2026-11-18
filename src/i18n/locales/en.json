@@ -5839,5 +5839,129 @@
         "shared": "Role keys are small letters, digits or _, up to 20 of them."
       }
     }
+  },
+  "wp5": {
+    "cancel": "Cancel",
+    "sev": {
+      "INFO": "info",
+      "WARN": "warning",
+      "CRITICAL": "critical"
+    },
+    "inbox": {
+      "title": "AI inbox ({{count}} unread)",
+      "readAll": "Mark all read",
+      "read": "Mark read",
+      "done": "Done.",
+      "none": "Nothing yet. The scheduled scan fills this once a day."
+    },
+    "set": {
+      "title": "AI settings",
+      "enabled": "AI",
+      "enabledOn": "AI is switched on (off is the kill switch)",
+      "on": "on",
+      "off": "off",
+      "notSet": "not set",
+      "quota": "Calls allowed per month",
+      "margin": "Lowest margin on a sale (%)",
+      "marginEdit": "Lowest margin on a sale, in % (blank = not set)",
+      "cash": "Cash to keep (₹)",
+      "cashEdit": "Cash to keep, in rupees (blank = not set)",
+      "hours": "Shop hours",
+      "openEdit": "Shop opens at hour 0-23 (blank = 7)",
+      "closeEdit": "Shop closes at hour 1-24 (blank = 21)",
+      "change": "Change",
+      "save": "Save AI settings",
+      "saved": "AI settings saved.",
+      "v": {
+        "quota": "Enter a whole number of calls.",
+        "margin": "Enter a percent from 0 to 100.",
+        "cash": "Enter an amount with up to 2 decimals.",
+        "open": "Enter an hour from 0 to 23.",
+        "close": "Enter an hour from 1 to 24."
+      }
+    },
+    "alias": {
+      "title": "Search aliases",
+      "count": "{{defaults}} common farm words are built in. {{own}} added by your franchise.",
+      "add": "Add an alias",
+      "hint": "A word farmers use for a product, crop or pest, and the word your catalogue uses for it. Both find the same products.",
+      "term": "Word farmers use (any script)",
+      "canonical": "Word in your catalogue",
+      "kind": "Kind",
+      "k": {
+        "CROP": "crop",
+        "PEST": "pest",
+        "PRODUCT_TYPE": "product type",
+        "NUTRIENT": "nutrient",
+        "OTHER": "other"
+      },
+      "save": "Save alias",
+      "saved": "Alias added.",
+      "on": "Switch on",
+      "off": "Switch off",
+      "switched": "Alias switched."
+    },
+    "wx": {
+      "title": "Weather setup",
+      "notSet": "not set",
+      "setLocation": "Set location",
+      "fetch": "Fetch now",
+      "fetched": "Weather fetched.",
+      "locHint": "The forecast is taken for this point. Only the latitude and longitude are sent to the weather service.",
+      "place": "Place name",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "badLatLng": "Latitude is -90 to 90 and longitude -180 to 180.",
+      "saveLoc": "Save location",
+      "saved": "Saved.",
+      "rules": "Weather rules",
+      "change": "Change",
+      "threshold": "Alert threshold",
+      "ruleOn": "Rule is on",
+      "saveRule": "Save rule"
+    },
+    "ask": {
+      "title": "Ask the AI what to reorder",
+      "hint": "It looks at the sales of the last months, the stock now and what is already on order. If there is not enough data it says so instead of guessing.",
+      "product": "Product",
+      "branch": "Branch",
+      "look": "Look at it",
+      "done": "Checked.",
+      "nothing": "Nothing to order ({{state}}).",
+      "made": "Recommendation made: buy {{qty}}."
+    },
+    "kn": {
+      "title": "Import knowledge entries",
+      "hint": "Pick the filled template (CSV). It is checked line by line first and nothing is saved; then the entries are imported as drafts that another person must approve.",
+      "pick": "Choose the CSV file",
+      "checked": "File checked.",
+      "wrong": "{{bad}} of {{all}} rows are wrong. Nothing was imported. Fix the file and try again.",
+      "line": "Line {{n}} ({{name}})",
+      "import": "Import {{count}} entries as drafts",
+      "imported": "Drafts imported."
+    },
+    "cf": {
+      "title": "Requirement factors",
+      "hint": "How much of a product one acre of a crop needs between two ages of the crop (days after sowing). Your own figures; nothing is assumed.",
+      "add": "Add a factor",
+      "crop": "Crop (as named in the crop master)",
+      "product": "Product",
+      "stage": "Stage",
+      "from": "From day after sowing",
+      "to": "To day after sowing",
+      "units": "Units of the product per acre",
+      "save": "Save factor",
+      "saved": "Factor saved.",
+      "change": "Change",
+      "remove": "Remove",
+      "removed": "Factor removed.",
+      "v": {
+        "crop": "Name the crop.",
+        "product": "Pick a product.",
+        "stage": "Name the stage.",
+        "days": "Days are whole numbers and the first is not after the last.",
+        "units": "Enter units per acre above 0."
+      }
+    }
   }
 }
