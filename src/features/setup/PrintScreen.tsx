@@ -8,6 +8,7 @@ import { Gate, retryNetworkOnce } from '../purchase/Gate';
 import { Chips, Field, Notice, k, useActionKey } from '../purchase/ui';
 import { useSal } from '../collections/sal-hook';
 import { FLAGS, PAPERS, SP, fetchTemplates, saveTemplate, skey, type Flag, type PrintTemplate } from './api';
+import { previewTemplate } from './print-preview';
 import { NON_HIDEABLE, buildTemplate, templateErrors, templateToForm, type TemplateForm } from './logic';
 
 const nice = (d: string) => d.replace(/_/g, ' ').toLowerCase();
@@ -73,6 +74,19 @@ export default function PrintScreen() {
                 kind="ghost"
                 label={`${t('setup.edit')} ${nice(x.docType)}`}
                 onPress={() => (close(), setEdit(x), setForm(templateToForm(x)))}
+              />
+            ) : null}
+            {manage ? (
+              <Button
+                kind="ghost"
+                label={`${t('wp3.print.preview')} ${nice(x.docType)}`}
+                disabled={s.busy}
+                onPress={() =>
+                  void s.act(t('wp3.print.ready'), async () => {
+                    if ((await previewTemplate(s.client!, x.docType)) === 'noSharing')
+                      throw new Error('NO_SHARE');
+                  })
+                }
               />
             ) : null}
             {edit?.docType === x.docType && form ? (

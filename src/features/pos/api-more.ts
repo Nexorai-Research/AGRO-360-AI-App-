@@ -1,6 +1,7 @@
 import type { ApiClient } from '@/api/client';
 import type { Amount } from '@/money';
 import type { CustomerLite, InvoiceBody } from './api';
+import type { ReservationLite } from './cart';
 
 // Shapes copied by hand from the backend: apps/api/src/sales.controller.ts, modules/sales/src/application/documents.ts (InvoiceView),
 // returns.ts (refundMode), and the web screen apps/web/src/pages/sales.js. No OpenAPI file exists yet.
@@ -155,3 +156,13 @@ export async function fetchDayEnds(c: ApiClient, signal?: AbortSignal) {
 }
 export const dayEnd = (c: ApiClient, b: { branchId: string; businessDate: string }, idempotencyKey: string) =>
   c.post<unknown>('/pos/day-end', { body: b, idempotencyKey });
+
+// Web parity 1.11 (UC-082): active stock reservations, to sell reserved stock at the counter (apps/web/src/pages/sales.js useReservation).
+export const RESERVE_PERM = 'inventory.view';
+export const fetchActiveReservations = async (c: ApiClient, signal?: AbortSignal) => {
+  const r = await c.get<{ items: ReservationLite[] } | ReservationLite[]>('/inventory/reservations', {
+    query: { status: 'ACTIVE', limit: 200 },
+    signal,
+  });
+  return Array.isArray(r) ? r : (r.items ?? []);
+};

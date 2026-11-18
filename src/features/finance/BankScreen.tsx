@@ -25,6 +25,7 @@ import {
 } from './api';
 import { Button, Card, Chips, Field, Notice, Page, Result, kit, useFin, useWrite } from './kit';
 import { isDate, validAmount } from './logic';
+import { ImportStatement, LineEntry } from './BankExtras';
 
 const LINE_STATUS = ['', 'UNMATCHED', 'SUGGESTED', 'MATCHED', 'RECONCILED'] as const;
 
@@ -127,6 +128,8 @@ function Reconcile({ banks }: { banks: BankAccount[] }) {
   const [asOn, setAsOn] = useState(todayIST());
   const [balance, setBalance] = useState('');
   const [matching, setMatching] = useState<BankLine | null>(null);
+  const [entryFor, setEntryFor] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
   const [refused, setRefused] = useState('');
   const manage = can(FP.bankRec);
   const okDate = isDate(asOn);
@@ -225,9 +228,15 @@ function Reconcile({ banks }: { banks: BankAccount[] }) {
                         )
                       }
                     />
+                    <Button
+                      kind="ghost"
+                      label={t('wp3.bank.importTitle')}
+                      onPress={() => setImporting(!importing)}
+                    />
                   </View>
                 </Card>
               ) : null}
+              {importing ? <ImportStatement bankId={bank} onDone={() => setImporting(false)} /> : null}
               <Chips
                 label={t('fin.bank.lineStatus')}
                 options={LINE_STATUS.map((s) => ({ id: s, label: s ? t(`fin.bank.st_${s}`) : t('fin.all') }))}
@@ -282,8 +291,16 @@ function Reconcile({ banks }: { banks: BankAccount[] }) {
                                   onPress={() => setMatching(l)}
                                 />
                               ) : null}
+                              {l.status === 'UNMATCHED' ? (
+                                <Button
+                                  kind="ghost"
+                                  label={t('wp3.bank.entryButton', { n: l.narration })}
+                                  onPress={() => setEntryFor(entryFor === l.id ? null : l.id)}
+                                />
+                              ) : null}
                             </View>
                           ) : null}
+                          {entryFor === l.id ? <LineEntry line={l} onDone={() => setEntryFor(null)} /> : null}
                           {matching?.id === l.id ? (
                             <>
                               {candidates(rec, l).length === 0 ? (

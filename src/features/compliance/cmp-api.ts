@@ -21,6 +21,10 @@ export interface RowAction {
   versioned?: boolean;
   /** Asks "are you sure" before sending. */
   confirm?: boolean;
+  /** POST unless said otherwise (an RCM rule is switched with PATCH). */
+  method?: 'post' | 'patch';
+  /** A fixed body built from the row, instead of {} or the typed reason. */
+  body?: (row: Row) => Record<string, unknown>;
 }
 export type QueryKind = 'none' | 'period' | 'range' | 'openOnly';
 export interface TabDef {
@@ -61,8 +65,8 @@ export async function fetchRows(
 export function runRowAction(c: ApiClient, a: RowAction, row: Row, reason: string, key: string) {
   const version =
     typeof row.version === 'number' || typeof row.version === 'string' ? row.version : undefined;
-  return c.post(a.path(row), {
-    body: a.reason ? { reason: reason.trim() } : {},
+  return c[a.method ?? 'post'](a.path(row), {
+    body: a.body ? a.body(row) : a.reason ? { reason: reason.trim() } : {},
     idempotencyKey: key,
     ...(a.versioned && version !== undefined ? { version } : {}),
   });
@@ -131,3 +135,9 @@ export const freezeReturn = (
   body: Record<string, unknown>,
   key: string,
 ) => c.post(`/gst/${which}/snapshot`, { body, idempotencyKey: key });
+
+/** Web parity 3.3: the GSTR-1 file for the portal (apps/web compliance.js dl(format)). The answer carries the file as text. */
+export const fetchGstr1Export = (c: ApiClient, period: string, format: 'json' | 'csv') =>
+  c.get<{ fileName: string; mimeType: string; content: string }>('/gst/gstr1/export', {
+    query: { period, format },
+  });

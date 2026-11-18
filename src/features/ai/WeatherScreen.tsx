@@ -1,4 +1,5 @@
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import { WeatherSetup } from './Parity5';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { colors } from '@/ui/theme';
@@ -26,6 +27,7 @@ export default function WeatherScreen() {
       refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={() => void q.refetch()} />}
     >
       <Text style={k.title}>{t('ai.wx.title')}</Text>
+      <WeatherSetup />
       <Gate q={q} ns="ai" emptyKey="ai.wx.none" isEmpty={items.length === 0}>
         {q.data && !q.data.providerConfigured ? <Text style={k.sub}>{t('ai.wx.noProvider')}</Text> : null}
         {items.map((w, i) => (

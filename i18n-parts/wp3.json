@@ -1,0 +1,188 @@
+{
+  "en": {
+    "wp3": {
+      "gstr1": {
+        "json": "Download GSTR-1 (JSON)",
+        "csv": "Download GSTR-1 (CSV)",
+        "saved": "File ready to share."
+      },
+      "set": {
+        "title": "Compliance settings",
+        "hsn": "HSN digits in the summary",
+        "digits": "{{n}} digits",
+        "tolerance": "GSTR-2B match tolerance",
+        "b2c": "Large B2C invoice above",
+        "rcm": "Reverse charge",
+        "rcmOn": "Reverse charge on",
+        "tds": "TDS / TCS",
+        "on": "on",
+        "off": "off",
+        "days": "Expiry alerts (days before)",
+        "daysEdit": "Alert lead times in days (comma separated)",
+        "change": "Change",
+        "save": "Save settings",
+        "saved": "Settings saved.",
+        "v": {
+          "tolerance": "Enter an amount with up to 2 decimals.",
+          "b2c": "Enter an amount with up to 2 decimals.",
+          "days": "Alert lead times must be whole numbers of days separated by commas, for example 60,30,7."
+        }
+      },
+      "bank": {
+        "entryButton": "Record charge / interest: {{n}}",
+        "charge": "Record a bank charge",
+        "interest": "Record bank interest",
+        "entryHint": "Makes a voucher dated the statement date and matches it to this line.",
+        "expenseAccount": "Expense account",
+        "incomeAccount": "Income account",
+        "record": "Record",
+        "recorded": "Recorded and matched.",
+        "cancel": "Cancel",
+        "importTitle": "Import a bank statement",
+        "importHint": "A CSV file. Tell us the name of each column as it is in the file. The same file, or a line already imported, is never counted twice.",
+        "pick": "Choose the statement file (CSV)",
+        "readFailed": "The file could not be read.",
+        "colDate": "Date column",
+        "colNarration": "Narration column",
+        "colReference": "Reference / cheque column",
+        "colWithdrawal": "Withdrawal column",
+        "colDeposit": "Deposit column",
+        "colAmount": "Signed amount column (instead of withdrawal / deposit)",
+        "colBalance": "Balance column",
+        "mappingBad": "Give the date column and either a signed amount column or both withdrawal and deposit columns.",
+        "import": "Import",
+        "importDone": "Statement imported.",
+        "imported": "{{imported}} lines imported ({{skippedDuplicates}} already known): {{autoMatched}} matched, {{suggested}} suggested, {{unmatched}} open.",
+        "close": "Close"
+      },
+      "print": {
+        "preview": "Preview",
+        "ready": "Preview ready to share."
+      }
+    }
+  },
+  "hi": {
+    "wp3": {
+      "gstr1": {
+        "json": "GSTR-1 डाउनलोड (JSON)",
+        "csv": "GSTR-1 डाउनलोड (CSV)",
+        "saved": "फ़ाइल भेजने के लिए तैयार।"
+      },
+      "set": {
+        "title": "अनुपालन सेटिंग्स",
+        "hsn": "सारांश में HSN अंक",
+        "digits": "{{n}} अंक",
+        "tolerance": "GSTR-2B मिलान छूट",
+        "b2c": "बड़ा B2C बिल इससे ऊपर",
+        "rcm": "रिवर्स चार्ज",
+        "rcmOn": "रिवर्स चार्ज चालू",
+        "tds": "TDS / TCS",
+        "on": "चालू",
+        "off": "बंद",
+        "days": "समाप्ति सूचना (दिन पहले)",
+        "daysEdit": "सूचना कितने दिन पहले (कॉमा से अलग)",
+        "change": "बदलें",
+        "save": "सेटिंग्स सहेजें",
+        "saved": "सेटिंग्स सहेजी गईं।",
+        "v": {
+          "tolerance": "2 दशमलव तक राशि लिखें।",
+          "b2c": "2 दशमलव तक राशि लिखें।",
+          "days": "दिन पूरे अंकों में कॉमा से अलग लिखें, जैसे 60,30,7।"
+        }
+      },
+      "bank": {
+        "entryButton": "शुल्क / ब्याज दर्ज करें: {{n}}",
+        "charge": "बैंक शुल्क दर्ज करें",
+        "interest": "बैंक ब्याज दर्ज करें",
+        "entryHint": "स्टेटमेंट की तारीख का वाउचर बनता है और इस लाइन से मिल जाता है।",
+        "expenseAccount": "खर्च खाता",
+        "incomeAccount": "आय खाता",
+        "record": "दर्ज करें",
+        "recorded": "दर्ज और मिलान हो गया।",
+        "cancel": "रद्द करें",
+        "importTitle": "बैंक स्टेटमेंट इम्पोर्ट करें",
+        "importHint": "एक CSV फ़ाइल। हर कॉलम का नाम वैसा ही लिखें जैसा फ़ाइल में है। वही फ़ाइल या पहले से आई लाइन दोबारा नहीं गिनी जाती।",
+        "pick": "स्टेटमेंट फ़ाइल चुनें (CSV)",
+        "readFailed": "फ़ाइल पढ़ी नहीं जा सकी।",
+        "colDate": "तारीख कॉलम",
+        "colNarration": "विवरण कॉलम",
+        "colReference": "संदर्भ / चेक कॉलम",
+        "colWithdrawal": "निकासी कॉलम",
+        "colDeposit": "जमा कॉलम",
+        "colAmount": "+/- राशि कॉलम (निकासी / जमा की जगह)",
+        "colBalance": "शेष कॉलम",
+        "mappingBad": "तारीख कॉलम और या तो +/- राशि कॉलम या निकासी व जमा दोनों कॉलम दें।",
+        "import": "इम्पोर्ट करें",
+        "importDone": "स्टेटमेंट इम्पोर्ट हुआ।",
+        "imported": "{{imported}} लाइनें आईं ({{skippedDuplicates}} पहले से थीं): {{autoMatched}} मिलीं, {{suggested}} सुझाई गईं, {{unmatched}} खुली।",
+        "close": "बंद करें"
+      },
+      "print": {
+        "preview": "पूर्वावलोकन",
+        "ready": "पूर्वावलोकन भेजने के लिए तैयार।"
+      }
+    }
+  },
+  "mr": {
+    "wp3": {
+      "gstr1": {
+        "json": "GSTR-1 डाउनलोड (JSON)",
+        "csv": "GSTR-1 डाउनलोड (CSV)",
+        "saved": "फाइल पाठवण्यासाठी तयार."
+      },
+      "set": {
+        "title": "अनुपालन सेटिंग्ज",
+        "hsn": "सारांशात HSN अंक",
+        "digits": "{{n}} अंक",
+        "tolerance": "GSTR-2B जुळवणी सवलत",
+        "b2c": "मोठे B2C बिल यापेक्षा जास्त",
+        "rcm": "रिव्हर्स चार्ज",
+        "rcmOn": "रिव्हर्स चार्ज चालू",
+        "tds": "TDS / TCS",
+        "on": "चालू",
+        "off": "बंद",
+        "days": "मुदत सूचना (दिवस आधी)",
+        "daysEdit": "सूचना किती दिवस आधी (स्वल्पविरामाने वेगळे)",
+        "change": "बदला",
+        "save": "सेटिंग्ज जतन करा",
+        "saved": "सेटिंग्ज जतन केल्या.",
+        "v": {
+          "tolerance": "2 दशांशांपर्यंत रक्कम लिहा.",
+          "b2c": "2 दशांशांपर्यंत रक्कम लिहा.",
+          "days": "दिवस पूर्ण अंकांत स्वल्पविरामाने वेगळे लिहा, उदा. 60,30,7."
+        }
+      },
+      "bank": {
+        "entryButton": "शुल्क / व्याज नोंदवा: {{n}}",
+        "charge": "बँक शुल्क नोंदवा",
+        "interest": "बँक व्याज नोंदवा",
+        "entryHint": "स्टेटमेंटच्या तारखेचे व्हाउचर तयार होते आणि या ओळीशी जुळते.",
+        "expenseAccount": "खर्च खाते",
+        "incomeAccount": "उत्पन्न खाते",
+        "record": "नोंदवा",
+        "recorded": "नोंदवले आणि जुळवले.",
+        "cancel": "रद्द करा",
+        "importTitle": "बँक स्टेटमेंट आयात करा",
+        "importHint": "एक CSV फाइल. प्रत्येक स्तंभाचे नाव फाइलमध्ये आहे तसेच लिहा. तीच फाइल किंवा आधी आलेली ओळ पुन्हा मोजली जात नाही.",
+        "pick": "स्टेटमेंट फाइल निवडा (CSV)",
+        "readFailed": "फाइल वाचता आली नाही.",
+        "colDate": "तारीख स्तंभ",
+        "colNarration": "तपशील स्तंभ",
+        "colReference": "संदर्भ / धनादेश स्तंभ",
+        "colWithdrawal": "काढलेली रक्कम स्तंभ",
+        "colDeposit": "जमा स्तंभ",
+        "colAmount": "+/- रक्कम स्तंभ (काढलेली / जमा ऐवजी)",
+        "colBalance": "शिल्लक स्तंभ",
+        "mappingBad": "तारीख स्तंभ आणि एकतर +/- रक्कम स्तंभ किंवा काढलेली व जमा दोन्ही स्तंभ द्या.",
+        "import": "आयात करा",
+        "importDone": "स्टेटमेंट आयात झाले.",
+        "imported": "{{imported}} ओळी आल्या ({{skippedDuplicates}} आधीच होत्या): {{autoMatched}} जुळल्या, {{suggested}} सुचवल्या, {{unmatched}} उघड्या.",
+        "close": "बंद करा"
+      },
+      "print": {
+        "preview": "पूर्वावलोकन",
+        "ready": "पूर्वावलोकन पाठवण्यासाठी तयार."
+      }
+    }
+  }
+}

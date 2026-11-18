@@ -126,6 +126,17 @@ export interface SavedView {
   id: string;
   name: string;
   dataset: string;
+  /** Web parity 4.4: the owner may change or delete; a shared view is only run. */
+  mine?: boolean;
+  version?: number;
+  sharedRoles?: string[];
+  definition?: {
+    dataset: string;
+    columns: string[];
+    groupBy?: string[];
+    filters?: { field: string; op: string; value: string | number }[];
+    limit?: number;
+  };
 }
 export interface SavedRun {
   view?: { name: string };

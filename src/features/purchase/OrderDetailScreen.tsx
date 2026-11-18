@@ -119,6 +119,15 @@ export default function OrderDetailScreen() {
             {a.ownOrder ? <Notice tone="warn" text={t('purchase.anotherApprover')} /> : null}
 
             <View style={k.row}>
+              {o.status === 'DRAFT' && can(PERM.create) ? (
+                <Button
+                  kind="ghost"
+                  label={t('wp2.po.edit')}
+                  onPress={() =>
+                    router.push({ pathname: '/purchase/order-new', params: { edit: o.id } } as never)
+                  }
+                />
+              ) : null}
               {a.submit ? (
                 <Button
                   label={t('purchase.submit')}

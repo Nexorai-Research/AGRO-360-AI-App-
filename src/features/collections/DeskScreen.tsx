@@ -27,9 +27,11 @@ import {
 } from './sal-api';
 import { recoveryErrors, staffName, validReason, writeOffErrors } from './sal-logic';
 import { useSal } from './sal-hook';
+import { ADJ_PERM } from './adjust-api';
+import { AdjustmentsPanel } from './AdjustmentsPanel';
 import { humanCode } from '@/format';
 
-type Tab = 'tasks' | 'writeoffs' | 'settlements';
+type Tab = 'tasks' | 'writeoffs' | 'settlements' | 'adjustments';
 
 export default function DeskScreen() {
   const { t } = useTranslation();
@@ -43,6 +45,7 @@ export default function DeskScreen() {
           { value: 'settlements' as Tab, label: t('desk.tabSettlements') },
         ]
       : []),
+    ...(s.can(ADJ_PERM.view) ? [{ value: 'adjustments' as Tab, label: t('wp1.adj.tab') }] : []),
   ];
   const [tab, setTab] = useState<Tab | ''>('');
   const shown = (tab || tabs[0]?.value || 'tasks') as Tab;
@@ -109,7 +112,7 @@ export default function DeskScreen() {
 
   if (tabs.length === 0) return <StateView state="denied" message={t('desk.denied')} />;
 
-  const active = shown === 'tasks' ? tasks : shown === 'writeoffs' ? wo : st;
+  const active = shown === 'tasks' ? tasks : shown === 'writeoffs' ? wo : shown === 'settlements' ? st : null;
   const woErr = writeOffErrors({ customerId: customer?.id ?? '', amount, reason, evidence });
   const stErr = !customer ? ['customer'] : validReason(reason) ? [] : ['reason'];
 
@@ -251,13 +254,17 @@ export default function DeskScreen() {
       contentContainerStyle={k.page}
       keyboardShouldPersistTaps="handled"
       refreshControl={
-        <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
+        active ? (
+          <RefreshControl refreshing={active.isRefetching} onRefresh={() => void active.refetch()} />
+        ) : undefined
       }
     >
       <Text style={k.title}>{t('desk.title')}</Text>
       <Chips options={tabs} value={shown} onChange={(v) => (resetForms(), setTab(v as Tab))} />
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}
+
+      {shown === 'adjustments' ? <AdjustmentsPanel s={s} /> : null}
 
       {shown === 'tasks' ? (
         <>

@@ -31,3 +31,18 @@ export async function saveAndShare(filename: string, contentType: string, base64
   await Sharing.shareAsync(f.uri, { mimeType: contentType });
   return true;
 }
+
+/** Like saveAndShare, for a text file the server returned as text (GSTR-1 JSON or CSV). */
+export async function saveTextAndShare(
+  filename: string,
+  contentType: string,
+  text: string,
+): Promise<boolean> {
+  const safe = filename.replace(/[^A-Za-z0-9._-]/g, '_').slice(0, 100) || 'export.txt';
+  const f = new File(Paths.cache, safe);
+  f.create({ overwrite: true });
+  f.write(text);
+  if (!(await Sharing.isAvailableAsync())) return false;
+  await Sharing.shareAsync(f.uri, { mimeType: contentType });
+  return true;
+}

@@ -71,6 +71,7 @@ export interface InvoiceBody {
   wholesale?: boolean;
   lines: LineBody[];
   tenders?: TenderBody[];
+  reservationId?: string;
 }
 
 export interface PreviewTotals {

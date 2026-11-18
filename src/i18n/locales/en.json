@@ -2303,7 +2303,9 @@
       "samples": "Samples",
       "authenticity": "Authenticity",
       "evaluations": "Sale checks",
-      "rules": "Rules"
+      "rules": "Rules",
+      "itcRecon": "GSTR-2B match",
+      "rcmRules": "Reverse charge rules"
     },
     "empty": {
       "any": "Nothing to show yet.",
@@ -2311,7 +2313,9 @@
       "rcm": "No reverse-charge entries.",
       "blocks": "No blocked credit set up.",
       "alerts": "Nothing is about to expire.",
-      "snapshots": "Nothing frozen yet."
+      "snapshots": "Nothing frozen yet.",
+      "itcRecon": "Nothing to reconcile. Import GSTR-2B on the web for this month.",
+      "rcmRules": "No rules yet."
     },
     "act": {
       "removeBlock": "Remove",
@@ -2321,14 +2325,18 @@
       "restore": "Restore",
       "revoke": "Revoke",
       "acknowledge": "Acknowledge",
-      "complete": "Mark done"
+      "complete": "Mark done",
+      "switchOff": "Switch off",
+      "switchOn": "Switch on"
     },
     "ask": {
       "removeBlock": "Remove this blocked-credit rule?",
       "reverseEntry": "Reverse this reverse-charge entry?",
       "withdraw": "Withdraw this restriction. Say why.",
       "suspend": "Suspend this registration. Say why.",
-      "revoke": "Revoke this authorisation. Say why."
+      "revoke": "Revoke this authorisation. Say why.",
+      "switchOff": "Switch this reverse charge rule off?",
+      "switchOn": "Switch this reverse charge rule on?"
     },
     "v": {
       "ACTIVE": "Active",
@@ -2350,7 +2358,10 @@
       "BLOCK": "Blocked",
       "WARN": "Warning",
       "EXPIRING": "Expiring",
-      "WITHDRAWN": "Withdrawn"
+      "WITHDRAWN": "Withdrawn",
+      "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+      "SUPPLIER": "One supplier",
+      "CATEGORY": "A product category"
     },
     "f": {
       "returnType": "Return",
@@ -2448,7 +2459,16 @@
       "net": "Net",
       "before": "Before",
       "after": "After",
-      "tax": "Tax"
+      "tax": "Tax",
+      "supplierGstin": "Supplier GSTIN",
+      "invoiceNo": "Invoice",
+      "bookTax": "Books",
+      "portalTax": "Portal",
+      "difference": "Difference",
+      "note": "What to do",
+      "appliesTo": "Applies to",
+      "refName": "For",
+      "active": "Active"
     }
   },
   "cus": {
@@ -5421,5 +5441,527 @@
     "systemRoles": "System roles",
     "search": "Search permissions",
     "noMatch": "No permission matches \"{{q}}\"."
+  },
+  "wp1": {
+    "tasks": {
+      "title": "Open tasks",
+      "none": "No open tasks.",
+      "due": "Due {{date}}",
+      "overdue": "overdue",
+      "done": "Done",
+      "doneMsg": "Task marked done."
+    },
+    "cmp": {
+      "assignTitle": "Assign",
+      "noUsers": "The list of people could not be read.",
+      "assign": "Assign to the chosen person",
+      "assigned": "Assigned.",
+      "claimTitle": "Supplier claim",
+      "claimRef": "Claim reference",
+      "claimBad": "Enter a claim reference of up to 80 letters.",
+      "claim": "Raise the claim",
+      "claimed": "Claim raised. The ticket is now with the supplier."
+    },
+    "res": {
+      "button": "Reserved stock",
+      "intro": "The reserved product and quantity are put on the bill (you can change the quantity). The reservation is used up when the bill is finalized, and the rest of the stock it held goes back to available.",
+      "none": "No active reservation for this branch.",
+      "failed": "Reservations could not be read. Try again.",
+      "use": "Use reservation",
+      "until": "until {{at}}",
+      "using": "Using reservation {{number}}",
+      "drop": "Do not use it"
+    },
+    "adj": {
+      "tab": "Adjustments",
+      "intro": "A credit lowers what the customer owes (oldest dues first). A debit adds a charge. Nothing is edited later: a mistake is corrected by another adjustment. A reason is required and the entry is audited.",
+      "new": "New adjustment",
+      "none": "No adjustments yet.",
+      "branch": "Branch",
+      "kind": "Type",
+      "credit": "Credit - customer owes less",
+      "debit": "Debit - customer owes more",
+      "amount": "Amount",
+      "account": "Account on the other side",
+      "date": "Date (YYYY-MM-DD)",
+      "reason": "Reason (3 to 500 letters)",
+      "post": "Post adjustment",
+      "posted": "Adjustment posted.",
+      "postedOne": "Adjustment {{number}} posted for {{amount}}.",
+      "acc": {
+        "4030": "Discounts and loyalty (contra revenue)",
+        "4040": "Sales adjustments",
+        "4900": "Other income",
+        "4910": "Charges recovered",
+        "5050": "Expense (goodwill)"
+      },
+      "v": {
+        "customer": "Choose a customer.",
+        "branch": "Choose a branch.",
+        "amount": "Enter an amount above 0 with up to 2 decimals.",
+        "account": "Choose an account allowed for this type.",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "reason": "Give a reason of 3 to 500 letters."
+      }
+    },
+    "inputs": {
+      "title": "Inputs applied",
+      "none": "No applications recorded.",
+      "record": "Record an application",
+      "product": "Product",
+      "batch": "Batch number",
+      "qty": "Quantity",
+      "unit": "Unit",
+      "date": "Applied on (YYYY-MM-DD)",
+      "method": "Method (spray, broadcast ...)",
+      "check": "Regulated input check (licence, dose, waiting period)",
+      "saved": "Recorded.",
+      "regulated": "regulated",
+      "verified": "Verified",
+      "verify": "Verify",
+      "verifiedMsg": "Verified.",
+      "notYet": "Not verified yet",
+      "src": {
+        "REPORTED": "reported by farmer",
+        "STAFF_OBSERVED": "seen by staff"
+      },
+      "v": {
+        "product": "Name the product (up to 160 letters).",
+        "batch": "Batch number is up to 60 letters.",
+        "qty": "Enter a quantity above 0 with up to 3 decimals.",
+        "unit": "Enter a unit (up to 20 letters).",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "method": "Method is up to 60 letters.",
+        "check": "Check note is up to 300 letters."
+      }
+    },
+    "docs": {
+      "title": "KYC files",
+      "none": "No KYC document.",
+      "upload": "Upload KYC document",
+      "intro": "The file is stored encrypted; only the last 4 characters of the number are kept. Every view is logged.",
+      "number": "Document number (optional)",
+      "expires": "Expires on (YYYY-MM-DD, optional)",
+      "pick": "Choose a file (PDF / JPEG / PNG up to 2 MB)",
+      "chooseFile": "Choose a file.",
+      "tooBig": "This file is larger than 2 MB. Choose a smaller PDF, JPEG or PNG.",
+      "badType": "Only a PDF, JPEG or PNG file can be uploaded.",
+      "badDate": "Enter a real expiry date as YYYY-MM-DD.",
+      "uploadNow": "Upload",
+      "uploaded": "Uploaded.",
+      "download": "Download",
+      "noShare": "This phone cannot open or share files.",
+      "downloadFailed": "The file could not be downloaded. Try again.",
+      "remove": "Remove",
+      "removeWarn": "The file is erased.",
+      "removeNow": "Remove document",
+      "removed": "Removed.",
+      "expiresOn": "expires {{date}}",
+      "expired": "expired",
+      "type": {
+        "AADHAAR": "Aadhaar",
+        "PAN": "PAN",
+        "VOTER_ID": "Voter ID",
+        "DRIVING_LICENCE": "Driving licence",
+        "PASSPORT": "Passport",
+        "LAND_RECORD": "Land record",
+        "BANK_PASSBOOK": "Bank passbook",
+        "OTHER": "Other"
+      }
+    },
+    "points": {
+      "title": "Points history",
+      "none": "No points yet.",
+      "pts": "points"
+    },
+    "household": {
+      "title": "Household",
+      "has": "Already in household {{name}}.",
+      "name": "Household name",
+      "v": "Enter a household name (up to 120 letters).",
+      "create": "New household",
+      "created": "Household created."
+    },
+    "purchases": {
+      "title": "Purchase history",
+      "all": "All time",
+      "year": "Year",
+      "badYear": "Enter a 4 digit year.",
+      "none": "No purchases in this period.",
+      "batch": "batch {{no}}",
+      "returned": "{{qty}} returned",
+      "st": {
+        "FINALIZED": "final",
+        "CANCELLED": "cancelled",
+        "DRAFT": "draft"
+      }
+    },
+    "guar": {
+      "title": "Guarantors",
+      "none": "No guarantor recorded.",
+      "add": "Add guarantor",
+      "name": "Name",
+      "mobile": "Mobile (10 digits, starts 6-9)",
+      "relationship": "Relationship",
+      "document": "Document reference (optional)",
+      "amount": "Amount covered (optional)",
+      "added": "Guarantor added.",
+      "remove": "Remove",
+      "removed": "Guarantor removed.",
+      "covers": "covers {{amount}}",
+      "overdue": "Overdue {{amount}}",
+      "v": {
+        "name": "Enter a name of 2 to 120 letters.",
+        "mobile": "Mobile must be 10 digits starting 6-9.",
+        "relationship": "Enter the relationship (2 to 60 letters).",
+        "document": "Document reference is up to 200 letters.",
+        "amount": "Enter an amount above 0."
+      }
+    },
+    "share": {
+      "title": "Share the statement",
+      "intro": "Makes a private link that works for a limited time. It can also go to the customer on WhatsApp if they agreed to service messages.",
+      "language": "Language",
+      "customerLang": "Customer's language",
+      "days": "Link works for (days, 1 to 90)",
+      "badDays": "Enter 1 to 90 days.",
+      "send": "Send it on WhatsApp now",
+      "make": "Make the link",
+      "made": "Link made.",
+      "whatsapp": "WhatsApp: {{status}}{{reason}}.",
+      "open": "Open the link"
+    }
+  },
+  "wp2": {
+    "po": {
+      "edit": "Edit draft",
+      "editTitle": "Edit order {{number}}",
+      "notDraft": "Only a draft order can be edited. Use revise on an approved order.",
+      "saveEdit": "Save changes"
+    },
+    "assign": {
+      "button": "Assignments",
+      "hint": "One per line: CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>. The list replaces the current assignments.",
+      "lines": "Assignments",
+      "badLine": "Line {{n}} is not CUSTOMER:<id> or CUSTOMER_CATEGORY:<id>, or is given twice.",
+      "save": "Save assignments",
+      "saved": "Assignments saved."
+    },
+    "tax": {
+      "title": "Bulk tax update",
+      "hint": "Choose products by category (with sub-categories) or HSN prefix, set the new mapping from a date. Preview first.",
+      "from": "Effective from (YYYY-MM-DD)",
+      "category": "Category",
+      "anyCategory": "No category",
+      "fromHsn": "or current HSN starts with (4 to 8 digits)",
+      "newHsn": "New HSN (4, 6 or 8 digits)",
+      "newTax": "New tax category (for example GST5, EXEMPT)",
+      "confirmHsn": "HSN not in library - confirm",
+      "preview": "Preview only (no changes)",
+      "runPreview": "Preview",
+      "runNow": "Update now",
+      "previewDone": "Preview: {{matched}} matched, {{changed}} would change, {{unchanged}} unchanged.",
+      "done": "Done: {{matched}} matched, {{changed}} changed, {{unchanged}} unchanged.",
+      "v": {
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "pick": "Choose a category or an HSN prefix.",
+        "fromHsn": "The HSN prefix is 4 to 8 digits.",
+        "set": "Give a new HSN, a new tax category, or both.",
+        "hsn": "HSN must be 4, 6 or 8 digits.",
+        "tax": "Tax category is 2 to 20 capital letters, digits or _."
+      }
+    },
+    "note": {
+      "title": "Supplier notes",
+      "tabBills": "Bills",
+      "show": "Show",
+      "new": "New supplier note",
+      "empty": "No supplier notes yet.",
+      "posted": "Note posted.",
+      "intro": "Credit note: pick the bill it lowers. Debit note: leave the bill empty. Tick \"GST document\" only if the supplier issued one, and key the number, date and tax exactly as printed on it.",
+      "branch": "Branch",
+      "kind": "Type",
+      "reduction": "Credit note - we owe less",
+      "increase": "Debit note - we owe more",
+      "bill": "Bill lowered (credit note only)",
+      "due": "due {{amount}}",
+      "noBills": "No posted bill with money due for this supplier.",
+      "taxable": "Amount before tax",
+      "account": "Account",
+      "defaultAccount": "Default",
+      "acc": {
+        "5040": "Purchase variance",
+        "6030": "Expense (debit note)"
+      },
+      "gstDoc": "Backed by the supplier GST document",
+      "docNo": "Supplier document number",
+      "docDate": "Supplier document date (YYYY-MM-DD)",
+      "cgst": "CGST (as printed)",
+      "sgst": "SGST (as printed)",
+      "igst": "IGST (as printed)",
+      "date": "Date (YYYY-MM-DD)",
+      "reason": "Reason (3 to 500 letters)",
+      "post": "Post note",
+      "close": "Close",
+      "v": {
+        "supplier": "Choose a supplier.",
+        "branch": "Choose a branch.",
+        "bill": "A credit note must name the bill it lowers.",
+        "noBill": "A debit note creates its own bill; leave the bill empty.",
+        "taxable": "Enter an amount above 0 with up to 2 decimals.",
+        "account": "This account is not allowed for this type.",
+        "tax": "Tax amounts have up to 2 decimals.",
+        "taxNeedsDoc": "Tax can be entered only with the supplier GST document.",
+        "doc": "Enter the supplier document number (up to 60 letters) and a real date.",
+        "both": "A note carries IGST or CGST + SGST, not both.",
+        "date": "Enter a real date as YYYY-MM-DD.",
+        "reason": "Give a reason of 3 to 500 letters."
+      }
+    }
+  },
+  "wp3": {
+    "gstr1": {
+      "json": "Download GSTR-1 (JSON)",
+      "csv": "Download GSTR-1 (CSV)",
+      "saved": "File ready to share."
+    },
+    "set": {
+      "title": "Compliance settings",
+      "hsn": "HSN digits in the summary",
+      "digits": "{{n}} digits",
+      "tolerance": "GSTR-2B match tolerance",
+      "b2c": "Large B2C invoice above",
+      "rcm": "Reverse charge",
+      "rcmOn": "Reverse charge on",
+      "tds": "TDS / TCS",
+      "on": "on",
+      "off": "off",
+      "days": "Expiry alerts (days before)",
+      "daysEdit": "Alert lead times in days (comma separated)",
+      "change": "Change",
+      "save": "Save settings",
+      "saved": "Settings saved.",
+      "v": {
+        "tolerance": "Enter an amount with up to 2 decimals.",
+        "b2c": "Enter an amount with up to 2 decimals.",
+        "days": "Alert lead times must be whole numbers of days separated by commas, for example 60,30,7."
+      }
+    },
+    "bank": {
+      "entryButton": "Record charge / interest: {{n}}",
+      "charge": "Record a bank charge",
+      "interest": "Record bank interest",
+      "entryHint": "Makes a voucher dated the statement date and matches it to this line.",
+      "expenseAccount": "Expense account",
+      "incomeAccount": "Income account",
+      "record": "Record",
+      "recorded": "Recorded and matched.",
+      "cancel": "Cancel",
+      "importTitle": "Import a bank statement",
+      "importHint": "A CSV file. Tell us the name of each column as it is in the file. The same file, or a line already imported, is never counted twice.",
+      "pick": "Choose the statement file (CSV)",
+      "readFailed": "The file could not be read.",
+      "colDate": "Date column",
+      "colNarration": "Narration column",
+      "colReference": "Reference / cheque column",
+      "colWithdrawal": "Withdrawal column",
+      "colDeposit": "Deposit column",
+      "colAmount": "Signed amount column (instead of withdrawal / deposit)",
+      "colBalance": "Balance column",
+      "mappingBad": "Give the date column and either a signed amount column or both withdrawal and deposit columns.",
+      "import": "Import",
+      "importDone": "Statement imported.",
+      "imported": "{{imported}} lines imported ({{skippedDuplicates}} already known): {{autoMatched}} matched, {{suggested}} suggested, {{unmatched}} open.",
+      "close": "Close"
+    },
+    "print": {
+      "preview": "Preview",
+      "ready": "Preview ready to share."
+    }
+  },
+  "wp4": {
+    "cancel": "Cancel",
+    "seasons": {
+      "title": "Season months",
+      "change": "Change season months",
+      "hint": "One season per line: code, name, first month (1-12), last month (1-12). A season may run over the year end, for example Rabi: 11 to 3.",
+      "lines": "Seasons",
+      "badLine": "Line {{n}} is not \"CODE, Name, first month, last month\" (months 1 to 12, name 2 to 40 letters, each code once).",
+      "save": "Save seasons",
+      "saved": "Seasons saved."
+    },
+    "branch": {
+      "title": "Branch dashboard (today)",
+      "which": "Branch",
+      "failed": "The branch dashboard could not be read.",
+      "asOf": "{{name}}, {{date}}",
+      "byHour": "Sales by hour",
+      "top": "Today's top products"
+    },
+    "views": {
+      "new": "New custom report",
+      "newTitle": "New custom report",
+      "changeTitle": "Change custom report",
+      "intro": "Pick what to see. Nothing here is typed as a query; the server only accepts the listed fields. It always runs with your own permissions and branches.",
+      "noDatasets": "The report data list could not be read.",
+      "name": "Name (2 to 80 letters)",
+      "data": "Data",
+      "columns": "Columns",
+      "groupBy": "Add up by (optional)",
+      "by": "by",
+      "filterField": "Only rows where (field)",
+      "noFilter": "No filter",
+      "condition": "Condition",
+      "op": {
+        "eq": "equals",
+        "ne": "is not",
+        "gt": "more than",
+        "gte": "at least",
+        "lt": "less than",
+        "lte": "at most",
+        "contains": "contains"
+      },
+      "value": "Value (dates as YYYY-MM-DD)",
+      "limit": "Most rows",
+      "shared": "Share with roles (role keys, comma separated, optional)",
+      "save": "Save report",
+      "saved": "Report saved.",
+      "change": "Change",
+      "delete": "Delete",
+      "deleteSure": "Delete \"{{name}}\"? It will no longer be available.",
+      "deleteNow": "Delete report",
+      "deleted": "Report deleted.",
+      "shared_": "Shared with you",
+      "v": {
+        "name": "Give a name of 2 to 80 letters.",
+        "columns": "Pick at least one column.",
+        "limit": "Most rows is a whole number.",
+        "shared": "Role keys are small letters, digits or _, up to 20 of them."
+      }
+    }
+  },
+  "wp5": {
+    "cancel": "Cancel",
+    "sev": {
+      "INFO": "info",
+      "WARN": "warning",
+      "CRITICAL": "critical"
+    },
+    "inbox": {
+      "title": "AI inbox ({{count}} unread)",
+      "readAll": "Mark all read",
+      "read": "Mark read",
+      "done": "Done.",
+      "none": "Nothing yet. The scheduled scan fills this once a day."
+    },
+    "set": {
+      "title": "AI settings",
+      "enabled": "AI",
+      "enabledOn": "AI is switched on (off is the kill switch)",
+      "on": "on",
+      "off": "off",
+      "notSet": "not set",
+      "quota": "Calls allowed per month",
+      "margin": "Lowest margin on a sale (%)",
+      "marginEdit": "Lowest margin on a sale, in % (blank = not set)",
+      "cash": "Cash to keep (₹)",
+      "cashEdit": "Cash to keep, in rupees (blank = not set)",
+      "hours": "Shop hours",
+      "openEdit": "Shop opens at hour 0-23 (blank = 7)",
+      "closeEdit": "Shop closes at hour 1-24 (blank = 21)",
+      "change": "Change",
+      "save": "Save AI settings",
+      "saved": "AI settings saved.",
+      "v": {
+        "quota": "Enter a whole number of calls.",
+        "margin": "Enter a percent from 0 to 100.",
+        "cash": "Enter an amount with up to 2 decimals.",
+        "open": "Enter an hour from 0 to 23.",
+        "close": "Enter an hour from 1 to 24."
+      }
+    },
+    "alias": {
+      "title": "Search aliases",
+      "count": "{{defaults}} common farm words are built in. {{own}} added by your franchise.",
+      "add": "Add an alias",
+      "hint": "A word farmers use for a product, crop or pest, and the word your catalogue uses for it. Both find the same products.",
+      "term": "Word farmers use (any script)",
+      "canonical": "Word in your catalogue",
+      "kind": "Kind",
+      "k": {
+        "CROP": "crop",
+        "PEST": "pest",
+        "PRODUCT_TYPE": "product type",
+        "NUTRIENT": "nutrient",
+        "OTHER": "other"
+      },
+      "save": "Save alias",
+      "saved": "Alias added.",
+      "on": "Switch on",
+      "off": "Switch off",
+      "switched": "Alias switched."
+    },
+    "wx": {
+      "title": "Weather setup",
+      "notSet": "not set",
+      "setLocation": "Set location",
+      "fetch": "Fetch now",
+      "fetched": "Weather fetched.",
+      "locHint": "The forecast is taken for this point. Only the latitude and longitude are sent to the weather service.",
+      "place": "Place name",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "badLatLng": "Latitude is -90 to 90 and longitude -180 to 180.",
+      "saveLoc": "Save location",
+      "saved": "Saved.",
+      "rules": "Weather rules",
+      "change": "Change",
+      "threshold": "Alert threshold",
+      "ruleOn": "Rule is on",
+      "saveRule": "Save rule"
+    },
+    "ask": {
+      "title": "Ask the AI what to reorder",
+      "hint": "It looks at the sales of the last months, the stock now and what is already on order. If there is not enough data it says so instead of guessing.",
+      "product": "Product",
+      "branch": "Branch",
+      "look": "Look at it",
+      "done": "Checked.",
+      "nothing": "Nothing to order ({{state}}).",
+      "made": "Recommendation made: buy {{qty}}."
+    },
+    "kn": {
+      "title": "Import knowledge entries",
+      "hint": "Pick the filled template (CSV). It is checked line by line first and nothing is saved; then the entries are imported as drafts that another person must approve.",
+      "pick": "Choose the CSV file",
+      "checked": "File checked.",
+      "wrong": "{{bad}} of {{all}} rows are wrong. Nothing was imported. Fix the file and try again.",
+      "line": "Line {{n}} ({{name}})",
+      "import": "Import {{count}} entries as drafts",
+      "imported": "Drafts imported."
+    },
+    "cf": {
+      "title": "Requirement factors",
+      "hint": "How much of a product one acre of a crop needs between two ages of the crop (days after sowing). Your own figures; nothing is assumed.",
+      "add": "Add a factor",
+      "crop": "Crop (as named in the crop master)",
+      "product": "Product",
+      "stage": "Stage",
+      "from": "From day after sowing",
+      "to": "To day after sowing",
+      "units": "Units of the product per acre",
+      "save": "Save factor",
+      "saved": "Factor saved.",
+      "change": "Change",
+      "remove": "Remove",
+      "removed": "Factor removed.",
+      "v": {
+        "crop": "Name the crop.",
+        "product": "Pick a product.",
+        "stage": "Name the stage.",
+        "days": "Days are whole numbers and the first is not after the last.",
+        "units": "Enter units per acre above 0."
+      }
+    }
   }
 }

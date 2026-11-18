@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AiSettingsCard, AliasesCard } from './Parity5';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +40,8 @@ export default function GovernanceScreen() {
       }
     >
       <Text style={k.title}>{t('ai.gv.title')}</Text>
+      <AiSettingsCard />
+      <AliasesCard />
       <Gate q={quota} ns="ai" emptyKey="ai.gv.none" isEmpty={false}>
         {u ? (
           <View style={k.card}>

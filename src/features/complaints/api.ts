@@ -42,6 +42,7 @@ export interface Complaint {
   resolutionText: string | null;
   createdAt: string;
   version: number;
+  assigneeUserId?: string | null;
 }
 
 export interface ComplaintBody {
@@ -80,3 +81,31 @@ export const transitionComplaint = (
 ) => c.post<Complaint>(`/complaints/${x.id}/transition`, { body, version: x.version, idempotencyKey });
 export const commentComplaint = (c: ApiClient, id: string, text: string, idempotencyKey: string) =>
   c.post<unknown>(`/complaints/${id}/comments`, { body: { text }, idempotencyKey });
+
+// Web parity 1.2 (apps/web/src/pages/customers.js complaintDetail / complaintTable; modules/customer/src/domain/crm.ts parseAssign, parseClaim).
+/** A handler may assign and comment while the ticket is open, in progress or with the supplier. */
+export const WORKABLE: readonly Status[] = ['OPEN', 'IN_PROGRESS', 'ESCALATED_SUPPLIER'];
+/** A supplier claim is raised from an open or in-progress ticket and moves it to "escalated to supplier". */
+export const CLAIMABLE: readonly Status[] = ['OPEN', 'IN_PROGRESS'];
+export interface StaffUserView {
+  id: string;
+  fullName?: string | null;
+  username?: string;
+  status?: string;
+}
+export const fetchAssignees = async (c: ApiClient, signal?: AbortSignal) =>
+  (await c.get<{ items: StaffUserView[] }>('/users', { signal })).items.filter(
+    (u) => u.status !== 'DEACTIVATED',
+  );
+export const assignComplaint = (c: ApiClient, id: string, assigneeUserId: string, idempotencyKey: string) =>
+  c.post<Complaint>(`/complaints/${encodeURIComponent(id)}/assign`, {
+    body: { assigneeUserId },
+    idempotencyKey,
+  });
+/** The claim reference is 1 to 80 letters. */
+export const validClaimRef = (v: string) => v.trim().length >= 1 && v.trim().length <= 80;
+export const claimComplaint = (c: ApiClient, id: string, reference: string, idempotencyKey: string) =>
+  c.post<Complaint>(`/complaints/${encodeURIComponent(id)}/claim`, {
+    body: { reference: reference.trim() },
+    idempotencyKey,
+  });

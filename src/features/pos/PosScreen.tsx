@@ -28,9 +28,21 @@ import {
   type ProductLite,
 } from './api';
 import LineExtras from './LineExtras';
-import { PERM2, dropHeld, fetchHeld, getHeld, holdBill, key2, quickCustomer, type HeldRow } from './api-more';
+import {
+  PERM2,
+  RESERVE_PERM,
+  dropHeld,
+  fetchActiveReservations,
+  fetchHeld,
+  getHeld,
+  holdBill,
+  key2,
+  quickCustomer,
+  type HeldRow,
+} from './api-more';
 import {
   addProduct,
+  applyReservation,
   changeFor,
   checkPayment,
   createKeyKeeper,
@@ -38,8 +50,10 @@ import {
   firstCartError,
   patchLine,
   removeLine,
+  reservationStillOn,
   toInvoiceBody,
   toTenders,
+  usableReservations,
   type Cart,
   type TenderInputs,
 } from './cart';
@@ -90,6 +104,15 @@ export default function PosScreen() {
     if (!sideKey.current || sideKey.current.fp !== fp) sideKey.current = { k: newId(), fp };
     return sideKey.current.k;
   };
+
+  const canReserve = me?.permissions === undefined || me.permissions.includes(RESERVE_PERM);
+  const [resOpen, setResOpen] = useState(false);
+  const reservations = useQuery({
+    queryKey: posKey(userId, 'reservations'),
+    queryFn: ({ signal }) => fetchActiveReservations(client!, signal),
+    enabled: ready && canReserve && resOpen,
+    retry: false,
+  });
 
   const keeper = useRef(createKeyKeeper(newId));
   const sending = useRef(false);
@@ -419,6 +442,50 @@ export default function PosScreen() {
         />
         <Button kind="ghost" label={t('pos.scan')} onPress={() => setScan(true)} />
       </View>
+      {canReserve ? (
+        <Button kind="ghost" label={t('wp1.res.button')} onPress={() => setResOpen((v) => !v)} />
+      ) : null}
+      {reservationStillOn(effective) ? (
+        <View style={s.row}>
+          <Text style={s.name}>{t('wp1.res.using', { number: effective.reservation!.number })}</Text>
+          <Button
+            kind="ghost"
+            label={t('wp1.res.drop')}
+            onPress={() => (setCart({ ...cart, reservation: null }), changed())}
+          />
+        </View>
+      ) : null}
+      {resOpen ? (
+        <View style={s.card}>
+          <Text style={s.sub}>{t('wp1.res.intro')}</Text>
+          {reservations.isFetching ? <ActivityIndicator color={colors.brand} /> : null}
+          {reservations.isError ? <Text style={s.error}>{t('wp1.res.failed')}</Text> : null}
+          {reservations.data && usableReservations(reservations.data, branchId).length === 0 ? (
+            <Text style={s.sub}>{t('wp1.res.none')}</Text>
+          ) : null}
+          {usableReservations(reservations.data ?? [], branchId).map((x) => (
+            <Pressable
+              key={x.id}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('wp1.res.use')} ${x.number}`}
+              onPress={() => {
+                setCart(applyReservation(effective, x));
+                setResOpen(false);
+                changed();
+              }}
+              style={s.result}
+            >
+              <Text style={s.name}>
+                {x.number} · {x.skuName ?? x.skuCode ?? '-'} × {Number(x.qty)}
+              </Text>
+              <Text style={s.sub}>
+                {t('wp1.res.until', { at: x.expiresAt.slice(0, 16).replace('T', ' ') })}
+                {x.note ? ` · ${x.note}` : ''}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
       {products.isFetching ? <ActivityIndicator color={colors.brand} /> : null}
       {q.length >= 2 && products.data && products.data.length === 0 ? (
         <Text style={s.sub}>{t('pos.noProducts')}</Text>

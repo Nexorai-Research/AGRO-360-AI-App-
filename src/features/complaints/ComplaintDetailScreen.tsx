@@ -9,12 +9,18 @@ import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
 import { Chips, Field, Notice, k, useActionKey, useErrorText } from '../purchase/ui';
 import {
+  CLAIMABLE,
   PERM,
   RESOLUTIONS,
+  WORKABLE,
+  assignComplaint,
+  claimComplaint,
   commentComplaint,
+  fetchAssignees,
   getComplaint,
   key,
   transitionComplaint,
+  validClaimRef,
   type Status,
 } from './api';
 import { NEXT, buildTransition, needsText, transitionError } from './logic';
@@ -43,6 +49,17 @@ export default function ComplaintDetailScreen() {
     queryKey: key(userId, 'one', id),
     queryFn: ({ signal }) => getComplaint(client!, id, signal),
     enabled: ready && id !== '',
+    retry: retryNetworkOnce,
+  });
+  const assignKey = useActionKey();
+  const claimKey = useActionKey();
+  const [assignee, setAssignee] = useState<string | null>(null);
+  const [claimRef, setClaimRef] = useState('');
+  // like the web: the people list is read only for a handler of a ticket that can still be worked on
+  const users = useQuery({
+    queryKey: key(userId, 'assignees'),
+    queryFn: ({ signal }) => fetchAssignees(client!, signal),
+    enabled: ready && can(PERM.resolve) && q.data !== undefined && WORKABLE.includes(q.data.status),
     retry: retryNetworkOnce,
   });
 
@@ -171,6 +188,65 @@ export default function ComplaintDetailScreen() {
                     )
                   }
                 />
+              </View>
+            ) : null}
+
+            {can(PERM.resolve) && WORKABLE.includes(c.status) ? (
+              <View style={k.card}>
+                <Text style={k.h2}>{t('wp1.cmp.assignTitle')}</Text>
+                {users.isError ? <Text style={k.sub}>{t('wp1.cmp.noUsers')}</Text> : null}
+                {users.data ? (
+                  <Chips
+                    options={users.data.map((u) => ({
+                      value: u.id,
+                      label: u.fullName ?? u.username ?? u.id,
+                    }))}
+                    value={assignee ?? c.assigneeUserId ?? ''}
+                    onChange={setAssignee}
+                  />
+                ) : null}
+                <Button
+                  kind="ghost"
+                  label={t('wp1.cmp.assign')}
+                  disabled={busy || !assignee || assignee === c.assigneeUserId}
+                  onPress={() =>
+                    void guarded(
+                      t('wp1.cmp.assigned'),
+                      () =>
+                        assignComplaint(client!, c.id, assignee!, assignKey.keyFor(`${c.id}|${assignee}`)),
+                      () => (assignKey.reset(), setAssignee(null)),
+                    )
+                  }
+                />
+                {CLAIMABLE.includes(c.status) ? (
+                  <>
+                    <Text style={k.h2}>{t('wp1.cmp.claimTitle')}</Text>
+                    <Field
+                      label={t('wp1.cmp.claimRef')}
+                      value={claimRef}
+                      onChange={setClaimRef}
+                      error={claimRef !== '' && !validClaimRef(claimRef) ? t('wp1.cmp.claimBad') : null}
+                    />
+                    <Button
+                      kind="ghost"
+                      label={t('wp1.cmp.claim')}
+                      disabled={busy || !validClaimRef(claimRef)}
+                      onPress={() =>
+                        void guarded(
+                          t('wp1.cmp.claimed'),
+                          () =>
+                            claimComplaint(
+                              client!,
+                              c.id,
+                              claimRef,
+                              claimKey.keyFor(`${c.id}|${claimRef.trim()}`),
+                            ),
+                          () => (claimKey.reset(), setClaimRef('')),
+                        )
+                      }
+                    />
+                  </>
+                ) : null}
               </View>
             ) : null}
           </>

@@ -27,7 +27,57 @@ export interface Cart {
   lines: CartLine[];
   /** Dealer sale (UC-136): needs a customer with a GSTIN and the sales.wholesale right; the server checks both. */
   wholesale?: boolean;
+  /** UC-082: sell from stock reserved for a customer. Used up when the bill is finalized. */
+  reservation?: CartReservation | null;
 }
+export interface CartReservation {
+  id: string;
+  number: string;
+  skuId: string;
+  warehouseId: string;
+}
+export interface ReservationLite {
+  id: string;
+  number: string;
+  skuId: string;
+  skuCode?: string | null;
+  skuName?: string | null;
+  warehouseId: string;
+  branchId: string;
+  qty: string;
+  expiresAt: string;
+  note?: string | null;
+}
+/** Like the web: only this branch's reservations that have not run out. */
+export const usableReservations = (rows: ReservationLite[], branchId: string, now = Date.now()) =>
+  rows.filter((x) => x.branchId === branchId && new Date(x.expiresAt).getTime() > now);
+/** Puts the reserved product on the bill with the reserved quantity, unless that product and warehouse are already there. */
+export function applyReservation(c: Cart, r: ReservationLite): Cart {
+  const has = c.lines.some((l) => l.skuId === r.skuId && l.warehouseId === r.warehouseId);
+  const lines = has
+    ? c.lines
+    : [
+        ...c.lines,
+        {
+          skuId: r.skuId,
+          code: r.skuCode ?? '',
+          name: r.skuName ?? r.skuCode ?? r.skuId,
+          warehouseId: r.warehouseId,
+          qty: String(Number(r.qty)),
+          unitPrice: '',
+          discountPct: '',
+        },
+      ];
+  return {
+    ...c,
+    lines,
+    reservation: { id: r.id, number: r.number, skuId: r.skuId, warehouseId: r.warehouseId },
+  };
+}
+/** The reservation still applies only while its product and warehouse are on the bill. */
+export const reservationStillOn = (c: Cart) =>
+  !!c.reservation &&
+  c.lines.some((l) => l.skuId === c.reservation!.skuId && l.warehouseId === c.reservation!.warehouseId);
 
 export const emptyCart: Cart = { branchId: '', customerId: '', billDiscountPct: '', lines: [] };
 
@@ -115,6 +165,8 @@ export function toInvoiceBody(c: Cart, invoiceDate: string, tenders?: TenderBody
     lines,
   };
   if (tenders) body.tenders = tenders;
+  // like the web: only on the bill that is finalized (not the preview); the server checks it is active, unexpired and matches a line
+  if (tenders && reservationStillOn(c)) body.reservationId = c.reservation!.id;
   return body;
 }
 

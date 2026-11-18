@@ -24,6 +24,7 @@ import {
   useWrite,
   validDay,
 } from './kit';
+import { AssignmentsCard, BulkTaxCard } from './Parity2';
 
 // Catalogue masters. Paths and permissions from apps/api/src/catalogue.controller.ts and apps/web/src/pages/products.js.
 const REGULATED = ['NONE', 'FERTILIZER', 'PESTICIDE', 'SEED'] as const;
@@ -573,7 +574,7 @@ function ListLines({ x, onDone }: { x: PriceListFull; onDone: () => void }) {
 function ListDetail({ id, onBack }: { id: string; onBack: () => void }) {
   const { t, can } = useStk();
   const w = useWrite();
-  const [mode, setMode] = useState<'lines' | 'publish' | 'end' | null>(null);
+  const [mode, setMode] = useState<'lines' | 'publish' | 'end' | 'assign' | null>(null);
   const [day, setDay] = useState(today());
   const manage = can('pricing.manage');
   return (
@@ -624,6 +625,13 @@ function ListDetail({ id, onBack }: { id: string; onBack: () => void }) {
                 {x.status === 'PUBLISHED' ? (
                   <Btn kind="ghost" label={t('stkPrice.end')} onPress={() => setMode('end')} />
                 ) : null}
+                {x.status !== 'ENDED' ? (
+                  <Btn
+                    kind="ghost"
+                    label={t('wp2.assign.button')}
+                    onPress={() => setMode(mode === 'assign' ? null : 'assign')}
+                  />
+                ) : null}
                 {draft ? (
                   <Btn
                     kind="ghost"
@@ -637,6 +645,7 @@ function ListDetail({ id, onBack }: { id: string; onBack: () => void }) {
               </View>
             ) : null}
             {mode === 'lines' ? <ListLines x={x} onDone={() => setMode(null)} /> : null}
+            {mode === 'assign' ? <AssignmentsCard x={x} onDone={() => setMode(null)} /> : null}
             {mode === 'publish' || mode === 'end' ? (
               <Card>
                 <Text style={kit.sub}>
@@ -778,6 +787,7 @@ export function MissingHsnScreen() {
   const { t, can } = useStk();
   return (
     <Page title={t('stkHsn.title')} hint={t('stkHsn.hint')} allowed={can('product.view')}>
+      {can('product.tax.manage') ? <BulkTaxCard /> : null}
       <Read<{
         total: number;
         items: { id: string; code: string; name: string; categoryName: string | null }[];

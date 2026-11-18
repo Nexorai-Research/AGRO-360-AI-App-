@@ -695,3 +695,77 @@ Same limits: mocked API client, NOT run against the real backend, NOT run on a p
 | Profile card: avatar with initials, user name, readable role chips, counts, system roles kept apart | DONE (mocked auth) + checked by hand on the emulator | `__tests__/profile.test.tsx`. The name is read from the access token already on the phone (`preferred_username`, else `name`); nothing is sent or logged. When it cannot be read the card says "Your account". `franchise_admin` shows as "Franchise admin"; `offline_access`, `uma_authorization` and `default-roles-*` are listed as system roles. |
 | Permissions grouped by module (Agri, AI, Compliance ...) with counts, open one group, search across all | DONE (mocked auth) + checked by hand on the emulator | `__tests__/profile.test.tsx` and `__tests__/home.test.tsx`. On the emulator 236 permissions showed in groups; searching "audit" opened AI and showed only `ai.audit.view`. The button is hidden when the server sends no permission list. |
 | Language picker and Sign out kept on the card; sign out still clears cached numbers | DONE (mocked auth) | `__tests__/profile.test.tsx`. English, Hindi and Marathi texts written by the app team, native review still needed. Not run on a real phone. |
+
+## Web parity, phase 1: daily shop work
+
+All rows: mocked API, not run against the real backend or a phone. Paths, bodies, checks and permissions were copied from the web pages `customers.js`, `collections.js`, `sales.js` and the backend `apps/api/src/{crm,crm-admin,collections,sales,inventory}.controller.ts` with `modules/customer`, `modules/credit` (parsers). The plan is `docs/WEB-PARITY-PLAN.md`. Texts are in `i18n-parts/wp1.json` (English, Hindi, Marathi).
+
+| Feature | State | Test |
+|---|---|---|
+| 1.1 Open CRM tasks of a customer, mark done (`GET /crm/tasks?customerId&status=OPEN`, `POST /crm/tasks/:id/done`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.2 Complaint assign to a person (`POST /complaints/:id/assign`) and supplier claim with a reference of 1 to 80 letters (`POST /complaints/:id/claim`), only while the ticket can still be worked | DONE | `__tests__/wp1-ops.test.tsx` |
+| 1.3 Inputs applied: list, record (blank fields left out like the web), verify (`/customers/:id/applications`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.4 Guarantors: list, add someone who is not a customer (name, mobile 6-9 start, relationship), remove. Picking an existing customer as guarantor is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.5 KYC files: upload PDF/JPEG/PNG up to 2 MB as base64, download through the share sheet, remove after a confirm step | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.6 Loyalty points history (`GET /customers/:id/loyalty/ledger`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.7 Share the statement: language, link days 1 to 90, WhatsApp send; shows the link | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.8 New household with the customer as SELF, decision maker and payer (`POST /crm/households`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.9 Purchase history with season and year filter (`GET /customers/:id/purchases`). The web's "Reorder at the counter" button is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.10 Credit / debit adjustments: list and post, account list per type, one key per form (collections desk, Adjustments tab) | DONE | `__tests__/wp1-ops.test.tsx` |
+| 1.11 Sell reserved stock: active, unexpired reservations of the bill's branch; the reserved line goes on the bill; `reservationId` only on the finalized bill and only while that line is on it | DONE | `__tests__/wp1-ops.test.tsx` |
+
+## Web parity, phase 2: purchase and catalogue
+
+All rows: mocked API, not run against the real backend or a phone. Paths, bodies and checks copied from the web pages `purchase.js`, `products.js` and the backend `modules/procurement/src/application/adjustments.ts` (parseSupplierAdjustment), `modules/catalogue/src/domain/catalogue.ts` (parseAssignments, parseBulkTax), `modules/procurement/src/application/orders.ts` (updateOrder). Texts are in `i18n-parts/wp2.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 2.1 Supplier credit / debit notes: list and post (credit names a posted bill; debit names none; account 5040 or 6030 by type; tax only with the supplier GST document; IGST or CGST + SGST). Shown next to Purchase bills | DONE | `__tests__/wp2.test.tsx` |
+| 2.2 Edit a draft purchase order (`PATCH /procurement/purchase-orders/:id` with If-Match); "Edit draft" on the order; refused for a non-draft | DONE | `__tests__/wp2.test.tsx` |
+| 2.3 Discard a draft purchase bill | Already built before this work (`stk/PurchaseScreens.tsx` BillCard) | existing tests |
+| 2.4 Price list assignments (`PUT /price-lists/:id/assignments`, "SCOPE:id" per line like the web) | DONE | `__tests__/wp2.test.tsx` |
+| 2.5 Bulk HSN / tax update with preview (`POST /products/bulk-tax-update`) on the Products with no HSN screen | DONE | `__tests__/wp2.test.tsx` |
+
+## Web parity, phase 3: accounts, GST and settings
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `compliance.js`, `finance-ops.js`, `settings.js`, `main.js` and the backend controllers. Texts are in `i18n-parts/wp3.json` (compliance labels in `i18n-parts/cmp.json`).
+
+| Feature | State | Test |
+|---|---|---|
+| 3.1 Import a CSV bank statement with the column mapping (`POST /finance/bank-statements/import`) on the bank reconciliation screen | DONE | `__tests__/wp3.test.tsx` (mapping, path) |
+| 3.2 Record a bank charge or interest from an unmatched statement line (`POST /finance/bank-lines/:id/entry`) | DONE | `__tests__/wp3.test.tsx` |
+| 3.3 Download GSTR-1 as JSON or CSV (`GET /gst/gstr1/export`), saved and opened in the share sheet | DONE | `__tests__/wp3.test.tsx` (path) |
+| 3.4 GSTR-2B match tab (`GET /gst/itc-reconciliation`) in Tax records. Importing the GSTR-2B file (`POST /gst/gstr2b/import`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.5 Compliance settings: view and change (`GET/PUT /compliance/settings`, If-Match) | DONE | `__tests__/wp3.test.tsx` |
+| 3.6 Reverse charge rules tab with switch on / off (`PATCH /rcm/rules/:id`). Adding a rule (`POST /rcm/rules`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.7 Print template preview (`POST /settings/print-templates:preview`), shown as a PDF in the share sheet (the phone has no web view) | DONE | `__tests__/wp3.test.tsx` (path) |
+| 3.8 "Sign-in seen" sent after every successful `/me`, best effort, like the web | DONE | full suite |
+
+Note: the gap scan read the web's `api('METHOD', path)` calls. Calls made through page-local helpers (for example `post(...)` in `compliance.js`) were not read, so a few web features (such as adding an RCM rule and the GSTR-2B import) were found only while building. A second scan of those helpers is still to do.
+
+## Web parity, phase 4: reports
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `reports.js` (seasonalTab, builder, customTab, branchDashTab) and `modules/reporting/src/application/{seasons,views}.ts`. Texts are in `i18n-parts/wp4.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 4.1 Branch dashboard for today (`GET /reports/dashboard/branch?branchId`): tiles, sales by hour, top products, notes; on the Branches report | DONE | `__tests__/wp4.test.tsx` |
+| 4.2 Season months: view and change (`GET/PUT /reports/seasons`, If-Match), "CODE, Name, first, last" per line; needs `reports.financial` | DONE | `__tests__/wp4.test.tsx` |
+| 4.3 New custom report from the server's dataset list (`GET /reports/custom/datasets`, `POST /reports/views`): columns, add up by, one filter, most rows, shared roles | DONE | `__tests__/wp4.test.tsx` |
+| 4.4 Change (`PATCH /reports/views/:id`, If-Match) and delete (`DELETE`, after a confirm) of your own report; a shared one is only run | DONE | `__tests__/wp4.test.tsx` |
+
+## Web parity, phase 5: AI
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `ai.js` and `ai-analytics.js`. Owner parts need `ai.governance.manage`, like the web. Texts are in `i18n-parts/wp5.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 5.1 AI inbox: list, mark one read, mark all read (`/ai/inbox`); on the AI digest screen | DONE | `__tests__/wp5.test.tsx` |
+| 5.2 AI settings: on / off, monthly calls, margin, cash, shop hours (`GET/PUT /ai/settings`, If-Match); on AI governance | DONE | `__tests__/wp5.test.tsx` |
+| 5.3 Search aliases: counts, add, switch on / off with the version (`/ai/search/aliases`); on AI governance. The web's product search box on that tab is not repeated here | DONE | `__tests__/wp5.test.tsx` |
+| 5.4 Campaign drafts and a campaign message from the assistant (`GET /ai/campaigns/drafts`, `POST /ai/recommendations/campaign-message`) | NOT BUILT | - |
+| 5.5 Weather: branch locations, rules, fetch now (`/ai/weather/locations`, `/rules`, `/refresh`); on the weather screen | DONE | `__tests__/wp5.test.tsx` |
+| 5.6 Agro knowledge CSV import: checked first (nothing saved), then imported as drafts (`POST /ai/agro/knowledge/import`); on advisory | DONE | `__tests__/wp5.test.tsx` (logic only; the file picker is not exercised) |
+| 5.7 Crop requirement factors: list, add, change (expectedVersion), remove (`/ai/crops/factors`); on the crop map | DONE | `__tests__/wp5.test.tsx` |
+| 5.8 Ask the AI what to reorder: stock-out check first, a reorder recommendation only when it says RECOMMEND (`POST /ai/forecast/stockout`, `/ai/recommendations/reorder`); on forecast | DONE | `__tests__/wp5.test.tsx` |
+| 5.9 OCR document review before confirm (`PUT /ai/ocr/documents/:id/review`) | NOT BUILT | - |
