@@ -156,7 +156,18 @@ The method-aware scan was run again after phase 9 and every hit was checked by h
 
 Not repeated in the app: the web's streamed chat (`/assistant/chat/stream`); the app's chat calls `/assistant/chat` and gets the same answer in one piece.
 
-## Owner decisions still open (CLAUDE.md rule 10)
+## Owner decisions taken on 19 November 2026
+
+The owner answered the open questions: platform admin and observability like the web with the same permissions; usage telemetry like the web with a switch in settings to turn it off; the other 19 languages translated now and checked by native speakers later; offline billing like the web (an offline journal and sync).
+
+| Phase | Feature | Web source |
+|---|---|---|
+| 12 | Platform admin: franchises (list, open, add, suspend, reactivate, reprovision, subscription), plans, platform audit, platform dashboard; observability for the franchise and the platform (overview, one user, coaching) | `platform.js`, `observability.js`, `reports.js` |
+| 13 | Usage telemetry (`POST /observability/events`), with an off switch | `telemetry.js` |
+| 14 | Offline billing: a journal of bills made without network, sent with their Idempotency-Key when the network is back | `src/offline/*` |
+| 15 | 19 more languages: all 22 in the language picker; the web's own translations reused where the English text is the same (about 30% of the app texts); the main screens translated by hand; the rest shows English until translated. Every machine translation is marked for a native check | `src/i18n/*.js` |
+
+## Owner decisions (history)
 
 | Item | Question |
 |---|---|
