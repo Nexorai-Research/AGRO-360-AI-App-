@@ -6,6 +6,7 @@ import { StateView } from '../stock/StateView';
 import { PERM, adminKey, fetchBranches, fetchCompany, fetchPaymentModes, fetchPolicies } from './api';
 import { Card, isNetwork, k, useAccess } from './kit';
 import { maskTail } from './logic';
+import { ShopLicences } from './ShopLicences';
 
 /** View only. Every change to these settings is made on the web app. */
 export default function SettingsScreen() {
@@ -116,6 +117,8 @@ export default function SettingsScreen() {
               {line(t('settings.address'), b.address)}
             </Card>
           ))}
+
+          <ShopLicences branches={branches.data?.items ?? []} />
 
           <Text style={k.h2}>{t('settings.paymentModes')}</Text>
           {modes.error ? failed(modes) : null}

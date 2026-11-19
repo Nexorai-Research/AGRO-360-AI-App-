@@ -9,6 +9,7 @@ import { SCAN_TYPES, pickScan } from '../ai/file-g4';
 import { todayIST } from '../collections/receipt';
 import { Chips, Field, useActionKey } from '../purchase/ui';
 import { fetchHousehold } from './more-api';
+import { STATEMENT_PERM, statementPdf } from './statement-pdf';
 import { Body, Collapse, Msg, s, usePanel } from './plans-ui';
 import {
   DOC_TYPES,
@@ -683,6 +684,19 @@ function Share({ customerId }: { customerId: string }) {
           </Text>
           <Button kind="ghost" label={t('wp1.share.open')} onPress={() => void Linking.openURL(link)} />
         </View>
+      ) : null}
+      {sal.can(STATEMENT_PERM) ? (
+        <Button
+          kind="ghost"
+          label={t('wp9.st.pdf')}
+          disabled={sal.busy}
+          onPress={() =>
+            void sal.act(t('wp9.st.done'), async () => {
+              const ok = await statementPdf(sal.client!, customerId, language);
+              if (!ok) throw new Error(t('wp9.st.noSharing'));
+            })
+          }
+        />
       ) : null}
     </>
   );

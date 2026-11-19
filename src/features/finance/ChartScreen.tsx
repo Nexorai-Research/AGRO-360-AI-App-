@@ -12,14 +12,17 @@ import { StateView } from '../stock/StateView';
 import {
   FP,
   createAccount,
+  createCostCentre,
   createGroup,
   generalLedger,
   listAccounts,
   listCostCentres,
   listGroups,
   patchAccount,
+  switchCostCentre,
   type Account,
 } from './api';
+import { costCentreErrors } from './logic';
 import { Button, Card, Chips, Field, Notice, Page, Picker, Result, Tap, kit, useFin, useWrite } from './kit';
 
 const TYPES = ['ASSET', 'LIABILITY', 'EQUITY', 'INCOME', 'EXPENSE'] as const;
@@ -210,28 +213,91 @@ function AddGroup({ onBack }: { onBack: () => void }) {
 
 function CostCentres() {
   const { t } = useTranslation();
-  const { client, uid } = useFin();
+  const { client, uid, can } = useFin();
+  const w = useWrite();
+  const manage = can(FP.manage);
+  // web parity 9a.1 (apps/web/src/pages/finance.js setupTab: add, switch on / off)
+  const [f, setF] = useState<{ code: string; name: string } | null>(null);
+  const [tried, setTried] = useState(false);
+  const errs = f ? costCentreErrors(f) : [];
   return (
-    <ReadBox
-      queryKey={['fin', uid, 'cc']}
-      client={client}
-      enabled
-      load={(c, s) => listCostCentres(c, s)}
-      deniedText={t('fin.denied')}
-      offlineText={t('fin.offline')}
-    >
-      {(d) => (
-        <>
-          {d.items.length === 0 ? <StateView state="empty" message={t('fin.chart.noCostCentres')} /> : null}
-          {d.items.map((c) => (
-            <Card key={c.id}>
-              <Text style={kit.name}>{`${c.code} ${c.name}`}</Text>
-              <Text style={kit.sub}>{c.active ? t('fin.active') : t('fin.inactive')}</Text>
-            </Card>
-          ))}
-        </>
-      )}
-    </ReadBox>
+    <>
+      <Result w={w} />
+      {manage && !f ? (
+        <Button
+          kind="ghost"
+          label={t('wp9.cc.add')}
+          onPress={() => (setF({ code: '', name: '' }), setTried(false))}
+        />
+      ) : null}
+      {f ? (
+        <Card>
+          <Text style={kit.sub}>{t('wp9.cc.hint')}</Text>
+          <Field
+            label={t('wp9.cc.code')}
+            value={f.code}
+            onChange={(code) => setF({ ...f, code })}
+            error={tried && errs.includes('code') ? t('wp9.cc.v.code') : null}
+          />
+          <Field
+            label={t('wp9.cc.name')}
+            value={f.name}
+            onChange={(name) => setF({ ...f, name })}
+            error={tried && errs.includes('name') ? t('wp9.cc.v.name') : null}
+          />
+          <View style={kit.row}>
+            <Button
+              label={t('wp9.cc.save')}
+              disabled={w.busy}
+              onPress={() => {
+                setTried(true);
+                if (errs.length > 0) return;
+                const body = { code: f.code.trim().toUpperCase(), name: f.name.trim() };
+                void w.go(
+                  `cc|${JSON.stringify(body)}`,
+                  t('wp9.cc.added'),
+                  (c, k) => createCostCentre(c, k, body),
+                  () => setF(null),
+                );
+              }}
+            />
+            <Button kind="ghost" label={t('fin.cancel')} onPress={() => setF(null)} />
+          </View>
+        </Card>
+      ) : null}
+      <ReadBox
+        queryKey={['fin', uid, 'cc']}
+        client={client}
+        enabled
+        load={(c, s) => listCostCentres(c, s)}
+        deniedText={t('fin.denied')}
+        offlineText={t('fin.offline')}
+      >
+        {(d) => (
+          <>
+            {d.items.length === 0 ? <StateView state="empty" message={t('fin.chart.noCostCentres')} /> : null}
+            {d.items.map((c) => (
+              <Card key={c.id}>
+                <Text style={kit.name}>{`${c.code} ${c.name}`}</Text>
+                <Text style={kit.sub}>{c.active ? t('fin.active') : t('fin.inactive')}</Text>
+                {manage ? (
+                  <Button
+                    kind="ghost"
+                    label={c.active ? t('wp9.cc.off', { code: c.code }) : t('wp9.cc.on', { code: c.code })}
+                    disabled={w.busy}
+                    onPress={() =>
+                      void w.go(`ccswitch|${c.id}|${c.version}`, t('wp9.cc.switched'), (cl, k) =>
+                        switchCostCentre(cl, k, c),
+                      )
+                    }
+                  />
+                ) : null}
+              </Card>
+            ))}
+          </>
+        )}
+      </ReadBox>
+    </>
   );
 }
 

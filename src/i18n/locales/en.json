@@ -3911,7 +3911,7 @@
       "reopenNow": "Reopen the month",
       "locked": "Month locked.",
       "reopened": "Month reopened. This is recorded in the audit trail.",
-      "noBudgets": "No budgets yet. Create a budget on the web app.",
+      "noBudgets": "No budgets yet.",
       "lineCount": "{{count}} lines",
       "view": "View {{name}}",
       "newVersion": "New version",
@@ -6366,6 +6366,123 @@
       "missing": "Product {{code}} was not found.",
       "mrp": "MRP",
       "done": "Label sheet made."
+    }
+  },
+  "wp9": {
+    "cancel": "Cancel",
+    "v": {
+      "edit": "Edit draft",
+      "updated": "Draft voucher updated."
+    },
+    "e": {
+      "edit": "Edit draft",
+      "updated": "Draft expense updated."
+    },
+    "cc": {
+      "add": "Add cost centre",
+      "hint": "Every branch is already a cost centre. Add others, such as a delivery vehicle or a field team.",
+      "code": "Code",
+      "name": "Name",
+      "save": "Add",
+      "added": "Cost centre added.",
+      "off": "Switch off {{code}}",
+      "on": "Switch on {{code}}",
+      "switched": "Cost centre changed.",
+      "v": {
+        "code": "2-20 capital letters, digits or dashes.",
+        "name": "Write a name of 2 to 120 letters."
+      }
+    },
+    "b": {
+      "new": "New budget",
+      "title": "New budget",
+      "hint": "Enter a monthly amount for each account; it is spread over the 12 months. Edit the draft on the web for month-by-month figures.",
+      "name": "Name",
+      "year": "Financial year",
+      "noYear": "Create the financial year first.",
+      "account": "Account {{n}}",
+      "none": "(none)",
+      "monthly": "Monthly amount {{n}}",
+      "save": "Save as draft",
+      "saved": "Budget saved as a draft.",
+      "v": {
+        "name": "Write a name of 2 to 80 letters.",
+        "year": "Choose the financial year.",
+        "rows": "Choose at least one account with a monthly amount.",
+        "amount": "Each chosen account needs an amount above zero with up to 2 decimals."
+      }
+    },
+    "lt": {
+      "new": "New leave type",
+      "title": "New leave type",
+      "code": "Code",
+      "name": "Name",
+      "quota": "Days per year",
+      "paid": "Paid leave",
+      "carry": "Carry forward unused days",
+      "save": "Save",
+      "saved": "Leave type saved.",
+      "v": {
+        "code": "2-20 capital letters, digits and underscore only.",
+        "name": "Write a name of 2 to 80 letters.",
+        "quota": "Days from 0 to 366, up to 2 decimals."
+      }
+    },
+    "lic": {
+      "title": "Agro licences",
+      "hint": "Selling a regulated category needs a valid licence at the branch.",
+      "none": "No licences recorded.",
+      "edit": "Change {{no}}",
+      "add": "Add licence",
+      "addTitle": "New licence",
+      "editTitle": "Change licence {{no}}",
+      "branch": "Branch",
+      "typeLabel": "Type",
+      "type": {
+        "FERTILIZER": "Fertiliser",
+        "PESTICIDE": "Pesticide",
+        "SEED": "Seed"
+      },
+      "number": "Licence number",
+      "authority": "Issuing authority",
+      "from": "Valid from",
+      "to": "Valid to",
+      "categories": "Permitted product categories (comma separated codes)",
+      "status": "Record status",
+      "rs": {
+        "ACTIVE": "Active",
+        "REVOKED": "Revoked"
+      },
+      "save": "Save licence",
+      "added": "Licence added.",
+      "updated": "Licence updated.",
+      "v": {
+        "branch": "Choose the branch.",
+        "number": "Write the number (2 to 60 letters).",
+        "authority": "Write the authority (2 to 200 letters).",
+        "from": "A real date as YYYY-MM-DD.",
+        "to": "A real date as YYYY-MM-DD.",
+        "order": "Valid to must not be before valid from.",
+        "categories": "Write 1 to 50 category codes, comma separated."
+      }
+    },
+    "st": {
+      "pdf": "Statement as PDF",
+      "done": "Statement made.",
+      "noSharing": "Sharing is not available on this phone."
+    },
+    "grni": {
+      "tab": "Unbilled receipts",
+      "asOf": "As on {{date}}",
+      "total": "Not yet billed",
+      "books": "In the books",
+      "difference": "Difference",
+      "agrees": "The books agree with the receipts.",
+      "differs": "The books differ from the receipts. Find the document and correct it.",
+      "none": "Every receipt is billed.",
+      "accepted": "Received value",
+      "billed": "Billed",
+      "unbilled": "Unbilled"
     }
   }
 }

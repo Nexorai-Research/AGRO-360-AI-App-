@@ -19,6 +19,7 @@ import {
 } from './api';
 import { Card, Chips, Field, Gate, Notice, isNetwork, kit, useAction, useActionKey, useCan } from './kit';
 import { checkLeave, shortDate, validRejectNote, type LeaveError } from './logic';
+import { NewLeaveType } from './NewLeaveType';
 
 const ERR_KEY: Record<LeaveError, string> = {
   type: 'leave.badType',
@@ -157,6 +158,8 @@ export default function LeaveScreen() {
             <Button kind="ghost" label={t('leave.close')} onPress={() => setForm(false)} />
           </Card>
         ) : null}
+
+        <NewLeaveType />
 
         {approver ? (
           <Chips
