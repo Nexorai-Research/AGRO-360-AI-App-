@@ -26,6 +26,7 @@ export const MODULES: AppModule[] = [
     color: '#0b7a75',
     features: [
       { key: 'pos', href: '/pos', icon: '🧾' },
+      { key: 'offlineBills', href: '/offline-bills', icon: '📴' },
       { key: 'invoices', href: '/invoices', icon: '📄' },
       { key: 'shifts', href: '/shifts', icon: '⏱️' },
       { key: 'products', href: '/products', icon: '🏷️' },

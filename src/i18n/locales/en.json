@@ -619,7 +619,8 @@
     "platformFranchises": "Franchises",
     "platformPlans": "Plans",
     "platformAudit": "Platform audit",
-    "platformObservability": "Franchise usage"
+    "platformObservability": "Franchise usage",
+    "offlineBills": "Offline bills"
   },
   "pos": {
     "title": "New bill",
@@ -1995,7 +1996,8 @@
     "platformFranchises": "Add, suspend, change plan",
     "platformPlans": "Plans and their versions",
     "platformAudit": "Who did what on the platform",
-    "platformObservability": "Usage of every franchise"
+    "platformObservability": "Usage of every franchise",
+    "offlineBills": "Bills made without network, sync"
   },
   "modules": {
     "account": {
@@ -6936,5 +6938,57 @@
     "title": "Share app usage with my franchise",
     "onHint": "Sends which screens you open, how long they take and app errors, so your administrator can help. Nothing you type is sent.",
     "offHint": "Off: this phone sends no usage."
+  },
+  "wp14": {
+    "title": "Offline bills",
+    "hint": "Bills made at the counter without network are kept safely on this phone and sent when the network is back. The server books them with the same checks as an online bill.",
+    "denied": "You do not have access to offline billing.",
+    "readyTitle": "Ready to sell offline?",
+    "ready": "Yes, for {{hours}} more hours (until {{until}}).",
+    "notReady": {
+      "NOT_PREPARED": "Not yet. Tap \"Prepare for offline\" while the network is on.",
+      "EXPIRED": "The offline permission has expired. Prepare again while the network is on.",
+      "WRONG_DEVICE": "The offline permission is for another phone. Prepare again.",
+      "MALFORMED": "The offline permission could not be read. Prepare again."
+    },
+    "products": "Products kept on the phone",
+    "productsLine": "{{count}} (updated {{at}})",
+    "noProducts": "None yet",
+    "prepare": "Prepare for offline",
+    "prepared": "Ready. {{count}} products kept on this phone.",
+    "waiting": "Waiting to be sent",
+    "toReview": "For the office to review",
+    "sendNow": "Send now",
+    "stillOffline": "Still no network. They will be sent on their own when it is back.",
+    "sent": "Sent: {{applied}} booked, {{conflicts}} for review, {{rejected}} refused.",
+    "upgrade": "This app version is too old for the server. Update the app; the bills stay safe on the phone until then.",
+    "none": "No bills were saved offline.",
+    "st": {
+      "PENDING": "Waiting for network",
+      "SENDING": "Being sent",
+      "APPLIED": "Booked",
+      "CONFLICT": "For the office to review",
+      "REJECTED": "Refused"
+    },
+    "customer": "Customer",
+    "lines": "Items",
+    "estimate": "Estimate on the phone",
+    "number": "Invoice number",
+    "total": "Total booked",
+    "conflict": "The server could not book this bill as it was ({{message}}). Someone at the office reviews it; nothing more to do on the phone.",
+    "rejected": "Refused by the server: {{message}}",
+    "attempts_one": "Tried {{count}} time",
+    "attempts_other": "Tried {{count}} times",
+    "pos": {
+      "noNetwork": "No network: the server cannot price this bill now.",
+      "estimate": "Estimate: {{amount}}",
+      "noEstimate": "No estimate: a product has no price on the phone.",
+      "estimateHint": "Price x quantity less discounts, before tax. The server sets the final total when the bill is sent; a difference is reviewed at the office.",
+      "needPrice": "Type a price for every item, or choose the customer (credit), to save this bill offline.",
+      "save": "Save bill offline",
+      "saved": "Saved offline as {{number}}",
+      "estimateLine": "Estimate: {{amount}}",
+      "savedHint": "It is sent on its own when the network is back. See Offline bills for the invoice number."
+    }
   }
 }
