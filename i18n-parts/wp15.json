@@ -1,0 +1,17 @@
+{
+  "en": {
+    "wp15": {
+      "partial": "{{pct}}% of the app in this language, the rest in English. Not yet checked by a native speaker."
+    }
+  },
+  "hi": {
+    "wp15": {
+      "partial": "इस भाषा में ऐप का {{pct}}% हिस्सा, बाकी अंग्रेज़ी में। अभी मूल भाषी द्वारा जाँचा नहीं गया।"
+    }
+  },
+  "mr": {
+    "wp15": {
+      "partial": "या भाषेत अ‍ॅपचा {{pct}}% भाग, बाकी इंग्रजीत. अजून मूळ भाषकाने तपासलेले नाही."
+    }
+  }
+}

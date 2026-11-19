@@ -6990,5 +6990,8 @@
       "estimateLine": "Estimate: {{amount}}",
       "savedHint": "It is sent on its own when the network is back. See Offline bills for the invoice number."
     }
+  },
+  "wp15": {
+    "partial": "{{pct}}% of the app in this language, the rest in English. Not yet checked by a native speaker."
   }
 }
