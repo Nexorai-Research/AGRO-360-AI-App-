@@ -16,6 +16,7 @@ import {
   monthRange,
   previousMonth,
 } from './compliance-api';
+import { ShareButton, shareGstr3bCsv } from './Parity11';
 
 type Tab = 'gstr3b' | 'hsn' | 'itc';
 type Which = 'this' | 'last';
@@ -92,6 +93,7 @@ export default function ComplianceScreen() {
       >
         {tab === 'gstr3b' && g.data ? (
           <>
+            <ShareButton label={t('wp11.csv')} load={() => shareGstr3bCsv(client!, period)} />
             <Notice
               tone={g.data.matchesGstr1 ? 'ok' : 'warn'}
               text={t(g.data.matchesGstr1 ? 'compliance.matches' : 'compliance.noMatch')}

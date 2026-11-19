@@ -40,6 +40,7 @@ import { CreateForms, FormFields, TraceView } from './CmpForm';
 import { HUBS } from './cmp-tabs';
 import { ComplianceSettingsCard } from './SettingsCard';
 import { TaxTabForm } from './TaxForms';
+import { DetailButton } from '../accounts/Parity11';
 
 const MIN_REASON = 3;
 
@@ -185,6 +186,13 @@ export default function HubScreen({ hub }: { hub: string }) {
                   const v = show(t, row, c);
                   return v ? <Line key={c.k} label={label(t, c.k)} value={v} /> : null;
                 })}
+                {tab?.detail ? (
+                  <DetailButton
+                    label={t('wp11.open')}
+                    path={tab.detail.path(row)}
+                    pick={tab.detail.pick ? (x) => x[tab.detail!.pick!] : undefined}
+                  />
+                ) : null}
                 {rowActions.map((a) => (
                   <Button
                     key={a.id}

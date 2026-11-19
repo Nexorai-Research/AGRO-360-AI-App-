@@ -840,3 +840,19 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 10.6 Training texts: add and change (`POST /ai/training/items`, `PUT /ai/training/items/:id` with expectedVersion, `ai.governance.manage`); training, texts tab | DONE | `__tests__/wp10.test.tsx` |
 | 10.7 Attach evidence (kind and number) to an open risk case (`POST /ai/risks/:id/evidence`) | DONE | `__tests__/wp10.test.tsx` |
 | 10.8 Open a saved expansion scenario: its assumptions go back into the form with the result (`GET /ai/expansion/scenarios/:id`) | DONE | `__tests__/wp10.test.tsx` |
+
+## Web parity, phase 11: downloads, finance reports, details and the customer leftovers
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `finance.js` (reports tab), `collections.js`, `compliance.js`, `reports.js`, `compliance-agri.js` and `customers.js`. Shared parts are in `src/features/accounts/Parity11.tsx`. Texts are in `i18n-parts/wp11.json`. Files are handed to the share sheet; the app keeps no copy.
+
+| Feature | State | Test |
+|---|---|---|
+| 11.1 CSV of profit and loss, balance sheet, cash book, bank book (statements), day book and trial balance (accounts), general ledger (chart, ledger) - `GET /reports/<report>.csv` with the same filters | DONE | `__tests__/wp11.test.tsx` |
+| 11.1 Statements: branch filter for P&L, balance sheet and books; P&L compared with the period before (`branchId`, `compare=true`), like the web reports tab | DONE | `__tests__/wp11.test.tsx` |
+| 11.1 Two finance reports the scans missed (their paths sit in a map in the web): branch-wise profit by branch or cost centre (`GET /reports/profit-loss/by-branch`, with its CSV) and the control-account reconciliation (`GET /finance/reconciliation`) | DONE | `__tests__/wp11.test.tsx` |
+| 11.2 CSV of the receivables aging (`GET /reports/receivables/aging.csv`), of write-offs (`GET /credit/write-offs/export.csv`) and of GSTR-3B (`GET /gst/gstr3b?format=csv`, the file comes in the answer) | DONE | `__tests__/wp11.test.tsx` (GSTR-3B through its helper) |
+| 11.3 More reports as Excel (`format=xlsx`); the API client reads raw bytes (`as: 'bytes'`) | DONE | `__tests__/wp11.test.tsx` |
+| 11.4 A frozen GST return opened in full: its payload (`GET /gst/snapshots/:id`) | DONE | `__tests__/wp11.test.tsx` |
+| 11.5 A recall opened in full (`GET /compliance/recalls/:id`); like the web it shows the answer as it is | DONE | `__tests__/wp11.test.tsx` (shared detail button) |
+| 11.6 An existing customer as guarantor: search by name or mobile, the customer itself left out, sent as `guarantorCustomerId` | DONE | `__tests__/wp11.test.tsx` |
+| 11.7 Reorder at the counter from the purchase history: lines net of returns per product, cancelled bills left out; the counter opens with the customer and the quantities, and names any code not found or not for sale (`sales.pos.use`). In the web the hand-off is saved but its sales page never reads it; the app finishes it | DONE | `__tests__/wp11.test.tsx`, `__tests__/wp11-pos.test.tsx` |

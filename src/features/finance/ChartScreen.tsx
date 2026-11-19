@@ -23,6 +23,7 @@ import {
   type Account,
 } from './api';
 import { costCentreErrors } from './logic';
+import { CsvButton } from '../accounts/Parity11';
 import { Button, Card, Chips, Field, Notice, Page, Picker, Result, Tap, kit, useFin, useWrite } from './kit';
 
 const TYPES = ['ASSET', 'LIABILITY', 'EQUITY', 'INCOME', 'EXPENSE'] as const;
@@ -39,6 +40,11 @@ function Ledger({ a, onBack }: { a: Account; onBack: () => void }) {
       <Button kind="ghost" label={t('fin.back')} onPress={onBack} />
       <Text style={kit.name}>{`${a.code} ${a.name}`}</Text>
       <Text style={kit.sub}>{`${shortDate(from)} - ${shortDate(to)}`}</Text>
+      <CsvButton
+        path="/reports/general-ledger"
+        query={{ accountId: a.id, from, to }}
+        fileName={`gl-${a.code}-${to}.csv`}
+      />
       <ReadBox
         queryKey={['fin', uid, 'gl', a.id, from, to]}
         client={client}

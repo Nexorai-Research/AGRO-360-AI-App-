@@ -11,6 +11,8 @@ const snapshots: TabDef = {
   query: 'none',
   title: [{ k: 'returnType' }, { k: 'period' }],
   fields: [{ k: 'version' }, { k: 'createdAt', kind: 'date' }, { k: 'checksum' }],
+  // web parity 11.4: the frozen return opened in full (the web shows its payload)
+  detail: { path: (r) => `/gst/snapshots/${id(r)}`, pick: 'payload' },
 };
 const blocks: TabDef = {
   id: 'blocks',
@@ -249,6 +251,8 @@ const recalls: TabDef = {
   perm: 'compliance.recall.manage',
   path: '/compliance/recalls',
   query: 'none',
+  // web parity 11.5: the recall opened in full
+  detail: { path: (r) => `/compliance/recalls/${id(r)}` },
   create: [F.recallForm],
   actions: F.recallActions,
   title: [{ k: 'caseNo' }, { k: 'title' }],

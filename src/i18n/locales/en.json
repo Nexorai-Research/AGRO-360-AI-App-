@@ -1690,7 +1690,9 @@
     "receipts": "Receipts",
     "payments": "Payments",
     "closing": "Closing",
-    "negative": "The balance went below zero in this period."
+    "negative": "The balance went below zero in this period.",
+    "kind_branch": "Branch-wise profit",
+    "kind_recon": "Reconciliation"
   },
   "credit": {
     "title": "Credit limit and hold",
@@ -6625,6 +6627,54 @@
     "ex": {
       "open": "Open {{name}}",
       "opened": "Scenario opened."
+    }
+  },
+  "wp11": {
+    "shared": "File ready to share.",
+    "noSharing": "Sharing is not available on this phone.",
+    "csv": "Download CSV",
+    "xlsx": "Download Excel",
+    "branch": "Branch",
+    "allBranches": "All branches",
+    "compare": "Compare with previous period",
+    "previous": "Previous period {{from}} - {{to}}",
+    "open": "Open in full",
+    "close": "Close",
+    "br": {
+      "by": "Split by",
+      "branch": "Branch",
+      "costCentre": "Cost centre",
+      "consolidated": "Consolidated",
+      "adds": "Columns add up to the consolidated figure.",
+      "notAdds": "Columns do not add up.",
+      "netSales": "Net sales",
+      "costOfSales": "Cost of sales",
+      "grossProfit": "Gross profit",
+      "operatingExpenses": "Operating expenses",
+      "otherIncome": "Other income",
+      "netProfit": "Net profit"
+    },
+    "rc": {
+      "hint": "Each sub-ledger (customers, suppliers, stock, receipts not billed) against its control account. A difference is never plugged; find the document and correct it.",
+      "ok": "Every sub-ledger agrees with its control account.",
+      "bad": "There are differences to investigate.",
+      "sub": "Sub-ledger",
+      "books": "Books",
+      "diff": "Difference",
+      "agrees": "agrees",
+      "differs": "differs"
+    },
+    "guar": {
+      "picked": "Guarantor: {{name}} (an existing customer)",
+      "change": "Change",
+      "find": "An existing customer (type 2 letters of the name or mobile)",
+      "noHit": "No customer matches.",
+      "orNew": "Or fill in the name and mobile of someone who is not a customer."
+    },
+    "reorder": {
+      "button": "Reorder at the counter",
+      "ready": "Cart made from the purchase history. Check the quantities before billing.",
+      "missing": "Cart made. Not found or not for sale now: {{codes}}."
     }
   }
 }

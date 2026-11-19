@@ -23,8 +23,8 @@ export interface RequestOptions {
   /** One key per user action. Pass the same key again when the user retries the same action. */
   idempotencyKey?: string;
   signal?: AbortSignal;
-  /** Read the answer as text (for example the HTML of a printable invoice) instead of JSON. */
-  as?: 'text';
+  /** Read the answer as text (for example the HTML of a printable invoice), or as raw bytes (an Excel file), instead of JSON. */
+  as?: 'text' | 'bytes';
 }
 
 const isMutation = (m: Method) => m !== 'GET';
@@ -48,7 +48,7 @@ export function createClient(o: ClientOptions) {
   ) {
     const headers: Record<string, string> = {
       Authorization: `Bearer ${token}`,
-      Accept: opts.as === 'text' ? 'text/html' : 'application/json',
+      Accept: opts.as === 'text' ? 'text/html' : opts.as === 'bytes' ? '*/*' : 'application/json',
       'X-Correlation-Id': corr,
       'X-App-Version': o.appVersion,
     };
@@ -91,7 +91,8 @@ export function createClient(o: ClientOptions) {
       }
     }
     if (res.status === 204) return null as T;
-    if (opts.as === 'text') {
+    if (opts.as === 'bytes' && res.ok) return new Uint8Array(await res.arrayBuffer()) as T;
+    if (opts.as === 'text' || opts.as === 'bytes') {
       const text = await res.text();
       if (!res.ok) {
         let problem: Problem | null = null;

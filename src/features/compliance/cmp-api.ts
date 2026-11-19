@@ -140,6 +140,8 @@ export interface TabDef {
   rows?: (rows: Row[]) => Row[];
   /** A tab drawn by its own view instead of the row list. */
   view?: 'trace';
+  /** "Open" on each row reads the record in full (web parity 11.4 / 11.5); `pick` shows one part of the answer. */
+  detail?: { path: (row: Row) => string; pick?: string };
 }
 
 export async function fetchRows(

@@ -70,7 +70,24 @@ function useDebounced<T>(value: T, ms: number): T {
   return v;
 }
 
-export default function PosScreen() {
+/** Reads the reorder hand-off (web parity 11.7): `{ customerId, lines: [{ code, qty }] }`, or null when it is not that. */
+export function parseReorder(
+  s: string | undefined,
+): { customerId: string; lines: { code: string; qty: number }[] } | null {
+  if (!s) return null;
+  try {
+    const x = JSON.parse(s) as { customerId?: unknown; lines?: unknown };
+    if (typeof x.customerId !== 'string' || !Array.isArray(x.lines)) return null;
+    const lines = (x.lines as { code?: unknown; qty?: unknown }[])
+      .filter((l) => typeof l.code === 'string' && typeof l.qty === 'number' && l.qty > 0)
+      .map((l) => ({ code: l.code as string, qty: l.qty as number }));
+    return { customerId: x.customerId, lines };
+  } catch {
+    return null;
+  }
+}
+
+export default function PosScreen({ reorder }: { reorder?: string } = {}) {
   const { t } = useTranslation();
   const { me, client } = useAuth();
   const userId = me?.userId ?? '';
@@ -227,6 +244,39 @@ export default function PosScreen() {
       );
     }
   }
+
+  // web parity 11.7: a cart made from the customer's purchase history, once, when the branch and warehouses are known
+  const reorderDone = useRef(false);
+  const wh0 = whOf(branchId);
+  useEffect(() => {
+    const r = parseReorder(reorder);
+    if (reorderDone.current || !r || !client || !branchId || !wh0) return;
+    reorderDone.current = true;
+    void (async () => {
+      const c = await client
+        .get<CustomerLite>(`/customers/${encodeURIComponent(r.customerId)}`)
+        .catch(() => ({ id: r.customerId, name: t('pos.customerFallback') }));
+      let next: Cart = { ...emptyCart, branchId, customerId: c.id };
+      const missing: string[] = [];
+      for (const l of r.lines) {
+        const p = (await searchProducts(client, l.code).catch(() => [])).find(
+          (x) => x.code.toLowerCase() === l.code.toLowerCase(),
+        );
+        if (!p) {
+          missing.push(l.code);
+          continue;
+        }
+        next = addProduct(next, p, wh0);
+        const i = next.lines.findIndex((x) => x.skuId === p.id && x.warehouseId === wh0);
+        next = patchLine(next, i, { qty: String(l.qty) });
+      }
+      setCustomer(c);
+      setCart(next);
+      setNote(
+        missing.length ? t('wp11.reorder.missing', { codes: missing.join(', ') }) : t('wp11.reorder.ready'),
+      );
+    })();
+  }, [reorder, client, branchId, wh0, t]);
 
   const tenders = toTenders(tender, reference);
   const total = preview?.totals.total ?? '0.00';

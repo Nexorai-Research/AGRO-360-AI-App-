@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import { Linking, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { searchCustomers, type CustomerLite } from '../pos/api';
 import { formatINR } from '../../money';
 import { Button } from '../../ui/Button';
 import { colors } from '../../ui/theme';
@@ -12,6 +14,8 @@ import { fetchHousehold } from './more-api';
 import { STATEMENT_PERM, statementPdf } from './statement-pdf';
 import { Body, Collapse, Msg, s, usePanel } from './plans-ui';
 import {
+  REORDER_PERM,
+  reorderLines,
   DOC_TYPES,
   KYC_MAX_BYTES,
   SEASONS,
@@ -437,11 +441,12 @@ function Household({ customerId, open }: P) {
 // ---- 1.9 purchase history --------------------------------------------------------------------------------------------------
 function Purchases({ customerId, open }: P) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [season, setSeason] = useState('');
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const yearOk = /^\d{4}$/.test(year.trim());
   const f = { season, year: year.trim() };
-  const { q } = usePanel(
+  const { sal, q } = usePanel(
     open,
     `x-purchases|${season}|${season ? year.trim() : ''}`,
     customerId,
@@ -473,6 +478,18 @@ function Purchases({ customerId, open }: P) {
             <Text style={s.sub}>{t('wp1.purchases.none')}</Text>
           ) : (
             <>
+              {sal.can(REORDER_PERM) && reorderLines(rows).length > 0 ? (
+                <Button
+                  kind="ghost"
+                  label={t('wp11.reorder.button')}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/pos',
+                      params: { reorder: JSON.stringify({ customerId, lines: reorderLines(rows) }) },
+                    } as never)
+                  }
+                />
+              ) : null}
               {rows.map((x, i) => (
                 <View key={`${x.number}-${x.sku_code}-${i}`} style={s.item}>
                   <Text style={s.name}>
@@ -500,12 +517,65 @@ function Purchases({ customerId, open }: P) {
   );
 }
 
+// ---- 11.6 an existing customer as the guarantor: type 2 or more letters of the name or mobile, pick one ------------------
+function GuarantorCustomerPick({
+  selfId,
+  value,
+  onPick,
+}: {
+  selfId: string;
+  value: CustomerLite | null;
+  onPick: (c: CustomerLite | null) => void;
+}) {
+  const { t } = useTranslation();
+  const { sal } = usePanel(false, 'x-guarantor-pick', selfId);
+  const [q, setQ] = useState('');
+  const [hits, setHits] = useState<CustomerLite[] | null>(null);
+  if (value)
+    return (
+      <View style={s.item}>
+        <Text style={s.name}>{t('wp11.guar.picked', { name: value.name })}</Text>
+        <Button
+          kind="ghost"
+          label={t('wp11.guar.change')}
+          onPress={() => (onPick(null), setHits(null), setQ(''))}
+        />
+      </View>
+    );
+  return (
+    <>
+      <Field
+        label={t('wp11.guar.find')}
+        value={q}
+        onChange={(v) => {
+          setQ(v);
+          if (v.trim().length < 2) return setHits(null);
+          void searchCustomers(sal.client!, v.trim())
+            .then((r) => setHits(r.filter((c) => c.id !== selfId)))
+            .catch(() => setHits([]));
+        }}
+      />
+      {(hits ?? []).map((c) => (
+        <Button
+          key={c.id}
+          kind="ghost"
+          label={`${c.name}${c.mobile ? ` - ${c.mobile}` : ''}`}
+          onPress={() => onPick(c)}
+        />
+      ))}
+      {hits && hits.length === 0 ? <Text style={s.sub}>{t('wp11.guar.noHit')}</Text> : null}
+      <Text style={s.sub}>{t('wp11.guar.orNew')}</Text>
+    </>
+  );
+}
+
 // ---- 1.4 guarantors --------------------------------------------------------------------------------------------------------
 function Guarantors({ customerId, open }: P) {
   const { t } = useTranslation();
   const key = useActionKey();
   const [adding, setAdding] = useState(false);
   const [f, setF] = useState<GuarantorForm>(emptyGuarantor());
+  const [pickedGuarantor, setPickedGuarantor] = useState<CustomerLite | null>(null);
   const [tried, setTried] = useState(false);
   const { sal, q } = usePanel(open, 'x-guarantors', customerId, (c, sig) =>
     fetchGuarantors(c, customerId, sig),
@@ -522,7 +592,7 @@ function Guarantors({ customerId, open }: P) {
     void sal.act(
       t('wp1.guar.added'),
       () => addGuarantor(sal.client!, customerId, body, key.keyFor(JSON.stringify(body))),
-      () => (close(), setF(emptyGuarantor())),
+      () => (close(), setF(emptyGuarantor()), setPickedGuarantor(null)),
     );
   }
   return (
@@ -534,6 +604,11 @@ function Guarantors({ customerId, open }: P) {
       ) : null}
       {adding ? (
         <View style={s.card}>
+          <GuarantorCustomerPick
+            selfId={customerId}
+            value={pickedGuarantor}
+            onPick={(c) => (setPickedGuarantor(c), setF({ ...f, guarantorCustomerId: c?.id ?? '' }))}
+          />
           <Field label={t('wp1.guar.name')} value={f.name} onChange={set('name')} error={bad('name')} />
           <Field
             label={t('wp1.guar.mobile')}
