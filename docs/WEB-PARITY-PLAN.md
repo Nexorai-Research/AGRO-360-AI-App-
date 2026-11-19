@@ -125,15 +125,34 @@ The first scan read only `api('METHOD', path)`. The second scan (`endpoints2.mjs
 | 9a.5 | Printable customer statement (PDF) | `GET /customers/:id/statement.html` | `customer.ledger.view` | Customer screen |
 | 9a.6 | Goods received not invoiced report | `GET /procurement/reports/grni` | `reports.purchase` | Purchase reports |
 
-## Phase 10: AI and the earlier leftovers
+## Fourth scan (after phase 9)
+
+The method-aware scan was run again after phase 9 and every hit was checked by hand. What is left is the 15 features below (phases 10 and 11) and the owner decisions. Order of work: phase 10 then phase 11, one commit each, every feature with a test, a tracker line and texts in en / hi / mr, and the full `npm test` before each commit.
+
+## Phase 10: AI (web `ai.js`, `ai-ocr.js`, `ai-staff.js`, `ai-analytics.js`)
 
 | # | Feature | Endpoints | Permission | Where in the app |
 |---|---|---|---|---|
-| 9.1 | Run the daily AI scan now | `POST /ai/jobs/run` | `ai.governance.manage` | AI inbox |
-| 9.2 | Campaign drafts and a campaign message (was 5.4) | `GET /ai/campaigns/drafts`, `POST /ai/recommendations/campaign-message` | `ai.assistant.use` | AI marketing |
-| 9.3 | OCR review before confirm (was 5.9) | `GET /ai/ocr/documents/:id`, `PUT /ai/ocr/documents/:id/review` | `ai.assistant.use` | Bill scan |
-| 9.4 | An existing customer as guarantor | `POST /customers/:id/credit/guarantors` (customerId) | as 1.6 | Customer, guarantors |
-| 9.5 | Reorder at the counter from purchase history | as the web `customers.js` | `sales.create` | Customer, purchase history |
+| 10.1 | Agro knowledge entries: list, new entry, and the draft steps (submit, approve, reject, retire) | `GET/POST /ai/agro/knowledge`, `POST /ai/agro/knowledge/:id/:step` | `ai.governance.manage` | AI advisory |
+| 10.2 | Run the daily AI scan now (was 9.1) | `POST /ai/jobs/run` | `ai.governance.manage` | AI inbox (digest) |
+| 10.3 | Campaign drafts and a campaign message from the assistant (was 5.4) | `GET /ai/campaigns/drafts`, `POST /ai/recommendations/campaign-message` | `ai.assistant.use` | AI marketing |
+| 10.4 | Scanned documents list; review and correct a scan before confirm (was 5.9) | `GET /ai/ocr/documents`, `GET /ai/ocr/documents/:id`, `PUT /ai/ocr/documents/:id/review` | `ai.assistant.use` | Bill scan |
+| 10.5 | Shelf check history | `GET /ai/shelf-check` | as the shelf check | Shelf check |
+| 10.6 | Training items: add, change (expectedVersion) | `POST /ai/training/items`, `PUT /ai/training/items/:id` | as the web | Training |
+| 10.7 | Add evidence to a risk case | `POST /ai/risks/:id/evidence` | as the web | Risk case |
+| 10.8 | Open a saved expansion scenario | `GET /ai/expansion/scenarios/:id` | as the web | Expansion |
+
+## Phase 11: downloads, details and the customer leftovers
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 11.1 | Financial statements as CSV (trial balance, P&L, balance sheet, ledger, day / cash / bank book) | `GET /reports/<report>.csv` | `reports.financial` | Statements |
+| 11.2 | Receivables aging as CSV | `GET /reports/receivables/aging.csv` | as the aging report | Collections, aging |
+| 11.3 | Reports as Excel | `GET <report>?format=xlsx` | as each report | More reports |
+| 11.4 | A frozen GST return opened in full | `GET /gst/snapshots/:id` | `compliance.gst.view` | Tax records, frozen returns |
+| 11.5 | A recall opened in full | `GET /compliance/recalls/:id` | as recalls | Safety hub, recalls |
+| 11.6 | An existing customer as guarantor (was 9.4) | `POST /customers/:id/credit/guarantors` (customerId) | as 1.6 | Customer, guarantors |
+| 11.7 | Reorder at the counter from purchase history (was 9.5) | as the web `customers.js` | `sales.create` | Customer, purchase history |
 
 Not repeated in the app: the web's streamed chat (`/assistant/chat/stream`); the app's chat calls `/assistant/chat` and gets the same answer in one piece.
 

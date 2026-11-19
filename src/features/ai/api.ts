@@ -748,7 +748,11 @@ export interface ReportAnswer {
   /** Opaque: sent back as `previous` so a short follow-up changes this report. */
   memory: unknown;
   summary: { title: string; paragraphs: string[]; figures?: unknown } | null;
-  table: { groupBy: string; rows: { label: string; value: number; sharePct: number | null }[]; truncated: boolean } | null;
+  table: {
+    groupBy: string;
+    rows: { label: string; value: number; sharePct: number | null }[];
+    truncated: boolean;
+  } | null;
   saved?: { id: string } | null;
 }
 export interface ReportAsk {
@@ -778,15 +782,28 @@ export interface StoredStrategy {
     notice: string;
     findings: StrategyFinding[];
     targets: { name: string; value: number; unit: 'rupees' | 'percent'; formula: string }[];
-    roadmap: { focus: { area: string; why: string }[]; milestones: { month: number; salesTarget: number }[] } | null;
+    roadmap: {
+      focus: { area: string; why: string }[];
+      milestones: { month: number; salesTarget: number }[];
+    } | null;
     notAvailable: string[];
   };
 }
 export const AI_STRATEGY = 'reports.financial';
 export const fetchStrategies = async (c: ApiClient, signal?: AbortSignal) =>
   (await c.get<{ items: StoredStrategy[] }>('/ai/strategy', { signal })).items;
-export const generateStrategy = (c: ApiClient, body: { kind: 'MONTHLY' | 'QUARTERLY'; branch?: string }, idempotencyKey: string) =>
-  c.post<{ state: string; reason: string | null; kept?: boolean; note?: string | null; strategy: StoredStrategy | null }>('/ai/strategy/generate', {
+export const generateStrategy = (
+  c: ApiClient,
+  body: { kind: 'MONTHLY' | 'QUARTERLY'; branch?: string },
+  idempotencyKey: string,
+) =>
+  c.post<{
+    state: string;
+    reason: string | null;
+    kept?: boolean;
+    note?: string | null;
+    strategy: StoredStrategy | null;
+  }>('/ai/strategy/generate', {
     body,
     idempotencyKey,
   });
@@ -801,7 +818,14 @@ export interface HealthScore {
   score: number | null;
   complete: boolean;
   asOf: string;
-  components: { name?: string; label?: string; points?: number; max?: number; explanation?: string; reason?: string | null }[];
+  components: {
+    name?: string;
+    label?: string;
+    points?: number;
+    max?: number;
+    explanation?: string;
+    reason?: string | null;
+  }[];
 }
 export const fetchHealth = (c: ApiClient, branch: string, signal?: AbortSignal) =>
   c.get<HealthScore>('/ai/health-score', { query: { branch: branch || undefined }, signal });

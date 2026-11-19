@@ -825,3 +825,18 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 9a.4 Agro licences of the branches: list, add, change with the version and record status (`GET/POST /licences`, `PATCH /licences/:id`, change with `org.licence.manage`); settings screen | DONE | `__tests__/wp9.test.tsx` |
 | 9a.5 Customer statement as a PDF (`GET /customers/:id/statement.html` in the chosen language, made into a PDF and shared; `customer.ledger.view`); customer 360, share panel | DONE | `__tests__/wp9.test.tsx` |
 | 9a.6 Unbilled receipts (GRNI): value received, billed, unbilled per receipt and whether the books agree (`GET /procurement/reports/grni`, `reports.purchase`); purchase reports | DONE | `__tests__/wp9.test.tsx` |
+
+## Web parity, phase 10: AI
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `ai.js` (knowledge review, inbox, messages, risks), `ai-ocr.js`, `ai-staff.js` (training, shelf check) and `ai-analytics.js` (expansion). Components are in `src/features/ai/Parity10.tsx`. Texts are in `i18n-parts/wp10.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 10.1 Agro knowledge entries: list (all statuses for an owner), new entry (kind, crop, names, stage, season, symptoms, texts, ingredients, dose, source and reference), and the steps by status: submit, approve, reject or retire with a reason (`GET/POST /ai/agro/knowledge`, `POST /ai/agro/knowledge/:id/:step`, `ai.governance.manage`); AI advisory | DONE | `__tests__/wp10.test.tsx` |
+| 10.2 Run the daily AI scan now, with what ran or why it was skipped (`POST /ai/jobs/run`, `ai.governance.manage`); AI inbox | DONE | `__tests__/wp10.test.tsx` |
+| 10.3 A prepared marketing text saved as a campaign message proposal for an approved campaign (`GET /ai/campaigns/drafts?status=APPROVED`, `POST /ai/recommendations/campaign-message`, needs `customer.view` and `crm.greeting.manage`); nothing is sent | DONE | `__tests__/wp10.test.tsx` |
+| 10.4 Scanned documents list per kind; open one; correct the fields and bill lines (only changes are sent, `PUT /ai/ocr/documents/:id/review` with expectedVersion); for a supplier bill choose the supplier and the receipt line of each line and create the DRAFT bill (`POST /ai/ocr/documents/:id/confirm`); bill scan and label scan | DONE | `__tests__/wp10.test.tsx` |
+| 10.5 Shelf check history with the number of differences; tap one to show it again (`GET /ai/shelf-check`) | DONE | `__tests__/wp10.test.tsx` |
+| 10.6 Training texts: add and change (`POST /ai/training/items`, `PUT /ai/training/items/:id` with expectedVersion, `ai.governance.manage`); training, texts tab | DONE | `__tests__/wp10.test.tsx` |
+| 10.7 Attach evidence (kind and number) to an open risk case (`POST /ai/risks/:id/evidence`) | DONE | `__tests__/wp10.test.tsx` |
+| 10.8 Open a saved expansion scenario: its assumptions go back into the form with the result (`GET /ai/expansion/scenarios/:id`) | DONE | `__tests__/wp10.test.tsx` |

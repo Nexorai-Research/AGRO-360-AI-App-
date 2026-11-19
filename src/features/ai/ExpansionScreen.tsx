@@ -11,6 +11,7 @@ import { useSal } from '../collections/sal-hook';
 import { AP, akey } from './api';
 import {
   deleteExpansion,
+  fetchExpansion,
   fetchExpansions,
   saveExpansion,
   simulateExpansion,
@@ -56,6 +57,16 @@ export function parseForm(f: {
     },
   };
 }
+
+/** The other way round: saved assumptions back into the form (web parity 10.8). */
+export const inputsToForm = (i: ExpansionInputs) => ({
+  investment: String(i.investment),
+  fixed: String(i.monthlyFixedCost),
+  sales: String(i.matureMonthlySales),
+  ramp: i.rampPct.join(','),
+  margin: i.grossMarginPct === undefined || i.grossMarginPct === null ? '' : String(i.grossMarginPct),
+  wc: String(i.workingCapitalDays),
+});
 
 const month = (t: TFunction, m: number | null) =>
   m === null ? t('ai.ex2.never') : t('ai.ex2.month', { n: m });
@@ -111,6 +122,15 @@ export default function ExpansionScreen() {
         void qc.invalidateQueries({ queryKey: akey(s.userId, 'expansions') })
       ),
     );
+  }
+  /** Web parity 10.8: a saved scenario is opened with its assumptions and its result (GET /ai/expansion/scenarios/:id). */
+  function openSaved(id: string) {
+    void s.act(t('wp10.ex.opened'), async () => {
+      const x = await fetchExpansion(s.client!, id);
+      setF(inputsToForm(x.inputs));
+      setRes(x.result ?? null);
+      setTried(false);
+    });
   }
   function remove(id: string) {
     void s.act(
@@ -189,6 +209,12 @@ export default function ExpansionScreen() {
           {x.result ? (
             <Text style={k.sub}>{t('ai.ex2.payback', { m: month(t, x.result.base.paybackMonth) })}</Text>
           ) : null}
+          <Button
+            kind="ghost"
+            label={t('wp10.ex.open', { name: x.name })}
+            disabled={s.busy}
+            onPress={() => openSaved(x.id)}
+          />
           <Button kind="ghost" label={t('ai.ex2.delete')} disabled={s.busy} onPress={() => remove(x.id)} />
         </View>
       ))}

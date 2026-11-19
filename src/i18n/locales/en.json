@@ -6484,5 +6484,147 @@
       "billed": "Billed",
       "unbilled": "Unbilled"
     }
+  },
+  "wp10": {
+    "cancel": "Cancel",
+    "scan": {
+      "run": "Run the daily scan now",
+      "skipped": "Skipped: {{why}}",
+      "ran_one": "Done: {{count}} job ran.",
+      "ran_other": "Done: {{count}} jobs ran."
+    },
+    "kn": {
+      "title": "Knowledge review",
+      "hint": "An entry is approved by someone other than its author. Only approved entries are ever shown to staff. Copy from a published source (ICAR, state agricultural university, KVK, CIB&RC label).",
+      "new": "New entry",
+      "kind": "Kind",
+      "season": "Season",
+      "anySeason": "Any",
+      "k": {
+        "PEST": "Pest",
+        "DISEASE": "Disease",
+        "DEFICIENCY": "Deficiency",
+        "WEED": "Weed",
+        "SOWING": "Sowing",
+        "NUTRIENT": "Nutrient",
+        "IRRIGATION": "Irrigation"
+      },
+      "s": {
+        "KHARIF": "Kharif",
+        "RABI": "Rabi",
+        "ZAID": "Zaid"
+      },
+      "f": {
+        "crop": "Crop *",
+        "nameEn": "Name (English) *",
+        "nameHi": "Name (Hindi)",
+        "nameMr": "Name (Marathi)",
+        "stage": "Stage",
+        "symptoms": "Symptoms (one per line; problems only)",
+        "summary": "Text (sowing window, nutrient schedule, irrigation)",
+        "cultural": "Cultural control",
+        "biological": "Biological control",
+        "chemical": "Chemical control",
+        "ingredients": "Recommended active ingredients (one per line)",
+        "doseText": "Dose text, only if the source states it",
+        "sourceRef": "Source reference (title, edition, page) *"
+      },
+      "required": "Fill this in.",
+      "source": "Source",
+      "save": "Save as draft",
+      "saved": "Entry saved as a draft.",
+      "none": "No entries yet. Production starts empty.",
+      "st": {
+        "DRAFT": "draft",
+        "SUBMITTED": "submitted",
+        "APPROVED": "approved",
+        "REJECTED": "rejected",
+        "RETIRED": "retired"
+      },
+      "step": {
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "retire": "Retire"
+      },
+      "done": {
+        "submit": "Submitted.",
+        "approve": "Approved.",
+        "reject": "Rejected.",
+        "retire": "Retired."
+      },
+      "reason": "Reason"
+    },
+    "cm": {
+      "title": "Save as a campaign message",
+      "none": "No approved campaign yet. Approve one in Recommendations first.",
+      "campaign": "Approved campaign",
+      "save": "Save as a proposal",
+      "saved": "Saved as a proposal. A person approves it in Recommendations; nothing is sent.",
+      "note": "Customers without consent are left out when a person queues the message."
+    },
+    "ev": {
+      "kind": "What kind",
+      "k": {
+        "INVOICE": "Invoice",
+        "PURCHASE_BILL": "Purchase bill",
+        "STOCK_MOVEMENT": "Stock movement",
+        "RECEIPT": "Receipt",
+        "CUSTOMER": "Customer",
+        "PRODUCT": "Product",
+        "DOCUMENT": "Document",
+        "OTHER": "Other"
+      },
+      "ref": "Number or id",
+      "add": "Attach evidence",
+      "added": "Evidence attached."
+    },
+    "tr": {
+      "required": "Fill this in (text up to 20,000 letters).",
+      "editTitle": "Change {{title}}",
+      "addTitle": "Add training text",
+      "hint": "Franchise-owned text only (SOPs, product handling, safety). Answers quote it word for word; a change raises the version.",
+      "title": "Title",
+      "source": "Source (document and section)",
+      "category": "Category",
+      "body": "Text",
+      "save": "Save",
+      "saved": "Training text saved.",
+      "add": "Add text",
+      "edit": "Change {{title}}"
+    },
+    "ocr": {
+      "recent": "Recent documents",
+      "none": "No documents read yet.",
+      "toCheck_one": "{{count}} to check",
+      "toCheck_other": "{{count}} to check",
+      "clean": "clean",
+      "review": "Review {{name}}",
+      "view": "View {{name}}",
+      "opened": "Document opened.",
+      "correct": "Correct what was read",
+      "grnLine": "Receipt line for line {{n}}",
+      "left": "{{qty}} left",
+      "matched": "Matched by GSTIN: {{name}}.",
+      "noSupplier": "No supplier matched the GSTIN. Choose one.",
+      "supplier": "Supplier",
+      "duplicateBill": "A bill with this invoice number is already entered for this supplier.",
+      "saved": "Corrections saved.",
+      "save": "Save corrections",
+      "createBill": "Create draft bill",
+      "billMade": "Draft bill created. Post it in Purchases.",
+      "billNote": "Match each invoice line to the goods receipt it is for. The bill is saved as a DRAFT; you post it in Purchases."
+    },
+    "sh": {
+      "recent": "Recent checks",
+      "none": "No shelf checks yet.",
+      "line": "{{when}} · {{products}} products · {{diff}} differences",
+      "countOpened": "stock count opened",
+      "show": "Show {{when}}"
+    },
+    "ex": {
+      "open": "Open {{name}}",
+      "opened": "Scenario opened."
+    }
   }
 }
