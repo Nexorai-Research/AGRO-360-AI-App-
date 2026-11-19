@@ -105,13 +105,27 @@ The first scan read only `api('METHOD', path)`. The second scan (`endpoints2.mjs
 
 | # | Feature | Endpoints | Permission | Where in the app |
 |---|---|---|---|---|
-| 8.1 | Regulatory report templates: list, add, new version, make a report | `GET/POST /compliance/report-templates`, `POST .../:id/versions`, `POST .../:id/generate` | `compliance.reports.manage` | Licences hub |
-| 8.2 | Who is hit by a restricted ingredient | `GET /compliance/restricted-ingredients/impact` | `compliance.registers.view` | Licences hub, restricted tab |
-| 8.3 | Batch trace (supplier to customer) | `GET /compliance/trace` | `compliance.trace.view` | Safety hub |
-| 8.4 | Printable customer statement (PDF) | `GET /customers/:id/statement.html` | `customer.ledger.view` | Customer screen |
-| 8.5 | Goods received not invoiced report | `GET /procurement/reports/grni` | `reports.purchase` | Purchase reports |
+| 8.1 | Licences hub: add registration, authorisation, vault document, restriction; check expiries now | `POST /compliance/registrations`, `/authorisations`, `/documents`, `/restricted-ingredients`, `/alerts/run` | each tab's manage permission | Licences hub |
+| 8.2 | Audit pack ZIP for a month | `POST /compliance/audit-pack` | `compliance.evidence.export` | Licences hub, vault |
+| 8.3 | Who is hit by a restricted ingredient | `GET /compliance/restricted-ingredients/impact` | `compliance.registers.view` | Licences hub |
+| 8.4 | Report templates: list, add, approve, generate | `GET/POST /compliance/report-templates`, `POST /compliance/report-template-versions/:id/approve`, `POST .../:id/generate` | `compliance.reports.manage` / `.approve` | Licences hub |
+| 8.5 | Seed lots | `POST /compliance/seed-lots` | `compliance.seed.manage` | Registers hub |
+| 8.6 | Recalls, quarantine, cases, incidents, samples, authenticity: add and every step | `POST /compliance/recalls` (+ `quarantine`, `close`), `/quarantine` (+ `release`, `dispose`), `/cases` (+ `triage`, `escalate`, `close`), `/incidents`, `/samples` (+ `result`, `custody`), `/authenticity-checks` | as the web | Safety hub |
+| 8.7 | Rules and rule versions | `POST /compliance/rules`, `POST /compliance/rule-versions/:id/{test,submit,approve,activate,retire}` | `compliance.rules.manage` / `.approve` | Safety hub |
+| 8.8 | Batch trace (supplier to customer) | `GET /compliance/trace` | `compliance.trace.view` | Safety hub |
 
-## Phase 9: AI and the earlier leftovers
+## Phase 9: finance, HR and settings (third scan)
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 9a.1 | Cost centres: add, change | `POST /finance/cost-centres`, `PATCH /finance/cost-centres/:id` | as the web | Finance |
+| 9a.2 | Edit a draft voucher; edit a draft expense; new budget | `PUT /finance/vouchers/:id`, `PUT /finance/expenses/:id`, `POST /finance/budgets` | as the web | Finance |
+| 9a.3 | Add a leave type | `POST /hr/leave-types` | as the web | HR |
+| 9a.4 | Shop licences: list, add, change | `GET/POST /licences`, `PATCH /licences/:id` | `org.licence.manage` | Settings |
+| 9a.5 | Printable customer statement (PDF) | `GET /customers/:id/statement.html` | `customer.ledger.view` | Customer screen |
+| 9a.6 | Goods received not invoiced report | `GET /procurement/reports/grni` | `reports.purchase` | Purchase reports |
+
+## Phase 10: AI and the earlier leftovers
 
 | # | Feature | Endpoints | Permission | Where in the app |
 |---|---|---|---|---|
