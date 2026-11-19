@@ -386,6 +386,31 @@ const rcmRules: TabDef = {
   ],
 };
 
+// ---- web parity 6.1 (apps/web/src/pages/compliance.js itcTab: decide one bill) ----
+const decide = (tid: string, decision: 'CLAIM' | 'BLOCK'): RowAction =>
+  act({
+    id: tid,
+    perm: 'compliance.itc.manage',
+    path: (r) => `/gst/bills/${String(r.billId)}/itc-decision`,
+    body: () => ({ decision }),
+    reason: true,
+  });
+const itcRegister: TabDef = {
+  id: 'itcRegister',
+  perm: 'compliance.gst.view',
+  path: '/gst/itc-register',
+  query: 'period',
+  itemsKey: 'rows',
+  title: [{ k: 'number' }, { k: 'supplierName' }],
+  fields: [
+    { k: 'supplierInvoiceNo' },
+    { k: 'tax', kind: 'money' },
+    { k: 'status', kind: 'status' },
+    { k: 'reason' },
+  ],
+  actions: [decide('claimItc', 'CLAIM'), decide('blockItc', 'BLOCK')],
+};
+
 export interface HubDef {
   titleKey: string;
   tabs: TabDef[];
@@ -393,7 +418,7 @@ export interface HubDef {
 export const HUBS: Record<string, HubDef> = {
   taxRecords: {
     titleKey: 'taxRecords',
-    tabs: [rcm, rcmRules, itcRecon, blocks, tdsReport, tdsSections, snapshots],
+    tabs: [rcm, rcmRules, itcRegister, itcRecon, blocks, tdsReport, tdsSections, snapshots],
   },
   agriRegisters: {
     titleKey: 'agriRegisters',

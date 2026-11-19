@@ -2305,7 +2305,8 @@
       "evaluations": "Sale checks",
       "rules": "Rules",
       "itcRecon": "GSTR-2B match",
-      "rcmRules": "Reverse charge rules"
+      "rcmRules": "Reverse charge rules",
+      "itcRegister": "Input credit"
     },
     "empty": {
       "any": "Nothing to show yet.",
@@ -2315,7 +2316,8 @@
       "alerts": "Nothing is about to expire.",
       "snapshots": "Nothing frozen yet.",
       "itcRecon": "Nothing to reconcile. Import GSTR-2B on the web for this month.",
-      "rcmRules": "No rules yet."
+      "rcmRules": "No rules yet.",
+      "itcRegister": "No purchase bills in this month."
     },
     "act": {
       "removeBlock": "Remove",
@@ -2327,7 +2329,9 @@
       "acknowledge": "Acknowledge",
       "complete": "Mark done",
       "switchOff": "Switch off",
-      "switchOn": "Switch on"
+      "switchOn": "Switch on",
+      "claimItc": "Claim credit",
+      "blockItc": "Block credit"
     },
     "ask": {
       "removeBlock": "Remove this blocked-credit rule?",
@@ -2336,7 +2340,9 @@
       "suspend": "Suspend this registration. Say why.",
       "revoke": "Revoke this authorisation. Say why.",
       "switchOff": "Switch this reverse charge rule off?",
-      "switchOn": "Switch this reverse charge rule on?"
+      "switchOn": "Switch this reverse charge rule on?",
+      "claimItc": "Claim the input credit of this bill. Say why.",
+      "blockItc": "Block the input credit of this bill. Say why."
     },
     "v": {
       "ACTIVE": "Active",
@@ -2468,7 +2474,9 @@
       "note": "What to do",
       "appliesTo": "Applies to",
       "refName": "For",
-      "active": "Active"
+      "active": "Active",
+      "number": "Bill",
+      "supplierInvoiceNo": "Supplier invoice"
     }
   },
   "cus": {
@@ -5961,6 +5969,89 @@
         "stage": "Name the stage.",
         "days": "Days are whole numbers and the first is not after the last.",
         "units": "Enter units per acre above 0."
+      }
+    }
+  },
+  "wp6": {
+    "reason": "Reason",
+    "v": {
+      "reason": "Write a reason of 3 to 300 letters."
+    },
+    "tdsOn": "TDS / TCS on",
+    "g2b": {
+      "title": "Import GSTR-2B for {{period}}",
+      "hint": "Choose the portal JSON or an Excel export saved as CSV (columns: GSTIN, invoice number, date, taxable, CGST, SGST, IGST).",
+      "pick": "Choose the file",
+      "readFailed": "The file could not be read. Choose it again.",
+      "size": "The file is empty or larger than 5 MB.",
+      "import": "Import GSTR-2B",
+      "done": "GSTR-2B imported.",
+      "rejected_one": "{{count}} row could not be read.",
+      "rejected_other": "{{count}} rows could not be read."
+    },
+    "block": {
+      "open": "Block a product or category",
+      "title": "Block input credit",
+      "hint": "Products or categories whose input tax is not claimed. The reason comes from your tax adviser; no list is built in.",
+      "kind": "Applies to",
+      "sku": "Product",
+      "category": "Category",
+      "save": "Block the credit",
+      "done": "Credit blocked.",
+      "v": {
+        "ref": "Choose what it applies to."
+      }
+    },
+    "rule": {
+      "open": "Add a reverse charge rule",
+      "title": "New reverse charge rule",
+      "hint": "Applicability is your configuration, not built in. Ask your tax adviser which suppliers or products to add.",
+      "name": "Name",
+      "appliesTo": "Applies to",
+      "supplier": "Supplier",
+      "s": {
+        "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+        "SUPPLIER": "One supplier",
+        "CATEGORY": "A product category"
+      },
+      "save": "Add the rule",
+      "done": "Rule added.",
+      "v": {
+        "name": "Write a name of 2 to 120 letters.",
+        "ref": "Choose the supplier or category."
+      }
+    },
+    "tds": {
+      "open": "Add a section",
+      "title": "New TDS / TCS section",
+      "hint": "Enter what your tax adviser gives you. A change is a new row from a new date; old rows stay.",
+      "code": "Section code",
+      "name": "Name",
+      "kind": "Kind",
+      "k": {
+        "TDS": "TDS (from suppliers)",
+        "TCS": "TCS (from customers)"
+      },
+      "party": "Party",
+      "p": {
+        "SUPPLIER": "Supplier",
+        "CUSTOMER": "Customer"
+      },
+      "rate": "Rate %",
+      "noPan": "Rate % when PAN is missing",
+      "threshold": "Yearly threshold",
+      "from": "From (YYYY-MM-DD)",
+      "save": "Save the section",
+      "done": "Section saved.",
+      "run": "Run for {{from}} to {{to}}",
+      "ran": "Recorded.",
+      "v": {
+        "code": "Up to 20 letters, digits and ( ) _ - only.",
+        "name": "Write a name of 2 to 120 letters.",
+        "rate": "A rate from 0 to 100, up to 4 decimals.",
+        "noPan": "A rate from 0 to 100, up to 4 decimals.",
+        "threshold": "An amount with up to 4 decimals.",
+        "date": "A real date as YYYY-MM-DD."
       }
     }
   }

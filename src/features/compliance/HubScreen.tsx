@@ -35,6 +35,7 @@ import {
 } from './cmp-api';
 import { HUBS } from './cmp-tabs';
 import { ComplianceSettingsCard } from './SettingsCard';
+import { TaxTabForm } from './TaxForms';
 
 const MIN_REASON = 3;
 
@@ -129,6 +130,9 @@ export default function HubScreen({ hub }: { hub: string }) {
               value={which}
               onChange={setWhich}
             />
+          ) : null}
+          {hub === 'taxRecords' ? (
+            <TaxTabForm tab={tab.id} period={period} range={range} today={todayIST()} />
           ) : null}
         </>
       ) : null}

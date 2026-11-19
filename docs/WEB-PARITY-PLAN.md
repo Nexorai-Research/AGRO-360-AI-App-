@@ -77,6 +77,52 @@ Rules for every item:
 | 5.8 | Reorder recommendation, stock-out forecast | `POST /ai/recommendations/reorder`, `POST /ai/forecast/stockout` | `ai.assistant.use` | `ai/ForecastScreen.tsx` |
 | 5.9 | OCR document review | `PUT /ai/ocr/documents/:id/review` | `ai.assistant.use` | `ai/BillScan` screen |
 
+## Second scan (after phase 5)
+
+The first scan read only `api('METHOD', path)`. The second scan (`endpoints2.mjs`) also reads the web's page helpers (`post(...)`, `list(...)`, `apiText`, `apiBlob`, `reasonCall`, `registerTab`, `C('x')`) and the app's `.del(...)`. It found 147 web endpoints not called the same way in the app. 76 of them the app already calls with a built path (for example `/hr/leaves/${id}/${decision}`, `/credit/${kind}/${id}/${what}`, `/ai/actions/:id/approve`); checked by hand. The rest are below. The web's `/categories` and `/suppliers` do not exist on the server (the web falls back to an empty list); the app uses `/product-categories` and `/procurement/suppliers`.
+
+## Phase 6: GST and TDS (web `compliance.js`)
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 6.1 | Claim or block the input credit of one purchase bill, with a reason | `GET /gst/itc-register`, `POST /gst/bills/:id/itc-decision` | view `compliance.gst.view`; decide `compliance.itc.manage` | Tax records, new tab "Input credit" |
+| 6.2 | GSTR-2B import (portal JSON or CSV) | `POST /gst/gstr2b/import` | `compliance.itc.manage` | Tax records, GSTR-2B tab |
+| 6.3 | Block input credit of a product or category | `POST /gst/itc-blocks` | `compliance.itc.manage` | Tax records, blocked credit tab |
+| 6.4 | Add a reverse charge rule | `POST /rcm/rules` | `compliance.rcm.manage` | Tax records, RCM rules tab |
+| 6.5 | Add a TDS / TCS section | `PUT /tax/tds-config` | `compliance.tds.manage` | Tax records, TDS sections tab |
+| 6.6 | Run TDS / TCS for the period; switch TDS on / off | `POST /tax/tds/run`, `PUT /compliance/settings` (`tdsEnabled`) | `compliance.tds.manage`; `compliance.settings.manage` | Tax records, TDS report tab and settings card |
+
+## Phase 7: catalogue (web `products.js`)
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 7.1 | Download the products CSV and the import template | `GET /products/export`, `GET /products/import/template` | export `product.export` | Import history screen |
+| 7.2 | Product import: check, then import all or nothing / valid rows only, report | `POST /products/import`, `POST /products/import/:job/commit` | `product.import` | Import history screen |
+| 7.3 | Edit composition; add an ingredient to the master | `GET/POST /ingredients`, `PUT /products/:id/composition` | `product.update` (ban: `product.regulated`) | Product more, composition tab |
+| 7.4 | Label sheet (name, pack, MRP, price, barcode) as a PDF | `GET /labels` | `product.view` | Catalogue |
+
+## Phase 8: agri compliance and printouts (web `compliance-agri.js`, `customers.js`, `finance.js`)
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 8.1 | Regulatory report templates: list, add, new version, make a report | `GET/POST /compliance/report-templates`, `POST .../:id/versions`, `POST .../:id/generate` | `compliance.reports.manage` | Licences hub |
+| 8.2 | Who is hit by a restricted ingredient | `GET /compliance/restricted-ingredients/impact` | `compliance.registers.view` | Licences hub, restricted tab |
+| 8.3 | Batch trace (supplier to customer) | `GET /compliance/trace` | `compliance.trace.view` | Safety hub |
+| 8.4 | Printable customer statement (PDF) | `GET /customers/:id/statement.html` | `customer.ledger.view` | Customer screen |
+| 8.5 | Goods received not invoiced report | `GET /procurement/reports/grni` | `reports.purchase` | Purchase reports |
+
+## Phase 9: AI and the earlier leftovers
+
+| # | Feature | Endpoints | Permission | Where in the app |
+|---|---|---|---|---|
+| 9.1 | Run the daily AI scan now | `POST /ai/jobs/run` | `ai.governance.manage` | AI inbox |
+| 9.2 | Campaign drafts and a campaign message (was 5.4) | `GET /ai/campaigns/drafts`, `POST /ai/recommendations/campaign-message` | `ai.assistant.use` | AI marketing |
+| 9.3 | OCR review before confirm (was 5.9) | `GET /ai/ocr/documents/:id`, `PUT /ai/ocr/documents/:id/review` | `ai.assistant.use` | Bill scan |
+| 9.4 | An existing customer as guarantor | `POST /customers/:id/credit/guarantors` (customerId) | as 1.6 | Customer, guarantors |
+| 9.5 | Reorder at the counter from purchase history | as the web `customers.js` | `sales.create` | Customer, purchase history |
+
+Not repeated in the app: the web's streamed chat (`/assistant/chat/stream`); the app's chat calls `/assistant/chat` and gets the same answer in one piece.
+
 ## Owner decisions still open (CLAUDE.md rule 10)
 
 | Item | Question |

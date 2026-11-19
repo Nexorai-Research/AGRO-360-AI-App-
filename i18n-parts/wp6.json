@@ -1,0 +1,248 @@
+{
+  "en": {
+    "cmp": {
+      "tab": { "itcRegister": "Input credit" },
+      "act": { "claimItc": "Claim credit", "blockItc": "Block credit" },
+      "ask": {
+        "claimItc": "Claim the input credit of this bill. Say why.",
+        "blockItc": "Block the input credit of this bill. Say why."
+      },
+      "f": { "number": "Bill", "supplierInvoiceNo": "Supplier invoice" },
+      "empty": { "itcRegister": "No purchase bills in this month." }
+    },
+    "wp6": {
+      "reason": "Reason",
+      "v": { "reason": "Write a reason of 3 to 300 letters." },
+      "tdsOn": "TDS / TCS on",
+      "g2b": {
+        "title": "Import GSTR-2B for {{period}}",
+        "hint": "Choose the portal JSON or an Excel export saved as CSV (columns: GSTIN, invoice number, date, taxable, CGST, SGST, IGST).",
+        "pick": "Choose the file",
+        "readFailed": "The file could not be read. Choose it again.",
+        "size": "The file is empty or larger than 5 MB.",
+        "import": "Import GSTR-2B",
+        "done": "GSTR-2B imported.",
+        "rejected_one": "{{count}} row could not be read.",
+        "rejected_other": "{{count}} rows could not be read."
+      },
+      "block": {
+        "open": "Block a product or category",
+        "title": "Block input credit",
+        "hint": "Products or categories whose input tax is not claimed. The reason comes from your tax adviser; no list is built in.",
+        "kind": "Applies to",
+        "sku": "Product",
+        "category": "Category",
+        "save": "Block the credit",
+        "done": "Credit blocked.",
+        "v": { "ref": "Choose what it applies to." }
+      },
+      "rule": {
+        "open": "Add a reverse charge rule",
+        "title": "New reverse charge rule",
+        "hint": "Applicability is your configuration, not built in. Ask your tax adviser which suppliers or products to add.",
+        "name": "Name",
+        "appliesTo": "Applies to",
+        "supplier": "Supplier",
+        "s": {
+          "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+          "SUPPLIER": "One supplier",
+          "CATEGORY": "A product category"
+        },
+        "save": "Add the rule",
+        "done": "Rule added.",
+        "v": { "name": "Write a name of 2 to 120 letters.", "ref": "Choose the supplier or category." }
+      },
+      "tds": {
+        "open": "Add a section",
+        "title": "New TDS / TCS section",
+        "hint": "Enter what your tax adviser gives you. A change is a new row from a new date; old rows stay.",
+        "code": "Section code",
+        "name": "Name",
+        "kind": "Kind",
+        "k": { "TDS": "TDS (from suppliers)", "TCS": "TCS (from customers)" },
+        "party": "Party",
+        "p": { "SUPPLIER": "Supplier", "CUSTOMER": "Customer" },
+        "rate": "Rate %",
+        "noPan": "Rate % when PAN is missing",
+        "threshold": "Yearly threshold",
+        "from": "From (YYYY-MM-DD)",
+        "save": "Save the section",
+        "done": "Section saved.",
+        "run": "Run for {{from}} to {{to}}",
+        "ran": "Recorded.",
+        "v": {
+          "code": "Up to 20 letters, digits and ( ) _ - only.",
+          "name": "Write a name of 2 to 120 letters.",
+          "rate": "A rate from 0 to 100, up to 4 decimals.",
+          "noPan": "A rate from 0 to 100, up to 4 decimals.",
+          "threshold": "An amount with up to 4 decimals.",
+          "date": "A real date as YYYY-MM-DD."
+        }
+      }
+    }
+  },
+  "hi": {
+    "cmp": {
+      "tab": { "itcRegister": "इनपुट क्रेडिट" },
+      "act": { "claimItc": "क्रेडिट लें", "blockItc": "क्रेडिट रोकें" },
+      "ask": {
+        "claimItc": "इस बिल का इनपुट क्रेडिट लें। कारण लिखें।",
+        "blockItc": "इस बिल का इनपुट क्रेडिट रोकें। कारण लिखें।"
+      },
+      "f": { "number": "बिल", "supplierInvoiceNo": "सप्लायर इनवॉइस" },
+      "empty": { "itcRegister": "इस महीने कोई खरीद बिल नहीं।" }
+    },
+    "wp6": {
+      "reason": "कारण",
+      "v": { "reason": "3 से 300 अक्षरों का कारण लिखें।" },
+      "tdsOn": "TDS / TCS चालू",
+      "g2b": {
+        "title": "{{period}} का GSTR-2B इंपोर्ट करें",
+        "hint": "पोर्टल की JSON फ़ाइल या CSV में सेव की गई Excel फ़ाइल चुनें (कॉलम: GSTIN, इनवॉइस नंबर, तारीख, टैक्सेबल, CGST, SGST, IGST)।",
+        "pick": "फ़ाइल चुनें",
+        "readFailed": "फ़ाइल पढ़ी नहीं जा सकी। फिर से चुनें।",
+        "size": "फ़ाइल खाली है या 5 MB से बड़ी है।",
+        "import": "GSTR-2B इंपोर्ट करें",
+        "done": "GSTR-2B इंपोर्ट हो गया।",
+        "rejected_one": "{{count}} पंक्ति पढ़ी नहीं जा सकी।",
+        "rejected_other": "{{count}} पंक्तियाँ पढ़ी नहीं जा सकीं।"
+      },
+      "block": {
+        "open": "किसी उत्पाद या श्रेणी का क्रेडिट रोकें",
+        "title": "इनपुट क्रेडिट रोकें",
+        "hint": "जिन उत्पादों या श्रेणियों का इनपुट टैक्स नहीं लिया जाता। कारण आपके टैक्स सलाहकार से आता है; कोई सूची पहले से नहीं है।",
+        "kind": "किस पर लागू",
+        "sku": "उत्पाद",
+        "category": "श्रेणी",
+        "save": "क्रेडिट रोकें",
+        "done": "क्रेडिट रोक दिया गया।",
+        "v": { "ref": "चुनें कि यह किस पर लागू है।" }
+      },
+      "rule": {
+        "open": "रिवर्स चार्ज नियम जोड़ें",
+        "title": "नया रिवर्स चार्ज नियम",
+        "hint": "यह आपकी सेटिंग है, पहले से नहीं बनी। अपने टैक्स सलाहकार से पूछें कि कौन से सप्लायर या उत्पाद जोड़ने हैं।",
+        "name": "नाम",
+        "appliesTo": "किस पर लागू",
+        "supplier": "सप्लायर",
+        "s": {
+          "UNREGISTERED_SUPPLIER": "अपंजीकृत सप्लायर",
+          "SUPPLIER": "एक सप्लायर",
+          "CATEGORY": "एक उत्पाद श्रेणी"
+        },
+        "save": "नियम जोड़ें",
+        "done": "नियम जुड़ गया।",
+        "v": { "name": "2 से 120 अक्षरों का नाम लिखें।", "ref": "सप्लायर या श्रेणी चुनें।" }
+      },
+      "tds": {
+        "open": "सेक्शन जोड़ें",
+        "title": "नया TDS / TCS सेक्शन",
+        "hint": "जो आपका टैक्स सलाहकार दे वही लिखें। बदलाव नई तारीख से नई पंक्ति है; पुरानी पंक्तियाँ रहती हैं।",
+        "code": "सेक्शन कोड",
+        "name": "नाम",
+        "kind": "प्रकार",
+        "k": { "TDS": "TDS (सप्लायर से)", "TCS": "TCS (ग्राहक से)" },
+        "party": "पार्टी",
+        "p": { "SUPPLIER": "सप्लायर", "CUSTOMER": "ग्राहक" },
+        "rate": "दर %",
+        "noPan": "PAN न होने पर दर %",
+        "threshold": "सालाना सीमा",
+        "from": "कब से (YYYY-MM-DD)",
+        "save": "सेक्शन सेव करें",
+        "done": "सेक्शन सेव हो गया।",
+        "run": "{{from}} से {{to}} तक चलाएँ",
+        "ran": "दर्ज हो गया।",
+        "v": {
+          "code": "20 तक अक्षर, अंक और ( ) _ - ही।",
+          "name": "2 से 120 अक्षरों का नाम लिखें।",
+          "rate": "0 से 100 तक दर, 4 दशमलव तक।",
+          "noPan": "0 से 100 तक दर, 4 दशमलव तक।",
+          "threshold": "4 दशमलव तक की रकम।",
+          "date": "सही तारीख YYYY-MM-DD में।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "cmp": {
+      "tab": { "itcRegister": "इनपुट क्रेडिट" },
+      "act": { "claimItc": "क्रेडिट घ्या", "blockItc": "क्रेडिट थांबवा" },
+      "ask": {
+        "claimItc": "या बिलाचे इनपुट क्रेडिट घ्या. कारण लिहा.",
+        "blockItc": "या बिलाचे इनपुट क्रेडिट थांबवा. कारण लिहा."
+      },
+      "f": { "number": "बिल", "supplierInvoiceNo": "पुरवठादार इनव्हॉइस" },
+      "empty": { "itcRegister": "या महिन्यात खरेदी बिल नाही." }
+    },
+    "wp6": {
+      "reason": "कारण",
+      "v": { "reason": "3 ते 300 अक्षरांचे कारण लिहा." },
+      "tdsOn": "TDS / TCS चालू",
+      "g2b": {
+        "title": "{{period}} चा GSTR-2B आयात करा",
+        "hint": "पोर्टलची JSON फाइल किंवा CSV मध्ये जतन केलेली Excel फाइल निवडा (कॉलम: GSTIN, इनव्हॉइस क्रमांक, तारीख, करपात्र, CGST, SGST, IGST).",
+        "pick": "फाइल निवडा",
+        "readFailed": "फाइल वाचता आली नाही. पुन्हा निवडा.",
+        "size": "फाइल रिकामी आहे किंवा 5 MB पेक्षा मोठी आहे.",
+        "import": "GSTR-2B आयात करा",
+        "done": "GSTR-2B आयात झाला.",
+        "rejected_one": "{{count}} ओळ वाचता आली नाही.",
+        "rejected_other": "{{count}} ओळी वाचता आल्या नाहीत."
+      },
+      "block": {
+        "open": "उत्पादन किंवा वर्गाचे क्रेडिट थांबवा",
+        "title": "इनपुट क्रेडिट थांबवा",
+        "hint": "ज्या उत्पादनांचा किंवा वर्गांचा इनपुट कर घेतला जात नाही. कारण तुमच्या कर सल्लागाराकडून येते; आधीची यादी नाही.",
+        "kind": "कशाला लागू",
+        "sku": "उत्पादन",
+        "category": "वर्ग",
+        "save": "क्रेडिट थांबवा",
+        "done": "क्रेडिट थांबवले.",
+        "v": { "ref": "हे कशाला लागू आहे ते निवडा." }
+      },
+      "rule": {
+        "open": "रिव्हर्स चार्ज नियम जोडा",
+        "title": "नवीन रिव्हर्स चार्ज नियम",
+        "hint": "ही तुमची सेटिंग आहे, आधी बनलेली नाही. कोणते पुरवठादार किंवा उत्पादने जोडायची ते कर सल्लागाराला विचारा.",
+        "name": "नाव",
+        "appliesTo": "कशाला लागू",
+        "supplier": "पुरवठादार",
+        "s": {
+          "UNREGISTERED_SUPPLIER": "नोंदणी नसलेले पुरवठादार",
+          "SUPPLIER": "एक पुरवठादार",
+          "CATEGORY": "एक उत्पादन वर्ग"
+        },
+        "save": "नियम जोडा",
+        "done": "नियम जोडला.",
+        "v": { "name": "2 ते 120 अक्षरांचे नाव लिहा.", "ref": "पुरवठादार किंवा वर्ग निवडा." }
+      },
+      "tds": {
+        "open": "सेक्शन जोडा",
+        "title": "नवीन TDS / TCS सेक्शन",
+        "hint": "तुमचा कर सल्लागार देईल तेच लिहा. बदल म्हणजे नवीन तारखेपासून नवीन ओळ; जुन्या ओळी राहतात.",
+        "code": "सेक्शन कोड",
+        "name": "नाव",
+        "kind": "प्रकार",
+        "k": { "TDS": "TDS (पुरवठादाराकडून)", "TCS": "TCS (ग्राहकाकडून)" },
+        "party": "पक्ष",
+        "p": { "SUPPLIER": "पुरवठादार", "CUSTOMER": "ग्राहक" },
+        "rate": "दर %",
+        "noPan": "PAN नसल्यास दर %",
+        "threshold": "वार्षिक मर्यादा",
+        "from": "पासून (YYYY-MM-DD)",
+        "save": "सेक्शन जतन करा",
+        "done": "सेक्शन जतन झाला.",
+        "run": "{{from}} ते {{to}} साठी चालवा",
+        "ran": "नोंद झाली.",
+        "v": {
+          "code": "20 पर्यंत अक्षरे, अंक आणि ( ) _ - फक्त.",
+          "name": "2 ते 120 अक्षरांचे नाव लिहा.",
+          "rate": "0 ते 100 दर, 4 दशांशांपर्यंत.",
+          "noPan": "0 ते 100 दर, 4 दशांशांपर्यंत.",
+          "threshold": "4 दशांशांपर्यंत रक्कम.",
+          "date": "खरी तारीख YYYY-MM-DD मध्ये."
+        }
+      }
+    }
+  }
+}

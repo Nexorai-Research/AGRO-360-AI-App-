@@ -23,7 +23,7 @@ export interface RowAction {
   confirm?: boolean;
   /** POST unless said otherwise (an RCM rule is switched with PATCH). */
   method?: 'post' | 'patch';
-  /** A fixed body built from the row, instead of {} or the typed reason. */
+  /** A fixed body built from the row, instead of {}. With `reason` the typed reason is added to it. */
   body?: (row: Row) => Record<string, unknown>;
 }
 export type QueryKind = 'none' | 'period' | 'range' | 'openOnly';
@@ -66,7 +66,7 @@ export function runRowAction(c: ApiClient, a: RowAction, row: Row, reason: strin
   const version =
     typeof row.version === 'number' || typeof row.version === 'string' ? row.version : undefined;
   return c[a.method ?? 'post'](a.path(row), {
-    body: a.body ? a.body(row) : a.reason ? { reason: reason.trim() } : {},
+    body: { ...(a.body ? a.body(row) : {}), ...(a.reason ? { reason: reason.trim() } : {}) },
     idempotencyKey: key,
     ...(a.versioned && version !== undefined ? { version } : {}),
   });
