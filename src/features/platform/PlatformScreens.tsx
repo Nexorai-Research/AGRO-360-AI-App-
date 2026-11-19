@@ -6,14 +6,13 @@ import type { ApiClient } from '@/api/client';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
+import { PLATFORM_ROLES, isPlatformUser } from './roles';
 import { Card, Chips, Field, Gate, Line, Notice, isNetwork, kit, useAction, useActionKey } from '../hr/kit';
 
 // Web parity phase 12: the platform console (apps/web/src/pages/platform.js and reports.js platformDashboardPage). Only platform
 // operators see it (role platform_admin or platform_support); the API refuses everyone else whatever the app shows.
 
-export const PLATFORM_ROLES = ['platform_admin', 'platform_support'];
-export const isPlatformUser = (roles: unknown) =>
-  Array.isArray(roles) && roles.some((r) => typeof r === 'string' && PLATFORM_ROLES.includes(r));
+export { PLATFORM_ROLES, isPlatformUser };
 const K = (userId: string, ...p: string[]) => ['platform', userId, ...p] as const;
 const retry = (n: number, e: unknown) => isNetwork(e) && n < 1;
 

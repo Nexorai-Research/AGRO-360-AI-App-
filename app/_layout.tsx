@@ -9,6 +9,7 @@ import { initI18n } from '@/i18n';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomNav } from '@/ui/BottomNav';
 import { colors } from '@/ui/theme';
+import { useTelemetry } from '@/telemetry/useTelemetry';
 
 const queryClient = makeQueryClient();
 void initI18n(); // picks the saved language, else the phone language, else English
@@ -18,6 +19,7 @@ function Gate() {
   const segments = useSegments();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  useTelemetry(); // usage reporting for the observability screens (web parity 13); off for platform operators and when switched off
   // The phone draws under the status bar (edge to edge). Home and login paint their own header there; every other screen starts below it.
   const atHome = (segments as string[]).length === 0;
   const topGap = atHome || segments[0] === 'login' ? 0 : insets.top;
@@ -35,7 +37,9 @@ function Gate() {
       <View style={{ flex: 1, paddingTop: topGap }}>
         <Stack screenOptions={{ headerShown: false }} />
       </View>
-      {covering ? <View pointerEvents="none" style={[StyleSheet.absoluteFill, { backgroundColor: colors.bg }]} /> : null}
+      {covering ? (
+        <View pointerEvents="none" style={[StyleSheet.absoluteFill, { backgroundColor: colors.bg }]} />
+      ) : null}
       {status === 'signedIn' && !onLogin && !covering ? <BottomNav /> : null}
     </View>
   );

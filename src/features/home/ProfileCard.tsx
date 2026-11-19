@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/auth/AuthProvider';
 import { signedInName } from '@/auth/auth';
 import { LanguagePicker } from '@/ui/LanguagePicker';
+import { TelemetrySwitch } from '@/telemetry/TelemetrySwitch';
 import { colors } from '@/ui/theme';
 import { groupPermissions, initials, splitRoles } from './profile-logic';
 
@@ -19,7 +20,17 @@ function Stat({ value, label, color }: { value: number; label: string; color: st
   );
 }
 
-function PermissionGroupRow({ title, items, open, onToggle }: { title: string; items: string[]; open: boolean; onToggle: () => void }) {
+function PermissionGroupRow({
+  title,
+  items,
+  open,
+  onToggle,
+}: {
+  title: string;
+  items: string[];
+  open: boolean;
+  onToggle: () => void;
+}) {
   return (
     <View style={s.group}>
       <Pressable
@@ -83,7 +94,11 @@ export function ProfileCard() {
 
       <View style={s.body}>
         <View style={s.stats}>
-          <Stat value={roles.business.length + roles.system.length} label={t('home.roles')} color={colors.sapphire} />
+          <Stat
+            value={roles.business.length + roles.system.length}
+            label={t('home.roles')}
+            color={colors.sapphire}
+          />
           <Stat value={perms.length} label={t('profile.permissions')} color={colors.brand2} />
         </View>
 
@@ -109,7 +124,9 @@ export function ProfileCard() {
             onPress={() => setShowPerms((v) => !v)}
             style={s.outline}
           >
-            <Text style={s.outlineTxt}>{showPerms ? t('home.hidePermissions') : t('home.showPermissions')}</Text>
+            <Text style={s.outlineTxt}>
+              {showPerms ? t('home.hidePermissions') : t('home.showPermissions')}
+            </Text>
           </Pressable>
         ) : null}
 
@@ -142,6 +159,7 @@ export function ProfileCard() {
         ) : null}
 
         <LanguagePicker />
+        <TelemetrySwitch />
 
         <Pressable
           accessibilityRole="button"
@@ -205,7 +223,12 @@ const s = StyleSheet.create({
   statValue: { fontSize: 26, fontWeight: '800', letterSpacing: -0.5 },
   statLabel: { color: colors.muted, fontSize: 13, fontWeight: '600' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  role: { backgroundColor: `${colors.sapphire}1a`, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 7 },
+  role: {
+    backgroundColor: `${colors.sapphire}1a`,
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+  },
   roleTxt: { color: colors.sapphire, fontSize: 13, fontWeight: '700' },
   system: { color: colors.muted, fontSize: 12, lineHeight: 17 },
   outline: {
@@ -232,7 +255,12 @@ const s = StyleSheet.create({
   group: { borderRadius: 14, backgroundColor: '#f4f8f8', overflow: 'hidden' },
   groupHead: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, minHeight: 48 },
   groupTitle: { flex: 1, color: colors.ink, fontSize: 15, fontWeight: '700' },
-  count: { backgroundColor: `${colors.brand2}22`, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 3 },
+  count: {
+    backgroundColor: `${colors.brand2}22`,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+  },
   countTxt: { color: colors.brand2, fontSize: 12, fontWeight: '800' },
   chev: { color: colors.muted, fontSize: 18, fontWeight: '700', width: 18, textAlign: 'center' },
   perms: { paddingHorizontal: 14, paddingBottom: 12, gap: 4 },

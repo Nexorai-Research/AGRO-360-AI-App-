@@ -872,3 +872,15 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 12.6 Usage observability for a franchise admin (`identity.security.manage`): overview, users with filters, issues (`GET /observability/overview`); one user with signals, talking points, visit path and an AI briefing (`GET /observability/users/:id`, `/coaching`) | DONE | `__tests__/wp12.test.tsx` |
 | 12.7 Usage observability across franchises for a platform operator (`GET /platform/observability/overview`, `/franchises/:id`) | DONE | `__tests__/wp12.test.tsx` |
 | Limit: charts are simple bars, not the web's line charts | Limit | - |
+
+## Web parity, phase 13: usage telemetry with an off switch
+
+Mocked API, not run against the real backend. Copied from the web's `apps/web/src/telemetry.js`. Code in `src/telemetry/`. Texts in `i18n-parts/wp13.json`. Owner decision (19 November 2026): send the same events as the web, no personal or KYC data, and let the user switch it off.
+
+| Feature | State | Test |
+|---|---|---|
+| 13.1 Screen opened (`PAGE_VIEW`), slow to appear over 2.5 s (`SLOW`), named actions (`ACTION`) and script errors (`ERROR`, at most ten a minute) sent to `POST /observability/events` as `MOBILE`, in batches of up to 50 every 8 seconds and when the app goes to the background. Each batch has an Idempotency-Key | DONE | `__tests__/wp13.test.tsx` |
+| 13.1 What is sent: the screen name only (no id, no query), a duration, a short error text and a random visit id. User and franchise come from the token. Nothing typed by the user is sent. Stops by itself after five failed sends in a row. Never sent for a platform operator | DONE | `__tests__/wp13.test.tsx` |
+| 13.2 Off switch on the profile card (with the language): on by default like the web; off stops at once, drops what was waiting and is remembered on the phone | DONE | `__tests__/wp13.test.tsx` |
+| Limit: the time to appear is measured until the screen has drawn and its first work is done (React Native `InteractionManager`), not until its data has loaded as on the web | Limit | - |
+| Limit: no screen calls `trackAction` yet; the web also uses it nowhere today | Limit | - |

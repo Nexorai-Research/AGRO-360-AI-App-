@@ -6931,5 +6931,10 @@
       },
       "where": "Where"
     }
+  },
+  "wp13": {
+    "title": "Share app usage with my franchise",
+    "onHint": "Sends which screens you open, how long they take and app errors, so your administrator can help. Nothing you type is sent.",
+    "offHint": "Off: this phone sends no usage."
   }
 }
