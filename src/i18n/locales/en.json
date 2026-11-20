@@ -7142,5 +7142,14 @@
       },
       "saved": "Land updated"
     }
+  },
+  "wp18": {
+    "statusActive": "Active",
+    "statusRetired": "Retired",
+    "retire": "Retire",
+    "reactivate": "Reactivate",
+    "ask": "{{name}} will no longer be asked for or shown on customers. Consents already given stay in the history.",
+    "retired": "Purpose retired",
+    "reactivated": "Purpose active again"
   }
 }

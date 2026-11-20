@@ -942,3 +942,12 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 17.5 Total land: "Add land details" records a "Main plot"; "Edit total land" changes the area and unit of the only plot (`POST /customers/:id/plots`, `PATCH .../plots/:plotId` with the version); several plots are changed one by one | DONE | `__tests__/wp17.test.tsx` |
 | 17.6 Search, kind and date filters over calls and visits, and search and dates over the service cases (on the phone, the lists are already loaded) | DONE | `__tests__/wp17.test.tsx` |
 | Limit: the web also lets land be entered as a step of a new registration; on the phone it is added from the customer's Farms section right after | Limit | - |
+
+## Web parity, phase 18: retire a consent purpose (web commit 94a0617)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `pages/crm-admin.js` (consent purposes) and `pages/customers.js`. Texts in `i18n-parts/wp18.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 18.1 Consent purposes show Active or Retired; Retire (after a confirm) or Reactivate a purpose (`POST /crm/consent/purposes/:code/status`, `INACTIVE` / `ACTIVE`); the three built-in purposes (transactional, promotional, data advisory) have no button, like the web | DONE | `__tests__/wp18.test.tsx` |
+| 18.2 A customer's consent list asks only for active purposes; consents already given stay in the history | DONE | `__tests__/wp18.test.tsx` |
