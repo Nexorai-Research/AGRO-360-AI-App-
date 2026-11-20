@@ -951,3 +951,14 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 |---|---|---|
 | 18.1 Consent purposes show Active or Retired; Retire (after a confirm) or Reactivate a purpose (`POST /crm/consent/purposes/:code/status`, `INACTIVE` / `ACTIVE`); the three built-in purposes (transactional, promotional, data advisory) have no button, like the web | DONE | `__tests__/wp18.test.tsx` |
 | 18.2 A customer's consent list asks only for active purposes; consents already given stay in the history | DONE | `__tests__/wp18.test.tsx` |
+
+## Web parity, phase 19: the assistant's guarded changes (web commit 94a0617)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `assistant.js` and `assistant-confirm.js` (WP-I17, ACR-010) and the server's `GET /assistant/capabilities`. Texts in `i18n-parts/wp19.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 19.1 Before the assistant even proposes a change (add a customer, record a payment) it asks the server whether changes through the assistant are allowed (`GET /assistant/capabilities`, `chatWrites`); an error or no clear yes means no, and nothing is proposed or sent | DONE | `__tests__/wp19.test.tsx` |
+| 19.2 While a change waits for the Yes button, typed words never confirm it: only an exact "no" / "nahi" / "cancel" (and the Hindi and Marathi words of the web's list) cancels; any other reply leaves it waiting and says to use the buttons | DONE | `__tests__/wp19.test.tsx` |
+| Note: the app already ran a change only from the Yes button of the change being shown, once; that part needed no change | DONE | `__tests__/ai-screens.test.tsx` |
+| Limit: the web's streamed answer (`POST /assistant/chat/stream`) is not used; the phone waits for the whole answer | Limit | - |
