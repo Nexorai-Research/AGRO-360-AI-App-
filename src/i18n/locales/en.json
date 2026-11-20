@@ -7035,5 +7035,112 @@
         "notLast": "Only the last year can be deleted."
       }
     }
+  },
+  "wp17": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "reason": "Reason (recorded)",
+    "confirmVoid": "Mark as made in error",
+    "v": {
+      "required": "Fill this in.",
+      "reason": "Give a reason.",
+      "date": "A date like 2026-11-30.",
+      "year": "A year from 2000 to 2100.",
+      "area": "An area above 0.",
+      "line": {
+        "item": "Line {{line}}: the item is missing.",
+        "qty": "Line {{line}}: the quantity must be a number above 0.",
+        "date": "Line {{line}}: the date must look like 2026-11-30.",
+        "none": "Add at least one item."
+      }
+    },
+    "f": {
+      "search": "Search notes, advice, case number",
+      "all": "All activity",
+      "kind": {
+        "CALL": "Calls",
+        "VISIT": "Field visits",
+        "SHOP_VISIT": "Shop visits"
+      },
+      "from": "From date",
+      "to": "To date",
+      "badRange": "\"To\" is before \"From\"."
+    },
+    "i": {
+      "erased": "(erased)",
+      "correct": "Correct this entry",
+      "void": "Delete",
+      "fixHint": "The original stays on record.",
+      "notes": "Notes",
+      "cropIssue": "Crop issue seen",
+      "advice": "Advice given",
+      "why": "Why is it being corrected?",
+      "fixed": "Entry corrected (the original stays on record)",
+      "voidWhat": "The entry is struck out and marked as made in error. It stays on record with the reason, because a call or visit log is never erased.",
+      "voidedDone": "Entry marked as made in error",
+      "voided": "Made in error: {{reason}}",
+      "corrected": "Corrected: {{reason}}"
+    },
+    "c": {
+      "update": "Update case {{no}}",
+      "delete": "Delete case {{no}}",
+      "advice": "Advice",
+      "src": {
+        "EXPERT_PROVIDED": "An expert told us",
+        "APPROVED_SOURCE": "Approved document"
+      },
+      "reference": "Expert name or document",
+      "outcome": "Outcome",
+      "updated": "Case updated",
+      "voidWhat": "Case {{no}} is struck out and marked as made in error. It stays on record with the reason, because advice given to a farmer is never erased.",
+      "deleted": "Service case deleted",
+      "voided": "Made in error: {{reason}}"
+    },
+    "k": {
+      "edit": "Edit document details",
+      "hint": "Changes the details written about the document, not the file itself.",
+      "number": "Document number (leave empty to keep the stored one)",
+      "expires": "Expires on",
+      "updated": "Document updated",
+      "type": {
+        "AADHAAR": "Aadhaar",
+        "PAN": "PAN",
+        "VOTER_ID": "Voter ID",
+        "DRIVING_LICENCE": "Driving licence",
+        "PASSPORT": "Passport",
+        "LAND_RECORD": "Land record",
+        "BANK_PASSBOOK": "Bank passbook",
+        "OTHER": "Other"
+      }
+    },
+    "p": {
+      "edit": "Edit draft",
+      "delete": "Delete draft",
+      "close": "Close plan",
+      "hint": "One item per line: item | quantity | needed by (optional, like 2026-11-30).",
+      "year": "Year",
+      "lines": "Items",
+      "updated": "Plan updated",
+      "deleteWhat": "This draft plan and its items will be removed.",
+      "closeWhat": "The plan is closed and stays on record; it can no longer be changed.",
+      "confirmDelete": "Delete draft plan",
+      "confirmClose": "Close plan",
+      "deleted": "Draft plan deleted",
+      "closed": "Plan closed"
+    },
+    "l": {
+      "add": "Add land details",
+      "edit": "Edit total land",
+      "several": "This customer has several plots: change them one by one.",
+      "hintOne": "Changes the area of plot \"{{name}}\".",
+      "hintNew": "Records the land as a plot named \"Main plot\"; you can split it into plots and farms later.",
+      "area": "Land holding",
+      "unit": {
+        "ACRE": "acre",
+        "HECTARE": "hectare",
+        "GUNTHA": "guntha"
+      },
+      "saved": "Land updated"
+    }
   }
 }

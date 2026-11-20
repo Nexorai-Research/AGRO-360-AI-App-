@@ -928,3 +928,17 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 16.1 Financial years: edit the dates of an open year nothing is booked in (`PUT /financial-years/:id`; a start or end fixed by the neighbouring year cannot be changed); delete the last year before it starts, with a recorded reason (`POST /financial-years/:id:delete`); the last year says why it cannot be deleted. Nothing is offered when the server does not say the year is unused | DONE | `__tests__/wp16.test.tsx` |
 | 16.2 Print templates: delete after a confirm (documents still print with the standard layout) and add a deleted one back (`POST /settings/print-templates:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |
 | 16.3 Payment modes: the linked ledger shown by code and name; link a ledger (assets and liabilities, cash and bank first, like the web); delete after a confirm and add a deleted one back (`POST /settings/payment-modes:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |
+
+## Web parity, phase 17: customer corrections of the web (commit 94a0617)
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web's `pages/customers.js` and `customers-lib.js`, and the server's `apps/api/src/{crm,agri}.controller.ts`. Code in `src/features/customers/Parity17.tsx`, shown in the customer's sections and panels. Texts in `i18n-parts/wp17.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 17.1 Calls and visits: correct an entry (notes, crop issue, advice, with the reason; the original stays on record) and mark one as made in error with a reason (`PATCH /customers/:id/interactions/:iid`, `POST .../void`); a struck-out entry shows its reason | DONE | `__tests__/wp17.test.tsx` |
+| 17.2 Service cases: update advice, source, reference and outcome (only filled boxes, with the version) and delete (struck out with a reason, never erased) (`PATCH /customers/:id/service-cases/:cid`, `POST .../void`) | DONE | `__tests__/wp17.test.tsx` |
+| 17.3 KYC document details: type, number (only when typed) and expiry (`PATCH /customers/:id/documents/:docId`); the file itself does not change | DONE | `__tests__/wp17.test.tsx` |
+| 17.4 Purchase plans: edit a draft (season, year, items as "item | qty | needed by" lines), delete a draft, close a confirmed plan (`PATCH`, `DELETE /customers/:id/purchase-plans/:planId`, `POST .../status`) | DONE | `__tests__/wp17.test.tsx` |
+| 17.5 Total land: "Add land details" records a "Main plot"; "Edit total land" changes the area and unit of the only plot (`POST /customers/:id/plots`, `PATCH .../plots/:plotId` with the version); several plots are changed one by one | DONE | `__tests__/wp17.test.tsx` |
+| 17.6 Search, kind and date filters over calls and visits, and search and dates over the service cases (on the phone, the lists are already loaded) | DONE | `__tests__/wp17.test.tsx` |
+| Limit: the web also lets land be entered as a step of a new registration; on the phone it is added from the customer's Farms section right after | Limit | - |

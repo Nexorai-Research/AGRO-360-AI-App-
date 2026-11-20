@@ -33,6 +33,7 @@ import {
   type PurchasePlanForm,
   type TransitionForm,
 } from './plans-logic';
+import { PlanActions } from './Parity17';
 
 const seasonOpts = (t: (k: string) => string) =>
   SEASONS.map((x) => ({ value: x, label: t(`customers.plans.season.${x}`) }));
@@ -383,6 +384,8 @@ function PurchasePlans({ customerId, open }: { customerId: string; open: boolean
                       }
                     />
                   ) : null}
+                  {/* web parity 17: edit or delete a draft, close a confirmed plan */}
+                  <PlanActions customerId={customerId} x={x} seasons={SEASONS} />
                 </View>
               ))}
             </>

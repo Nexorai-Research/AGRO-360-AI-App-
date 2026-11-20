@@ -19,6 +19,15 @@ import {
   type SectionKey,
 } from './more-api';
 import { StateView, fmtDate, isDenied, isNetwork } from './ui';
+import {
+  ActivityFilter,
+  InteractionActions,
+  KycDocEdit,
+  NO_FILTER,
+  TotalLand,
+  matchesActivity,
+  type ActivityFilterValue,
+} from './Parity17';
 
 /** One section: closed until the user opens it, then one read-only query. Nothing is loaded for a section that stays closed. */
 function Section<T>({
@@ -75,6 +84,7 @@ const Row = ({ a, b }: { a: string; b?: string | null }) => (
 export function MoreSections({ customerId }: { customerId: string }) {
   const { t } = useTranslation();
   const { me } = useAuth();
+  const [flt, setFlt] = useState<ActivityFilterValue>(NO_FILTER);
   const can = (k: SectionKey) => !me?.permissions || me.permissions.includes(SECTION_PERM[k]);
   const shown = SECTIONS.filter(can);
   const secs: Record<SectionKey, ReactNode> = {
@@ -97,6 +107,7 @@ export function MoreSections({ customerId }: { customerId: string }) {
                 ))}
               </View>
             ))}
+            <TotalLand customerId={customerId} farms={d} />
           </>
         )}
       </Section>
@@ -112,6 +123,7 @@ export function MoreSections({ customerId }: { customerId: string }) {
                   {k.expired ? t('customers.more.expired') : k.status}
                   {k.expiresOn ? ` · ${t('customers.more.expiresOn', { date: fmtDate(k.expiresOn) })}` : ''}
                 </Text>
+                <KycDocEdit customerId={customerId} d={k} />
               </View>
             ))}
             <Text style={s.muted}>{t('customers.more.kycNote')}</Text>
@@ -190,23 +202,36 @@ export function MoreSections({ customerId }: { customerId: string }) {
     ),
     activity: (
       <Section customerId={customerId} name="activity" load={fetchActivity} empty={(d) => d.length === 0}>
-        {(d) => (
+        {(all) => (
           <>
-            {d.map((i) => (
-              <View key={i.id} style={s.item}>
-                <Row a={i.kind} b={fmtDate(i.occurredAt.slice(0, 10))} />
-                <Text style={s.muted}>{i.notes}</Text>
-                {i.cropIssue ? (
-                  <Text style={s.muted}>{t('customers.more.issue', { text: i.cropIssue })}</Text>
-                ) : null}
-                {i.advice ? (
-                  <Text style={s.muted}>{t('customers.more.advice', { text: i.advice })}</Text>
-                ) : null}
-                {i.followUpOn ? (
-                  <Text style={s.warn}>{t('customers.more.followUp', { date: fmtDate(i.followUpOn) })}</Text>
-                ) : null}
-              </View>
-            ))}
+            {/* web parity 17: search, kind and date range; correct an entry or mark it as made in error */}
+            <ActivityFilter value={flt} onChange={setFlt} kinds={['CALL', 'VISIT', 'SHOP_VISIT']} />
+            {all
+              .filter((i) =>
+                matchesActivity(flt, {
+                  kind: i.kind,
+                  date: i.occurredAt,
+                  text: [i.notes, i.cropIssue, i.advice],
+                }),
+              )
+              .map((i) => (
+                <View key={i.id} style={s.item}>
+                  <Row a={i.kind} b={fmtDate(i.occurredAt.slice(0, 10))} />
+                  <Text style={[s.muted, i.voided ? s.struck : null]}>{i.notes ?? t('wp17.i.erased')}</Text>
+                  {i.cropIssue ? (
+                    <Text style={s.muted}>{t('customers.more.issue', { text: i.cropIssue })}</Text>
+                  ) : null}
+                  {i.advice ? (
+                    <Text style={s.muted}>{t('customers.more.advice', { text: i.advice })}</Text>
+                  ) : null}
+                  {i.followUpOn ? (
+                    <Text style={s.warn}>
+                      {t('customers.more.followUp', { date: fmtDate(i.followUpOn) })}
+                    </Text>
+                  ) : null}
+                  <InteractionActions customerId={customerId} x={i} />
+                </View>
+              ))}
           </>
         )}
       </Section>
@@ -236,4 +261,5 @@ const s = StyleSheet.create({
   fv: { color: colors.ink, fontSize: 15, flexShrink: 1 },
   muted: { color: colors.muted, fontSize: 13 },
   warn: { color: colors.warn, fontSize: 13 },
+  struck: { textDecorationLine: 'line-through' },
 });
