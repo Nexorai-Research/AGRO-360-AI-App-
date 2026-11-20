@@ -7170,7 +7170,7 @@
       "settings": "Settings"
     },
     "t": {
-      "devices": "Phones",
+      "devices": "Phones that synced",
       "attention": "Need attention",
       "conflicts": "Bills to decide",
       "rejected": "Refused in 7 days",
@@ -7244,5 +7244,20 @@
       "saved": "Sync settings saved."
     },
     "seeBill": "See the bill"
+  },
+  "wp22": {
+    "title": "Land and farm (optional)",
+    "hint": "Leave it empty for a customer who does not farm; land can be added later from the customer's Farms section.",
+    "farmerHint": "This is a farmer category: please enter the land so the profile opens with its acreage. Leave it empty to skip for now.",
+    "area": "Land holding",
+    "unit": "Unit",
+    "plotName": "Farm or plot name",
+    "irrigation": "Irrigation",
+    "crop": "Primary crop",
+    "season": "Season",
+    "v": {
+      "area": "An area above 0, with at most 2 decimals."
+    },
+    "landFailed": "Customer registered, but the land details were not saved. Add them from the customer's Farms section."
   }
 }

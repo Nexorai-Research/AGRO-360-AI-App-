@@ -941,7 +941,7 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 17.4 Purchase plans: edit a draft (season, year, items as "item | qty | needed by" lines), delete a draft, close a confirmed plan (`PATCH`, `DELETE /customers/:id/purchase-plans/:planId`, `POST .../status`) | DONE | `__tests__/wp17.test.tsx` |
 | 17.5 Total land: "Add land details" records a "Main plot"; "Edit total land" changes the area and unit of the only plot (`POST /customers/:id/plots`, `PATCH .../plots/:plotId` with the version); several plots are changed one by one | DONE | `__tests__/wp17.test.tsx` |
 | 17.6 Search, kind and date filters over calls and visits, and search and dates over the service cases (on the phone, the lists are already loaded) | DONE | `__tests__/wp17.test.tsx` |
-| Limit: the web also lets land be entered as a step of a new registration; on the phone it is added from the customer's Farms section right after | Limit | - |
+| Land entered with a new registration, like the web: done in phase 22 | DONE | `__tests__/wp22.test.tsx` |
 
 ## Web parity, phase 18: retire a consent purpose (web commit 94a0617)
 
@@ -1080,7 +1080,7 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 17.4 Purchase plans: edit a draft (season, year, items as "item | qty | needed by" lines), delete a draft, close a confirmed plan (`PATCH`, `DELETE /customers/:id/purchase-plans/:planId`, `POST .../status`) | DONE | `__tests__/wp17.test.tsx` |
 | 17.5 Total land: "Add land details" records a "Main plot"; "Edit total land" changes the area and unit of the only plot (`POST /customers/:id/plots`, `PATCH .../plots/:plotId` with the version); several plots are changed one by one | DONE | `__tests__/wp17.test.tsx` |
 | 17.6 Search, kind and date filters over calls and visits, and search and dates over the service cases (on the phone, the lists are already loaded) | DONE | `__tests__/wp17.test.tsx` |
-| Limit: the web also lets land be entered as a step of a new registration; on the phone it is added from the customer's Farms section right after | Limit | - |
+| Land entered with a new registration, like the web: done in phase 22 | DONE | `__tests__/wp22.test.tsx` |
 
 ## Web parity, phase 18: retire a consent purpose (web commit 94a0617)
 
@@ -1224,3 +1224,12 @@ Mocked API, not run against the real backend or a phone. The server has these ro
 | 21.2 Bills to decide (open or decided): the reason, the bill's items and payments (`GET /sync/conflicts`, `/sync/conflicts/:id`); Retry books it again now in the resolver's name, and says so when the server still refuses; Discard drops it with a reason of 5 characters or more (`POST .../retry`, `.../discard`) | DONE | `__tests__/wp21.test.tsx` |
 | 21.3 Operations refused for good (`GET /sync/failed-ops`) | DONE | `__tests__/wp21.test.tsx` |
 | 21.4 Sync settings: oldest app version allowed, hours a phone may sell offline, bills per send (`GET/PUT /sync/settings` with the version) | DONE | `__tests__/wp21.test.tsx` |
+
+## Web parity, phase 22: land with a new customer's registration
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `pages/customers.js` ("New customer: land & farm"). Code `src/features/customers/RegisterLand.tsx`, on the new-customer form. Texts in `i18n-parts/wp22.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 22.1 The new-customer form has an optional land section (with `customer.farm`): land holding, unit, plot name, irrigation, and with `customer.crop` the primary crop and season; a farmer category (farmer, grower, kisan) asks for it, like the web | DONE | `__tests__/wp22.test.tsx` |
+| 22.2 Saved after the customer is created: the first plot (`POST /customers/:id/plots`), then the crop plan on that plot for this year (`POST /customers/:id/crop-plans`); a failure never undoes the registration and says to add the land from the Farms section | DONE | `__tests__/wp22.test.tsx` |
