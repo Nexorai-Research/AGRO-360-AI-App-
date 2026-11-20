@@ -1,0 +1,134 @@
+{
+  "en": {
+    "wp16": {
+      "mode": {
+        "ledger": "Ledger account",
+        "noLedger": "none linked",
+        "linkLedger": "Link a ledger to {{code}}",
+        "delete": "Delete {{code}}",
+        "deleteWhat": "{{code}} will be deleted from this list and switched off, so it can no longer be taken at billing. Its ledger link is cleared. Payments already recorded are not changed. You can add it back later.",
+        "confirmDelete": "Delete payment mode",
+        "deleted": "Payment mode deleted. You can add it back.",
+        "addBack": "Add payment mode back",
+        "addBackHint": "It comes back switched off: link a ledger account to enable it.",
+        "pick": "Deleted payment modes",
+        "addedBack": "Payment mode added back"
+      },
+      "tpl": {
+        "delete": "Delete",
+        "deleteWhat": "The {{doc}} template will be deleted from this list. Documents of this type still print with the standard default layout, and issued documents are not changed. You can add it back later.",
+        "confirmDelete": "Delete template",
+        "deleted": "Template deleted. You can add it back.",
+        "addBack": "Add template back",
+        "addBackHint": "Pick a deleted template. It comes back with the default layout.",
+        "addedBack": "Template added back"
+      },
+      "year": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "editIntro": "Dates of {{label}} can change only while nothing is booked in it. Its months are rebuilt for the new dates.",
+        "fixedByPrev": "Fixed by the previous year",
+        "fixedByNext": "Fixed by the next year",
+        "save": "Save dates",
+        "updated": "Financial year updated",
+        "deleteIntro": "{{label}} ({{start}} to {{end}}) has not started and nothing is booked in it. Its months and unused number series are removed with it. You can add the year again later.",
+        "confirmDelete": "Delete year",
+        "deleted": "Financial year deleted",
+        "why": {
+          "locked": "A locked year cannot be changed.",
+          "inUse": "Cannot be edited or deleted: something is booked in it (a locked month, an issued number, a budget or a year-end close).",
+          "started": "Cannot be deleted: it has already started.",
+          "notLast": "Only the last year can be deleted."
+        }
+      }
+    }
+  },
+  "hi": {
+    "wp16": {
+      "mode": {
+        "ledger": "लेजर खाता",
+        "noLedger": "कोई नहीं जुड़ा",
+        "linkLedger": "{{code}} से लेजर जोड़ें",
+        "delete": "{{code}} हटाएँ",
+        "deleteWhat": "{{code}} इस सूची से हटेगा और बंद होगा, बिलिंग में नहीं लिया जा सकेगा। इसका लेजर लिंक हटेगा। पहले दर्ज भुगतान नहीं बदलेंगे। बाद में वापस जोड़ सकते हैं।",
+        "confirmDelete": "भुगतान तरीका हटाएँ",
+        "deleted": "भुगतान तरीका हटाया। वापस जोड़ सकते हैं।",
+        "addBack": "भुगतान तरीका वापस जोड़ें",
+        "addBackHint": "यह बंद हालत में वापस आता है: चालू करने के लिए लेजर खाता जोड़ें।",
+        "pick": "हटाए गए भुगतान तरीके",
+        "addedBack": "भुगतान तरीका वापस जुड़ा"
+      },
+      "tpl": {
+        "delete": "हटाएँ",
+        "deleteWhat": "{{doc}} टेम्पलेट इस सूची से हटेगा। इस प्रकार के दस्तावेज़ मानक लेआउट में छपते रहेंगे, जारी दस्तावेज़ नहीं बदलेंगे। बाद में वापस जोड़ सकते हैं।",
+        "confirmDelete": "टेम्पलेट हटाएँ",
+        "deleted": "टेम्पलेट हटाया। वापस जोड़ सकते हैं।",
+        "addBack": "टेम्पलेट वापस जोड़ें",
+        "addBackHint": "हटाया गया टेम्पलेट चुनें। यह मानक लेआउट के साथ वापस आता है।",
+        "addedBack": "टेम्पलेट वापस जुड़ा"
+      },
+      "year": {
+        "edit": "बदलें",
+        "delete": "हटाएँ",
+        "editIntro": "{{label}} की तारीखें तभी बदल सकती हैं जब इसमें कुछ दर्ज न हो। नई तारीखों के लिए महीने फिर बनेंगे।",
+        "fixedByPrev": "पिछले वर्ष से तय",
+        "fixedByNext": "अगले वर्ष से तय",
+        "save": "तारीखें सहेजें",
+        "updated": "वित्तीय वर्ष बदला गया",
+        "deleteIntro": "{{label}} ({{start}} से {{end}}) शुरू नहीं हुआ और इसमें कुछ दर्ज नहीं। इसके महीने और अनुपयोगी नंबर सीरीज़ भी हटेंगी। बाद में फिर जोड़ सकते हैं।",
+        "confirmDelete": "वर्ष हटाएँ",
+        "deleted": "वित्तीय वर्ष हटाया गया",
+        "why": {
+          "locked": "लॉक वर्ष नहीं बदल सकता।",
+          "inUse": "बदला या हटाया नहीं जा सकता: इसमें कुछ दर्ज है (लॉक महीना, जारी नंबर, बजट या वर्षांत समापन)।",
+          "started": "हटाया नहीं जा सकता: यह शुरू हो चुका है।",
+          "notLast": "केवल आखिरी वर्ष हटाया जा सकता है।"
+        }
+      }
+    }
+  },
+  "mr": {
+    "wp16": {
+      "mode": {
+        "ledger": "लेजर खाते",
+        "noLedger": "काही जोडलेले नाही",
+        "linkLedger": "{{code}} ला लेजर जोडा",
+        "delete": "{{code}} हटवा",
+        "deleteWhat": "{{code}} या यादीतून हटेल आणि बंद होईल, बिलिंगमध्ये घेता येणार नाही. त्याचा लेजर दुवा हटेल. आधी नोंदलेली देयके बदलणार नाहीत. नंतर परत जोडता येईल.",
+        "confirmDelete": "देयक पद्धत हटवा",
+        "deleted": "देयक पद्धत हटवली. परत जोडता येईल.",
+        "addBack": "देयक पद्धत परत जोडा",
+        "addBackHint": "ती बंद स्थितीत परत येते: चालू करण्यासाठी लेजर खाते जोडा.",
+        "pick": "हटवलेल्या देयक पद्धती",
+        "addedBack": "देयक पद्धत परत जोडली"
+      },
+      "tpl": {
+        "delete": "हटवा",
+        "deleteWhat": "{{doc}} टेम्पलेट या यादीतून हटेल. या प्रकारचे दस्तऐवज मानक मांडणीत छापले जातील, जारी दस्तऐवज बदलणार नाहीत. नंतर परत जोडता येईल.",
+        "confirmDelete": "टेम्पलेट हटवा",
+        "deleted": "टेम्पलेट हटवले. परत जोडता येईल.",
+        "addBack": "टेम्पलेट परत जोडा",
+        "addBackHint": "हटवलेले टेम्पलेट निवडा. ते मानक मांडणीसह परत येते.",
+        "addedBack": "टेम्पलेट परत जोडले"
+      },
+      "year": {
+        "edit": "बदला",
+        "delete": "हटवा",
+        "editIntro": "{{label}} च्या तारखा त्यात काहीही नोंदलेले नसतानाच बदलता येतात. नवीन तारखांसाठी महिने पुन्हा तयार होतील.",
+        "fixedByPrev": "मागील वर्षाने ठरलेले",
+        "fixedByNext": "पुढील वर्षाने ठरलेले",
+        "save": "तारखा जतन करा",
+        "updated": "आर्थिक वर्ष बदलले",
+        "deleteIntro": "{{label}} ({{start}} ते {{end}}) सुरू झालेले नाही आणि त्यात काही नोंदलेले नाही. त्याचे महिने आणि न वापरलेल्या क्रमांक मालिका हटतील. नंतर पुन्हा जोडता येईल.",
+        "confirmDelete": "वर्ष हटवा",
+        "deleted": "आर्थिक वर्ष हटवले",
+        "why": {
+          "locked": "लॉक केलेले वर्ष बदलता येत नाही.",
+          "inUse": "बदलता किंवा हटवता येत नाही: त्यात काही नोंदलेले आहे (लॉक महिना, जारी क्रमांक, अंदाजपत्रक किंवा वर्षअखेर बंद).",
+          "started": "हटवता येत नाही: ते सुरू झाले आहे.",
+          "notLast": "फक्त शेवटचे वर्ष हटवता येते."
+        }
+      }
+    }
+  }
+}

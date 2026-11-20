@@ -918,3 +918,13 @@ Copied from the web's `apps/web/src/i18n-data.js` (language list, shell texts) a
 | Limit: NOT CHECKED by a native speaker, neither the web's phrases nor the hand-written core texts. The web's own note: Maithili, Dogri, Sindhi, Kashmiri and Sanskrit were drafted without a native reviewer; Bodo, Manipuri and Santali are only partly translated. Kashmiri, Sindhi, Bodo, Manipuri and Santali have no hand-written core texts here | Limit | - |
 | Limit: Urdu and Kashmiri text shows in its script, but the screen layout is not mirrored right to left (React Native needs an app restart for that) | Limit | - |
 | Limit: the web phrase lookup `tw()` (one screen) still has only Hindi and Marathi | Limit | - |
+
+## Web parity, phase 16: setup changes of the web (commit 94a0617)
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web's `pages/settings.js` and the server's `modules/org/src/application/{financial-years,payment-modes,print}.ts`. Texts in `i18n-parts/wp16.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 16.1 Financial years: edit the dates of an open year nothing is booked in (`PUT /financial-years/:id`; a start or end fixed by the neighbouring year cannot be changed); delete the last year before it starts, with a recorded reason (`POST /financial-years/:id:delete`); the last year says why it cannot be deleted. Nothing is offered when the server does not say the year is unused | DONE | `__tests__/wp16.test.tsx` |
+| 16.2 Print templates: delete after a confirm (documents still print with the standard layout) and add a deleted one back (`POST /settings/print-templates:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |
+| 16.3 Payment modes: the linked ledger shown by code and name; link a ledger (assets and liabilities, cash and bank first, like the web); delete after a confirm and add a deleted one back (`POST /settings/payment-modes:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |

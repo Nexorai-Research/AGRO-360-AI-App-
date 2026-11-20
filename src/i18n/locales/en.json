@@ -6993,5 +6993,47 @@
   },
   "wp15": {
     "partial": "{{pct}}% of the app in this language, the rest in English. Not yet checked by a native speaker."
+  },
+  "wp16": {
+    "mode": {
+      "ledger": "Ledger account",
+      "noLedger": "none linked",
+      "linkLedger": "Link a ledger to {{code}}",
+      "delete": "Delete {{code}}",
+      "deleteWhat": "{{code}} will be deleted from this list and switched off, so it can no longer be taken at billing. Its ledger link is cleared. Payments already recorded are not changed. You can add it back later.",
+      "confirmDelete": "Delete payment mode",
+      "deleted": "Payment mode deleted. You can add it back.",
+      "addBack": "Add payment mode back",
+      "addBackHint": "It comes back switched off: link a ledger account to enable it.",
+      "pick": "Deleted payment modes",
+      "addedBack": "Payment mode added back"
+    },
+    "tpl": {
+      "delete": "Delete",
+      "deleteWhat": "The {{doc}} template will be deleted from this list. Documents of this type still print with the standard default layout, and issued documents are not changed. You can add it back later.",
+      "confirmDelete": "Delete template",
+      "deleted": "Template deleted. You can add it back.",
+      "addBack": "Add template back",
+      "addBackHint": "Pick a deleted template. It comes back with the default layout.",
+      "addedBack": "Template added back"
+    },
+    "year": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "editIntro": "Dates of {{label}} can change only while nothing is booked in it. Its months are rebuilt for the new dates.",
+      "fixedByPrev": "Fixed by the previous year",
+      "fixedByNext": "Fixed by the next year",
+      "save": "Save dates",
+      "updated": "Financial year updated",
+      "deleteIntro": "{{label}} ({{start}} to {{end}}) has not started and nothing is booked in it. Its months and unused number series are removed with it. You can add the year again later.",
+      "confirmDelete": "Delete year",
+      "deleted": "Financial year deleted",
+      "why": {
+        "locked": "A locked year cannot be changed.",
+        "inUse": "Cannot be edited or deleted: something is booked in it (a locked month, an issued number, a budget or a year-end close).",
+        "started": "Cannot be deleted: it has already started.",
+        "notLast": "Only the last year can be deleted."
+      }
+    }
   }
 }

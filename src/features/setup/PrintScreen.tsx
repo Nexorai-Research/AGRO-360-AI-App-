@@ -7,7 +7,18 @@ import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
 import { Chips, Field, Notice, k, useActionKey } from '../purchase/ui';
 import { useSal } from '../collections/sal-hook';
-import { FLAGS, PAPERS, SP, fetchTemplates, saveTemplate, skey, type Flag, type PrintTemplate } from './api';
+import {
+  FLAGS,
+  PAPERS,
+  SP,
+  deleteTemplate,
+  fetchTemplateList,
+  restoreTemplate,
+  saveTemplate,
+  skey,
+  type Flag,
+  type PrintTemplate,
+} from './api';
 import { previewTemplate } from './print-preview';
 import { NON_HIDEABLE, buildTemplate, templateErrors, templateToForm, type TemplateForm } from './logic';
 
@@ -19,15 +30,19 @@ export default function PrintScreen() {
   const key = useActionKey();
   const [edit, setEdit] = useState<PrintTemplate | null>(null);
   const [form, setForm] = useState<TemplateForm | null>(null);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [restore, setRestore] = useState('');
   const ok = s.ready && s.can(SP.view);
-  const list = useQuery({
-    queryKey: skey(s.userId, 'templates'),
-    queryFn: ({ signal }) => fetchTemplates(s.client!, signal),
+  const all = useQuery({
+    queryKey: skey(s.userId, 'templates-list'),
+    queryFn: ({ signal }) => fetchTemplateList(s.client!, signal),
     enabled: ok,
     retry: retryNetworkOnce,
   });
+  const list = { ...all, data: all.data?.items } as typeof all & { data: PrintTemplate[] | undefined };
   if (!s.can(SP.view)) return <StateView state="denied" message={t('setup.denied')} />;
   const manage = s.can(SP.print);
+  const removed = all.data?.removed ?? [];
 
   function close() {
     setEdit(null);
@@ -55,12 +70,34 @@ export default function PrintScreen() {
     <ScrollView
       contentContainerStyle={k.page}
       keyboardShouldPersistTaps="handled"
-      refreshControl={<RefreshControl refreshing={list.isRefetching} onRefresh={() => void list.refetch()} />}
+      refreshControl={<RefreshControl refreshing={all.isRefetching} onRefresh={() => void all.refetch()} />}
     >
       <Text style={k.title}>{t('setup.print.title')}</Text>
       <Text style={k.sub}>{t('setup.print.intro')}</Text>
       {s.msg ? <Notice tone="ok" text={s.msg} /> : null}
       {s.failure ? <Notice tone="error" text={s.failure} /> : null}
+      {manage && removed.length > 0 ? (
+        <View style={k.card}>
+          <Text style={k.name}>{t('wp16.tpl.addBack')}</Text>
+          <Text style={k.sub}>{t('wp16.tpl.addBackHint')}</Text>
+          <Chips
+            options={removed.map((d) => ({ value: d, label: nice(d) }))}
+            value={restore}
+            onChange={setRestore}
+          />
+          <Button
+            label={t('wp16.tpl.addBack')}
+            disabled={s.busy || !removed.includes(restore)}
+            onPress={() =>
+              void s.act(
+                t('wp16.tpl.addedBack'),
+                () => restoreTemplate(s.client!, restore, key.keyFor(`restore-tpl|${restore}`)),
+                () => (setRestore(''), key.reset()),
+              )
+            }
+          />
+        </View>
+      ) : null}
       <Gate q={list} ns="setup" emptyKey="setup.print.empty" isEmpty={(list.data ?? []).length === 0}>
         {(list.data ?? []).map((x) => (
           <View key={x.docType} style={k.card}>
@@ -88,6 +125,37 @@ export default function PrintScreen() {
                   })
                 }
               />
+            ) : null}
+            {manage && removing !== x.docType && edit?.docType !== x.docType ? (
+              <Button
+                kind="ghost"
+                label={`${t('wp16.tpl.delete')} ${nice(x.docType)}`}
+                onPress={() => (close(), setRemoving(x.docType))}
+              />
+            ) : null}
+            {manage && removing === x.docType ? (
+              <>
+                <Text style={k.sub}>{t('wp16.tpl.deleteWhat', { doc: nice(x.docType) })}</Text>
+                <View style={k.row}>
+                  <Button
+                    label={t('wp16.tpl.confirmDelete')}
+                    disabled={s.busy}
+                    onPress={() =>
+                      void s.act(
+                        t('wp16.tpl.deleted'),
+                        () =>
+                          deleteTemplate(
+                            s.client!,
+                            x.docType,
+                            key.keyFor(`delete-tpl|${x.docType}|${x.version}`),
+                          ),
+                        () => (setRemoving(null), key.reset()),
+                      )
+                    }
+                  />
+                  <Button kind="ghost" label={t('setup.cancel')} onPress={() => setRemoving(null)} />
+                </View>
+              </>
             ) : null}
             {edit?.docType === x.docType && form ? (
               <>

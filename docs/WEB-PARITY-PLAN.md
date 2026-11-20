@@ -177,7 +177,18 @@ The owner answered the open questions: platform admin and observability like the
 | Languages | Web: 22 Indian languages. App: English, Hindi, Marathi. Add the rest? |
 | Offline billing | Web has an offline journal and sync (`src/offline/*`). Match it in the app? |
 
-Until answered, these are not built.
+All five were answered on 19 November 2026 and built in phases 12 to 15.
+
+## Fifth scan: web commit 94a0617 (19 November 2026)
+
+The web moved 24 commits after the copy the earlier scans read (2343b9b). Read again (a read-only snapshot, not a clone) and compared with the app. New gaps: 17 API calls, plus screen-level changes found by comparing the changed web pages (`customers.js`, `settings.js`, `crm-admin.js`, `assistant*.js`, `home.js`, `hr.js`). The new communications backend (`comms.controller.ts`) has no web page yet, so there is nothing to copy.
+
+| Phase | What | Web source |
+|---|---|---|
+| 16 | Setup: edit a financial year's dates and delete the last unused one, with a reason (`PUT /financial-years/:id`, `POST :delete`); delete and add back payment modes and print templates (`:delete`, `:restore`); a mode is enabled only once a ledger is linked; the ledger shown by code and name | `pages/settings.js` |
+| 17 | Customers: edit and remove plots, documents, interactions (void), service cases (void) and draft purchase plans (`PATCH`, `DELETE`, `/void`); add land at registration and "Edit total land"; search, type and date filters on the timeline and service cases | `pages/customers.js`, `customers-lib.js` |
+| 18 | CRM admin: retire or bring back a consent purpose (`POST /crm/consent/purposes/:code/status`); only active purposes on a customer's consent list | `pages/crm-admin.js`, `pages/customers.js` |
+| 19 | Assistant: ask the server what the assistant may do (`GET /assistant/capabilities`) and make every business write go through an explicit confirm step, as the web's new confirmation control does | `assistant.js`, `assistant-confirm.js`, `assistant-session.js` |
 
 ## Steps per feature
 
