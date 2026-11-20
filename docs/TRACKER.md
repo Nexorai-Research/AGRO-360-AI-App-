@@ -914,7 +914,7 @@ Copied from the web's `apps/web/src/i18n-data.js` (language list, shell texts) a
 | 15.2 Every app text whose English matches a web phrase (placeholders mapped both ways; a translation that would lose a figure is skipped) | DONE | `__tests__/wp15.test.tsx` |
 | 15.3 Core texts written by hand (sign-in, home, menu module names, common buttons, the main errors, the usage switch) in 15 languages: bn, te, ta, ur, gu, kn, ml, or, pa, as, ne, kok, mai, doi, sa | DONE | `__tests__/wp15.test.tsx` |
 | 15.4 Everything not translated shows in English, never blank; the picker says how much of the app is in the chosen language and that a native check is pending | DONE | `__tests__/wp15.test.tsx` |
-| Coverage of the app's 6215 texts (after phase 19, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 29%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
+| Coverage of the app's 6292 texts (after phase 23, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 28%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
 | Limit: NOT CHECKED by a native speaker, neither the web's phrases nor the hand-written core texts. The web's own note: Maithili, Dogri, Sindhi, Kashmiri and Sanskrit were drafted without a native reviewer; Bodo, Manipuri and Santali are only partly translated. Kashmiri, Sindhi, Bodo, Manipuri and Santali have no hand-written core texts here | Limit | - |
 | Limit: Urdu and Kashmiri text shows in its script, but the screen layout is not mirrored right to left (React Native needs an app restart for that) | Limit | - |
 | Note: the web phrase lookup `tw()` has only Hindi and Marathi, but no screen uses it any more, so nothing shows untranslated because of it | Note | - |
@@ -961,7 +961,7 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 19.1 Before the assistant even proposes a change (add a customer, record a payment) it asks the server whether changes through the assistant are allowed (`GET /assistant/capabilities`, `chatWrites`); an error or no clear yes means no, and nothing is proposed or sent | DONE | `__tests__/wp19.test.tsx` |
 | 19.2 While a change waits for the Yes button, typed words never confirm it: only an exact "no" / "nahi" / "cancel" (and the Hindi and Marathi words of the web's list) cancels; any other reply leaves it waiting and says to use the buttons | DONE | `__tests__/wp19.test.tsx` |
 | Note: the app already ran a change only from the Yes button of the change being shown, once; that part needed no change | DONE | `__tests__/ai-screens.test.tsx` |
-| Limit: the web's streamed answer (`POST /assistant/chat/stream`) is not used; the phone waits for the whole answer | Limit | - |
+| The streamed answer (`POST /assistant/chat/stream`): done in phase 23 | DONE | `__tests__/wp23.test.tsx` |
 
 ## Web parity, phase 1: daily shop work
 
@@ -1053,7 +1053,7 @@ Copied from the web's `apps/web/src/i18n-data.js` (language list, shell texts) a
 | 15.2 Every app text whose English matches a web phrase (placeholders mapped both ways; a translation that would lose a figure is skipped) | DONE | `__tests__/wp15.test.tsx` |
 | 15.3 Core texts written by hand (sign-in, home, menu module names, common buttons, the main errors, the usage switch) in 15 languages: bn, te, ta, ur, gu, kn, ml, or, pa, as, ne, kok, mai, doi, sa | DONE | `__tests__/wp15.test.tsx` |
 | 15.4 Everything not translated shows in English, never blank; the picker says how much of the app is in the chosen language and that a native check is pending | DONE | `__tests__/wp15.test.tsx` |
-| Coverage of the app's 6215 texts (after phase 19, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 29%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
+| Coverage of the app's 6292 texts (after phase 23, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 28%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
 | Limit: NOT CHECKED by a native speaker, neither the web's phrases nor the hand-written core texts. The web's own note: Maithili, Dogri, Sindhi, Kashmiri and Sanskrit were drafted without a native reviewer; Bodo, Manipuri and Santali are only partly translated. Kashmiri, Sindhi, Bodo, Manipuri and Santali have no hand-written core texts here | Limit | - |
 | Limit: Urdu and Kashmiri text shows in its script, but the screen layout is not mirrored right to left (React Native needs an app restart for that) | Limit | - |
 | Note: the web phrase lookup `tw()` has only Hindi and Marathi, but no screen uses it any more, so nothing shows untranslated because of it | Note | - |
@@ -1100,7 +1100,7 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 19.1 Before the assistant even proposes a change (add a customer, record a payment) it asks the server whether changes through the assistant are allowed (`GET /assistant/capabilities`, `chatWrites`); an error or no clear yes means no, and nothing is proposed or sent | DONE | `__tests__/wp19.test.tsx` |
 | 19.2 While a change waits for the Yes button, typed words never confirm it: only an exact "no" / "nahi" / "cancel" (and the Hindi and Marathi words of the web's list) cancels; any other reply leaves it waiting and says to use the buttons | DONE | `__tests__/wp19.test.tsx` |
 | Note: the app already ran a change only from the Yes button of the change being shown, once; that part needed no change | DONE | `__tests__/ai-screens.test.tsx` |
-| Limit: the web's streamed answer (`POST /assistant/chat/stream`) is not used; the phone waits for the whole answer | Limit | - |
+| The streamed answer (`POST /assistant/chat/stream`): done in phase 23 | DONE | `__tests__/wp23.test.tsx` |
 
 ## Web parity, phase 2: purchase and catalogue
 
@@ -1233,3 +1233,14 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 |---|---|---|
 | 22.1 The new-customer form has an optional land section (with `customer.farm`): land holding, unit, plot name, irrigation, and with `customer.crop` the primary crop and season; a farmer category (farmer, grower, kisan) asks for it, like the web | DONE | `__tests__/wp22.test.tsx` |
 | 22.2 Saved after the customer is created: the first plot (`POST /customers/:id/plots`), then the crop plan on that plot for this year (`POST /customers/:id/crop-plans`); a failure never undoes the registration and says to add the land from the Farms section | DONE | `__tests__/wp22.test.tsx` |
+
+## Web parity, phase 23: the assistant's answer streamed
+
+Mocked API and mocked stream, not run against the real backend or a phone. Copied from the web's `assistant.js` and `api.js` (`apiStream`, `readSse`) and the server's `POST /assistant/chat/stream` (events `text`, `done`, `error`). Code: `src/api/sse.ts`, `stream` in `src/api/client.ts`, `askAssistant` in `src/features/ai/api.ts`.
+
+| Feature | State | Test |
+|---|---|---|
+| 23.1 The answer shows word by word as the model writes it; the final `done` event replaces the preview and is the only answer used | DONE | `__tests__/wp23.test.tsx` |
+| 23.2 Server-sent events read piece by piece (expo/fetch), with the same sign-in, renewal and Idempotency-Key as every call; a letter cut between two pieces (Hindi, Marathi) is decoded whole; an `error` event is shown as an error | DONE | `__tests__/wp23.test.tsx` |
+| 23.3 A server or phone that cannot stream: the question is asked the ordinary way (`POST /assistant/chat`), and streaming is not tried again in that session, like the web | DONE | `__tests__/wp23.test.tsx` |
+| Limit: tested with a mocked stream only; reading a live stream with expo/fetch on a real phone has not been tried | Limit | - |

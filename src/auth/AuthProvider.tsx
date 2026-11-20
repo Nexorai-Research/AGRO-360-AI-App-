@@ -41,6 +41,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setStatus('signedOut');
         },
         uuid: newId,
+        // expo/fetch can read an answer piece by piece (the assistant's streamed answer); loaded only when a stream is asked for
+        streamFetch: ((...a: Parameters<typeof fetch>) =>
+          (require('expo/fetch') as { fetch: typeof fetch }).fetch(...a)) as typeof fetch,
       }),
     [],
   );

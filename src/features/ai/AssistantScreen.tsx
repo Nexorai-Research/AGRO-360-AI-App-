@@ -9,7 +9,7 @@ import { colors, radius } from '@/ui/theme';
 import { ApiError } from '@/api/errors';
 import { newId } from '@/device';
 import { Notice, k, useErrorText } from '../purchase/ui';
-import { sendChat, type Block, type ChatMessage } from './api';
+import { askAssistant, type Block, type ChatMessage } from './api';
 import { chatWritesAllowed, classifyReply, makeTools, runToolUses } from './tools';
 
 /** At most this many model calls for one question: a model that keeps asking for tools is stopped. */
@@ -47,6 +47,7 @@ export default function AssistantScreen() {
   const [failure, setFailure] = useState<string | null>(null);
   const [ask, setAsk] = useState<Ask | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+  const [live, setLive] = useState('');
   const history = useRef<ChatMessage[]>([]);
   const lock = useRef(false);
   const seq = useRef(0);
@@ -100,11 +101,14 @@ export default function AssistantScreen() {
     try {
       for (let step = 0; step < MAX_STEPS; step++) {
         // One key per model call: a retry after a lost answer is a new tap, so a new call and a new key.
-        const r = await sendChat(
+        // web parity 23: the words show as they are written; the final answer replaces the preview
+        const r = await askAssistant(
           client,
           { messages: [...history.current], today: indiaToday(), lang: currentLanguage() },
-          newId(),
+          newId,
+          setLive,
         );
+        setLive('');
         history.current.push({ role: 'assistant', content: r.content });
         const said = textOf(r.content);
         if (said) push('bot', said);
@@ -119,6 +123,7 @@ export default function AssistantScreen() {
       setFailure(e instanceof ApiError && e.code === 'NETWORK' ? t('ai.offline') : errText(e));
     } finally {
       lock.current = false;
+      setLive('');
       setBusy(false);
     }
   }
@@ -163,7 +168,16 @@ export default function AssistantScreen() {
             <Text style={k.name}>{l.text}</Text>
           </View>
         ))}
-        {busy && !ask ? <Text style={k.sub}>{t('ai.thinking')}</Text> : null}
+        {busy && !ask && live ? (
+          <View
+            accessibilityLabel={`${t('ai.bot')}: ${live}`}
+            style={[k.card, { alignSelf: 'flex-start', maxWidth: '90%' }]}
+          >
+            <Text style={k.sub}>{t('ai.bot')}</Text>
+            <Text style={k.name}>{live}</Text>
+          </View>
+        ) : null}
+        {busy && !ask && !live ? <Text style={k.sub}>{t('ai.thinking')}</Text> : null}
         {ask ? (
           <View style={[k.card, { borderColor: colors.warn }]}>
             <Text style={k.name}>{ask.title}</Text>

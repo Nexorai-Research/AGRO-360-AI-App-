@@ -1,4 +1,5 @@
 import { ApiError, type Problem } from './errors';
+import { readSse, type SseEvent } from './sse';
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -13,6 +14,8 @@ export interface ClientOptions {
   onSignedOut: () => void;
   uuid: () => string;
   fetchImpl?: typeof fetch;
+  /** A fetch whose answer can be read piece by piece (expo/fetch on the phone); used only for streamed answers. */
+  streamFetch?: typeof fetch;
 }
 
 export interface RequestOptions {
@@ -45,10 +48,17 @@ export function createClient(o: ClientOptions) {
     token: string,
     key: string,
     corr: string,
+    streamed = false,
   ) {
     const headers: Record<string, string> = {
       Authorization: `Bearer ${token}`,
-      Accept: opts.as === 'text' ? 'text/html' : opts.as === 'bytes' ? '*/*' : 'application/json',
+      Accept: streamed
+        ? 'text/event-stream'
+        : opts.as === 'text'
+          ? 'text/html'
+          : opts.as === 'bytes'
+            ? '*/*'
+            : 'application/json',
       'X-Correlation-Id': corr,
       'X-App-Version': o.appVersion,
     };
@@ -57,7 +67,7 @@ export function createClient(o: ClientOptions) {
     if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
     if (opts.version !== undefined) headers['If-Match'] = `"${opts.version}"`;
     try {
-      return await doFetch(url(path, opts.query), {
+      return await (streamed ? (o.streamFetch ?? doFetch) : doFetch)(url(path, opts.query), {
         method,
         headers,
         body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
@@ -116,8 +126,56 @@ export function createClient(o: ClientOptions) {
     return data as T;
   }
 
+  /**
+   * A POST whose answer is a stream of server-sent events (web parity 23). Signs in and retries after a refresh like `request`.
+   * An error before the stream begins is the usual JSON error. A server that answers without streaming is NOT_STREAM (the caller asks
+   * again the ordinary way); an `error` event inside the stream is thrown with its code.
+   */
+  async function stream(
+    path: string,
+    opts: RequestOptions & { onEvent: (e: SseEvent) => void },
+  ): Promise<void> {
+    const key = opts.idempotencyKey ?? o.uuid();
+    const corr = o.uuid();
+    let token = await o.getToken();
+    if (!token) {
+      o.onSignedOut();
+      throw new ApiError(401, { title: 'UNAUTHENTICATED' }, corr);
+    }
+    let res = await send('POST', path, opts, token, key, corr, true);
+    if (res.status === 401) {
+      token = await o.refreshToken();
+      if (!token) {
+        o.onSignedOut();
+        throw new ApiError(401, { title: 'UNAUTHENTICATED' }, corr);
+      }
+      res = await send('POST', path, opts, token, key, corr, true);
+    }
+    if (!res.ok) {
+      let data: unknown = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
+      if (res.status === 401) o.onSignedOut();
+      throw new ApiError(res.status, data as Problem | null, res.headers.get('X-Correlation-Id') ?? corr);
+    }
+    if (!(res.headers.get('content-type') ?? '').includes('text/event-stream'))
+      throw new ApiError(502, { title: 'NOT_STREAM' }, corr);
+    let failed: ApiError | null = null;
+    await readSse(res, (e) => {
+      if (e.name === 'error') {
+        const d = (e.data ?? {}) as { code?: string; message?: string };
+        failed = new ApiError(502, { title: d.code ?? 'ASSISTANT_UNAVAILABLE', detail: d.message }, corr);
+      } else opts.onEvent(e);
+    });
+    if (failed) throw failed;
+  }
+
   return {
     request,
+    stream,
     get: <T>(p: string, opts?: RequestOptions) => request<T>('GET', p, opts),
     post: <T>(p: string, opts?: RequestOptions) => request<T>('POST', p, opts),
     put: <T>(p: string, opts?: RequestOptions) => request<T>('PUT', p, opts),
