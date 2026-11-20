@@ -164,6 +164,7 @@ export const MODULES: AppModule[] = [
       { key: 'security', href: '/security', icon: '🛡️' },
       { key: 'userSecurity', href: '/user-security', icon: '🔓' },
       { key: 'observability', href: '/observability', icon: '📡' },
+      { key: 'syncDesk', href: '/sync-desk', icon: '🔄' },
     ],
   },
   {

@@ -901,7 +901,7 @@ Note: on the web this is a library that no page uses yet (only its unit tests ca
 | 14.5 Offline bills screen (Operations): ready or not and until when, products kept, waiting and for-review counts, each bill with its state, the invoice number and total the server gave, or the reason it was refused or sent for review | DONE | `__tests__/wp14.test.tsx` |
 | Limit: the grant's Ed25519 signature is not checked on the phone (React Native has no Ed25519 here); the phone checks the device and the expiry. The server checks everything again when the bills arrive | Limit | - |
 | Limit: the web's PIN-based encryption (`crypto.js`) is replaced by the phone's secure storage; no PIN is asked | Limit | - |
-| Limit: the server prices an offline bill when it arrives; tax is not on the phone. A walk-in bill paid less than the server's total, or a credit bill over the limit, becomes a conflict reviewed at the office (the web's sync conflict screen), not on the phone | Limit | - |
+| Limit: the server prices an offline bill when it arrives; tax is not on the phone. A walk-in bill paid less than the server's total, or a credit bill over the limit, becomes a conflict that someone with `integration.sync.manage` settles on the offline sync desk (phase 21), not on the phone that sent it | Limit | - |
 | Limit: only sales are saved offline; a new customer (`CUSTOMER_CREATE`, which the server also accepts), held bills, returns and reservations need the network | Limit | - |
 
 ## Web parity, phase 15: the 22 scheduled languages of India
@@ -962,3 +962,265 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 19.2 While a change waits for the Yes button, typed words never confirm it: only an exact "no" / "nahi" / "cancel" (and the Hindi and Marathi words of the web's list) cancels; any other reply leaves it waiting and says to use the buttons | DONE | `__tests__/wp19.test.tsx` |
 | Note: the app already ran a change only from the Yes button of the change being shown, once; that part needed no change | DONE | `__tests__/ai-screens.test.tsx` |
 | Limit: the web's streamed answer (`POST /assistant/chat/stream`) is not used; the phone waits for the whole answer | Limit | - |
+
+## Web parity, phase 1: daily shop work
+
+All rows: mocked API, not run against the real backend or a phone. Paths, bodies, checks and permissions were copied from the web pages `customers.js`, `collections.js`, `sales.js` and the backend `apps/api/src/{crm,crm-admin,collections,sales,inventory}.controller.ts` with `modules/customer`, `modules/credit` (parsers). The plan is `docs/WEB-PARITY-PLAN.md`. Texts are in `i18n-parts/wp1.json` (English, Hindi, Marathi).
+
+| Feature | State | Test |
+|---|---|---|
+| 1.1 Open CRM tasks of a customer, mark done (`GET /crm/tasks?customerId&status=OPEN`, `POST /crm/tasks/:id/done`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.2 Complaint assign to a person (`POST /complaints/:id/assign`) and supplier claim with a reference of 1 to 80 letters (`POST /complaints/:id/claim`), only while the ticket can still be worked | DONE | `__tests__/wp1-ops.test.tsx` |
+| 1.3 Inputs applied: list, record (blank fields left out like the web), verify (`/customers/:id/applications`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.4 Guarantors: list, add someone who is not a customer (name, mobile 6-9 start, relationship), remove. Picking an existing customer as guarantor is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.5 KYC files: upload PDF/JPEG/PNG up to 2 MB as base64, download through the share sheet, remove after a confirm step | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.6 Loyalty points history (`GET /customers/:id/loyalty/ledger`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.7 Share the statement: language, link days 1 to 90, WhatsApp send; shows the link | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.8 New household with the customer as SELF, decision maker and payer (`POST /crm/households`) | DONE | `__tests__/wp1-customer.test.tsx` |
+| 1.9 Purchase history with season and year filter (`GET /customers/:id/purchases`). The web's "Reorder at the counter" button is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.10 Credit / debit adjustments: list and post, account list per type, one key per form (collections desk, Adjustments tab) | DONE | `__tests__/wp1-ops.test.tsx` |
+| 1.11 Sell reserved stock: active, unexpired reservations of the bill's branch; the reserved line goes on the bill; `reservationId` only on the finalized bill and only while that line is on it | DONE | `__tests__/wp1-ops.test.tsx` |
+
+## Web parity, phase 10: AI
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `ai.js` (knowledge review, inbox, messages, risks), `ai-ocr.js`, `ai-staff.js` (training, shelf check) and `ai-analytics.js` (expansion). Components are in `src/features/ai/Parity10.tsx`. Texts are in `i18n-parts/wp10.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 10.1 Agro knowledge entries: list (all statuses for an owner), new entry (kind, crop, names, stage, season, symptoms, texts, ingredients, dose, source and reference), and the steps by status: submit, approve, reject or retire with a reason (`GET/POST /ai/agro/knowledge`, `POST /ai/agro/knowledge/:id/:step`, `ai.governance.manage`); AI advisory | DONE | `__tests__/wp10.test.tsx` |
+| 10.2 Run the daily AI scan now, with what ran or why it was skipped (`POST /ai/jobs/run`, `ai.governance.manage`); AI inbox | DONE | `__tests__/wp10.test.tsx` |
+| 10.3 A prepared marketing text saved as a campaign message proposal for an approved campaign (`GET /ai/campaigns/drafts?status=APPROVED`, `POST /ai/recommendations/campaign-message`, needs `customer.view` and `crm.greeting.manage`); nothing is sent | DONE | `__tests__/wp10.test.tsx` |
+| 10.4 Scanned documents list per kind; open one; correct the fields and bill lines (only changes are sent, `PUT /ai/ocr/documents/:id/review` with expectedVersion); for a supplier bill choose the supplier and the receipt line of each line and create the DRAFT bill (`POST /ai/ocr/documents/:id/confirm`); bill scan and label scan | DONE | `__tests__/wp10.test.tsx` |
+| 10.5 Shelf check history with the number of differences; tap one to show it again (`GET /ai/shelf-check`) | DONE | `__tests__/wp10.test.tsx` |
+| 10.6 Training texts: add and change (`POST /ai/training/items`, `PUT /ai/training/items/:id` with expectedVersion, `ai.governance.manage`); training, texts tab | DONE | `__tests__/wp10.test.tsx` |
+| 10.7 Attach evidence (kind and number) to an open risk case (`POST /ai/risks/:id/evidence`) | DONE | `__tests__/wp10.test.tsx` |
+| 10.8 Open a saved expansion scenario: its assumptions go back into the form with the result (`GET /ai/expansion/scenarios/:id`) | DONE | `__tests__/wp10.test.tsx` |
+
+## Web parity, phase 12: platform console and usage observability
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `platform.js`, `observability.js` and `reports.js` (platform dashboard). Screens are in `src/features/platform/`. Texts are in `i18n-parts/wp12.json`. Owner decision (19 November 2026): same permissions as the web.
+
+| Feature | State | Test |
+|---|---|---|
+| 12.1 Home menu: a "Platform console" module shown only to roles `platform_admin` / `platform_support` (home cards and the bottom menu); the API still refuses everyone else | DONE | `__tests__/wp12.test.tsx`, `__tests__/home-modules.test.tsx` |
+| 12.2 Franchises: list with search and status (`GET /platform/franchises`), new franchise with the web's checks (2-digit state code, GSTIN of the same state, published plan, admin contact) (`POST /platform/franchises`) | DONE | `__tests__/wp12.test.tsx` |
+| 12.2 One franchise: details, day-one setup steps, entitlements, recent activity; suspend, reactivate (`POST :suspend` / `:reactivate`), retry setup (`POST :reprovision`) and change plan (`PUT /subscription`), each with a recorded reason of 10-500 characters | DONE | `__tests__/wp12.test.tsx` (suspend) |
+| 12.3 Plans: list with versions, new plan (`GET/POST /platform/plans`). Adding and publishing a version stays an API task, as on the web | DONE | `__tests__/wp12.test.tsx` |
+| 12.4 Platform audit trail with action and franchise filters (`GET /platform/audit`) | DONE | `__tests__/wp12.test.tsx` |
+| 12.5 Platform dashboard: franchise counts, growth, plans in use, usage this month, set-up problems, newest franchises (`GET /platform/dashboard`) | DONE | `__tests__/wp12.test.tsx` |
+| 12.6 Usage observability for a franchise admin (`identity.security.manage`): overview, users with filters, issues (`GET /observability/overview`); one user with signals, talking points, visit path and an AI briefing (`GET /observability/users/:id`, `/coaching`) | DONE | `__tests__/wp12.test.tsx` |
+| 12.7 Usage observability across franchises for a platform operator (`GET /platform/observability/overview`, `/franchises/:id`) | DONE | `__tests__/wp12.test.tsx` |
+| Limit: charts are simple bars, not the web's line charts | Limit | - |
+
+## Web parity, phase 13: usage telemetry with an off switch
+
+Mocked API, not run against the real backend. Copied from the web's `apps/web/src/telemetry.js`. Code in `src/telemetry/`. Texts in `i18n-parts/wp13.json`. Owner decision (19 November 2026): send the same events as the web, no personal or KYC data, and let the user switch it off.
+
+| Feature | State | Test |
+|---|---|---|
+| 13.1 Screen opened (`PAGE_VIEW`), slow to appear over 2.5 s (`SLOW`), named actions (`ACTION`) and script errors (`ERROR`, at most ten a minute) sent to `POST /observability/events` as `MOBILE`, in batches of up to 50 every 8 seconds and when the app goes to the background. Each batch has an Idempotency-Key | DONE | `__tests__/wp13.test.tsx` |
+| 13.1 What is sent: the screen name only (no id, no query), a duration, a short error text and a random visit id. User and franchise come from the token. Nothing typed by the user is sent. Stops by itself after five failed sends in a row. Never sent for a platform operator | DONE | `__tests__/wp13.test.tsx` |
+| 13.2 Off switch on the profile card (with the language): on by default like the web; off stops at once, drops what was waiting and is remembered on the phone | DONE | `__tests__/wp13.test.tsx` |
+| Limit: the time to appear is measured until the screen's first frame has been drawn, not until its data has loaded as on the web | Limit | - |
+| Limit: no screen calls `trackAction` yet; the web also uses it nowhere today | Limit | - |
+
+## Web parity, phase 14: offline billing (journal and sync)
+
+All rows: mocked API and mocked phone storage, not run against the real backend or a phone. Copied from the web's `apps/web/src/offline/` (`journal.js`, `sync.js`, `store.js`, `grant.js`) and the server's `apps/api/src/sync.controller.ts` and `sync-appliers.ts`. Code in `src/features/offline/`. Texts in `i18n-parts/wp14.json`. Owner decision (19 November 2026): like the web, an offline journal and sync.
+
+Note: on the web this is a library that no page uses yet (only its unit tests call it). The app wires it to the counter.
+
+| Feature | State | Test |
+|---|---|---|
+| 14.1 Journal: a bill is written first, with its own id (`<device>-<uuid>`) and a provisional number (`OFF-XXXX-00001`); states PENDING, SENDING, APPLIED, CONFLICT, REJECTED; booked bills older than 30 days are pruned | DONE | `__tests__/wp14.test.tsx` |
+| 14.1 Kept in the phone's secure storage (Android Keystore / iOS Keychain), cut into parts, one journal per signed-in user, so one person's bills are never sent as another's | DONE | `__tests__/wp14.test.tsx` |
+| 14.2 Sync (`POST /sync/push`, `/sync/status`): in order, in batches of 50, only the server's answer is believed; after a crash the server is asked about bills left SENDING; an app too old (`UPGRADE_REQUIRED`) keeps the bills waiting and says to update. Runs every 30 s while signed in (backoff 5 s doubling to 15 min), when the app comes back, and by "Send now" | DONE | `__tests__/wp14.test.tsx` |
+| 14.3 Prepare for offline: the server's offline grant (`POST /sync/offline-grant`) and the product list (`GET /sync/pull?entity=products`, only the changes after the first time) | DONE | `__tests__/wp14.test.tsx` |
+| 14.4 Counter without network: branches, warehouses and payment modes from the last online visit, product search from the kept list, an estimate (price x quantity less discounts, before tax) and "Save bill offline" with the online bill body. Not offered after an online attempt whose answer was lost (that bill is retried online with the same key, never saved twice) | DONE | `__tests__/wp14.test.tsx` |
+| 14.5 Offline bills screen (Operations): ready or not and until when, products kept, waiting and for-review counts, each bill with its state, the invoice number and total the server gave, or the reason it was refused or sent for review | DONE | `__tests__/wp14.test.tsx` |
+| Limit: the grant's Ed25519 signature is not checked on the phone (React Native has no Ed25519 here); the phone checks the device and the expiry. The server checks everything again when the bills arrive | Limit | - |
+| Limit: the web's PIN-based encryption (`crypto.js`) is replaced by the phone's secure storage; no PIN is asked | Limit | - |
+| Limit: the server prices an offline bill when it arrives; tax is not on the phone. A walk-in bill paid less than the server's total, or a credit bill over the limit, becomes a conflict that someone with `integration.sync.manage` settles on the offline sync desk (phase 21), not on the phone that sent it | Limit | - |
+| Limit: only sales are saved offline; a new customer (`CUSTOMER_CREATE`, which the server also accepts), held bills, returns and reservations need the network | Limit | - |
+
+## Web parity, phase 15: the 22 scheduled languages of India
+
+Copied from the web's `apps/web/src/i18n-data.js` (language list, shell texts) and `apps/web/src/i18n/<lang>.js` (phrases). The web says its own phrase files are machine translation plus hand-written phrases, to be reviewed by a native speaker. Generator: `scripts/gen-langs.mjs`; hand-written core texts: `i18n-parts/langs-core.json`. Owner decision (19 November 2026): the developer translates now; a native speaker checks later.
+
+| Feature | State | Test |
+|---|---|---|
+| 15.1 English and all 22 languages in the language picker (the web's order, each named in its own script). Hindi and Marathi are first and complete; the other 20 open with "+20". The phone's language is used at first start when it is one of them | DONE | `__tests__/wp15.test.tsx` |
+| 15.2 Every app text whose English matches a web phrase (placeholders mapped both ways; a translation that would lose a figure is skipped) | DONE | `__tests__/wp15.test.tsx` |
+| 15.3 Core texts written by hand (sign-in, home, menu module names, common buttons, the main errors, the usage switch) in 15 languages: bn, te, ta, ur, gu, kn, ml, or, pa, as, ne, kok, mai, doi, sa | DONE | `__tests__/wp15.test.tsx` |
+| 15.4 Everything not translated shows in English, never blank; the picker says how much of the app is in the chosen language and that a native check is pending | DONE | `__tests__/wp15.test.tsx` |
+| Coverage of the app's 6215 texts (after phase 19, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 29%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
+| Limit: NOT CHECKED by a native speaker, neither the web's phrases nor the hand-written core texts. The web's own note: Maithili, Dogri, Sindhi, Kashmiri and Sanskrit were drafted without a native reviewer; Bodo, Manipuri and Santali are only partly translated. Kashmiri, Sindhi, Bodo, Manipuri and Santali have no hand-written core texts here | Limit | - |
+| Limit: Urdu and Kashmiri text shows in its script, but the screen layout is not mirrored right to left (React Native needs an app restart for that) | Limit | - |
+| Note: the web phrase lookup `tw()` has only Hindi and Marathi, but no screen uses it any more, so nothing shows untranslated because of it | Note | - |
+
+## Web parity, phase 16: setup changes of the web (commit 94a0617)
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web's `pages/settings.js` and the server's `modules/org/src/application/{financial-years,payment-modes,print}.ts`. Texts in `i18n-parts/wp16.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 16.1 Financial years: edit the dates of an open year nothing is booked in (`PUT /financial-years/:id`; a start or end fixed by the neighbouring year cannot be changed); delete the last year before it starts, with a recorded reason (`POST /financial-years/:id:delete`); the last year says why it cannot be deleted. Nothing is offered when the server does not say the year is unused | DONE | `__tests__/wp16.test.tsx` |
+| 16.2 Print templates: delete after a confirm (documents still print with the standard layout) and add a deleted one back (`POST /settings/print-templates:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |
+| 16.3 Payment modes: the linked ledger shown by code and name; link a ledger (assets and liabilities, cash and bank first, like the web); delete after a confirm and add a deleted one back (`POST /settings/payment-modes:delete`, `:restore`) | DONE | `__tests__/wp16.test.tsx` |
+
+## Web parity, phase 17: customer corrections of the web (commit 94a0617)
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web's `pages/customers.js` and `customers-lib.js`, and the server's `apps/api/src/{crm,agri}.controller.ts`. Code in `src/features/customers/Parity17.tsx`, shown in the customer's sections and panels. Texts in `i18n-parts/wp17.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 17.1 Calls and visits: correct an entry (notes, crop issue, advice, with the reason; the original stays on record) and mark one as made in error with a reason (`PATCH /customers/:id/interactions/:iid`, `POST .../void`); a struck-out entry shows its reason | DONE | `__tests__/wp17.test.tsx` |
+| 17.2 Service cases: update advice, source, reference and outcome (only filled boxes, with the version) and delete (struck out with a reason, never erased) (`PATCH /customers/:id/service-cases/:cid`, `POST .../void`) | DONE | `__tests__/wp17.test.tsx` |
+| 17.3 KYC document details: type, number (only when typed) and expiry (`PATCH /customers/:id/documents/:docId`); the file itself does not change | DONE | `__tests__/wp17.test.tsx` |
+| 17.4 Purchase plans: edit a draft (season, year, items as "item | qty | needed by" lines), delete a draft, close a confirmed plan (`PATCH`, `DELETE /customers/:id/purchase-plans/:planId`, `POST .../status`) | DONE | `__tests__/wp17.test.tsx` |
+| 17.5 Total land: "Add land details" records a "Main plot"; "Edit total land" changes the area and unit of the only plot (`POST /customers/:id/plots`, `PATCH .../plots/:plotId` with the version); several plots are changed one by one | DONE | `__tests__/wp17.test.tsx` |
+| 17.6 Search, kind and date filters over calls and visits, and search and dates over the service cases (on the phone, the lists are already loaded) | DONE | `__tests__/wp17.test.tsx` |
+| Limit: the web also lets land be entered as a step of a new registration; on the phone it is added from the customer's Farms section right after | Limit | - |
+
+## Web parity, phase 18: retire a consent purpose (web commit 94a0617)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `pages/crm-admin.js` (consent purposes) and `pages/customers.js`. Texts in `i18n-parts/wp18.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 18.1 Consent purposes show Active or Retired; Retire (after a confirm) or Reactivate a purpose (`POST /crm/consent/purposes/:code/status`, `INACTIVE` / `ACTIVE`); the three built-in purposes (transactional, promotional, data advisory) have no button, like the web | DONE | `__tests__/wp18.test.tsx` |
+| 18.2 A customer's consent list asks only for active purposes; consents already given stay in the history | DONE | `__tests__/wp18.test.tsx` |
+
+## Web parity, phase 19: the assistant's guarded changes (web commit 94a0617)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `assistant.js` and `assistant-confirm.js` (WP-I17, ACR-010) and the server's `GET /assistant/capabilities`. Texts in `i18n-parts/wp19.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 19.1 Before the assistant even proposes a change (add a customer, record a payment) it asks the server whether changes through the assistant are allowed (`GET /assistant/capabilities`, `chatWrites`); an error or no clear yes means no, and nothing is proposed or sent | DONE | `__tests__/wp19.test.tsx` |
+| 19.2 While a change waits for the Yes button, typed words never confirm it: only an exact "no" / "nahi" / "cancel" (and the Hindi and Marathi words of the web's list) cancels; any other reply leaves it waiting and says to use the buttons | DONE | `__tests__/wp19.test.tsx` |
+| Note: the app already ran a change only from the Yes button of the change being shown, once; that part needed no change | DONE | `__tests__/ai-screens.test.tsx` |
+| Limit: the web's streamed answer (`POST /assistant/chat/stream`) is not used; the phone waits for the whole answer | Limit | - |
+
+## Web parity, phase 2: purchase and catalogue
+
+All rows: mocked API, not run against the real backend or a phone. Paths, bodies and checks copied from the web pages `purchase.js`, `products.js` and the backend `modules/procurement/src/application/adjustments.ts` (parseSupplierAdjustment), `modules/catalogue/src/domain/catalogue.ts` (parseAssignments, parseBulkTax), `modules/procurement/src/application/orders.ts` (updateOrder). Texts are in `i18n-parts/wp2.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 2.1 Supplier credit / debit notes: list and post (credit names a posted bill; debit names none; account 5040 or 6030 by type; tax only with the supplier GST document; IGST or CGST + SGST). Shown next to Purchase bills | DONE | `__tests__/wp2.test.tsx` |
+| 2.2 Edit a draft purchase order (`PATCH /procurement/purchase-orders/:id` with If-Match); "Edit draft" on the order; refused for a non-draft | DONE | `__tests__/wp2.test.tsx` |
+| 2.3 Discard a draft purchase bill | Already built before this work (`stk/PurchaseScreens.tsx` BillCard) | existing tests |
+| 2.4 Price list assignments (`PUT /price-lists/:id/assignments`, "SCOPE:id" per line like the web) | DONE | `__tests__/wp2.test.tsx` |
+| 2.5 Bulk HSN / tax update with preview (`POST /products/bulk-tax-update`) on the Products with no HSN screen | DONE | `__tests__/wp2.test.tsx` |
+
+## Web parity, phase 3: accounts, GST and settings
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `compliance.js`, `finance-ops.js`, `settings.js`, `main.js` and the backend controllers. Texts are in `i18n-parts/wp3.json` (compliance labels in `i18n-parts/cmp.json`).
+
+| Feature | State | Test |
+|---|---|---|
+| 3.1 Import a CSV bank statement with the column mapping (`POST /finance/bank-statements/import`) on the bank reconciliation screen | DONE | `__tests__/wp3.test.tsx` (mapping, path) |
+| 3.2 Record a bank charge or interest from an unmatched statement line (`POST /finance/bank-lines/:id/entry`) | DONE | `__tests__/wp3.test.tsx` |
+| 3.3 Download GSTR-1 as JSON or CSV (`GET /gst/gstr1/export`), saved and opened in the share sheet | DONE | `__tests__/wp3.test.tsx` (path) |
+| 3.4 GSTR-2B match tab (`GET /gst/itc-reconciliation`) in Tax records. Importing the GSTR-2B file (`POST /gst/gstr2b/import`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.5 Compliance settings: view and change (`GET/PUT /compliance/settings`, If-Match) | DONE | `__tests__/wp3.test.tsx` |
+| 3.6 Reverse charge rules tab with switch on / off (`PATCH /rcm/rules/:id`). Adding a rule (`POST /rcm/rules`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.7 Print template preview (`POST /settings/print-templates:preview`), shown as a PDF in the share sheet (the phone has no web view) | DONE | `__tests__/wp3.test.tsx` (path) |
+| 3.8 "Sign-in seen" sent after every successful `/me`, best effort, like the web | DONE | full suite |
+
+Note: the gap scan read the web's `api('METHOD', path)` calls. Calls made through page-local helpers (for example `post(...)` in `compliance.js`) were not read, so a few web features (such as adding an RCM rule and the GSTR-2B import) were found only while building. A second scan of those helpers is still to do.
+
+## Web parity, phase 4: reports
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `reports.js` (seasonalTab, builder, customTab, branchDashTab) and `modules/reporting/src/application/{seasons,views}.ts`. Texts are in `i18n-parts/wp4.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 4.1 Branch dashboard for today (`GET /reports/dashboard/branch?branchId`): tiles, sales by hour, top products, notes; on the Branches report | DONE | `__tests__/wp4.test.tsx` |
+| 4.2 Season months: view and change (`GET/PUT /reports/seasons`, If-Match), "CODE, Name, first, last" per line; needs `reports.financial` | DONE | `__tests__/wp4.test.tsx` |
+| 4.3 New custom report from the server's dataset list (`GET /reports/custom/datasets`, `POST /reports/views`): columns, add up by, one filter, most rows, shared roles | DONE | `__tests__/wp4.test.tsx` |
+| 4.4 Change (`PATCH /reports/views/:id`, If-Match) and delete (`DELETE`, after a confirm) of your own report; a shared one is only run | DONE | `__tests__/wp4.test.tsx` |
+
+## Web parity, phase 5: AI
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `ai.js` and `ai-analytics.js`. Owner parts need `ai.governance.manage`, like the web. Texts are in `i18n-parts/wp5.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 5.1 AI inbox: list, mark one read, mark all read (`/ai/inbox`); on the AI digest screen | DONE | `__tests__/wp5.test.tsx` |
+| 5.2 AI settings: on / off, monthly calls, margin, cash, shop hours (`GET/PUT /ai/settings`, If-Match); on AI governance | DONE | `__tests__/wp5.test.tsx` |
+| 5.3 Search aliases: counts, add, switch on / off with the version (`/ai/search/aliases`); on AI governance. The web's product search box on that tab is not repeated here | DONE | `__tests__/wp5.test.tsx` |
+| 5.4 Campaign drafts and a campaign message from the assistant (`GET /ai/campaigns/drafts`, `POST /ai/recommendations/campaign-message`) | NOT BUILT | - |
+| 5.5 Weather: branch locations, rules, fetch now (`/ai/weather/locations`, `/rules`, `/refresh`); on the weather screen | DONE | `__tests__/wp5.test.tsx` |
+| 5.6 Agro knowledge CSV import: checked first (nothing saved), then imported as drafts (`POST /ai/agro/knowledge/import`); on advisory | DONE | `__tests__/wp5.test.tsx` (logic only; the file picker is not exercised) |
+| 5.7 Crop requirement factors: list, add, change (expectedVersion), remove (`/ai/crops/factors`); on the crop map | DONE | `__tests__/wp5.test.tsx` |
+| 5.8 Ask the AI what to reorder: stock-out check first, a reorder recommendation only when it says RECOMMEND (`POST /ai/forecast/stockout`, `/ai/recommendations/reorder`); on forecast | DONE | `__tests__/wp5.test.tsx` |
+| 5.9 OCR document review before confirm (`PUT /ai/ocr/documents/:id/review`) | NOT BUILT | - |
+
+## Web parity, phase 6: GST and TDS
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `compliance.js` (itcTab, blocksTab, rcmTab, tdsTab); field rules from `modules/compliance/src/application/itc.ts`, `rcm.ts`, `tds.ts`. All on the tax records hub. Texts are in `i18n-parts/wp6.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 6.1 Input credit tab: the month's purchase bills (`GET /gst/itc-register`), claim or block one with a reason (`POST /gst/bills/:id/itc-decision`, `compliance.itc.manage`) | DONE | `__tests__/wp6.test.tsx` |
+| 6.2 GSTR-2B import of the portal JSON or a CSV for the month, rows that could not be read are counted (`POST /gst/gstr2b/import`, up to 5 MB) | DONE | `__tests__/wp6.test.tsx` |
+| 6.3 Block the input credit of a product or category (`POST /gst/itc-blocks`). The web lists categories from `/categories`, which the server does not have; the app uses `/product-categories` | DONE | `__tests__/wp6.test.tsx` |
+| 6.4 Add a reverse charge rule: unregistered suppliers, one supplier, or a category (`POST /rcm/rules`). Suppliers from `/procurement/suppliers` (the web's `/suppliers` does not exist) | DONE | `__tests__/wp6.test.tsx` |
+| 6.5 Add a TDS / TCS section (`PUT /tax/tds-config`) | DONE | `__tests__/wp6.test.tsx` |
+| 6.6 Run TDS / TCS for the month, shown only while TDS is on (`POST /tax/tds/run`); TDS on / off in the compliance settings card (`PUT /compliance/settings`, `tdsEnabled`) | DONE | `__tests__/wp6.test.tsx`, `__tests__/wp3.test.tsx` |
+
+## Web parity, phase 7: catalogue
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `products.js` (io, composition and labels tabs); field rules from `modules/catalogue/src/application/import-export.ts` and `domain/catalogue.ts`. Texts are in `i18n-parts/wp7.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 7.1 Download the products CSV (`GET /products/export`, `product.export`) and the import template (`GET /products/import/template`, `product.import`), handed to the share sheet; on the import history screen | DONE | `__tests__/wp7.test.tsx` |
+| 7.2 Product import: pick a CSV or an .xlsx file, check it (`POST /products/import`, nothing saved), errors per row and column, then import all or nothing / valid rows only (`POST /products/import/:job/commit`), download the report | DONE | `__tests__/wp7.test.tsx` (the file picker is mocked) |
+| 7.3 Edit a product's composition as "name, percentage, formulation" lines checked against the ingredient master (`GET /ingredients`, `PUT /products/:id/composition`); add an ingredient, banned with a reason only with `product.regulated` (`POST /ingredients`); on product more, composition tab | DONE | `__tests__/wp7.test.tsx` |
+| 7.4 Label sheet: "code, copies" lines, codes found like the web, label data from `GET /labels`, made into a PDF and shared; on the products list. The barcode is printed as its digits, not as bars (the web draws bars) | DONE | `__tests__/wp7.test.tsx` |
+
+## Web parity, phase 8: agri compliance
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web page `compliance-agri.js`: every add / run dialog and every step dialog, field for field. The web form checks only required fields, real dates, months and numbers; the app checks the same and the server decides the rest. Forms are defined in `src/features/compliance/cmp-forms.ts` and drawn by `CmpForm.tsx` inside the existing hubs. Texts are in `i18n-parts/wp8.json`.
+
+Found by the third scan (method-aware; it also reads the web's `post(C('...'))` calls), which the first two scans missed.
+
+| Feature | State | Test |
+|---|---|---|
+| 8.1 Licences hub: add a product registration, a dealer authorisation (manufacturer / brand lists), a vault document, a restriction (global list only with `compliance.restricted.global`); "check expiries now" (`POST /compliance/alerts/run`) | DONE | `__tests__/wp8.test.tsx` |
+| 8.2 Audit pack for a month (`POST /compliance/audit-pack`): the ZIP from the answer is saved and handed to the share sheet | DONE | `__tests__/wp8.test.tsx` |
+| 8.3 Affected stock of restricted ingredients (`GET /compliance/restricted-ingredients/impact`, its `products` list; the web reads `items` / `rows` and shows nothing) | DONE | `__tests__/wp8.test.tsx` |
+| 8.4 Report templates: list with the newest version, add, approve the draft (`compliance.reports.approve`), generate for dates | DONE | `__tests__/wp8.test.tsx` |
+| 8.5 Registers: add a seed lot for a batch | DONE | `__tests__/wp8.test.tsx` |
+| 8.6 Safety hub: open a recall (optional batch scope), quarantine its stock, close with a note; quarantine a batch, release (`compliance.quarantine.approve`) or dispose; log a case, triage, escalate, close; report an incident; take a sample, record a result or custody; record an authenticity check | DONE | `__tests__/wp8.test.tsx` |
+| 8.7 Rules: add a rule (condition must be JSON), every version listed with test / submit / approve / activate / retire by status and permission | DONE | `__tests__/wp8.test.tsx` |
+| 8.8 Batch trace: pick a batch, receipts, sales, returns, totals and whether it agrees with the stock ledger (`GET /compliance/trace`) | DONE | `__tests__/wp8.test.tsx` |
+| The web's "Open" on a recall shows the raw recall as JSON; not repeated in the app | NOT BUILT | - |
+
+## Web parity, phase 9: finance, HR and settings
+
+All rows: mocked API, not run against the real backend or a phone. Copied from the web pages `finance.js` (voucherEditor, setupTab, the GRNI check), `finance-ops.js` (expense form, budgetsTab), `hr.js` (leave types), `settings.js` (licences) and `customers.js` (statement). Texts are in `i18n-parts/wp9.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 9a.1 Cost centres: add (code 2-20 capital letters, digits or dashes) and switch on / off with the version (`POST /finance/cost-centres`, `PATCH /finance/cost-centres/:id`, `finance.account.manage`); chart of accounts, cost centres tab | DONE | `__tests__/wp9.test.tsx` |
+| 9a.2 Edit a draft voucher (`PUT /finance/vouchers/:id`, If-Match) and a draft expense (`PUT /finance/expenses/:id`, If-Match), in the same form as a new one; "Edit draft" on the detail of a DRAFT | DONE | `__tests__/wp9.test.tsx` (voucher on screen; expense through the shared form logic) |
+| 9a.2 New budget: name, financial year, up to three income / expense accounts with a monthly amount spread over April to March (`POST /finance/budgets`, `finance.budget.manage`); periods and budgets, budgets tab. Month-by-month changes stay on the web, like the web dialog says | DONE | `__tests__/wp9.test.tsx` |
+| 9a.3 New leave type (`POST /hr/leave-types`, `hr.leave.approve`); leave screen | DONE | `__tests__/wp9.test.tsx` |
+| 9a.4 Agro licences of the branches: list, add, change with the version and record status (`GET/POST /licences`, `PATCH /licences/:id`, change with `org.licence.manage`); settings screen | DONE | `__tests__/wp9.test.tsx` |
+| 9a.5 Customer statement as a PDF (`GET /customers/:id/statement.html` in the chosen language, made into a PDF and shared; `customer.ledger.view`); customer 360, share panel | DONE | `__tests__/wp9.test.tsx` |
+| 9a.6 Unbilled receipts (GRNI): value received, billed, unbilled per receipt and whether the books agree (`GET /procurement/reports/grni`, `reports.purchase`); purchase reports | DONE | `__tests__/wp9.test.tsx` |
+
+## Phase 21: offline sync desk (not on the web)
+
+Mocked API, not run against the real backend or a phone. The server has these routes (`apps/api/src/sync.controller.ts`, "for the people who look after devices", `integration.sync.manage`) but no web page uses them. Built because an offline bill the server could not book (phase 14) otherwise has no place where anyone can settle it. Screen `src/features/offline/SyncDeskScreen.tsx`, route `/sync-desk`, in the Administration menu. Texts in `i18n-parts/wp21.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 21.1 Totals and every phone with its state (up to date, behind, not heard from, bills to decide, app too old), bills waiting on it and the oldest wait (`GET /sync/health`) | DONE | `__tests__/wp21.test.tsx` |
+| 21.2 Bills to decide (open or decided): the reason, the bill's items and payments (`GET /sync/conflicts`, `/sync/conflicts/:id`); Retry books it again now in the resolver's name, and says so when the server still refuses; Discard drops it with a reason of 5 characters or more (`POST .../retry`, `.../discard`) | DONE | `__tests__/wp21.test.tsx` |
+| 21.3 Operations refused for good (`GET /sync/failed-ops`) | DONE | `__tests__/wp21.test.tsx` |
+| 21.4 Sync settings: oldest app version allowed, hours a phone may sell offline, bills per send (`GET/PUT /sync/settings` with the version) | DONE | `__tests__/wp21.test.tsx` |

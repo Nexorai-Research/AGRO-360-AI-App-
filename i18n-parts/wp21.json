@@ -1,0 +1,290 @@
+{
+    "en":  {
+               "wp21":  {
+                            "title":  "Offline sync desk",
+                            "hint":  "Phones that sell offline, and the bills the server could not book. Retry books a bill again now, as you; Discard drops it with a reason. Both are recorded.",
+                            "denied":  "You do not have access to the sync desk.",
+                            "offline":  "No connection.",
+                            "show":  "Show",
+                            "tab":  {
+                                        "conflicts":  "To decide",
+                                        "devices":  "Phones",
+                                        "failed":  "Refused",
+                                        "settings":  "Settings"
+                                    },
+                            "t":  {
+                                      "devices":  "Phones",
+                                      "attention":  "Need attention",
+                                      "conflicts":  "Bills to decide",
+                                      "rejected":  "Refused in 7 days",
+                                      "applied":  "Booked in 24 hours"
+                                  },
+                            "status":  "Status",
+                            "open":  "Open",
+                            "resolved":  "Decided",
+                            "noConflicts":  "Nothing to decide.",
+                            "noDevices":  "No phone has synced yet.",
+                            "noFailed":  "Nothing was refused.",
+                            "failedHint":  "Operations the server refused for good (they can never be booked as sent).",
+                            "device":  "phone {{id}}",
+                            "kind":  {
+                                         "SALE_INVOICE":  "Bill",
+                                         "CUSTOMER_CREATE":  "New customer"
+                                     },
+                            "items":  "Items",
+                            "paid":  "Paid",
+                            "customer":  "Customer",
+                            "retry":  "Retry",
+                            "discard":  "Discard",
+                            "cancel":  "Cancel",
+                            "note":  "Note (optional)",
+                            "reason":  "Reason (recorded)",
+                            "v":  {
+                                      "reason":  "At least 5 characters.",
+                                      "version":  "A version like 1.4.0.",
+                                      "grace":  "A whole number from 1 to 720.",
+                                      "batch":  "A whole number from 1 to 500."
+                                  },
+                            "ask":  {
+                                        "retry":  "The bill is booked again now, with all the checks of an online bill, in your name. Its original time stays on the record.",
+                                        "discard":  "The bill is dropped and never booked. Settle the money with the customer separately."
+                                    },
+                            "go":  {
+                                       "retry":  "Book it now",
+                                       "discard":  "Discard bill"
+                                   },
+                            "done":  {
+                                         "retry":  "Booked.",
+                                         "discard":  "Discarded."
+                                     },
+                            "stillRefused":  "The server still could not book it. It stays open.",
+                            "resolution":  {
+                                               "APPLIED":  "Booked",
+                                               "DISCARDED":  "Discarded"
+                                           },
+                            "state":  {
+                                          "OK":  "Up to date",
+                                          "BEHIND":  "Behind",
+                                          "SILENT":  "Not heard from",
+                                          "CONFLICTS":  "Bills to decide",
+                                          "OUTDATED":  "App too old"
+                                      },
+                            "d":  {
+                                      "lastSeen":  "Last seen",
+                                      "lastPush":  "Last sent bills",
+                                      "waiting":  "Waiting on the phone",
+                                      "oldest":  "Oldest waiting",
+                                      "hours_one":  "{{count}} hour",
+                                      "hours_other":  "{{count}} hours"
+                                  },
+                            "set":  {
+                                        "hint":  "Applies to every phone of this franchise.",
+                                        "default":  "Default settings (never changed).",
+                                        "minVersion":  "Oldest app version allowed (like 1.4.0)",
+                                        "grace":  "Hours a phone may sell offline (1-720)",
+                                        "batch":  "Bills per send (1-500)",
+                                        "save":  "Save settings",
+                                        "saved":  "Sync settings saved."
+                                    },
+                            "seeBill":  "See the bill"
+                        },
+               "nav":  {
+                           "syncDesk":  "Offline sync desk"
+                       },
+               "featureDesc":  {
+                                   "syncDesk":  "Phones, offline bills to decide"
+                               }
+           },
+    "hi":  {
+               "wp21":  {
+                            "title":  "ऑफ़लाइन सिंक डेस्क",
+                            "hint":  "ऑफ़लाइन बेचने वाले फ़ोन, और वे बिल जो सर्वर दर्ज नहीं कर सका। फिर कोशिश बिल को अभी आपके नाम से दर्ज करती है; छोड़ें उसे कारण के साथ हटाता है। दोनों दर्ज होते हैं।",
+                            "denied":  "आपको सिंक डेस्क की अनुमति नहीं है।",
+                            "offline":  "कनेक्शन नहीं।",
+                            "show":  "दिखाएँ",
+                            "tab":  {
+                                        "conflicts":  "तय करने को",
+                                        "devices":  "फ़ोन",
+                                        "failed":  "अस्वीकार",
+                                        "settings":  "सेटिंग"
+                                    },
+                            "t":  {
+                                      "devices":  "फ़ोन",
+                                      "attention":  "ध्यान चाहिए",
+                                      "conflicts":  "तय करने वाले बिल",
+                                      "rejected":  "7 दिन में अस्वीकार",
+                                      "applied":  "24 घंटे में दर्ज"
+                                  },
+                            "status":  "स्थिति",
+                            "open":  "खुले",
+                            "resolved":  "तय हो चुके",
+                            "noConflicts":  "तय करने को कुछ नहीं।",
+                            "noDevices":  "अभी किसी फ़ोन ने सिंक नहीं किया।",
+                            "noFailed":  "कुछ अस्वीकार नहीं हुआ।",
+                            "failedHint":  "वे काम जो सर्वर ने स्थायी रूप से अस्वीकार किए (भेजे गए रूप में कभी दर्ज नहीं होंगे)।",
+                            "device":  "फ़ोन {{id}}",
+                            "kind":  {
+                                         "SALE_INVOICE":  "बिल",
+                                         "CUSTOMER_CREATE":  "नया ग्राहक"
+                                     },
+                            "items":  "आइटम",
+                            "paid":  "भुगतान",
+                            "customer":  "ग्राहक",
+                            "retry":  "फिर कोशिश करें",
+                            "discard":  "छोड़ें",
+                            "cancel":  "रद्द करें",
+                            "note":  "नोट (वैकल्पिक)",
+                            "reason":  "कारण (दर्ज होगा)",
+                            "v":  {
+                                      "reason":  "कम से कम 5 अक्षर।",
+                                      "version":  "1.4.0 जैसा संस्करण।",
+                                      "grace":  "1 से 720 तक पूर्ण संख्या।",
+                                      "batch":  "1 से 500 तक पूर्ण संख्या।"
+                                  },
+                            "ask":  {
+                                        "retry":  "बिल अभी फिर से दर्ज होगा, ऑनलाइन बिल की सभी जाँच के साथ, आपके नाम से। मूल समय रिकॉर्ड में रहेगा।",
+                                        "discard":  "बिल छोड़ा जाएगा और कभी दर्ज नहीं होगा। ग्राहक से पैसे का हिसाब अलग से करें।"
+                                    },
+                            "go":  {
+                                       "retry":  "अभी दर्ज करें",
+                                       "discard":  "बिल छोड़ें"
+                                   },
+                            "done":  {
+                                         "retry":  "दर्ज हो गया।",
+                                         "discard":  "छोड़ दिया।"
+                                     },
+                            "stillRefused":  "सर्वर अभी भी दर्ज नहीं कर सका। यह खुला रहेगा।",
+                            "resolution":  {
+                                               "APPLIED":  "दर्ज",
+                                               "DISCARDED":  "छोड़ा"
+                                           },
+                            "state":  {
+                                          "OK":  "अप-टू-डेट",
+                                          "BEHIND":  "पीछे",
+                                          "SILENT":  "संपर्क नहीं",
+                                          "CONFLICTS":  "तय करने वाले बिल",
+                                          "OUTDATED":  "ऐप पुराना"
+                                      },
+                            "d":  {
+                                      "lastSeen":  "आखिरी बार देखा",
+                                      "lastPush":  "आखिरी बार बिल भेजे",
+                                      "waiting":  "फ़ोन पर बाकी",
+                                      "oldest":  "सबसे पुराना बाकी",
+                                      "hours_one":  "{{count}} घंटा",
+                                      "hours_other":  "{{count}} घंटे"
+                                  },
+                            "set":  {
+                                        "hint":  "इस फ्रैंचाइज़ी के हर फ़ोन पर लागू।",
+                                        "default":  "मानक सेटिंग (कभी बदली नहीं)।",
+                                        "minVersion":  "सबसे पुराना अनुमत ऐप संस्करण (जैसे 1.4.0)",
+                                        "grace":  "फ़ोन कितने घंटे ऑफ़लाइन बेच सकता है (1-720)",
+                                        "batch":  "एक बार में बिल (1-500)",
+                                        "save":  "सेटिंग सहेजें",
+                                        "saved":  "सिंक सेटिंग सहेजी गई।"
+                                    },
+                            "seeBill":  "बिल देखें"
+                        },
+               "nav":  {
+                           "syncDesk":  "ऑफ़लाइन सिंक डेस्क"
+                       },
+               "featureDesc":  {
+                                   "syncDesk":  "फ़ोन, तय करने वाले ऑफ़लाइन बिल"
+                               }
+           },
+    "mr":  {
+               "wp21":  {
+                            "title":  "ऑफलाइन सिंक डेस्क",
+                            "hint":  "ऑफलाइन विक्री करणारे फोन, आणि सर्व्हर नोंदवू न शकलेली बिले. पुन्हा प्रयत्न बिल आता तुमच्या नावाने नोंदवतो; सोडा ते कारणासह हटवते. दोन्ही नोंदले जातात.",
+                            "denied":  "तुम्हाला सिंक डेस्कची परवानगी नाही.",
+                            "offline":  "कनेक्शन नाही.",
+                            "show":  "दाखवा",
+                            "tab":  {
+                                        "conflicts":  "ठरवायचे",
+                                        "devices":  "फोन",
+                                        "failed":  "नाकारलेले",
+                                        "settings":  "सेटिंग"
+                                    },
+                            "t":  {
+                                      "devices":  "फोन",
+                                      "attention":  "लक्ष हवे",
+                                      "conflicts":  "ठरवायची बिले",
+                                      "rejected":  "7 दिवसांत नाकारले",
+                                      "applied":  "24 तासांत नोंदले"
+                                  },
+                            "status":  "स्थिती",
+                            "open":  "उघडे",
+                            "resolved":  "ठरवलेले",
+                            "noConflicts":  "ठरवायला काही नाही.",
+                            "noDevices":  "अजून कोणत्याही फोनने सिंक केलेले नाही.",
+                            "noFailed":  "काहीही नाकारले नाही.",
+                            "failedHint":  "सर्व्हरने कायमची नाकारलेली कामे (पाठवल्याप्रमाणे कधीच नोंदली जाणार नाहीत).",
+                            "device":  "फोन {{id}}",
+                            "kind":  {
+                                         "SALE_INVOICE":  "बिल",
+                                         "CUSTOMER_CREATE":  "नवीन ग्राहक"
+                                     },
+                            "items":  "वस्तू",
+                            "paid":  "भरलेले",
+                            "customer":  "ग्राहक",
+                            "retry":  "पुन्हा प्रयत्न करा",
+                            "discard":  "सोडा",
+                            "cancel":  "रद्द करा",
+                            "note":  "टीप (ऐच्छिक)",
+                            "reason":  "कारण (नोंदले जाईल)",
+                            "v":  {
+                                      "reason":  "किमान 5 अक्षरे.",
+                                      "version":  "1.4.0 सारखी आवृत्ती.",
+                                      "grace":  "1 ते 720 पूर्ण संख्या.",
+                                      "batch":  "1 ते 500 पूर्ण संख्या."
+                                  },
+                            "ask":  {
+                                        "retry":  "बिल आता पुन्हा नोंदवले जाईल, ऑनलाइन बिलाच्या सर्व तपासणीसह, तुमच्या नावाने. मूळ वेळ रेकॉर्डवर राहील.",
+                                        "discard":  "बिल सोडले जाईल आणि कधीच नोंदवले जाणार नाही. ग्राहकाशी पैशांचा हिशोब वेगळा करा."
+                                    },
+                            "go":  {
+                                       "retry":  "आता नोंदवा",
+                                       "discard":  "बिल सोडा"
+                                   },
+                            "done":  {
+                                         "retry":  "नोंदले गेले.",
+                                         "discard":  "सोडले."
+                                     },
+                            "stillRefused":  "सर्व्हर अजूनही नोंदवू शकला नाही. ते उघडे राहील.",
+                            "resolution":  {
+                                               "APPLIED":  "नोंदले",
+                                               "DISCARDED":  "सोडले"
+                                           },
+                            "state":  {
+                                          "OK":  "अद्ययावत",
+                                          "BEHIND":  "मागे",
+                                          "SILENT":  "संपर्क नाही",
+                                          "CONFLICTS":  "ठरवायची बिले",
+                                          "OUTDATED":  "अ‍ॅप जुने"
+                                      },
+                            "d":  {
+                                      "lastSeen":  "शेवटचे दिसले",
+                                      "lastPush":  "शेवटची बिले पाठवली",
+                                      "waiting":  "फोनवर बाकी",
+                                      "oldest":  "सर्वात जुने बाकी",
+                                      "hours_one":  "{{count}} तास",
+                                      "hours_other":  "{{count}} तास"
+                                  },
+                            "set":  {
+                                        "hint":  "या फ्रँचायझीच्या प्रत्येक फोनला लागू.",
+                                        "default":  "मानक सेटिंग (कधी बदलली नाही).",
+                                        "minVersion":  "परवानगी असलेली सर्वात जुनी अ‍ॅप आवृत्ती (उदा. 1.4.0)",
+                                        "grace":  "फोन किती तास ऑफलाइन विकू शकतो (1-720)",
+                                        "batch":  "एका वेळी बिले (1-500)",
+                                        "save":  "सेटिंग जतन करा",
+                                        "saved":  "सिंक सेटिंग जतन झाली."
+                                    },
+                            "seeBill":  "बिल पाहा"
+                        },
+               "nav":  {
+                           "syncDesk":  "ऑफलाइन सिंक डेस्क"
+                       },
+               "featureDesc":  {
+                                   "syncDesk":  "फोन, ठरवायची ऑफलाइन बिले"
+                               }
+           }
+}

@@ -620,7 +620,8 @@
     "platformPlans": "Plans",
     "platformAudit": "Platform audit",
     "platformObservability": "Franchise usage",
-    "offlineBills": "Offline bills"
+    "offlineBills": "Offline bills",
+    "syncDesk": "Offline sync desk"
   },
   "pos": {
     "title": "New bill",
@@ -1997,7 +1998,8 @@
     "platformPlans": "Plans and their versions",
     "platformAudit": "Who did what on the platform",
     "platformObservability": "Usage of every franchise",
-    "offlineBills": "Bills made without network, sync"
+    "offlineBills": "Bills made without network, sync",
+    "syncDesk": "Phones, offline bills to decide"
   },
   "modules": {
     "account": {
@@ -7154,5 +7156,93 @@
   },
   "wp19": {
     "useButtons": "Typed or spoken words never confirm a change. Use the buttons above (Yes, do it / No), or type \"no\" to cancel."
+  },
+  "wp21": {
+    "title": "Offline sync desk",
+    "hint": "Phones that sell offline, and the bills the server could not book. Retry books a bill again now, as you; Discard drops it with a reason. Both are recorded.",
+    "denied": "You do not have access to the sync desk.",
+    "offline": "No connection.",
+    "show": "Show",
+    "tab": {
+      "conflicts": "To decide",
+      "devices": "Phones",
+      "failed": "Refused",
+      "settings": "Settings"
+    },
+    "t": {
+      "devices": "Phones",
+      "attention": "Need attention",
+      "conflicts": "Bills to decide",
+      "rejected": "Refused in 7 days",
+      "applied": "Booked in 24 hours"
+    },
+    "status": "Status",
+    "open": "Open",
+    "resolved": "Decided",
+    "noConflicts": "Nothing to decide.",
+    "noDevices": "No phone has synced yet.",
+    "noFailed": "Nothing was refused.",
+    "failedHint": "Operations the server refused for good (they can never be booked as sent).",
+    "device": "phone {{id}}",
+    "kind": {
+      "SALE_INVOICE": "Bill",
+      "CUSTOMER_CREATE": "New customer"
+    },
+    "items": "Items",
+    "paid": "Paid",
+    "customer": "Customer",
+    "retry": "Retry",
+    "discard": "Discard",
+    "cancel": "Cancel",
+    "note": "Note (optional)",
+    "reason": "Reason (recorded)",
+    "v": {
+      "reason": "At least 5 characters.",
+      "version": "A version like 1.4.0.",
+      "grace": "A whole number from 1 to 720.",
+      "batch": "A whole number from 1 to 500."
+    },
+    "ask": {
+      "retry": "The bill is booked again now, with all the checks of an online bill, in your name. Its original time stays on the record.",
+      "discard": "The bill is dropped and never booked. Settle the money with the customer separately."
+    },
+    "go": {
+      "retry": "Book it now",
+      "discard": "Discard bill"
+    },
+    "done": {
+      "retry": "Booked.",
+      "discard": "Discarded."
+    },
+    "stillRefused": "The server still could not book it. It stays open.",
+    "resolution": {
+      "APPLIED": "Booked",
+      "DISCARDED": "Discarded"
+    },
+    "state": {
+      "OK": "Up to date",
+      "BEHIND": "Behind",
+      "SILENT": "Not heard from",
+      "CONFLICTS": "Bills to decide",
+      "OUTDATED": "App too old"
+    },
+    "d": {
+      "lastSeen": "Last seen",
+      "lastPush": "Last sent bills",
+      "waiting": "Waiting on the phone",
+      "oldest": "Oldest waiting",
+      "hours_one": "{{count}} hour",
+      "hours_other": "{{count}} hours"
+    },
+    "set": {
+      "hint": "Applies to every phone of this franchise.",
+      "default": "Default settings (never changed).",
+      "minVersion": "Oldest app version allowed (like 1.4.0)",
+      "grace": "Hours a phone may sell offline (1-720)",
+      "batch": "Bills per send (1-500)",
+      "save": "Save settings",
+      "saved": "Sync settings saved."
+    },
+    "seeBill": "See the bill"
   }
 }
