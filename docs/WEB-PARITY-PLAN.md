@@ -190,6 +190,19 @@ The web moved 24 commits after the copy the earlier scans read (2343b9b). Read a
 | 18 | CRM admin: retire or bring back a consent purpose (`POST /crm/consent/purposes/:code/status`); only active purposes on a customer's consent list | `pages/crm-admin.js`, `pages/customers.js` |
 | 19 | Assistant: ask the server what the assistant may do (`GET /assistant/capabilities`) and make every business write go through an explicit confirm step, as the web's new confirmation control does | `assistant.js`, `assistant-confirm.js`, `assistant-session.js` |
 
+## Sixth check: every remaining flag, one by one (20 November 2026)
+
+The scanner still flags 75 web calls. Each was checked by hand in the app code: 74 are built and called through a path the scanner cannot read (`${id}/${action}`, the `C('...')` helper of the compliance hub, `/gst/${which}/snapshot`, `/procurement/suppliers` for `/suppliers`, `/product-categories` for the web's `/categories`, which has no server route at all). One is a real gap: the streamed assistant answer. The tracker also still had rows marked PARTIAL or NOT DONE whose work was finished in later phases.
+
+| Phase | What | Why |
+|---|---|---|
+| 20 | Tracker cleanup: close the stale PARTIAL / NOT DONE rows with the phase that finished them; correct the offline and language notes | The tracker must say plainly what is built |
+| 21 | Offline sync desk for the people who look after devices (`integration.sync.manage`): devices and their state, open conflicts with Retry or Discard (with a reason), refused operations, sync settings (`GET/PUT /sync/settings`, `GET /sync/health`, `/sync/conflicts`, `/sync/failed-ops`) | Not on the web (the server has it, no web page uses it), but without it an offline bill the server could not book (phase 14) can never be settled by anyone |
+| 22 | Land at a new customer's registration, like the web: optional land holding and unit on the new-customer form, saved as the first plot right after the customer is created | `pages/customers.js` (create with land capture) |
+| 23 | The assistant's answer streamed as it is written (`POST /assistant/chat/stream`, server-sent events `text` / `done` / `error`), falling back to the whole answer when the phone cannot stream | `assistant.js` |
+
+Not built, on purpose: right-to-left mirroring for Urdu and Kashmiri (React Native needs an app restart), the grant's Ed25519 check on the phone and the web's PIN encryption (no Ed25519 or PIN on the phone; the server checks again), the web's line charts (the app keeps its own look), an offline new customer (the web has no such screen).
+
 ## Steps per feature
 
 1. Read the web page code and the backend handler (`modules/*/src/application`) for exact fields, validation and errors.

@@ -35,7 +35,7 @@ A row is DONE only when a test for it passed when last run. Last run: `npx jest 
 | Permission handling | DONE (mocked client) | A role without `customer.view` sees "no permission" and the API is not called; ledger hidden without `customer.ledger.view`; a 403 from the server also shows "no permission". The server stays the authority. |
 | English, Hindi, Marathi texts | WRITTEN | Hindi and Marathi were written by the app team, not reviewed by a native speaker. |
 | Maestro flow `maestro/customers.yaml` | WRITTEN, NOT RUN | No emulator or staging backend. The flow assumes a signed-in session and a customer named in `CUSTOMER_NAME`. |
-| Link from the home screen to `/customers` | NOT DONE | Home screen belongs to another branch. Until a link exists the screen opens only by route. |
+| Link from the home screen to `/customers` | DONE later | The home menu's Customers module opens it (`src/features/home/modules.ts`, `__tests__/home-modules.test.tsx`). |
 | Real data, real phone | NOT DONE | Needs the staging API, the Keycloak client and test users. |
 
 # Tracker: Phase 1, screen "Stock check" (`app/stock.tsx`, branch `screen-stock`)
@@ -49,7 +49,7 @@ Backend used (all DONE in `docs/modules/M05-status.md`, UC-068): `GET /inventory
 | Barcode scan to filter by product | PARTLY | The flow (scan, lookup, filter, not found) is tested with the scanner replaced by a fake. The real camera (`src/features/stock/BarcodeScanner.tsx`, `expo-camera`) has NOT been run on a device. `expo-camera` must be installed. |
 | English, Hindi, Marathi strings | DONE (texts) | `src/i18n/locales/*.json`, key `stock`. Hindi and Marathi written by hand, need a native speaker review. |
 | Maestro end to end flow | WRITTEN, NOT RUN | `maestro/stock.yaml`. Needs a signed-in session on a device or emulator. |
-| Link to the Stock screen from home | NOT DONE | Route `/stock` exists; the home screen does not link to it yet. |
+| Link to the Stock screen from home | DONE later | The home menu's Operations module opens it (`src/features/home/modules.ts`, `__tests__/home-modules.test.tsx`). |
 | Branch filter shows only when the user may list branches | NOT TESTED against a real user | Depends on the user's permissions on staging. |
 
 | Attendance check in and out (`app/attendance.tsx`, `src/features/attendance/`) | DONE for the component logic, NOT RUN against the real backend or on a phone | `__tests__/attendance.test.tsx`, 22 tests passed with a mocked API client: loading, empty history, check in and check out, recent days list, server refusal translated (ALREADY_CHECKED_IN), the same Idempotency-Key AND the same body (location included) reused on a retry after a network failure, a fresh key for the next action, no location asked before consent, consent saved with its own key, "Not now", phone refuses the location permission (punch still goes, without coordinates), stop sharing, no location card when the franchise does not allow it, offline (today not loaded, saved data shown, punch fails), 403 and missing permission (`hr.attendance.self`), English, Hindi, Marathi. Uses `GET hr/attendance/today`, `GET hr/attendance/mine`, `POST hr/attendance/check-in`, `POST hr/attendance/check-out`, `POST hr/me/geo-consent` (backend M12 UC-214, marked DONE there, with the note that its integration tests are pending). Response and request shapes are written by hand from the backend source, not generated (no OpenAPI file yet). The Maestro flow `maestro/attendance.yaml` is written and NOT run. Added `expo-location` (needs a new native build; the permission text is in `app.json`). Limits: check in and out are online only, nothing is queued offline; the route `/attendance` exists but no button on the home screen opens it yet; the geo-fence flag text and the "flag" field from the server are English only and not shown; the branch geo-fence only flags, the app never blocks; the web screen also lets HR mark and correct days and export a register, those are NOT built here. Hindi and Marathi texts need a native speaker review. |
@@ -491,7 +491,7 @@ All lines: mocked API client, NOT run against the real backend or a phone. Respo
 | More reports: purchase analysis (with price movement), customer analytics, staff productivity, branch comparison, seasonal comparison, run saved custom reports; period 7/30/90 days or own dates, branch filter, group by, CSV share (`/reports-more`, `src/features/reportsmore/`) | DONE (mocked client) | `stf-reports-home.test.tsx`. Each needs its own permission (`reports.purchase`, `reports.sales`, `reports.financial`). CSV comes from the same GET with `format=csv`, read as text, then the share sheet. Not checked: that the server accepts the `Accept` header the client sends for text. NOT built: Excel and PDF export (binary files), building or editing custom reports, editing season months, the branch dashboard, the audit report (the Audit trail screen exists), the existing Reports screen (`/reports`) still has no branch filter or own dates. |
 | Home extras: payment mix (7 days), latest bills, expiring batches, needs attention counts, insights, daily sales goal (inside `HomeScreen`, `src/features/home/HomeExtras.tsx`, `extras.ts`) | DONE (mocked client) | `stf-reports-home.test.tsx`. Uses `/reports/sales-register`, `/sales/invoices`, `/inventory/batches`, `/procurement/purchase-orders/approvals`, `/complaints`, `/alerts`. Each part loads and fails alone, shows the reference code, and is skipped when the user lacks its permission. The goal is kept on the phone only (secure storage, per user), not on the server. NOT built: biggest stock lines and customer dues cards of the web home, quick actions, setup banner, auto refresh. |
 | Leave approvals | DONE earlier (Step 4, `/leave`) | Not changed. NOT built: leave types create/edit, leave balance edit, applying leave for another employee. |
-| Home menu entries for the new screens | NOT DONE here | `modules.ts` is not edited; the nav texts and routes are listed in the final report. |
+| Home menu entries for the new screens | DONE later | Added to `modules.ts`; every route of the menu is checked to exist (`__tests__/home-modules.test.tsx`). |
 
 ## Credit interest, payment reminders and credit settings (web parity)
 
@@ -705,12 +705,12 @@ All rows: mocked API, not run against the real backend or a phone. Paths, bodies
 | 1.1 Open CRM tasks of a customer, mark done (`GET /crm/tasks?customerId&status=OPEN`, `POST /crm/tasks/:id/done`) | DONE | `__tests__/wp1-customer.test.tsx` |
 | 1.2 Complaint assign to a person (`POST /complaints/:id/assign`) and supplier claim with a reference of 1 to 80 letters (`POST /complaints/:id/claim`), only while the ticket can still be worked | DONE | `__tests__/wp1-ops.test.tsx` |
 | 1.3 Inputs applied: list, record (blank fields left out like the web), verify (`/customers/:id/applications`) | DONE | `__tests__/wp1-customer.test.tsx` |
-| 1.4 Guarantors: list, add someone who is not a customer (name, mobile 6-9 start, relationship), remove. Picking an existing customer as guarantor is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.4 Guarantors: list, add someone who is not a customer (name, mobile 6-9 start, relationship), remove. Picking an existing customer as guarantor was finished in phase 11 | DONE | `__tests__/wp1-customer.test.tsx`, `__tests__/wp11.test.tsx` |
 | 1.5 KYC files: upload PDF/JPEG/PNG up to 2 MB as base64, download through the share sheet, remove after a confirm step | DONE | `__tests__/wp1-customer.test.tsx` |
 | 1.6 Loyalty points history (`GET /customers/:id/loyalty/ledger`) | DONE | `__tests__/wp1-customer.test.tsx` |
 | 1.7 Share the statement: language, link days 1 to 90, WhatsApp send; shows the link | DONE | `__tests__/wp1-customer.test.tsx` |
 | 1.8 New household with the customer as SELF, decision maker and payer (`POST /crm/households`) | DONE | `__tests__/wp1-customer.test.tsx` |
-| 1.9 Purchase history with season and year filter (`GET /customers/:id/purchases`). The web's "Reorder at the counter" button is not built yet | PARTIAL | `__tests__/wp1-customer.test.tsx` |
+| 1.9 Purchase history with season and year filter (`GET /customers/:id/purchases`). The web's "Reorder at the counter" button was finished in phase 11 (11.7) | DONE | `__tests__/wp1-customer.test.tsx`, `__tests__/wp11-pos.test.tsx` |
 | 1.10 Credit / debit adjustments: list and post, account list per type, one key per form (collections desk, Adjustments tab) | DONE | `__tests__/wp1-ops.test.tsx` |
 | 1.11 Sell reserved stock: active, unexpired reservations of the bill's branch; the reserved line goes on the bill; `reservationId` only on the finalized bill and only while that line is on it | DONE | `__tests__/wp1-ops.test.tsx` |
 
@@ -735,9 +735,9 @@ All rows: mocked API, not run against the real backend or a phone. Copied from t
 | 3.1 Import a CSV bank statement with the column mapping (`POST /finance/bank-statements/import`) on the bank reconciliation screen | DONE | `__tests__/wp3.test.tsx` (mapping, path) |
 | 3.2 Record a bank charge or interest from an unmatched statement line (`POST /finance/bank-lines/:id/entry`) | DONE | `__tests__/wp3.test.tsx` |
 | 3.3 Download GSTR-1 as JSON or CSV (`GET /gst/gstr1/export`), saved and opened in the share sheet | DONE | `__tests__/wp3.test.tsx` (path) |
-| 3.4 GSTR-2B match tab (`GET /gst/itc-reconciliation`) in Tax records. Importing the GSTR-2B file (`POST /gst/gstr2b/import`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.4 GSTR-2B match tab (`GET /gst/itc-reconciliation`) in Tax records. Importing the GSTR-2B file (`POST /gst/gstr2b/import`) was finished in phase 6 (6.2) | DONE | `__tests__/wp3.test.tsx`, `__tests__/wp6.test.tsx` |
 | 3.5 Compliance settings: view and change (`GET/PUT /compliance/settings`, If-Match) | DONE | `__tests__/wp3.test.tsx` |
-| 3.6 Reverse charge rules tab with switch on / off (`PATCH /rcm/rules/:id`). Adding a rule (`POST /rcm/rules`) is NOT built | PARTIAL | `__tests__/wp3.test.tsx` |
+| 3.6 Reverse charge rules tab with switch on / off (`PATCH /rcm/rules/:id`). Adding a rule (`POST /rcm/rules`) was finished in phase 6 (6.4) | DONE | `__tests__/wp3.test.tsx`, `__tests__/wp6.test.tsx` |
 | 3.7 Print template preview (`POST /settings/print-templates:preview`), shown as a PDF in the share sheet (the phone has no web view) | DONE | `__tests__/wp3.test.tsx` (path) |
 | 3.8 "Sign-in seen" sent after every successful `/me`, best effort, like the web | DONE | full suite |
 
@@ -882,7 +882,7 @@ Mocked API, not run against the real backend. Copied from the web's `apps/web/sr
 | 13.1 Screen opened (`PAGE_VIEW`), slow to appear over 2.5 s (`SLOW`), named actions (`ACTION`) and script errors (`ERROR`, at most ten a minute) sent to `POST /observability/events` as `MOBILE`, in batches of up to 50 every 8 seconds and when the app goes to the background. Each batch has an Idempotency-Key | DONE | `__tests__/wp13.test.tsx` |
 | 13.1 What is sent: the screen name only (no id, no query), a duration, a short error text and a random visit id. User and franchise come from the token. Nothing typed by the user is sent. Stops by itself after five failed sends in a row. Never sent for a platform operator | DONE | `__tests__/wp13.test.tsx` |
 | 13.2 Off switch on the profile card (with the language): on by default like the web; off stops at once, drops what was waiting and is remembered on the phone | DONE | `__tests__/wp13.test.tsx` |
-| Limit: the time to appear is measured until the screen has drawn and its first work is done (React Native `InteractionManager`), not until its data has loaded as on the web | Limit | - |
+| Limit: the time to appear is measured until the screen's first frame has been drawn, not until its data has loaded as on the web | Limit | - |
 | Limit: no screen calls `trackAction` yet; the web also uses it nowhere today | Limit | - |
 
 ## Web parity, phase 14: offline billing (journal and sync)
@@ -914,10 +914,10 @@ Copied from the web's `apps/web/src/i18n-data.js` (language list, shell texts) a
 | 15.2 Every app text whose English matches a web phrase (placeholders mapped both ways; a translation that would lose a figure is skipped) | DONE | `__tests__/wp15.test.tsx` |
 | 15.3 Core texts written by hand (sign-in, home, menu module names, common buttons, the main errors, the usage switch) in 15 languages: bn, te, ta, ur, gu, kn, ml, or, pa, as, ne, kok, mai, doi, sa | DONE | `__tests__/wp15.test.tsx` |
 | 15.4 Everything not translated shows in English, never blank; the picker says how much of the app is in the chosen language and that a native check is pending | DONE | `__tests__/wp15.test.tsx` |
-| Coverage of the app's 6094 texts: bn 30%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 30%, mai 30%, sat 29%, ks 28%, ne 29%, sd 29%, kok 30%, doi 30%, mni 29%, brx 28%, sa 29% | Limit | - |
+| Coverage of the app's 6215 texts (after phase 19, from web commit 94a0617): bn 29%, te 29%, ta 29%, ur 29%, gu 29%, kn 29%, ml 29%, or 29%, pa 29%, as 29%, mai 29%, sat 29%, ks 28%, ne 29%, sd 28%, kok 29%, doi 29%, mni 29%, brx 28%, sa 29%. New English texts are not translated until `scripts/gen-langs.mjs` runs again; `__tests__/wp15.test.tsx` fails when the files are out of date | Limit | - |
 | Limit: NOT CHECKED by a native speaker, neither the web's phrases nor the hand-written core texts. The web's own note: Maithili, Dogri, Sindhi, Kashmiri and Sanskrit were drafted without a native reviewer; Bodo, Manipuri and Santali are only partly translated. Kashmiri, Sindhi, Bodo, Manipuri and Santali have no hand-written core texts here | Limit | - |
 | Limit: Urdu and Kashmiri text shows in its script, but the screen layout is not mirrored right to left (React Native needs an app restart for that) | Limit | - |
-| Limit: the web phrase lookup `tw()` (one screen) still has only Hindi and Marathi | Limit | - |
+| Note: the web phrase lookup `tw()` has only Hindi and Marathi, but no screen uses it any more, so nothing shows untranslated because of it | Note | - |
 
 ## Web parity, phase 16: setup changes of the web (commit 94a0617)
 
