@@ -36,7 +36,6 @@ let errorWindow = { at: 0, n: 0 };
 let session = '';
 let lastRoute = '/home';
 let appState: NativeEventSubscription | null = null;
-let errorsWired = false;
 
 export const telemetryOn = () => api !== null;
 /** For tests: what is waiting to be sent. */
@@ -90,22 +89,7 @@ export function reportError(message: unknown, where: string) {
   push({ type: 'ERROR', route: lastRoute, message: `${where}: ${text.slice(0, 200)}` });
 }
 
-interface ErrorUtilsLike {
-  getGlobalHandler: () => (e: unknown, fatal?: boolean) => void;
-  setGlobalHandler: (h: (e: unknown, fatal?: boolean) => void) => void;
-}
-function wireErrors() {
-  if (errorsWired) return;
-  const eu = (globalThis as { ErrorUtils?: ErrorUtilsLike }).ErrorUtils;
-  if (!eu) return;
-  errorsWired = true;
-  const previous = eu.getGlobalHandler();
-  eu.setGlobalHandler((e, fatal) => {
-    reportError(e, 'script');
-    if (fatal) void flushTelemetry();
-    previous(e, fatal);
-  });
-}
+// Script errors and lost promises reach reportError from the app's single global handler (src/errors/global.ts).
 
 /** Starts reporting for the signed-in franchise user. Calling it again does nothing. */
 export function startTelemetry(client: ApiClient) {
@@ -118,7 +102,6 @@ export function startTelemetry(client: ApiClient) {
   appState = AppState.addEventListener('change', (s) => {
     if (s !== 'active') void flushTelemetry();
   });
-  wireErrors();
 }
 
 /** Stops reporting and forgets what was waiting (sign-out, switched off, or the API kept failing). */

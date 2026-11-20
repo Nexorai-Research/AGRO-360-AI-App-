@@ -11,9 +11,12 @@ import { BottomNav } from '@/ui/BottomNav';
 import { colors } from '@/ui/theme';
 import { useTelemetry } from '@/telemetry/useTelemetry';
 import { useOfflineSync } from '@/features/offline/useOfflineSync';
+import { ScreenErrorFallback } from '@/ui/ScreenErrorBoundary';
+import { installGlobalErrorHandling } from '@/errors/global';
 
 const queryClient = makeQueryClient();
 void initI18n(); // picks the saved language, else the phone language, else English
+installGlobalErrorHandling(); // errors nothing else caught are recorded for support (src/errors/global.ts)
 
 function Gate() {
   const { status } = useAuth();
@@ -37,7 +40,8 @@ function Gate() {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: topGap }}>
-        <Stack screenOptions={{ headerShown: false }} />
+        {/* each screen has its own error boundary: one that breaks while drawing shows "could not be shown", the app keeps working */}
+        <Stack screenOptions={{ headerShown: false }} unstable_screenErrorBoundary={ScreenErrorFallback} />
       </View>
       {covering ? (
         <View pointerEvents="none" style={[StyleSheet.absoluteFill, { backgroundColor: colors.bg }]} />

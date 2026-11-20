@@ -127,7 +127,7 @@ export default function ChequesScreen() {
                 ) : null}
               </View>
             ) : null}
-            {open?.id === c.id ? (
+            {open && open.id === c.id ? (
               <>
                 <Field
                   label={t('cheques.date')}

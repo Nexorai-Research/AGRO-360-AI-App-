@@ -314,7 +314,7 @@ export default function PettyScreen() {
                           onPress={() => setSel({ id: f.id, act: 'counts' })}
                         />
                       </View>
-                      {sel?.id === f.id ? (
+                      {sel && sel.id === f.id ? (
                         <FundAction f={f} act={sel.act} onClose={() => setSel(null)} />
                       ) : null}
                     </Card>

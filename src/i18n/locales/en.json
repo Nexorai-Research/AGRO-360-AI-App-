@@ -7259,5 +7259,12 @@
       "area": "An area above 0, with at most 2 decimals."
     },
     "landFailed": "Customer registered, but the land details were not saved. Add them from the customer's Farms section."
+  },
+  "wp24": {
+    "title": "This screen could not be shown",
+    "hint": "The server's answer was not what this screen expected. The rest of the app still works. Try again, or go back.",
+    "retry": "Try again",
+    "back": "Go back",
+    "detail": "For support: {{message}}"
   }
 }

@@ -290,7 +290,7 @@ export function KnowledgeEntries() {
               />
             ))}
           </View>
-          {noteFor?.id === e.id ? (
+          {noteFor && noteFor.id === e.id ? (
             <>
               <Field label={t('wp10.kn.reason')} value={note} onChange={setNote} />
               <Button

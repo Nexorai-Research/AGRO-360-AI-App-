@@ -343,7 +343,7 @@ function Saved({ ctx }: { ctx: Ctx }) {
             onPress={() => void open(v.id)}
           />
           <ViewManage view={v} />
-          {run?.id === v.id ? (
+          {run && run.id === v.id ? (
             <>
               {run.data.rows.length === 0 ? <Text style={kit.sub}>{t('stf.rep.noRows')}</Text> : null}
               {run.data.rows.slice(0, 50).map((row, i) => (

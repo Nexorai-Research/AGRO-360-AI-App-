@@ -232,7 +232,7 @@ export default function AccountScreen() {
               onPress={() => setRevoking({ id: d.id, reason: '' })}
             />
           ) : null}
-          {revoking?.id === d.id ? (
+          {revoking && revoking.id === d.id ? (
             <View style={{ gap: 8 }}>
               <Text style={k.sub}>{t('account.revokeWarn')}</Text>
               <TextInput

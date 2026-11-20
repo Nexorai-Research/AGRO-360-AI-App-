@@ -82,8 +82,12 @@ export default function DigestScreen() {
             <View style={k.card}>
               <Text style={k.name}>{d.summary}</Text>
               <Text style={k.sub}>
-                {t('ai.counts', { high: d.counts.HIGH, medium: d.counts.MEDIUM, low: d.counts.LOW })} ·{' '}
-                {d.date}
+                {t('ai.counts', {
+                  high: d.counts?.HIGH ?? 0,
+                  medium: d.counts?.MEDIUM ?? 0,
+                  low: d.counts?.LOW ?? 0,
+                })}{' '}
+                · {d.date}
               </Text>
               {d.snoozed > 0 ? <Text style={k.sub}>{t('ai.snoozedCount', { n: d.snoozed })}</Text> : null}
               {d.notScanned.length > 0 ? (
