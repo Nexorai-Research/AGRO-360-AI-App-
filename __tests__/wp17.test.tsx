@@ -12,6 +12,7 @@ import {
   NO_FILTER,
   parsePlanLines,
   planLinesText,
+  type LandPlot,
 } from '../src/features/customers/Parity17';
 
 const mockPost = jest.fn();
@@ -228,7 +229,7 @@ describe('purchase plans', () => {
 });
 
 describe('total land', () => {
-  const farm = (plots: object[]) => [{ status: 'ACTIVE', plots }];
+  const farm = (plots: LandPlot[]) => [{ status: 'ACTIVE', plots }];
   test('no plot yet: records a "Main plot"', async () => {
     await render(<TotalLand customerId="c1" farms={farm([])} />, { wrapper });
     await fireEvent.press(screen.getByText('Add land details'));
