@@ -7519,5 +7519,25 @@
       "cannotGive": "You do not hold this permission yourself, so you cannot give it to someone else.",
       "cannotTake": "You do not hold this permission yourself, so you cannot take it away."
     }
+  },
+  "wp36": {
+    "title": "Deactivate my account",
+    "hint": "Switches your own login off. You are signed out at once and cannot sign in again until the platform administrator activates your account. Your franchise data is not deleted.",
+    "step1": {
+      "title": "Deactivate your account?",
+      "text": "This switches your login off. You will be signed out and will not be able to sign in again on your own.",
+      "go": "Continue"
+    },
+    "step2": {
+      "title": "Are you really sure?",
+      "text": "While your account is off nobody in your franchise can use the admin screens (users, roles, settings). Only the platform administrator can switch it on again.",
+      "go": "Yes, I am sure"
+    },
+    "step3": {
+      "title": "Last confirmation",
+      "text": "Press the red button to deactivate your account now. You will be signed out immediately.",
+      "go": "Deactivate my account"
+    },
+    "done": "Your account is deactivated"
   }
 }

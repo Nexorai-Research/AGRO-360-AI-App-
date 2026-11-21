@@ -1,0 +1,68 @@
+{
+  "en": {
+    "wp36": {
+      "title": "Deactivate my account",
+      "hint": "Switches your own login off. You are signed out at once and cannot sign in again until the platform administrator activates your account. Your franchise data is not deleted.",
+      "step1": {
+        "title": "Deactivate your account?",
+        "text": "This switches your login off. You will be signed out and will not be able to sign in again on your own.",
+        "go": "Continue"
+      },
+      "step2": {
+        "title": "Are you really sure?",
+        "text": "While your account is off nobody in your franchise can use the admin screens (users, roles, settings). Only the platform administrator can switch it on again.",
+        "go": "Yes, I am sure"
+      },
+      "step3": {
+        "title": "Last confirmation",
+        "text": "Press the red button to deactivate your account now. You will be signed out immediately.",
+        "go": "Deactivate my account"
+      },
+      "done": "Your account is deactivated"
+    }
+  },
+  "hi": {
+    "wp36": {
+      "title": "मेरा खाता बंद करें",
+      "hint": "आपका अपना लॉगिन बंद कर देता है। आप तुरंत साइन आउट हो जाते हैं और प्लेटफ़ॉर्म एडमिन के आपका खाता चालू करने तक दोबारा साइन इन नहीं कर सकते। आपकी फ्रैंचाइज़ी का डेटा नहीं हटता।",
+      "step1": {
+        "title": "अपना खाता बंद करें?",
+        "text": "यह आपका लॉगिन बंद कर देगा। आप साइन आउट हो जाएँगे और खुद दोबारा साइन इन नहीं कर पाएँगे।",
+        "go": "आगे बढ़ें"
+      },
+      "step2": {
+        "title": "क्या आप सच में पक्के हैं?",
+        "text": "आपका खाता बंद रहने तक आपकी फ्रैंचाइज़ी में कोई भी एडमिन स्क्रीन (उपयोगकर्ता, भूमिकाएँ, सेटिंग्स) इस्तेमाल नहीं कर सकता। सिर्फ़ प्लेटफ़ॉर्म एडमिन इसे फिर चालू कर सकता है।",
+        "go": "हाँ, मैं पक्का हूँ"
+      },
+      "step3": {
+        "title": "आखिरी पुष्टि",
+        "text": "अपना खाता अभी बंद करने के लिए लाल बटन दबाएँ। आप तुरंत साइन आउट हो जाएँगे।",
+        "go": "मेरा खाता बंद करें"
+      },
+      "done": "आपका खाता बंद हो गया"
+    }
+  },
+  "mr": {
+    "wp36": {
+      "title": "माझे खाते बंद करा",
+      "hint": "तुमचा स्वतःचा लॉगिन बंद करतो. तुम्ही लगेच साइन आउट होता आणि प्लॅटफॉर्म अ‍ॅडमिन तुमचे खाते चालू करेपर्यंत पुन्हा साइन इन करू शकत नाही. तुमच्या फ्रँचायझीचा डेटा हटत नाही.",
+      "step1": {
+        "title": "तुमचे खाते बंद करायचे?",
+        "text": "यामुळे तुमचा लॉगिन बंद होईल. तुम्ही साइन आउट व्हाल आणि स्वतः पुन्हा साइन इन करू शकणार नाही.",
+        "go": "पुढे जा"
+      },
+      "step2": {
+        "title": "तुम्हाला खात्री आहे का?",
+        "text": "तुमचे खाते बंद असताना तुमच्या फ्रँचायझीतील कोणीही अ‍ॅडमिन स्क्रीन (वापरकर्ते, भूमिका, सेटिंग्ज) वापरू शकत नाही. फक्त प्लॅटफॉर्म अ‍ॅडमिन ते पुन्हा चालू करू शकतो.",
+        "go": "होय, मला खात्री आहे"
+      },
+      "step3": {
+        "title": "शेवटची खात्री",
+        "text": "तुमचे खाते आता बंद करण्यासाठी लाल बटण दाबा. तुम्ही लगेच साइन आउट व्हाल.",
+        "go": "माझे खाते बंद करा"
+      },
+      "done": "तुमचे खाते बंद झाले"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { useAuth } from '@/auth/AuthProvider';
 import { errorMessage, type ErrorMessage } from '@/api/errors';
 import { currentLanguage, setLanguage, type LangCode } from '@/i18n';
 import { Button } from '@/ui/Button';
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { StateView } from '../stock/StateView';
 import { Card, Chips, failText, isNetwork, k, queryState, useAccess, useIdemKey } from '../admin/kit';
 import { fmtWhen } from '../admin/logic';
@@ -18,6 +19,7 @@ import {
   fetchDevices,
   fetchPreferences,
   fetchSessions,
+  deactivateOwnAccount,
   logoutAll,
   revokeDevice,
   savePreferences,
@@ -30,11 +32,13 @@ const LANGS: [LangCode, string][] = [
   ['mr', 'मराठी'],
 ];
 const isLang = (v: string): v is LangCode => LANGS.some(([c]) => c === v);
+/** Only a Franchise Admin (who can manage roles) is offered this, like the web; the server decides again. */
+export const DEACTIVATE_PERMISSION = 'identity.role.manage';
 export const validDeviceReason = (v: string) => v.trim().length >= 5 && v.trim().length <= 500;
 
 export default function AccountScreen() {
   const { t } = useTranslation();
-  const { signOut } = useAuth();
+  const { me, signOut } = useAuth();
   const { client, can, userId } = useAccess();
   const qc = useQueryClient();
   const ready = client !== null && userId !== '' && can(ACCOUNT_PERMISSION);
@@ -46,6 +50,8 @@ export default function AccountScreen() {
   const [busy, setBusy] = useState(false);
   const [revoking, setRevoking] = useState<{ id: string; reason: string } | null>(null);
   const [confirmAll, setConfirmAll] = useState(false);
+  // 0: not asking; 1 to 3: the three confirmations of "Deactivate my account"
+  const [deact, setDeact] = useState<0 | 1 | 2 | 3>(0);
   const idem = useIdemKey();
 
   const prefs = useQuery({
@@ -203,6 +209,44 @@ export default function AccountScreen() {
       ) : (
         <Button kind="ghost" label={t('account.logoutAll')} onPress={() => setConfirmAll(true)} />
       )}
+
+      {me?.permissions?.includes(DEACTIVATE_PERMISSION) ? (
+        <Card>
+          <Text style={k.h2}>{t('wp36.title')}</Text>
+          <Text style={k.sub}>{t('wp36.hint')}</Text>
+          {deact === 0 ? (
+            <Button
+              kind="ghost"
+              label={t('wp36.title')}
+              disabled={busy}
+              onPress={() => (idem.clear(), setDeact(1))}
+            />
+          ) : (
+            <ConfirmBox
+              title={t(`wp36.step${deact}.title`)}
+              text={t(`wp36.step${deact}.text`)}
+              confirm={t(`wp36.step${deact}.go`)}
+              cancel={t('account.cancel')}
+              busy={busy}
+              onConfirm={() =>
+                deact < 3
+                  ? setDeact((deact + 1) as 2 | 3)
+                  : void run(
+                      async () => {
+                        await deactivateOwnAccount(client!, idem.keyFor('deactivate-me'));
+                        setDeact(0);
+                        // like the web: a moment to read the message, then the sign-out
+                        setTimeout(() => void signOut(), 900);
+                      },
+                      t('wp36.done'),
+                      [],
+                    )
+              }
+              onCancel={() => setDeact(0)}
+            />
+          )}
+        </Card>
+      ) : null}
 
       <Text style={k.h2}>{t('account.devices')}</Text>
       {devices.isPending ? <Text style={k.sub}>{t('common.loading')}</Text> : null}

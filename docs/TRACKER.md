@@ -1335,3 +1335,14 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 35.2 Each feature says where it comes from (from the role / extra for this person / taken away); a feature is locked with the web's reason (full access, deactivated, you do not hold it so you cannot give or take it) | DONE (mocked client) | `__tests__/wp34.test.tsx` |
 | The save bar shows how many were turned on and off; Discard puts everything back; a refused save keeps the change and shows the reference | DONE (mocked client) | `__tests__/wp34.test.tsx` |
 | Limits: the screens appear in the home menu like the other screens; a person's own permission list comes from the sign-in (when it is not known the server decides). The web's two-column layout is a list then the editor below. Hindi and Marathi have the menu and page names; the other 19 languages show English. Language coverage numbers were recounted (28 to 29 percent for the added languages, the new texts are English there until phase 33) | Limit | - |
+
+## Web parity, phase 36: the owner switches their own account off
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `account.js` and `security.controller.ts`. Code: the account screen (`src/features/account/AccountScreen.tsx`), `deactivateOwnAccount` in `src/features/account/api.ts`, the phone's confirmation box `src/ui/ConfirmBox.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| 36.1 "Deactivate my account" on the account screen, offered only to someone who holds `identity.role.manage` (a Franchise Admin), like the web | DONE (mocked client) | `__tests__/wp36.test.tsx` |
+| 36.2 Three confirmations with the web's three messages; stopping at any one sends nothing and the next try starts again at the first | DONE (mocked client) | `__tests__/wp36.test.tsx` |
+| 36.3 After the third: `POST /me/deactivate-account` `{confirmations: 3}` with one Idempotency-Key (a retry after a refusal uses the same key), "Your account is deactivated", sign-out after 900 ms | DONE (mocked client) | `__tests__/wp36.test.tsx` |
+| Limit: tested with a mocked API only. When the platform switches the account on again the owner signs in with the same login id and password (phase 26 "Activate admin account"). Hindi and Marathi need a native check | Limit | - |

@@ -57,6 +57,10 @@ export const endSession = (c: ApiClient, id: string, idempotencyKey: string) =>
 export const logoutAll = (c: ApiClient, idempotencyKey: string) =>
   c.post<null>('/auth/logout-all', { idempotencyKey });
 
+/** The owner switches their own login off (identity.session.view). All three confirmations were given, as the server requires. */
+export const deactivateOwnAccount = (c: ApiClient, idempotencyKey: string) =>
+  c.post<{ deactivated: boolean }>('/me/deactivate-account', { body: { confirmations: 3 }, idempotencyKey });
+
 export const revokeDevice = (c: ApiClient, id: string, reason: string, idempotencyKey: string) =>
   c.post<DeviceInfo>(`/devices/${encodeURIComponent(id)}:revoke`, { body: { reason }, idempotencyKey });
 
