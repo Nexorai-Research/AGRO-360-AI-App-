@@ -89,7 +89,7 @@ Last run: `npx jest __tests__/products-inventory` 1 suite, 17 tests passed (mock
 
 ## Step 4: HR self-service, owner reports, accounts and compliance (view)
 
-All lines below: mocked API, not run against the real backend. Tests: `__tests__/hr-screens.test.tsx` (27 passing), `__tests__/reports-accounts.test.tsx` (24 passing). tsc and eslint clean. No device run was done.
+All lines below: mocked API, not run against the real backend. Tests: `__tests__/wp38-leave.test.tsx` (27 passing), `__tests__/reports-accounts.test.tsx` (24 passing). tsc and eslint clean. No device run was done.
 
 DONE (screen plus passing test)
 - Leave (`/leave`, `src/features/hr/LeaveScreen.tsx`): balances, my requests, apply (date checks, one Idempotency-Key reused on retry, new key when the body changes), cancel, and for hr.leave.approve a team tab with approve and reject (reject needs a reason of 3 or more letters). Endpoints: GET /hr/leaves, /hr/leave-balances, /hr/leave-types; POST /hr/leaves, /hr/leaves/:id/cancel, /approve, /reject.
@@ -1369,6 +1369,6 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 38.2 Search by run number, month or status; filters for status, month (YYYY-MM, checked) and branch (with more than one branch) | DONE (mocked client) | `__tests__/wp38.test.tsx` |
 | 38.3 Edit a draft run's month (`PATCH /hr/payroll-runs/:id` `{period}`, one Idempotency-Key; says that drawn payslips are cleared) | DONE (mocked client) | `__tests__/wp38.test.tsx` |
 | 38.4 Delete a draft run with its draft payslips (`DELETE /hr/payroll-runs/:id`): asks first with the web sentence, Cancel sends nothing, a refusal shows its reference; only a draft run has the buttons on, with the reason why not shown for the others; only with `hr.payroll.prepare` | DONE (mocked client) | `__tests__/wp38.test.tsx` |
-| Already built before, found while comparing: no leave type yet is handled on the leave screen (the web's "no leave types" empty state) | DONE | `__tests__/hr-screens.test.tsx` |
+| Already built before, found while comparing: no leave type yet is handled on the leave screen (the web's "no leave types" empty state) | DONE | `__tests__/wp38-leave.test.tsx` |
 | Not for the app: the web's incentives "internal error" fix and "toasts at the top" are server and web layout changes | Not applicable | - |
 | Limits: edit and delete are on each run's card (the web has them in the row menu). The run's branch name is not shown on the card. Hindi and Marathi need a native check | Limit | - |
