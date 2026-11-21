@@ -10,6 +10,7 @@ import { Button } from '@/ui/Button';
 import { Card, Chips, kit } from '@/ui/kit';
 import { colors, radius } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
+import { LabelSheet } from '../stk/Parity7';
 import { PERM, fetchProducts, pkey, type ProductStatusFilter } from './api';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
@@ -44,6 +45,7 @@ export default function ProductsScreen() {
       {can(PERM.create) ? (
         <Button label={t('products.new')} onPress={() => router.push('/products/form' as never)} />
       ) : null}
+      <LabelSheet />
       <TextInput
         value={search}
         onChangeText={setSearch}

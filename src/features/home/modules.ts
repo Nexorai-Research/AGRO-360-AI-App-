@@ -15,6 +15,8 @@ export interface AppModule {
   /** Strong colour of the module; soft tints are made from it. */
   color: string;
   features: Feature[];
+  /** Shown only to a user holding one of these roles (the web's platform console). */
+  roles?: string[];
 }
 
 export const MODULES: AppModule[] = [
@@ -24,6 +26,7 @@ export const MODULES: AppModule[] = [
     color: '#0b7a75',
     features: [
       { key: 'pos', href: '/pos', icon: '🧾' },
+      { key: 'offlineBills', href: '/offline-bills', icon: '📴' },
       { key: 'invoices', href: '/invoices', icon: '📄' },
       { key: 'shifts', href: '/shifts', icon: '⏱️' },
       { key: 'products', href: '/products', icon: '🏷️' },
@@ -160,6 +163,21 @@ export const MODULES: AppModule[] = [
       { key: 'documents', href: '/documents', icon: '📁' },
       { key: 'security', href: '/security', icon: '🛡️' },
       { key: 'userSecurity', href: '/user-security', icon: '🔓' },
+      { key: 'observability', href: '/observability', icon: '📡' },
+      { key: 'syncDesk', href: '/sync-desk', icon: '🔄' },
+    ],
+  },
+  {
+    id: 'platform',
+    icon: '🌐',
+    color: '#5b2a86',
+    roles: ['platform_admin', 'platform_support'],
+    features: [
+      { key: 'platformDashboard', href: '/platform-dashboard', icon: '📊' },
+      { key: 'platformFranchises', href: '/platform-franchises', icon: '🏪' },
+      { key: 'platformPlans', href: '/platform-plans', icon: '📦' },
+      { key: 'platformAudit', href: '/platform-audit', icon: '🔍' },
+      { key: 'platformObservability', href: '/platform-observability', icon: '📡' },
     ],
   },
   {
@@ -197,6 +215,10 @@ export const MODULES: AppModule[] = [
 ];
 
 export const findModule = (id: string | undefined) => MODULES.find((m) => m.id === id);
+
+/** The modules a user with these roles sees: a module tied to roles (the platform console) only for those roles. */
+export const visibleModules = (roles: unknown[]) =>
+  MODULES.filter((m) => !m.roles || m.roles.some((r) => roles.includes(r)));
 
 /** Where a tap on a module card goes: a module with one screen opens it directly (like the web menu), others open their feature list. */
 export const moduleTarget = (m: AppModule): string => {

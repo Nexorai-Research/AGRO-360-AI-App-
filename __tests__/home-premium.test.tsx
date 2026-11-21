@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { setLanguage } from '../src/i18n';
 import { ModuleGrid } from '../src/features/home/ModuleGrid';
 import { BottomNav } from '../src/ui/BottomNav';
-import { MODULES } from '../src/features/home/modules';
+import { visibleModules } from '../src/features/home/modules';
 
 const mockPush = jest.fn();
 const mockBack = jest.fn();
@@ -43,7 +43,8 @@ beforeEach(async () => {
 describe('module on/off switches', () => {
   it('every card has a switch, all on by default', async () => {
     await render(<ModuleGrid />);
-    for (const m of MODULES) expect(screen.getByTestId(`module-switch-${m.id}`).props.value).toBe(true);
+    for (const m of visibleModules([]))
+      expect(screen.getByTestId(`module-switch-${m.id}`).props.value).toBe(true);
   });
 
   it('switching a card off dims it, shows Off and stops it opening; switching on restores it', async () => {
@@ -86,7 +87,7 @@ describe('module on/off switches', () => {
 });
 
 describe('master switch for all modules', () => {
-  const cards = () => MODULES.map((m) => screen.queryByTestId(`module-${m.id}`));
+  const cards = () => visibleModules([]).map((m) => screen.queryByTestId(`module-${m.id}`));
 
   it('is on by default and every card is shown', async () => {
     await render(<ModuleGrid />);
@@ -111,7 +112,8 @@ describe('master switch for all modules', () => {
     await fireEvent(screen.getByTestId('module-switch-staff'), 'valueChange', false);
     await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', false);
     await fireEvent(screen.getByTestId('modules-master-switch'), 'valueChange', true);
-    for (const m of MODULES) expect(screen.getByTestId(`module-switch-${m.id}`).props.value).toBe(true);
+    for (const m of visibleModules([]))
+      expect(screen.getByTestId(`module-switch-${m.id}`).props.value).toBe(true);
     expect(await SecureStore.getItemAsync('agro360.home.modules.off')).toBe('[]');
   });
 
@@ -161,7 +163,7 @@ describe('bottom navigation', () => {
   it('Menu lists every module and opens the one tapped', async () => {
     await render(nav());
     await fireEvent.press(screen.getByTestId('nav-menu'));
-    for (const m of MODULES) expect(screen.getByTestId(`menu-${m.id}`)).toBeTruthy();
+    for (const m of visibleModules([])) expect(screen.getByTestId(`menu-${m.id}`)).toBeTruthy();
     await fireEvent.press(screen.getByTestId('menu-customers'));
     expect(mockPush).toHaveBeenCalledWith('/module/customers');
   });

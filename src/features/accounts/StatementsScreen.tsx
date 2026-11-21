@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { Check } from '@/ui/kit';
+import { BranchProfit, CsvButton, ReconciliationView } from './Parity11';
 import { useAuth } from '@/auth/AuthProvider';
 import { dec, formatINR } from '@/money';
 import { ReadBox } from '@/ui/ReadBox';
@@ -11,7 +14,9 @@ import { todayIST } from '../collections/receipt';
 import { rangeOf } from '../reports/api';
 import {
   STATEMENT_KINDS,
+  STATEMENT_PATH,
   STATEMENT_PERM,
+  statementQuery,
   fetchBalanceSheet,
   fetchBook,
   fetchProfitLoss,
@@ -45,7 +50,18 @@ export default function StatementsScreen() {
   const can = useCan();
   const [kind, setKind] = useState<StatementKind>('pl');
   const [days, setDays] = useState<(typeof PERIODS)[number]>('30');
+  // web parity 11: the web's branch filter and "compare with previous period"
+  const [branchId, setBranchId] = useState('');
+  const [compare, setCompare] = useState(false);
   const allowed = can(STATEMENT_PERM);
+  const branches = useQuery({
+    queryKey: ['statements', me?.userId ?? '', 'branches'],
+    queryFn: async ({ signal }) =>
+      (await client!.get<{ items: { id: string; name: string }[] }>('/branches', { signal })).items,
+    enabled: client !== null && me !== null && allowed,
+    retry: false,
+  });
+  const filter = { branchId, compare: kind === 'pl' && compare };
   const today = todayIST();
   const range = rangeOf(today, Number(days));
   const common = {
@@ -71,7 +87,7 @@ export default function StatementsScreen() {
             value={kind}
             onChange={setKind}
           />
-          {kind !== 'bs' ? (
+          {kind !== 'bs' && kind !== 'recon' ? (
             <Chips
               label={t('statements.period')}
               options={PERIODS.map((d) => ({ id: d, label: t('statements.lastDays', { count: Number(d) }) }))}
@@ -80,16 +96,41 @@ export default function StatementsScreen() {
             />
           ) : null}
           <Text style={kit.sub}>
-            {kind === 'bs'
+            {kind === 'bs' || kind === 'recon'
               ? t('statements.asOn', { date: shortDate(today) })
               : `${shortDate(range.from)} - ${shortDate(range.to)}`}
           </Text>
+          {(kind === 'pl' || kind === 'bs' || kind === 'cash' || kind === 'bank') &&
+          (branches.data ?? []).length > 1 ? (
+            <Chips
+              label={t('wp11.branch')}
+              options={[
+                { id: '', label: t('wp11.allBranches') },
+                ...(branches.data ?? []).map((b) => ({ id: b.id, label: b.name })),
+              ]}
+              value={branchId}
+              onChange={setBranchId}
+            />
+          ) : null}
+          {kind === 'pl' ? <Check label={t('wp11.compare')} value={compare} onChange={setCompare} /> : null}
+          {kind === 'pl' || kind === 'bs' || kind === 'cash' || kind === 'bank' ? (
+            <CsvButton
+              path={STATEMENT_PATH[kind]}
+              query={statementQuery(
+                kind === 'bs' ? { asOn: today } : { from: range.from, to: range.to },
+                filter,
+              )}
+              fileName={`${kind}-${today}.csv`}
+            />
+          ) : null}
+          {kind === 'branch' ? <BranchProfit from={range.from} to={range.to} /> : null}
+          {kind === 'recon' ? <ReconciliationView asOn={today} /> : null}
 
           {kind === 'pl' ? (
             <ReadBox
               {...common}
-              queryKey={['statements', uid, 'pl', range.from, range.to]}
-              load={(c, s) => fetchProfitLoss(c, range.from, range.to, s)}
+              queryKey={['statements', uid, 'pl', range.from, range.to, branchId, String(filter.compare)]}
+              load={(c, s) => fetchProfitLoss(c, range.from, range.to, s, filter)}
             >
               {(d) => (
                 <>
@@ -105,6 +146,23 @@ export default function StatementsScreen() {
                     <Line label={t('statements.otherIncome')} value={formatINR(d.current.otherIncome)} />
                     <Line label={t('statements.netProfit')} value={formatINR(d.current.netProfit)} strong />
                   </Card>
+                  {d.previous ? (
+                    <Card>
+                      <Text style={kit.name}>
+                        {t('wp11.previous', {
+                          from: shortDate(d.previous.from),
+                          to: shortDate(d.previous.to),
+                        })}
+                      </Text>
+                      <Line label={t('statements.netSales')} value={formatINR(d.previous.netSales)} />
+                      <Line label={t('statements.grossProfit')} value={formatINR(d.previous.grossProfit)} />
+                      <Line
+                        label={t('statements.netProfit')}
+                        value={formatINR(d.previous.netProfit)}
+                        strong
+                      />
+                    </Card>
+                  ) : null}
                   <Sections rows={d.current.sections} empty={t('statements.emptyPl')} />
                 </>
               )}
@@ -114,8 +172,8 @@ export default function StatementsScreen() {
           {kind === 'bs' ? (
             <ReadBox
               {...common}
-              queryKey={['statements', uid, 'bs', today]}
-              load={(c, s) => fetchBalanceSheet(c, today, s)}
+              queryKey={['statements', uid, 'bs', today, branchId]}
+              load={(c, s) => fetchBalanceSheet(c, today, s, filter)}
             >
               {(d) => (
                 <>
@@ -140,8 +198,8 @@ export default function StatementsScreen() {
           {kind === 'cash' || kind === 'bank' ? (
             <ReadBox
               {...common}
-              queryKey={['statements', uid, kind, range.from, range.to]}
-              load={(c, s) => fetchBook(c, kind, range.from, range.to, s)}
+              queryKey={['statements', uid, kind, range.from, range.to, branchId]}
+              load={(c, s) => fetchBook(c, kind, range.from, range.to, s, filter)}
             >
               {(d) => (
                 <>

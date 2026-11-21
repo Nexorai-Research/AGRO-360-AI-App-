@@ -1,0 +1,47 @@
+{
+  "en": {
+    "wp22": {
+      "title": "Land and farm (optional)",
+      "hint": "Leave it empty for a customer who does not farm; land can be added later from the customer's Farms section.",
+      "farmerHint": "This is a farmer category: please enter the land so the profile opens with its acreage. Leave it empty to skip for now.",
+      "area": "Land holding",
+      "unit": "Unit",
+      "plotName": "Farm or plot name",
+      "irrigation": "Irrigation",
+      "crop": "Primary crop",
+      "season": "Season",
+      "v": { "area": "An area above 0, with at most 2 decimals." },
+      "landFailed": "Customer registered, but the land details were not saved. Add them from the customer's Farms section."
+    }
+  },
+  "hi": {
+    "wp22": {
+      "title": "ज़मीन और खेत (वैकल्पिक)",
+      "hint": "खेती न करने वाले ग्राहक के लिए खाली छोड़ें; ज़मीन बाद में ग्राहक के खेत भाग से जोड़ सकते हैं।",
+      "farmerHint": "यह किसान श्रेणी है: कृपया ज़मीन लिखें ताकि प्रोफ़ाइल में एकड़ दिखे। अभी छोड़ने के लिए खाली रखें।",
+      "area": "ज़मीन",
+      "unit": "इकाई",
+      "plotName": "खेत या प्लॉट का नाम",
+      "irrigation": "सिंचाई",
+      "crop": "मुख्य फसल",
+      "season": "मौसम",
+      "v": { "area": "0 से अधिक क्षेत्र, अधिकतम 2 दशमलव।" },
+      "landFailed": "ग्राहक दर्ज हुआ, पर ज़मीन का विवरण सहेजा नहीं गया। ग्राहक के खेत भाग से जोड़ें।"
+    }
+  },
+  "mr": {
+    "wp22": {
+      "title": "जमीन आणि शेत (ऐच्छिक)",
+      "hint": "शेती न करणाऱ्या ग्राहकासाठी रिकामे ठेवा; जमीन नंतर ग्राहकाच्या शेत विभागातून जोडता येईल.",
+      "farmerHint": "ही शेतकरी श्रेणी आहे: प्रोफाइलमध्ये एकर दिसावे म्हणून जमीन लिहा. आत्ता वगळण्यासाठी रिकामे ठेवा.",
+      "area": "जमीन धारणा",
+      "unit": "एकक",
+      "plotName": "शेत किंवा प्लॉटचे नाव",
+      "irrigation": "सिंचन",
+      "crop": "मुख्य पीक",
+      "season": "हंगाम",
+      "v": { "area": "0 पेक्षा जास्त क्षेत्र, जास्तीत जास्त 2 दशांश." },
+      "landFailed": "ग्राहक नोंदला गेला, पण जमिनीचा तपशील जतन झाला नाही. ग्राहकाच्या शेत विभागातून जोडा."
+    }
+  }
+}

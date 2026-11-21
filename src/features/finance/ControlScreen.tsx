@@ -24,6 +24,7 @@ import {
   type Period,
 } from './api';
 import { Ask, Button, Card, Chips, Page, Result, kit, useFin, useWrite } from './kit';
+import { NewBudget } from './NewBudget';
 
 type Tab = 'periods' | 'budgets' | 'exceptions';
 
@@ -186,6 +187,7 @@ function Budgets() {
   const [rejecting, setRejecting] = useState('');
   return (
     <>
+      <NewBudget />
       <Result w={w} />
       <ReadBox
         queryKey={['fin', uid, 'budgets']}

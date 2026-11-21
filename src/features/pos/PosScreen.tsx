@@ -58,6 +58,16 @@ import {
   type TenderInputs,
 } from './cart';
 import { humanCode } from '@/format';
+import {
+  estimateTotal,
+  orCached,
+  readiness,
+  saveOfflineSale,
+  searchOrCached,
+  type Readiness,
+} from '../offline/offline';
+import { offlineKey } from '../offline/useOfflineSync';
+import type { Op } from '../offline/journal';
 
 const isNetwork = (e: unknown) => e instanceof ApiError && e.code === 'NETWORK';
 
@@ -70,7 +80,24 @@ function useDebounced<T>(value: T, ms: number): T {
   return v;
 }
 
-export default function PosScreen() {
+/** Reads the reorder hand-off (web parity 11.7): `{ customerId, lines: [{ code, qty }] }`, or null when it is not that. */
+export function parseReorder(
+  s: string | undefined,
+): { customerId: string; lines: { code: string; qty: number }[] } | null {
+  if (!s) return null;
+  try {
+    const x = JSON.parse(s) as { customerId?: unknown; lines?: unknown };
+    if (typeof x.customerId !== 'string' || !Array.isArray(x.lines)) return null;
+    const lines = (x.lines as { code?: unknown; qty?: unknown }[])
+      .filter((l) => typeof l.code === 'string' && typeof l.qty === 'number' && l.qty > 0)
+      .map((l) => ({ code: l.code as string, qty: l.qty as number }));
+    return { customerId: x.customerId, lines };
+  } catch {
+    return null;
+  }
+}
+
+export default function PosScreen({ reorder }: { reorder?: string } = {}) {
   const { t } = useTranslation();
   const { me, client } = useAuth();
   const userId = me?.userId ?? '';
@@ -87,6 +114,8 @@ export default function PosScreen() {
     body: string;
     preview: Preview | null;
     err: ErrorMessage | null;
+    /** The bill could not be priced because there is no network (the offline path opens). */
+    offline?: boolean;
   } | null>(null);
   const [billDate, setBillDate] = useState(() => todayIST());
   const [paying, setPaying] = useState(false);
@@ -96,6 +125,8 @@ export default function PosScreen() {
   const [lostAnswer, setLostAnswer] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<InvoiceResult | null>(null);
+  const [savedOffline, setSavedOffline] = useState<Op | null>(null);
+  const [offlineReady, setOfflineReady] = useState<Readiness | null>(null);
   const [holdLabel, setHoldLabel] = useState<string | null>(null);
   const [quick, setQuick] = useState<{ name: string; mobile: string; village: string } | null>(null);
   const qc = useQueryClient();
@@ -122,30 +153,31 @@ export default function PosScreen() {
   const cq = useDebounced(custSearch.trim(), 300);
   const retry = (n: number, e: unknown) => isNetwork(e) && n < 1;
 
+  // web parity 14: the counter keeps working without a network, from what was kept the last time it was online
   const branches = useQuery({
     queryKey: posKey(userId, 'branches'),
-    queryFn: ({ signal }) => fetchBranches(client!, signal),
+    queryFn: ({ signal }) => orCached(userId, 'branches', () => fetchBranches(client!, signal)),
     enabled: ready,
     staleTime: 5 * 60_000,
     retry,
   });
   const warehouses = useQuery({
     queryKey: posKey(userId, 'warehouses'),
-    queryFn: ({ signal }) => fetchWarehouses(client!, signal),
+    queryFn: ({ signal }) => orCached(userId, 'warehouses', () => fetchWarehouses(client!, signal)),
     enabled: ready,
     staleTime: 5 * 60_000,
     retry,
   });
   const modes = useQuery({
     queryKey: posKey(userId, 'modes'),
-    queryFn: ({ signal }) => fetchPayModes(client!, signal),
+    queryFn: ({ signal }) => orCached(userId, 'modes', () => fetchPayModes(client!, signal)),
     enabled: ready,
     staleTime: 5 * 60_000,
     retry,
   });
   const products = useQuery({
     queryKey: posKey(userId, 'products', q),
-    queryFn: ({ signal }) => searchProducts(client!, q, signal),
+    queryFn: ({ signal }) => searchOrCached(userId, q, () => searchProducts(client!, q, signal)),
     enabled: ready && q.length >= 2,
     staleTime: 30_000,
     retry,
@@ -188,7 +220,7 @@ export default function PosScreen() {
       })
       .catch((e) => {
         if (mine === seq.current && !ctl.signal.aborted)
-          setPriced({ body, preview: null, err: errorMessage(e) });
+          setPriced({ body, preview: null, err: errorMessage(e), offline: isNetwork(e) });
       });
     return () => ctl.abort();
   }, [body, client, priceable]);
@@ -228,10 +260,81 @@ export default function PosScreen() {
     }
   }
 
+  // web parity 11.7: a cart made from the customer's purchase history, once, when the branch and warehouses are known
+  const reorderDone = useRef(false);
+  const wh0 = whOf(branchId);
+  useEffect(() => {
+    const r = parseReorder(reorder);
+    if (reorderDone.current || !r || !client || !branchId || !wh0) return;
+    reorderDone.current = true;
+    void (async () => {
+      const c = await client
+        .get<CustomerLite>(`/customers/${encodeURIComponent(r.customerId)}`)
+        .catch(() => ({ id: r.customerId, name: t('pos.customerFallback') }));
+      let next: Cart = { ...emptyCart, branchId, customerId: c.id };
+      const missing: string[] = [];
+      for (const l of r.lines) {
+        const p = (await searchProducts(client, l.code).catch(() => [])).find(
+          (x) => x.code.toLowerCase() === l.code.toLowerCase(),
+        );
+        if (!p) {
+          missing.push(l.code);
+          continue;
+        }
+        next = addProduct(next, p, wh0);
+        const i = next.lines.findIndex((x) => x.skuId === p.id && x.warehouseId === wh0);
+        next = patchLine(next, i, { qty: String(l.qty) });
+      }
+      setCustomer(c);
+      setCart(next);
+      setNote(
+        missing.length ? t('wp11.reorder.missing', { codes: missing.join(', ') }) : t('wp11.reorder.ready'),
+      );
+    })();
+  }, [reorder, client, branchId, wh0, t]);
+
+  // web parity 14: no network to price the bill. It can be saved to the journal and booked by the server later, but only when no
+  // online attempt was made for this bill (a lost answer is retried online with the same key, never saved a second time offline).
+  const offlineMode = !!current?.offline && !lostAnswer;
+  const estimate = offlineMode ? estimateTotal(effective.lines, effective.billDiscountPct) : null;
+  useEffect(() => {
+    if (!offlineMode || !userId) return;
+    let live = true;
+    void readiness(userId)
+      .then((r) => live && setOfflineReady(r))
+      .catch(() => live && setOfflineReady({ ok: false, reason: 'NOT_PREPARED' }));
+    return () => {
+      live = false;
+    };
+  }, [offlineMode, userId]);
+
   const tenders = toTenders(tender, reference);
-  const total = preview?.totals.total ?? '0.00';
+  const total = preview?.totals.total ?? estimate ?? '0.00';
   const payCheck = checkPayment(total, tenders, customer !== null);
   const change = changeFor(total, tenders);
+  const canSaveOffline = offlineMode && offlineReady?.ok === true && (estimate !== null || customer !== null);
+
+  async function saveOffline() {
+    if (sending.current || !canSaveOffline) return;
+    if (payCheck !== 'ok') return;
+    sending.current = true;
+    setBusy(true);
+    try {
+      const b = toInvoiceBody(effective, billDate, tenders);
+      const op = await saveOfflineSale(userId, b, {
+        ...(estimate ? { estimate } : {}),
+        ...(customer ? { customerName: customer.name } : {}),
+        lines: effective.lines.length,
+      });
+      void qc.invalidateQueries({ queryKey: offlineKey(userId) });
+      setSavedOffline(op);
+    } catch (e) {
+      setFailure(errorMessage(e));
+    } finally {
+      sending.current = false;
+      setBusy(false);
+    }
+  }
 
   async function finalize() {
     if (sending.current || !client || !preview) return;
@@ -267,6 +370,7 @@ export default function PosScreen() {
     setFailure(null);
     setLostAnswer(false);
     setDone(null);
+    setSavedOffline(null);
   }
 
   async function hold() {
@@ -358,6 +462,23 @@ export default function PosScreen() {
   }
 
   if (!allowed) return <StateView state="denied" message={t('pos.denied')} />;
+
+  if (savedOffline) {
+    return (
+      <ScrollView contentContainerStyle={s.page}>
+        <View style={s.card} accessibilityRole="alert">
+          <Text style={s.ok}>{t('wp14.pos.saved', { number: savedOffline.localNumber })}</Text>
+          {savedOffline.note?.estimate ? (
+            <Text style={s.line}>
+              {t('wp14.pos.estimateLine', { amount: formatINR(savedOffline.note.estimate) })}
+            </Text>
+          ) : null}
+          <Text style={s.line}>{t('wp14.pos.savedHint')}</Text>
+        </View>
+        <Button label={t('pos.newBill')} onPress={newBill} />
+      </ScrollView>
+    );
+  }
 
   if (done) {
     return (
@@ -564,7 +685,17 @@ export default function PosScreen() {
 
       {effective.lines.length > 0 ? (
         <View style={s.card} accessibilityLiveRegion="polite">
-          {previewErr ? (
+          {offlineMode ? (
+            <>
+              <Text style={s.error}>{t('wp14.pos.noNetwork')}</Text>
+              <Text style={s.grand}>
+                {estimate
+                  ? t('wp14.pos.estimate', { amount: formatINR(estimate) })
+                  : t('wp14.pos.noEstimate')}
+              </Text>
+              <Text style={s.sub}>{t('wp14.pos.estimateHint')}</Text>
+            </>
+          ) : previewErr ? (
             <Text style={s.error}>
               {t(previewErr.key, {
                 ...previewErr.params,
@@ -718,7 +849,7 @@ export default function PosScreen() {
       {!paying ? (
         <Button
           label={t('pos.pay')}
-          disabled={!preview || effective.lines.length === 0}
+          disabled={(!preview && !offlineMode) || effective.lines.length === 0}
           onPress={() => setPaying(true)}
         />
       ) : (
@@ -762,11 +893,27 @@ export default function PosScreen() {
               {lostAnswer ? <Text style={s.line}>{t('pos.lostAnswer')}</Text> : null}
             </View>
           ) : null}
-          <Button
-            label={busy ? t('common.loading') : t('pos.finalize')}
-            disabled={busy || payCheck !== 'ok'}
-            onPress={() => void finalize()}
-          />
+          {offlineMode ? (
+            <>
+              {offlineReady && !offlineReady.ok ? (
+                <Text style={s.error}>{t(`wp14.notReady.${offlineReady.reason}`)}</Text>
+              ) : null}
+              {offlineReady?.ok && estimate === null && !customer ? (
+                <Text style={s.error}>{t('wp14.pos.needPrice')}</Text>
+              ) : null}
+              <Button
+                label={busy ? t('common.loading') : t('wp14.pos.save')}
+                disabled={busy || payCheck !== 'ok' || !canSaveOffline}
+                onPress={() => void saveOffline()}
+              />
+            </>
+          ) : (
+            <Button
+              label={busy ? t('common.loading') : t('pos.finalize')}
+              disabled={busy || payCheck !== 'ok'}
+              onPress={() => void finalize()}
+            />
+          )}
           <Button kind="ghost" label={t('pos.back')} onPress={() => setPaying(false)} />
         </View>
       )}

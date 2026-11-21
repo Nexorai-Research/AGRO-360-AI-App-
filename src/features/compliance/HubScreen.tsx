@@ -25,16 +25,22 @@ import {
 } from '../hr/kit';
 import {
   fetchRows,
+  formErrors,
   humanise,
+  initialValues,
   pick,
   runRowAction,
   type Col,
   type Row,
   type RowAction,
   type TabDef,
+  type Values,
 } from './cmp-api';
+import { CreateForms, FormFields, TraceView } from './CmpForm';
 import { HUBS } from './cmp-tabs';
 import { ComplianceSettingsCard } from './SettingsCard';
+import { TaxTabForm } from './TaxForms';
+import { DetailButton } from '../accounts/Parity11';
 
 const MIN_REASON = 3;
 
@@ -65,6 +71,8 @@ export default function HubScreen({ hub }: { hub: string }) {
   const [which, setWhich] = useState<'this' | 'last'>('this');
   const [pending, setPending] = useState<{ row: Row; action: RowAction } | null>(null);
   const [reason, setReason] = useState('');
+  const [values, setValues] = useState<Values>({});
+  const [tried, setTried] = useState(false);
   const keys = useActionKey();
   const act = useAction(keys);
 
@@ -76,19 +84,25 @@ export default function HubScreen({ hub }: { hub: string }) {
   const q = useQuery({
     queryKey: ['cmp', userId, hub, tab?.id, period],
     queryFn: ({ signal }) => fetchRows(client!, tab!, period, range, signal),
-    enabled: ready,
+    enabled: ready && !tab?.view,
     retry: (n, e) => isNetwork(e) && n < 1,
   });
 
   const send = (a: RowAction, row: Row) => {
-    const fp = `${a.path(row)}|${reason.trim()}`;
+    if (a.fields) {
+      setTried(true);
+      if (formErrors(a.fields, values, can).length > 0) return Promise.resolve();
+    }
+    const fp = `${a.path(row)}|${reason.trim()}|${JSON.stringify(values)}`;
     return act.run(
-      () => runRowAction(client!, a, row, reason, keys.keyFor(fp)),
+      () => runRowAction(client!, a, row, reason, keys.keyFor(fp), values),
       t('cmp.done'),
       () => {
         setPending(null);
         setReason('');
-        void qc.invalidateQueries({ queryKey: ['cmp', userId, hub] });
+        setValues({});
+        setTried(false);
+        void qc.invalidateQueries({ queryKey: ['cmp', userId] });
       },
     );
   };
@@ -96,7 +110,9 @@ export default function HubScreen({ hub }: { hub: string }) {
     act.clear();
     keys.reset();
     setReason('');
-    if (a.reason || a.confirm) setPending({ row, action: a });
+    setTried(false);
+    setValues(a.fields ? initialValues(a.fields, todayIST()) : {});
+    if (a.reason || a.confirm || a.fields) setPending({ row, action: a });
     else void send(a, row);
   };
 
@@ -130,64 +146,91 @@ export default function HubScreen({ hub }: { hub: string }) {
               onChange={setWhich}
             />
           ) : null}
+          {hub === 'taxRecords' ? (
+            <TaxTabForm tab={tab.id} period={period} range={range} today={todayIST()} />
+          ) : null}
+          {tab.create ? <CreateForms key={tab.id} defs={tab.create} today={todayIST()} /> : null}
         </>
       ) : null}
+      {tab?.view === 'trace' ? <TraceView /> : null}
       {act.msg ? <Notice tone="ok" text={act.msg} /> : null}
       {act.failure ? <Notice tone="error" text={act.failure} /> : null}
-      <Gate query={q} denied={tabs.length === 0} deniedText={t('cmp.denied')} offlineText={t('cmp.offline')}>
-        {q.data?.total !== null && q.data?.total !== undefined ? (
-          <Card>
-            <Line label={t('cmp.total')} value={formatINR(q.data.total)} strong />
-          </Card>
-        ) : null}
-        {q.data && q.data.rows.length === 0 ? (
-          <StateView
-            state="empty"
-            message={t(`cmp.empty.${tab?.id}`, { defaultValue: t('cmp.empty.any') })}
-          />
-        ) : null}
-        {q.data?.rows.map((row, i) => {
-          const rowActions = (tab?.actions ?? []).filter((a) => can(a.perm) && (!a.show || a.show(row)));
-          const name = tab!.title
-            .map((c) => show(t, row, c))
-            .filter(Boolean)
-            .join(' · ');
-          return (
-            <Card key={String(row.id ?? i)}>
-              <Text style={kit.name}>{name || '-'}</Text>
-              {tab!.fields.map((c) => {
-                const v = show(t, row, c);
-                return v ? <Line key={c.k} label={label(t, c.k)} value={v} /> : null;
-              })}
-              {rowActions.map((a) => (
-                <Button
-                  key={a.id}
-                  kind="ghost"
-                  label={t(`cmp.act.${a.id}`)}
-                  disabled={act.busy}
-                  onPress={() => start(a, row)}
-                />
-              ))}
-              {pending && pending.row === row ? (
-                <>
-                  <Text style={kit.sub}>{t(`cmp.ask.${pending.action.id}`)}</Text>
-                  {pending.action.reason ? (
-                    <Field label={t('cmp.reason')} value={reason} onChange={setReason} />
-                  ) : null}
-                  <Button
-                    label={t('cmp.confirm')}
-                    disabled={
-                      act.busy || (pending.action.reason === true && reason.trim().length < MIN_REASON)
-                    }
-                    onPress={() => void send(pending.action, row)}
-                  />
-                  <Button kind="ghost" label={t('cmp.cancel')} onPress={() => setPending(null)} />
-                </>
-              ) : null}
+      {tab?.view ? null : (
+        <Gate
+          query={q}
+          denied={tabs.length === 0}
+          deniedText={t('cmp.denied')}
+          offlineText={t('cmp.offline')}
+        >
+          {q.data?.total !== null && q.data?.total !== undefined ? (
+            <Card>
+              <Line label={t('cmp.total')} value={formatINR(q.data.total)} strong />
             </Card>
-          );
-        })}
-      </Gate>
+          ) : null}
+          {q.data && q.data.rows.length === 0 ? (
+            <StateView
+              state="empty"
+              message={t(`cmp.empty.${tab?.id}`, { defaultValue: t('cmp.empty.any') })}
+            />
+          ) : null}
+          {q.data?.rows.map((row, i) => {
+            const rowActions = (tab?.actions ?? []).filter((a) => can(a.perm) && (!a.show || a.show(row)));
+            const name = tab!.title
+              .map((c) => show(t, row, c))
+              .filter(Boolean)
+              .join(' · ');
+            return (
+              <Card key={String(row.id ?? i)}>
+                <Text style={kit.name}>{name || '-'}</Text>
+                {tab!.fields.map((c) => {
+                  const v = show(t, row, c);
+                  return v ? <Line key={c.k} label={label(t, c.k)} value={v} /> : null;
+                })}
+                {tab?.detail ? (
+                  <DetailButton
+                    label={t('wp11.open')}
+                    path={tab.detail.path(row)}
+                    pick={tab.detail.pick ? (x) => x[tab.detail!.pick!] : undefined}
+                  />
+                ) : null}
+                {rowActions.map((a) => (
+                  <Button
+                    key={a.id}
+                    kind="ghost"
+                    label={t(`cmp.act.${a.id}`)}
+                    disabled={act.busy}
+                    onPress={() => start(a, row)}
+                  />
+                ))}
+                {pending && pending.row === row ? (
+                  <>
+                    <Text style={kit.sub}>{t(`cmp.ask.${pending.action.id}`)}</Text>
+                    {pending.action.reason ? (
+                      <Field label={t('cmp.reason')} value={reason} onChange={setReason} />
+                    ) : null}
+                    {pending.action.fields ? (
+                      <FormFields
+                        fields={pending.action.fields}
+                        v={values}
+                        set={(key, x) => setValues({ ...values, [key]: x })}
+                        bad={tried ? formErrors(pending.action.fields, values, can) : []}
+                      />
+                    ) : null}
+                    <Button
+                      label={t('cmp.confirm')}
+                      disabled={
+                        act.busy || (pending.action.reason === true && reason.trim().length < MIN_REASON)
+                      }
+                      onPress={() => void send(pending.action, row)}
+                    />
+                    <Button kind="ghost" label={t('cmp.cancel')} onPress={() => setPending(null)} />
+                  </>
+                ) : null}
+              </Card>
+            );
+          })}
+        </Gate>
+      )}
     </ScrollView>
   );
 }

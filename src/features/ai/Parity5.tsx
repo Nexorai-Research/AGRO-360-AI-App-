@@ -8,6 +8,7 @@ import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
 import { Check } from '@/ui/kit';
 import { Card, Chips, Field, Line, Notice, isNetwork, kit, useAction, useActionKey, useCan } from '../hr/kit';
+import { RunScanNow } from './Parity10';
 
 // Web parity, phase 5 (apps/web/src/pages/ai.js inboxTab, recsTab ask, settingsTab, weather, search aliases, agro knowledge
 // import; ai-analytics.js requirement factors). Owner-only parts need ai.governance.manage, like the web.
@@ -47,6 +48,7 @@ export function AiInbox() {
   return (
     <Card>
       <Text style={kit.name}>{t('wp5.inbox.title', { count: q.data.unread })}</Text>
+      <RunScanNow onDone={refresh} />
       {act.failure ? <Notice tone="error" text={act.failure} /> : null}
       {q.data.unread > 0 ? (
         <Button

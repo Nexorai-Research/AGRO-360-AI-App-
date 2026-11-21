@@ -1,4 +1,5 @@
 import type { ApiClient } from '@/api/client';
+import { ApiError } from '@/api/errors';
 
 // Shapes copied by hand from the backend (no OpenAPI file yet): apps/api/src/assistant.controller.ts,
 // apps/api/src/assistant-core.ts and apps/api/src/ai-insights.controller.ts, modules/ai/src/domain/digest.ts.
@@ -32,6 +33,52 @@ export const sendChat = (
   idempotencyKey: string,
   signal?: AbortSignal,
 ) => c.post<ChatAnswer>('/assistant/chat', { body, idempotencyKey, signal });
+
+/**
+ * Web parity 23: the same answer streamed (`POST /assistant/chat/stream`). `onText` gets the words as the model writes them (a
+ * preview); the `done` event is the answer. A server or phone that cannot stream throws NOT_STREAM, and the caller asks the
+ * ordinary way; no `done` event is an error.
+ */
+export async function streamChat(
+  c: ApiClient,
+  body: { messages: ChatMessage[]; today: string; lang: string },
+  idempotencyKey: string,
+  onText: (soFar: string) => void,
+): Promise<ChatAnswer> {
+  let text = '';
+  let answer: ChatAnswer | null = null;
+  await c.stream('/assistant/chat/stream', {
+    body,
+    idempotencyKey,
+    onEvent: (e) => {
+      if (e.name === 'text') {
+        const piece = (e.data as { text?: unknown } | null)?.text;
+        if (typeof piece === 'string') onText((text += piece));
+      } else if (e.name === 'done') answer = e.data as ChatAnswer;
+    },
+  });
+  if (!answer) throw new ApiError(502, { title: 'ASSISTANT_UNAVAILABLE' });
+  return answer;
+}
+/** Asks with a stream when it can, else the ordinary way; once streaming fails as NOT_STREAM it is not tried again this session. */
+let streamOk = true;
+export const resetStreamChoice = () => (streamOk = true);
+export async function askAssistant(
+  c: ApiClient,
+  body: { messages: ChatMessage[]; today: string; lang: string },
+  newKey: () => string,
+  onText: (soFar: string) => void,
+): Promise<ChatAnswer> {
+  if (streamOk && typeof (c as Partial<ApiClient>).stream === 'function') {
+    try {
+      return await streamChat(c, body, newKey(), onText);
+    } catch (e) {
+      if (!(e instanceof ApiError && e.code === 'NOT_STREAM')) throw e;
+      streamOk = false;
+    }
+  }
+  return sendChat(c, body, newKey());
+}
 
 export type Severity = 'HIGH' | 'MEDIUM' | 'LOW';
 export interface DigestItem {
@@ -748,7 +795,11 @@ export interface ReportAnswer {
   /** Opaque: sent back as `previous` so a short follow-up changes this report. */
   memory: unknown;
   summary: { title: string; paragraphs: string[]; figures?: unknown } | null;
-  table: { groupBy: string; rows: { label: string; value: number; sharePct: number | null }[]; truncated: boolean } | null;
+  table: {
+    groupBy: string;
+    rows: { label: string; value: number; sharePct: number | null }[];
+    truncated: boolean;
+  } | null;
   saved?: { id: string } | null;
 }
 export interface ReportAsk {
@@ -778,15 +829,28 @@ export interface StoredStrategy {
     notice: string;
     findings: StrategyFinding[];
     targets: { name: string; value: number; unit: 'rupees' | 'percent'; formula: string }[];
-    roadmap: { focus: { area: string; why: string }[]; milestones: { month: number; salesTarget: number }[] } | null;
+    roadmap: {
+      focus: { area: string; why: string }[];
+      milestones: { month: number; salesTarget: number }[];
+    } | null;
     notAvailable: string[];
   };
 }
 export const AI_STRATEGY = 'reports.financial';
 export const fetchStrategies = async (c: ApiClient, signal?: AbortSignal) =>
   (await c.get<{ items: StoredStrategy[] }>('/ai/strategy', { signal })).items;
-export const generateStrategy = (c: ApiClient, body: { kind: 'MONTHLY' | 'QUARTERLY'; branch?: string }, idempotencyKey: string) =>
-  c.post<{ state: string; reason: string | null; kept?: boolean; note?: string | null; strategy: StoredStrategy | null }>('/ai/strategy/generate', {
+export const generateStrategy = (
+  c: ApiClient,
+  body: { kind: 'MONTHLY' | 'QUARTERLY'; branch?: string },
+  idempotencyKey: string,
+) =>
+  c.post<{
+    state: string;
+    reason: string | null;
+    kept?: boolean;
+    note?: string | null;
+    strategy: StoredStrategy | null;
+  }>('/ai/strategy/generate', {
     body,
     idempotencyKey,
   });
@@ -801,7 +865,14 @@ export interface HealthScore {
   score: number | null;
   complete: boolean;
   asOf: string;
-  components: { name?: string; label?: string; points?: number; max?: number; explanation?: string; reason?: string | null }[];
+  components: {
+    name?: string;
+    label?: string;
+    points?: number;
+    max?: number;
+    explanation?: string;
+    reason?: string | null;
+  }[];
 }
 export const fetchHealth = (c: ApiClient, branch: string, signal?: AbortSignal) =>
   c.get<HealthScore>('/ai/health-score', { query: { branch: branch || undefined }, signal });

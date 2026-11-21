@@ -8,6 +8,9 @@ import { StateView } from '../stock/StateView';
 import { useAction } from '../hr/kit';
 import {
   CRMPERM,
+  FIXED_PURPOSES,
+  setPurposeStatus,
+  type Purpose,
   createEvent,
   createGreeting,
   createPurpose,
@@ -162,6 +165,45 @@ function LoyaltyTab() {
 }
 
 // ---- consent ------------------------------------------------------------------------------------------------
+/** Retire or bring back a purpose (web parity 18). Retiring asks first. */
+function PurposeStatus({ p }: { p: Purpose }) {
+  const { t } = useTranslation();
+  const { client, reload } = useCrm();
+  const keys = useActionKey();
+  const act = useAction(keys);
+  const [asking, setAsking] = useState(false);
+  if (FIXED_PURPOSES.includes(p.code)) return null;
+  const active = p.status !== 'INACTIVE';
+  const go = () =>
+    void act.run(
+      () =>
+        setPurposeStatus(client!, p.code, active ? 'INACTIVE' : 'ACTIVE', keys.keyFor(`${p.code}|${active}`)),
+      t(active ? 'wp18.retired' : 'wp18.reactivated'),
+      () => (setAsking(false), reload()),
+    );
+  return (
+    <View style={{ gap: 6 }}>
+      {act.failure ? <Notice tone="error" text={act.failure} /> : null}
+      {asking ? (
+        <>
+          <Text style={s.sub}>{t('wp18.ask', { name: p.name })}</Text>
+          <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
+            <Button label={t('wp18.retire')} disabled={act.busy} onPress={go} />
+            <Button kind="ghost" label={t('cus.cancel')} onPress={() => setAsking(false)} />
+          </View>
+        </>
+      ) : (
+        <Button
+          kind="ghost"
+          label={t(active ? 'wp18.retire' : 'wp18.reactivate')}
+          disabled={act.busy}
+          onPress={() => (keys.reset(), active ? setAsking(true) : go())}
+        />
+      )}
+    </View>
+  );
+}
+
 function ConsentTab() {
   const { t } = useTranslation();
   const { client, can } = useCrm();
@@ -207,6 +249,7 @@ function ConsentTab() {
               <Row
                 title={`${p.code} · ${p.name}`}
                 lines={[
+                  t(p.status === 'INACTIVE' ? 'wp18.statusRetired' : 'wp18.statusActive'),
                   p.wordingVersion === null
                     ? t('cus.eng.noWording')
                     : t('cus.eng.wordingVersion', {
@@ -215,6 +258,7 @@ function ConsentTab() {
                       }),
                 ]}
               />
+              {manage ? <PurposeStatus p={p} /> : null}
               {manage ? (
                 <Reveal label={t('cus.eng.newWording')}>
                   <FormCard

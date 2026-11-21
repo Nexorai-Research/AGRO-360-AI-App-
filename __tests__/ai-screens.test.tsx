@@ -93,6 +93,7 @@ describe('assistant', () => {
         ? Promise.resolve({ id: CID })
         : Promise.resolve(mockPost.mock.calls.length === 1 ? tool : say('Done.')),
     );
+    mockGet.mockResolvedValue({ chatWrites: true }); // the server allows changes through the assistant (web parity 19)
     await render(<AssistantScreen />, { wrapper });
     await ask('add ramesh 9876543210');
     await screen.findByText('Add customer Ramesh?');
@@ -116,6 +117,7 @@ describe('assistant', () => {
         stopReason: 'tool_use',
       })
       .mockResolvedValueOnce(say('Okay, not added.'));
+    mockGet.mockResolvedValue({ chatWrites: true });
     await render(<AssistantScreen />, { wrapper });
     await ask('add ramesh');
     await screen.findByText('Add customer Ramesh?');

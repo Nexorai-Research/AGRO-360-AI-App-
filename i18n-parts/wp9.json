@@ -1,0 +1,374 @@
+{
+  "en": {
+    "wp9": {
+      "cancel": "Cancel",
+      "v": {
+        "edit": "Edit draft",
+        "updated": "Draft voucher updated."
+      },
+      "e": {
+        "edit": "Edit draft",
+        "updated": "Draft expense updated."
+      },
+      "cc": {
+        "add": "Add cost centre",
+        "hint": "Every branch is already a cost centre. Add others, such as a delivery vehicle or a field team.",
+        "code": "Code",
+        "name": "Name",
+        "save": "Add",
+        "added": "Cost centre added.",
+        "off": "Switch off {{code}}",
+        "on": "Switch on {{code}}",
+        "switched": "Cost centre changed.",
+        "v": {
+          "code": "2-20 capital letters, digits or dashes.",
+          "name": "Write a name of 2 to 120 letters."
+        }
+      },
+      "b": {
+        "new": "New budget",
+        "title": "New budget",
+        "hint": "Enter a monthly amount for each account; it is spread over the 12 months. Edit the draft on the web for month-by-month figures.",
+        "name": "Name",
+        "year": "Financial year",
+        "noYear": "Create the financial year first.",
+        "account": "Account {{n}}",
+        "none": "(none)",
+        "monthly": "Monthly amount {{n}}",
+        "save": "Save as draft",
+        "saved": "Budget saved as a draft.",
+        "v": {
+          "name": "Write a name of 2 to 80 letters.",
+          "year": "Choose the financial year.",
+          "rows": "Choose at least one account with a monthly amount.",
+          "amount": "Each chosen account needs an amount above zero with up to 2 decimals."
+        }
+      },
+      "lt": {
+        "new": "New leave type",
+        "title": "New leave type",
+        "code": "Code",
+        "name": "Name",
+        "quota": "Days per year",
+        "paid": "Paid leave",
+        "carry": "Carry forward unused days",
+        "save": "Save",
+        "saved": "Leave type saved.",
+        "v": {
+          "code": "2-20 capital letters, digits and underscore only.",
+          "name": "Write a name of 2 to 80 letters.",
+          "quota": "Days from 0 to 366, up to 2 decimals."
+        }
+      },
+      "lic": {
+        "title": "Agro licences",
+        "hint": "Selling a regulated category needs a valid licence at the branch.",
+        "none": "No licences recorded.",
+        "edit": "Change {{no}}",
+        "add": "Add licence",
+        "addTitle": "New licence",
+        "editTitle": "Change licence {{no}}",
+        "branch": "Branch",
+        "typeLabel": "Type",
+        "type": {
+          "FERTILIZER": "Fertiliser",
+          "PESTICIDE": "Pesticide",
+          "SEED": "Seed"
+        },
+        "number": "Licence number",
+        "authority": "Issuing authority",
+        "from": "Valid from",
+        "to": "Valid to",
+        "categories": "Permitted product categories (comma separated codes)",
+        "status": "Record status",
+        "rs": {
+          "ACTIVE": "Active",
+          "REVOKED": "Revoked"
+        },
+        "save": "Save licence",
+        "added": "Licence added.",
+        "updated": "Licence updated.",
+        "v": {
+          "branch": "Choose the branch.",
+          "number": "Write the number (2 to 60 letters).",
+          "authority": "Write the authority (2 to 200 letters).",
+          "from": "A real date as YYYY-MM-DD.",
+          "to": "A real date as YYYY-MM-DD.",
+          "order": "Valid to must not be before valid from.",
+          "categories": "Write 1 to 50 category codes, comma separated."
+        }
+      },
+      "st": {
+        "pdf": "Statement as PDF",
+        "done": "Statement made.",
+        "noSharing": "Sharing is not available on this phone."
+      },
+      "grni": {
+        "tab": "Unbilled receipts",
+        "asOf": "As on {{date}}",
+        "total": "Not yet billed",
+        "books": "In the books",
+        "difference": "Difference",
+        "agrees": "The books agree with the receipts.",
+        "differs": "The books differ from the receipts. Find the document and correct it.",
+        "none": "Every receipt is billed.",
+        "accepted": "Received value",
+        "billed": "Billed",
+        "unbilled": "Unbilled"
+      }
+    },
+    "fin": {
+      "control": {
+        "noBudgets": "No budgets yet."
+      }
+    }
+  },
+  "hi": {
+    "wp9": {
+      "cancel": "रद्द करें",
+      "v": {
+        "edit": "ड्राफ्ट बदलें",
+        "updated": "ड्राफ्ट वाउचर बदल गया।"
+      },
+      "e": {
+        "edit": "ड्राफ्ट बदलें",
+        "updated": "ड्राफ्ट खर्च बदल गया।"
+      },
+      "cc": {
+        "add": "कॉस्ट सेंटर जोड़ें",
+        "hint": "हर शाखा पहले से कॉस्ट सेंटर है। और जोड़ें, जैसे डिलीवरी गाड़ी या फील्ड टीम।",
+        "code": "कोड",
+        "name": "नाम",
+        "save": "जोड़ें",
+        "added": "कॉस्ट सेंटर जुड़ गया।",
+        "off": "{{code}} बंद करें",
+        "on": "{{code}} चालू करें",
+        "switched": "कॉस्ट सेंटर बदल गया।",
+        "v": {
+          "code": "2-20 बड़े अक्षर, अंक या डैश।",
+          "name": "2 से 120 अक्षरों का नाम लिखें।"
+        }
+      },
+      "b": {
+        "new": "नया बजट",
+        "title": "नया बजट",
+        "hint": "हर खाते की मासिक रकम लिखें; यह 12 महीनों में बँट जाती है। महीने-वार आँकड़ों के लिए ड्राफ्ट वेब पर बदलें।",
+        "name": "नाम",
+        "year": "वित्तीय वर्ष",
+        "noYear": "पहले वित्तीय वर्ष बनाएँ।",
+        "account": "खाता {{n}}",
+        "none": "(कोई नहीं)",
+        "monthly": "मासिक रकम {{n}}",
+        "save": "ड्राफ्ट सेव करें",
+        "saved": "बजट ड्राफ्ट के रूप में सेव हो गया।",
+        "v": {
+          "name": "2 से 80 अक्षरों का नाम लिखें।",
+          "year": "वित्तीय वर्ष चुनें।",
+          "rows": "कम से कम एक खाता और मासिक रकम चुनें।",
+          "amount": "हर चुने खाते की रकम शून्य से ज़्यादा, 2 दशमलव तक हो।"
+        }
+      },
+      "lt": {
+        "new": "नया छुट्टी प्रकार",
+        "title": "नया छुट्टी प्रकार",
+        "code": "कोड",
+        "name": "नाम",
+        "quota": "साल में दिन",
+        "paid": "वेतन सहित छुट्टी",
+        "carry": "बचे दिन अगले साल ले जाएँ",
+        "save": "सेव करें",
+        "saved": "छुट्टी प्रकार सेव हो गया।",
+        "v": {
+          "code": "2-20 बड़े अक्षर, अंक और अंडरस्कोर ही।",
+          "name": "2 से 80 अक्षरों का नाम लिखें।",
+          "quota": "0 से 366 दिन, 2 दशमलव तक।"
+        }
+      },
+      "lic": {
+        "title": "कृषि लाइसेंस",
+        "hint": "नियंत्रित श्रेणी बेचने के लिए शाखा पर मान्य लाइसेंस चाहिए।",
+        "none": "कोई लाइसेंस दर्ज नहीं।",
+        "edit": "{{no}} बदलें",
+        "add": "लाइसेंस जोड़ें",
+        "addTitle": "नया लाइसेंस",
+        "editTitle": "लाइसेंस {{no}} बदलें",
+        "branch": "शाखा",
+        "typeLabel": "प्रकार",
+        "type": {
+          "FERTILIZER": "उर्वरक",
+          "PESTICIDE": "कीटनाशक",
+          "SEED": "बीज"
+        },
+        "number": "लाइसेंस नंबर",
+        "authority": "जारी करने वाला प्राधिकरण",
+        "from": "कब से मान्य",
+        "to": "कब तक मान्य",
+        "categories": "अनुमत उत्पाद श्रेणियाँ (कॉमा से अलग कोड)",
+        "status": "रिकॉर्ड स्थिति",
+        "rs": {
+          "ACTIVE": "सक्रिय",
+          "REVOKED": "रद्द"
+        },
+        "save": "लाइसेंस सेव करें",
+        "added": "लाइसेंस जुड़ गया।",
+        "updated": "लाइसेंस बदल गया।",
+        "v": {
+          "branch": "शाखा चुनें।",
+          "number": "नंबर लिखें (2 से 60 अक्षर)।",
+          "authority": "प्राधिकरण लिखें (2 से 200 अक्षर)।",
+          "from": "सही तारीख YYYY-MM-DD में।",
+          "to": "सही तारीख YYYY-MM-DD में।",
+          "order": "अंतिम तारीख शुरू की तारीख से पहले नहीं हो सकती।",
+          "categories": "1 से 50 श्रेणी कोड लिखें, कॉमा से अलग।"
+        }
+      },
+      "st": {
+        "pdf": "स्टेटमेंट PDF में",
+        "done": "स्टेटमेंट बन गया।",
+        "noSharing": "इस फ़ोन पर शेयर करना उपलब्ध नहीं है।"
+      },
+      "grni": {
+        "tab": "बिना बिल की प्राप्तियाँ",
+        "asOf": "{{date}} तक",
+        "total": "अभी बिल नहीं हुआ",
+        "books": "खातों में",
+        "difference": "अंतर",
+        "agrees": "खाते प्राप्तियों से मेल खाते हैं।",
+        "differs": "खाते प्राप्तियों से अलग हैं। दस्तावेज़ ढूँढकर सुधारें।",
+        "none": "हर प्राप्ति का बिल बन चुका है।",
+        "accepted": "प्राप्त मूल्य",
+        "billed": "बिल हुआ",
+        "unbilled": "बिना बिल"
+      }
+    },
+    "fin": {
+      "control": {
+        "noBudgets": "अभी कोई बजट नहीं।"
+      }
+    }
+  },
+  "mr": {
+    "wp9": {
+      "cancel": "रद्द करा",
+      "v": {
+        "edit": "मसुदा बदला",
+        "updated": "मसुदा व्हाउचर बदलले."
+      },
+      "e": {
+        "edit": "मसुदा बदला",
+        "updated": "मसुदा खर्च बदलला."
+      },
+      "cc": {
+        "add": "कॉस्ट सेंटर जोडा",
+        "hint": "प्रत्येक शाखा आधीच कॉस्ट सेंटर आहे. इतर जोडा, जसे डिलिव्हरी गाडी किंवा फील्ड टीम.",
+        "code": "कोड",
+        "name": "नाव",
+        "save": "जोडा",
+        "added": "कॉस्ट सेंटर जोडले.",
+        "off": "{{code}} बंद करा",
+        "on": "{{code}} चालू करा",
+        "switched": "कॉस्ट सेंटर बदलले.",
+        "v": {
+          "code": "2-20 मोठी अक्षरे, अंक किंवा डॅश.",
+          "name": "2 ते 120 अक्षरांचे नाव लिहा."
+        }
+      },
+      "b": {
+        "new": "नवीन अंदाजपत्रक",
+        "title": "नवीन अंदाजपत्रक",
+        "hint": "प्रत्येक खात्याची मासिक रक्कम लिहा; ती 12 महिन्यांत वाटली जाते. महिन्यानुसार आकड्यांसाठी मसुदा वेबवर बदला.",
+        "name": "नाव",
+        "year": "आर्थिक वर्ष",
+        "noYear": "आधी आर्थिक वर्ष तयार करा.",
+        "account": "खाते {{n}}",
+        "none": "(काही नाही)",
+        "monthly": "मासिक रक्कम {{n}}",
+        "save": "मसुदा जतन करा",
+        "saved": "अंदाजपत्रक मसुदा म्हणून जतन झाले.",
+        "v": {
+          "name": "2 ते 80 अक्षरांचे नाव लिहा.",
+          "year": "आर्थिक वर्ष निवडा.",
+          "rows": "किमान एक खाते आणि मासिक रक्कम निवडा.",
+          "amount": "प्रत्येक निवडलेल्या खात्याची रक्कम शून्यापेक्षा जास्त, 2 दशांशांपर्यंत हवी."
+        }
+      },
+      "lt": {
+        "new": "नवीन रजा प्रकार",
+        "title": "नवीन रजा प्रकार",
+        "code": "कोड",
+        "name": "नाव",
+        "quota": "वर्षातील दिवस",
+        "paid": "पगारी रजा",
+        "carry": "उरलेले दिवस पुढे न्या",
+        "save": "जतन करा",
+        "saved": "रजा प्रकार जतन झाला.",
+        "v": {
+          "code": "2-20 मोठी अक्षरे, अंक आणि अंडरस्कोर फक्त.",
+          "name": "2 ते 80 अक्षरांचे नाव लिहा.",
+          "quota": "0 ते 366 दिवस, 2 दशांशांपर्यंत."
+        }
+      },
+      "lic": {
+        "title": "कृषी परवाने",
+        "hint": "नियंत्रित वर्ग विकण्यासाठी शाखेवर वैध परवाना हवा.",
+        "none": "कोणताही परवाना नोंदलेला नाही.",
+        "edit": "{{no}} बदला",
+        "add": "परवाना जोडा",
+        "addTitle": "नवीन परवाना",
+        "editTitle": "परवाना {{no}} बदला",
+        "branch": "शाखा",
+        "typeLabel": "प्रकार",
+        "type": {
+          "FERTILIZER": "खत",
+          "PESTICIDE": "कीटकनाशक",
+          "SEED": "बियाणे"
+        },
+        "number": "परवाना क्रमांक",
+        "authority": "जारी करणारे प्राधिकरण",
+        "from": "पासून वैध",
+        "to": "पर्यंत वैध",
+        "categories": "परवानगी असलेले उत्पादन वर्ग (स्वल्पविरामाने वेगळे कोड)",
+        "status": "नोंद स्थिती",
+        "rs": {
+          "ACTIVE": "सक्रिय",
+          "REVOKED": "रद्द"
+        },
+        "save": "परवाना जतन करा",
+        "added": "परवाना जोडला.",
+        "updated": "परवाना बदलला.",
+        "v": {
+          "branch": "शाखा निवडा.",
+          "number": "क्रमांक लिहा (2 ते 60 अक्षरे).",
+          "authority": "प्राधिकरण लिहा (2 ते 200 अक्षरे).",
+          "from": "खरी तारीख YYYY-MM-DD मध्ये.",
+          "to": "खरी तारीख YYYY-MM-DD मध्ये.",
+          "order": "शेवटची तारीख सुरुवातीच्या तारखेपूर्वी असू शकत नाही.",
+          "categories": "1 ते 50 वर्ग कोड लिहा, स्वल्पविरामाने वेगळे."
+        }
+      },
+      "st": {
+        "pdf": "स्टेटमेंट PDF मध्ये",
+        "done": "स्टेटमेंट तयार झाले.",
+        "noSharing": "या फोनवर शेअर करणे उपलब्ध नाही."
+      },
+      "grni": {
+        "tab": "बिल न झालेल्या प्राप्ती",
+        "asOf": "{{date}} पर्यंत",
+        "total": "अजून बिल नाही",
+        "books": "खात्यांत",
+        "difference": "फरक",
+        "agrees": "खाती प्राप्तींशी जुळतात.",
+        "differs": "खाती प्राप्तींपेक्षा वेगळी आहेत. दस्तऐवज शोधून दुरुस्त करा.",
+        "none": "प्रत्येक प्राप्तीचे बिल झाले आहे.",
+        "accepted": "मिळालेले मूल्य",
+        "billed": "बिल झाले",
+        "unbilled": "बिल नाही"
+      }
+    },
+    "fin": {
+      "control": {
+        "noBudgets": "अजून अंदाजपत्रक नाही."
+      }
+    }
+  }
+}

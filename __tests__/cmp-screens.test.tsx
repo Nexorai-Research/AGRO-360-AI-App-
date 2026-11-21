@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApiError } from '../src/api/errors';
 import { i18n, setLanguage } from '../src/i18n';
 import parts from '../i18n-parts/cmp.json';
+import wp6 from '../i18n-parts/wp6.json';
+import wp8 from '../i18n-parts/wp8.json';
 import HubScreen from '../src/features/compliance/HubScreen';
 import Gstr1Screen from '../src/features/compliance/Gstr1Screen';
 import { HUBS } from '../src/features/compliance/cmp-tabs';
@@ -393,10 +395,20 @@ describe('helpers and translations', () => {
   });
 
   it('has every label in English, Hindi and Marathi', () => {
-    const p = parts as Record<
-      string,
-      { cmp: { f: Record<string, string>; tab: Record<string, string>; act: Record<string, string> } }
-    >;
+    // the compliance labels live in cmp.json and, for the web parity phases 6 and 8, in wp6.json and wp8.json
+    type Cmp = {
+      cmp: { f: Record<string, string>; tab: Record<string, string>; act: Record<string, string> };
+    };
+    const all = [parts, wp6, wp8] as unknown as Record<string, Partial<Cmp>>[];
+    const p: Record<string, Cmp> = {};
+    for (const l of ['en', 'hi', 'mr'])
+      p[l] = {
+        cmp: {
+          f: Object.assign({}, ...all.map((x) => x[l]?.cmp?.f ?? {})),
+          tab: Object.assign({}, ...all.map((x) => x[l]?.cmp?.tab ?? {})),
+          act: Object.assign({}, ...all.map((x) => x[l]?.cmp?.act ?? {})),
+        },
+      };
     const fieldKeys = Object.values(HUBS).flatMap((h) =>
       h.tabs.flatMap((t) => [...t.title, ...t.fields].map((c) => c.k.replace(/\./g, '_'))),
     );

@@ -29,6 +29,7 @@ import { recoveryErrors, staffName, validReason, writeOffErrors } from './sal-lo
 import { useSal } from './sal-hook';
 import { ADJ_PERM } from './adjust-api';
 import { AdjustmentsPanel } from './AdjustmentsPanel';
+import { ShareButton, shareCsv } from '../accounts/Parity11';
 import { humanCode } from '@/format';
 
 type Tab = 'tasks' | 'writeoffs' | 'settlements' | 'adjustments';
@@ -364,6 +365,12 @@ export default function DeskScreen() {
 
       {shown === 'writeoffs' ? (
         <>
+          {s.can(SPERM.receivables) ? (
+            <ShareButton
+              label={t('wp11.csv')}
+              load={() => shareCsv(s.client!, '/credit/write-offs/export.csv', {}, 'write-offs.csv')}
+            />
+          ) : null}
           {s.can(SPERM.writeoff) && !adding ? (
             <Button label={t('desk.newWriteoff')} onPress={() => (resetForms(), setAdding(true))} />
           ) : null}

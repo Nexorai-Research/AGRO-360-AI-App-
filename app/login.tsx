@@ -10,6 +10,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/auth/AuthProvider';
@@ -26,6 +27,7 @@ const MONO = Platform.select({ ios: 'Menlo', default: 'monospace' });
 export default function Login() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { signIn, signInWithPassword } = useAuth();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -128,6 +130,10 @@ export default function Login() {
               </View>
             ))}
           </View>
+
+          <Pressable accessibilityRole="link" accessibilityLabel={t('wp25.link')} onPress={() => router.push('/portal')}>
+            <Text style={s.toggle}>{t('wp25.link')}</Text>
+          </Pressable>
 
           <LanguagePicker />
           <Image

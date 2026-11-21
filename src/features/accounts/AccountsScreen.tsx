@@ -10,6 +10,7 @@ import { StateView } from '../stock/StateView';
 import { Card, Chips, Gate, Line, Notice, isNetwork, kit, useCan } from '../hr/kit';
 import { shortDate } from '../hr/logic';
 import { ACCOUNT_PERM, fetchDayBook, fetchLedgers, fetchTrialBalance } from './api';
+import { CsvButton } from './Parity11';
 
 type Tab = 'day' | 'trial' | 'ledgers';
 const DAYS = ['1', '7', '30'] as const;
@@ -87,6 +88,7 @@ export default function AccountsScreen() {
                 value={days}
                 onChange={setDays}
               />
+              <CsvButton path="/reports/day-book" query={{ from, to: today }} fileName={`day-${today}.csv`} />
               <Gate query={day} denied={false} {...gate}>
                 {day.data ? (
                   <>
@@ -115,6 +117,9 @@ export default function AccountsScreen() {
             </>
           ) : null}
 
+          {tab === 'trial' ? (
+            <CsvButton path="/reports/trial-balance" query={{ asOn: today }} fileName={`tb-${today}.csv`} />
+          ) : null}
           {tab === 'trial' ? (
             <Gate query={trial} denied={false} {...gate}>
               {trial.data ? (

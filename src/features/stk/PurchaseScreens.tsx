@@ -1076,6 +1076,56 @@ export function PaySupplierScreen() {
   );
 }
 
+// ---- Web parity 9a.6: receipts not yet billed (apps/web/src/pages/finance.js "Unbilled receipts"; GET /procurement/reports/grni).
+interface GrniRow {
+  grnId: string;
+  number: string;
+  supplierName: string;
+  receiptDate: string;
+  accepted: string;
+  billed: string;
+  unbilled: string;
+}
+function Grni() {
+  const { t } = useStk();
+  return (
+    <Read<{
+      asOf: string;
+      rows: GrniRow[];
+      total: string;
+      glBalance: string;
+      variance: string;
+      reconciled: boolean;
+    }> path="/procurement/reports/grni">
+      {(d) => (
+        <>
+          <Card>
+            <Text style={kit.sub}>{t('wp9.grni.asOf', { date: shortDate(d.asOf) })}</Text>
+            <Line label={t('wp9.grni.total')} value={formatINR(d.total)} strong />
+            <Line label={t('wp9.grni.books')} value={formatINR(d.glBalance)} />
+            <Line label={t('wp9.grni.difference')} value={formatINR(d.variance)} />
+            <Text style={d.reconciled ? tone.ok : tone.warn}>
+              {t(d.reconciled ? 'wp9.grni.agrees' : 'wp9.grni.differs')}
+            </Text>
+          </Card>
+          {d.rows.length === 0 ? <Empty text={t('wp9.grni.none')} /> : null}
+          {d.rows.map((x) => (
+            <Card key={x.grnId}>
+              <Text style={kit.name}>
+                {x.number} · {x.supplierName}
+              </Text>
+              <Text style={kit.sub}>{shortDate(x.receiptDate)}</Text>
+              <Line label={t('wp9.grni.accepted')} value={formatINR(x.accepted)} />
+              <Line label={t('wp9.grni.billed')} value={formatINR(x.billed)} />
+              <Line label={t('wp9.grni.unbilled')} value={formatINR(x.unbilled)} strong />
+            </Card>
+          ))}
+        </>
+      )}
+    </Read>
+  );
+}
+
 // ---- Purchase reports: GET /procurement/reports/pending-orders (purchase.view), /purchase-register (reports.purchase), /grni.
 interface Pending {
   number: string;
@@ -1101,19 +1151,26 @@ interface RegRow {
 }
 export function PurchaseReportsScreen() {
   const { t, can } = useStk();
-  const [tab, setTab] = useState<'pending' | 'register'>('pending');
+  const [tab, setTab] = useState<'pending' | 'register' | 'grni'>('pending');
   return (
     <Page title={t('stkRep.title')} allowed={can('purchase.view')}>
       <Chips
         label={t('stkRep.which')}
         options={[
           { id: 'pending' as const, label: t('stkRep.pending') },
-          ...(can('reports.purchase') ? [{ id: 'register' as const, label: t('stkRep.register') }] : []),
+          ...(can('reports.purchase')
+            ? [
+                { id: 'register' as const, label: t('stkRep.register') },
+                { id: 'grni' as const, label: t('wp9.grni.tab') },
+              ]
+            : []),
         ]}
         value={tab}
         onChange={setTab}
       />
-      {tab === 'pending' ? (
+      {tab === 'grni' ? (
+        <Grni />
+      ) : tab === 'pending' ? (
         <Read<{ items: Pending[] }> path="/procurement/reports/pending-orders">
           {(d) => (
             <>

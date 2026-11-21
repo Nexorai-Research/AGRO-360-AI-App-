@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Text } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { shortDate } from '../hr/logic';
+import { CompositionEdit } from './Parity7';
 import {
   Area,
   Btn,
@@ -278,6 +279,7 @@ function Composition({ id }: { id: string }) {
               <Text style={kit.sub}>{[`${x.percentage}%`, x.formulation].filter(Boolean).join(' · ')}</Text>
             </Card>
           ))}
+          <CompositionEdit id={id} items={d.items} />
         </>
       )}
     </Read>
