@@ -159,6 +159,7 @@ export const MODULES: AppModule[] = [
     features: [
       { key: 'users', href: '/users', icon: '🧑‍💼' },
       { key: 'roles', href: '/roles', icon: '🔑' },
+      { key: 'userAccess', href: '/user-access', icon: '🎚️' },
       { key: 'audit', href: '/audit', icon: '🔍' },
       { key: 'documents', href: '/documents', icon: '📁' },
       { key: 'security', href: '/security', icon: '🛡️' },
@@ -176,6 +177,7 @@ export const MODULES: AppModule[] = [
       { key: 'platformDashboard', href: '/platform-dashboard', icon: '📊' },
       { key: 'platformFranchises', href: '/platform-franchises', icon: '🏪' },
       { key: 'platformPlans', href: '/platform-plans', icon: '📦' },
+      { key: 'franchiseAccess', href: '/franchise-access', icon: '🎚️' },
       { key: 'platformAudit', href: '/platform-audit', icon: '🔍' },
       { key: 'platformObservability', href: '/platform-observability', icon: '📡' },
     ],

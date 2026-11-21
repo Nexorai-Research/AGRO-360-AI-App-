@@ -30,6 +30,7 @@ jest.mock('../src/auth/AuthProvider', () => ({
     },
   }),
 }));
+jest.mock('expo-router', () => ({ router: { push: jest.fn() }, useLocalSearchParams: () => ({}) }));
 jest.mock('../src/device', () => ({ newId: () => `key-${++mockId}` }));
 
 let client: QueryClient;

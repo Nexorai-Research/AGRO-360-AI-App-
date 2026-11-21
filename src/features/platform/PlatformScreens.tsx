@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { ScrollView, Share, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { router } from 'expo-router';
 import type { ApiClient } from '@/api/client';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
@@ -488,6 +489,11 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
             ))}
             <Text style={kit.name}>{t('wp26.access.title')}</Text>
             <Text style={kit.sub}>{t('wp26.access.hint')}</Text>
+            <Button
+              kind="ghost"
+              label={t('wp34.fr.open')}
+              onPress={() => router.push({ pathname: '/franchise-access', params: { id } } as never)}
+            />
             <Text style={kit.sub}>{d.usage.reason}</Text>
             <Text style={kit.name}>{t('wp12.fr.recent')}</Text>
             {d.recentAudit.map((x, i) => (

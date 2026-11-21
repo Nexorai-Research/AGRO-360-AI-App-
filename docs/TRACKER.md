@@ -1322,3 +1322,16 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 29.4 Delete a draft expense (`DELETE /finance/expenses/:id`) and a draft budget with its lines (`DELETE /finance/budgets/:id`); only drafts show Delete | DONE (mocked client) | `__tests__/wp29.test.tsx` |
 | Every delete sends one Idempotency-Key and nothing before the confirming button; Cancel sends nothing | DONE (mocked client) | `__tests__/wp29.test.tsx` |
 | Limits: the web's unit delete is not disabled by the screen either (the server refuses a unit in use). The unit's Active tick sits in the edit form like the web. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phases 34 and 35: Access control (a franchise, and one person)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `access.js`, `franchise-access.js`, `settings.js` and the platform and identity controllers (web commits `abaeefd`, `542ac8f`). One editor serves both: `src/features/access/AccessEditor.tsx` with the rules in `src/features/access/access-logic.ts` (the web's menu and page table, search, All / On / Off, save bar).
+
+| Feature | State | Test |
+|---|---|---|
+| 34.1 Platform: Access control screen (platform menu): the franchises with a search, choose one, see its menus, pages and features, tick or untick them (a whole menu, a whole page or one feature), save with `PUT /platform/franchises/:id/access` `{permissions}` and one Idempotency-Key | DONE (mocked client) | `__tests__/wp34.test.tsx` |
+| 34.2 A franchise nobody restricted yet shows "Not restricted yet: everything is on" and the note that saving turns the list on; the franchise detail opens this screen | DONE (mocked client) | `__tests__/wp34.test.tsx` |
+| 35.1 Franchise admin: Access control screen (admin menu) for one person: the people newest first (`GET /users?order=newest`), the features of the franchise (`GET /permissions`), the person's access (`GET /users/:id/access`), save with `PUT /users/:id/access` `{permissions}` | DONE (mocked client) | `__tests__/wp34.test.tsx` |
+| 35.2 Each feature says where it comes from (from the role / extra for this person / taken away); a feature is locked with the web's reason (full access, deactivated, you do not hold it so you cannot give or take it) | DONE (mocked client) | `__tests__/wp34.test.tsx` |
+| The save bar shows how many were turned on and off; Discard puts everything back; a refused save keeps the change and shows the reference | DONE (mocked client) | `__tests__/wp34.test.tsx` |
+| Limits: the screens appear in the home menu like the other screens; a person's own permission list comes from the sign-in (when it is not known the server decides). The web's two-column layout is a list then the editor below. Hindi and Marathi have the menu and page names; the other 19 languages show English. Language coverage numbers were recounted (28 to 29 percent for the added languages, the new texts are English there until phase 33) | Limit | - |

@@ -621,7 +621,9 @@
     "platformAudit": "Platform audit",
     "platformObservability": "Franchise usage",
     "offlineBills": "Offline bills",
-    "syncDesk": "Offline sync desk"
+    "syncDesk": "Offline sync desk",
+    "franchiseAccess": "Franchise access",
+    "userAccess": "Access control"
   },
   "pos": {
     "title": "New bill",
@@ -1999,7 +2001,9 @@
     "platformAudit": "Who did what on the platform",
     "platformObservability": "Usage of every franchise",
     "offlineBills": "Bills made without network, sync",
-    "syncDesk": "Phones, offline bills to decide"
+    "syncDesk": "Phones, offline bills to decide",
+    "franchiseAccess": "Tick the menus and features a franchise may use",
+    "userAccess": "Tick the menus and features one person may use"
   },
   "modules": {
     "account": {
@@ -7425,5 +7429,95 @@
     "deleteDocumentAsk_one": "Are you sure you want to delete \"{{title}}\"? The file and all {{count}} version are removed for good and cannot be brought back. To keep the file but stop using it, choose Deactivate instead.",
     "deleteDocumentAsk_other": "Are you sure you want to delete \"{{title}}\"? The file and all {{count}} versions are removed for good and cannot be brought back. To keep the file but stop using it, choose Deactivate instead.",
     "documentDeleted": "Document deleted."
+  },
+  "wp34": {
+    "subtitle": "{{sub}} · {{on}} of {{total}} features on",
+    "menus": "Menus",
+    "wholeMenu": "Turn the whole {{menu}} menu on or off",
+    "wholePage": "Turn every {{page}} feature on or off",
+    "search": "Search features",
+    "searchHint": "for example discount, stock, report",
+    "showFeatures": "Show features",
+    "show": {
+      "all": "All",
+      "on": "On",
+      "off": "Off"
+    },
+    "none": "No feature matches. Clear the search or the filter.",
+    "saved": "Access saved. It applies on the next request.",
+    "unsaved": "{{added}} turned on, {{removed}} turned off, not saved yet",
+    "save": "Save access",
+    "discard": "Discard",
+    "names": {
+      "administration": "Administration",
+      "operations": "Operations",
+      "setup": "Setup",
+      "customers": "Customers",
+      "accounts": "Accounts",
+      "ai_intelligence": "AI & intelligence",
+      "reports_analytics": "Reports & analytics",
+      "staff_payroll": "Staff & payroll",
+      "other_features": "Other features",
+      "users_roles_and_security": "Users, roles and security",
+      "products": "Products",
+      "inventory": "Inventory",
+      "purchases": "Purchases",
+      "sales_and_billing": "Sales and billing",
+      "agri_advice": "Agri advice",
+      "integrations_and_jobs": "Integrations and jobs",
+      "collections_and_credit": "Collections and credit",
+      "complaints_and_engagement": "Complaints and engagement",
+      "villages_and_territories": "Villages and territories",
+      "messages": "Messages",
+      "customer_privacy": "Customer privacy",
+      "accounting": "Accounting",
+      "compliance_and_tax": "Compliance and tax",
+      "ai_and_intelligence": "AI and intelligence",
+      "reports": "Reports",
+      "staff_and_payroll": "Staff and payroll",
+      "documents": "Documents",
+      "settings_and_configuration": "Settings and configuration",
+      "other": "Other"
+    },
+    "fr": {
+      "title": "Access control",
+      "hint": "Choose a franchise, then switch on the menus, pages and features it should get. There are no plans: a franchise sees exactly what you give it here.",
+      "find": "Find a franchise",
+      "noMatch": "No franchise matches.",
+      "choose": "Choose {{name}}",
+      "pick": "Choose a franchise",
+      "pickHint": "Pick a franchise from the list to see and change what it can use.",
+      "notRestricted": "Not restricted yet: everything is on",
+      "noteRestricted": "Only what is switched on here can be used by this franchise and its people. Turning something off hides it from them at once.",
+      "noteOpen": "This franchise has not been restricted yet, so it can use everything. Saving turns the list on: from then on only what is ticked is available to it.",
+      "open": "Open access control"
+    }
+  },
+  "wp35": {
+    "title": "Access control",
+    "hint": "Choose a person, then switch on or off what they can use: whole menus, pages, or single features. The role gives the starting point; what you change here applies to this person only. Only what the platform has allowed for your franchise is listed.",
+    "find": "Find a person",
+    "people": "People ({{count}})",
+    "noMatch": "No one matches.",
+    "choose": "Choose {{name}}",
+    "pick": "Choose a person",
+    "pickHint": "Pick someone from the list to see and change what they can use.",
+    "denied": "You do not have permission to change who can use what.",
+    "offline": "No network. Check your connection and try again.",
+    "noRole": "no role",
+    "fullAccessBadge": "Full access (Franchise Admin)",
+    "deactivated": "Deactivated",
+    "fullAccessNote": "A Franchise Admin can use everything in the franchise. To give this person less, change their role on the Users screen.",
+    "origin": {
+      "extra": "Extra for this person",
+      "taken": "Taken away for this person",
+      "role": "From the role"
+    },
+    "locked": {
+      "fullAccess": "A Franchise Admin has full access. Change the role to change what this person can do.",
+      "deactivated": "This account is deactivated.",
+      "cannotGive": "You do not hold this permission yourself, so you cannot give it to someone else.",
+      "cannotTake": "You do not hold this permission yourself, so you cannot take it away."
+    }
   }
 }

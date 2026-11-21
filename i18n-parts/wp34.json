@@ -1,0 +1,221 @@
+{
+  "en": {
+    "nav": {
+      "franchiseAccess": "Franchise access",
+      "userAccess": "Access control"
+    },
+    "featureDesc": {
+      "franchiseAccess": "Tick the menus and features a franchise may use",
+      "userAccess": "Tick the menus and features one person may use"
+    },
+    "wp34": {
+      "subtitle": "{{sub}} · {{on}} of {{total}} features on",
+      "menus": "Menus",
+      "wholeMenu": "Turn the whole {{menu}} menu on or off",
+      "wholePage": "Turn every {{page}} feature on or off",
+      "search": "Search features",
+      "searchHint": "for example discount, stock, report",
+      "showFeatures": "Show features",
+      "show": {
+        "all": "All",
+        "on": "On",
+        "off": "Off"
+      },
+      "none": "No feature matches. Clear the search or the filter.",
+      "saved": "Access saved. It applies on the next request.",
+      "unsaved": "{{added}} turned on, {{removed}} turned off, not saved yet",
+      "save": "Save access",
+      "discard": "Discard",
+      "names": {
+        "administration": "Administration",
+        "operations": "Operations",
+        "setup": "Setup",
+        "customers": "Customers",
+        "accounts": "Accounts",
+        "ai_intelligence": "AI & intelligence",
+        "reports_analytics": "Reports & analytics",
+        "staff_payroll": "Staff & payroll",
+        "other_features": "Other features",
+        "users_roles_and_security": "Users, roles and security",
+        "products": "Products",
+        "inventory": "Inventory",
+        "purchases": "Purchases",
+        "sales_and_billing": "Sales and billing",
+        "agri_advice": "Agri advice",
+        "integrations_and_jobs": "Integrations and jobs",
+        "collections_and_credit": "Collections and credit",
+        "complaints_and_engagement": "Complaints and engagement",
+        "villages_and_territories": "Villages and territories",
+        "messages": "Messages",
+        "customer_privacy": "Customer privacy",
+        "accounting": "Accounting",
+        "compliance_and_tax": "Compliance and tax",
+        "ai_and_intelligence": "AI and intelligence",
+        "reports": "Reports",
+        "staff_and_payroll": "Staff and payroll",
+        "documents": "Documents",
+        "settings_and_configuration": "Settings and configuration",
+        "other": "Other"
+      },
+      "fr": {
+        "title": "Access control",
+        "hint": "Choose a franchise, then switch on the menus, pages and features it should get. There are no plans: a franchise sees exactly what you give it here.",
+        "find": "Find a franchise",
+        "noMatch": "No franchise matches.",
+        "choose": "Choose {{name}}",
+        "pick": "Choose a franchise",
+        "pickHint": "Pick a franchise from the list to see and change what it can use.",
+        "notRestricted": "Not restricted yet: everything is on",
+        "noteRestricted": "Only what is switched on here can be used by this franchise and its people. Turning something off hides it from them at once.",
+        "noteOpen": "This franchise has not been restricted yet, so it can use everything. Saving turns the list on: from then on only what is ticked is available to it.",
+        "open": "Open access control"
+      }
+    }
+  },
+  "hi": {
+    "nav": {
+      "franchiseAccess": "फ्रैंचाइज़ी की पहुँच",
+      "userAccess": "एक्सेस कंट्रोल"
+    },
+    "featureDesc": {
+      "franchiseAccess": "फ्रैंचाइज़ी जो मेनू और सुविधाएँ इस्तेमाल कर सकती है उन पर टिक करें",
+      "userAccess": "एक व्यक्ति जो मेनू और सुविधाएँ इस्तेमाल कर सकता है उन पर टिक करें"
+    },
+    "wp34": {
+      "subtitle": "{{sub}} · {{total}} में से {{on}} सुविधाएँ चालू",
+      "menus": "मेनू",
+      "wholeMenu": "पूरा {{menu}} मेनू चालू या बंद करें",
+      "wholePage": "{{page}} की हर सुविधा चालू या बंद करें",
+      "search": "सुविधाएँ खोजें",
+      "searchHint": "जैसे छूट, स्टॉक, रिपोर्ट",
+      "showFeatures": "सुविधाएँ दिखाएँ",
+      "show": {
+        "all": "सभी",
+        "on": "चालू",
+        "off": "बंद"
+      },
+      "none": "कोई सुविधा नहीं मिली। खोज या फ़िल्टर हटाएँ।",
+      "saved": "पहुँच सहेजी गई। यह अगले अनुरोध से लागू होगी।",
+      "unsaved": "{{added}} चालू किए, {{removed}} बंद किए, अभी सहेजे नहीं गए",
+      "save": "पहुँच सहेजें",
+      "discard": "रहने दें",
+      "names": {
+        "administration": "प्रशासन",
+        "operations": "संचालन",
+        "setup": "सेटअप",
+        "customers": "ग्राहक",
+        "accounts": "लेखा",
+        "ai_intelligence": "एआई और विश्लेषण",
+        "reports_analytics": "रिपोर्ट और विश्लेषण",
+        "staff_payroll": "स्टाफ़ और वेतन",
+        "other_features": "अन्य सुविधाएँ",
+        "users_roles_and_security": "उपयोगकर्ता, भूमिकाएँ और सुरक्षा",
+        "products": "उत्पाद",
+        "inventory": "स्टॉक",
+        "purchases": "खरीद",
+        "sales_and_billing": "बिक्री और बिलिंग",
+        "agri_advice": "कृषि सलाह",
+        "integrations_and_jobs": "इंटीग्रेशन और जॉब",
+        "collections_and_credit": "वसूली और उधार",
+        "complaints_and_engagement": "शिकायतें और जुड़ाव",
+        "villages_and_territories": "गाँव और क्षेत्र",
+        "messages": "संदेश",
+        "customer_privacy": "ग्राहक गोपनीयता",
+        "accounting": "लेखांकन",
+        "compliance_and_tax": "अनुपालन और कर",
+        "ai_and_intelligence": "एआई और विश्लेषण",
+        "reports": "रिपोर्ट",
+        "staff_and_payroll": "स्टाफ़ और वेतन",
+        "documents": "दस्तावेज़",
+        "settings_and_configuration": "सेटिंग्स और विन्यास",
+        "other": "अन्य"
+      },
+      "fr": {
+        "title": "एक्सेस कंट्रोल",
+        "hint": "फ्रैंचाइज़ी चुनें, फिर वे मेनू, पेज और सुविधाएँ चालू करें जो उसे मिलनी चाहिए। कोई प्लान नहीं है: फ्रैंचाइज़ी को वही दिखता है जो आप यहाँ देते हैं।",
+        "find": "फ्रैंचाइज़ी खोजें",
+        "noMatch": "कोई फ्रैंचाइज़ी नहीं मिली।",
+        "choose": "{{name}} चुनें",
+        "pick": "फ्रैंचाइज़ी चुनें",
+        "pickHint": "सूची से फ्रैंचाइज़ी चुनें ताकि देख और बदल सकें कि वह क्या इस्तेमाल कर सकती है।",
+        "notRestricted": "अभी सीमित नहीं: सब कुछ चालू है",
+        "noteRestricted": "सिर्फ़ जो यहाँ चालू है वही यह फ्रैंचाइज़ी और उसके लोग इस्तेमाल कर सकते हैं। कुछ बंद करने पर वह उनसे तुरंत छिप जाता है।",
+        "noteOpen": "इस फ्रैंचाइज़ी पर अभी कोई सीमा नहीं है, इसलिए वह सब कुछ इस्तेमाल कर सकती है। सहेजने पर सूची चालू हो जाती है: उसके बाद उसे सिर्फ़ टिक की हुई चीज़ें मिलेंगी।",
+        "open": "एक्सेस कंट्रोल खोलें"
+      }
+    }
+  },
+  "mr": {
+    "nav": {
+      "franchiseAccess": "फ्रँचायझीचा प्रवेश",
+      "userAccess": "अ‍ॅक्सेस कंट्रोल"
+    },
+    "featureDesc": {
+      "franchiseAccess": "फ्रँचायझी वापरू शकते ते मेनू आणि सुविधा निवडा",
+      "userAccess": "एक व्यक्ती वापरू शकते ते मेनू आणि सुविधा निवडा"
+    },
+    "wp34": {
+      "subtitle": "{{sub}} · {{total}} पैकी {{on}} सुविधा चालू",
+      "menus": "मेनू",
+      "wholeMenu": "संपूर्ण {{menu}} मेनू चालू किंवा बंद करा",
+      "wholePage": "{{page}} ची प्रत्येक सुविधा चालू किंवा बंद करा",
+      "search": "सुविधा शोधा",
+      "searchHint": "उदा. सवलत, साठा, अहवाल",
+      "showFeatures": "सुविधा दाखवा",
+      "show": {
+        "all": "सर्व",
+        "on": "चालू",
+        "off": "बंद"
+      },
+      "none": "एकही सुविधा जुळली नाही. शोध किंवा फिल्टर काढा.",
+      "saved": "प्रवेश जतन झाला. तो पुढच्या विनंतीपासून लागू होतो.",
+      "unsaved": "{{added}} चालू केले, {{removed}} बंद केले, अजून जतन केलेले नाही",
+      "save": "प्रवेश जतन करा",
+      "discard": "सोडून द्या",
+      "names": {
+        "administration": "प्रशासन",
+        "operations": "कामकाज",
+        "setup": "सेटअप",
+        "customers": "ग्राहक",
+        "accounts": "लेखा",
+        "ai_intelligence": "एआय आणि विश्लेषण",
+        "reports_analytics": "अहवाल आणि विश्लेषण",
+        "staff_payroll": "कर्मचारी आणि पगार",
+        "other_features": "इतर सुविधा",
+        "users_roles_and_security": "वापरकर्ते, भूमिका आणि सुरक्षा",
+        "products": "उत्पादने",
+        "inventory": "साठा",
+        "purchases": "खरेदी",
+        "sales_and_billing": "विक्री आणि बिलिंग",
+        "agri_advice": "कृषी सल्ला",
+        "integrations_and_jobs": "इंटिग्रेशन आणि जॉब",
+        "collections_and_credit": "वसुली आणि उधार",
+        "complaints_and_engagement": "तक्रारी आणि संपर्क",
+        "villages_and_territories": "गावे आणि क्षेत्रे",
+        "messages": "संदेश",
+        "customer_privacy": "ग्राहक गोपनीयता",
+        "accounting": "लेखांकन",
+        "compliance_and_tax": "अनुपालन आणि कर",
+        "ai_and_intelligence": "एआय आणि विश्लेषण",
+        "reports": "अहवाल",
+        "staff_and_payroll": "कर्मचारी आणि पगार",
+        "documents": "दस्तऐवज",
+        "settings_and_configuration": "सेटिंग्ज आणि संरचना",
+        "other": "इतर"
+      },
+      "fr": {
+        "title": "अ‍ॅक्सेस कंट्रोल",
+        "hint": "फ्रँचायझी निवडा, मग तिला मिळायला हवेत ते मेनू, पाने आणि सुविधा चालू करा. कोणतेही प्लॅन नाहीत: फ्रँचायझीला तुम्ही इथे द्याल तेवढेच दिसते.",
+        "find": "फ्रँचायझी शोधा",
+        "noMatch": "एकही फ्रँचायझी जुळली नाही.",
+        "choose": "{{name}} निवडा",
+        "pick": "फ्रँचायझी निवडा",
+        "pickHint": "यादीतून फ्रँचायझी निवडा म्हणजे ती काय वापरू शकते ते पाहता व बदलता येईल.",
+        "notRestricted": "अजून मर्यादित नाही: सर्व काही चालू आहे",
+        "noteRestricted": "इथे चालू केलेले तेवढेच ही फ्रँचायझी आणि तिचे लोक वापरू शकतात. काही बंद केले की ते त्यांना लगेच दिसेनासे होते.",
+        "noteOpen": "या फ्रँचायझीवर अजून मर्यादा नाही, म्हणून ती सर्व काही वापरू शकते. जतन केल्यावर यादी चालू होते: त्यानंतर तिला फक्त टिक केलेल्या गोष्टी मिळतील.",
+        "open": "अ‍ॅक्सेस कंट्रोल उघडा"
+      }
+    }
+  }
+}
