@@ -613,7 +613,15 @@
     "aiQuality": "Data quality",
     "aiGovern": "AI usage and evaluation",
     "aiPolicies": "Approval policy",
-    "aiAudit": "AI decision log"
+    "aiAudit": "AI decision log",
+    "observability": "Usage observability",
+    "platformDashboard": "Platform dashboard",
+    "platformFranchises": "Franchises",
+    "platformPlans": "Plans",
+    "platformAudit": "Platform audit",
+    "platformObservability": "Franchise usage",
+    "offlineBills": "Offline bills",
+    "syncDesk": "Offline sync desk"
   },
   "pos": {
     "title": "New bill",
@@ -1690,7 +1698,9 @@
     "receipts": "Receipts",
     "payments": "Payments",
     "closing": "Closing",
-    "negative": "The balance went below zero in this period."
+    "negative": "The balance went below zero in this period.",
+    "kind_branch": "Branch-wise profit",
+    "kind_recon": "Reconciliation"
   },
   "credit": {
     "title": "Credit limit and hold",
@@ -1981,7 +1991,15 @@
     "aiQuality": "How complete and clean your data is",
     "aiGovern": "Monthly AI quota and the evaluation report",
     "aiPolicies": "Who must approve AI actions, and limits",
-    "aiAudit": "Every AI call: who, which tool, which model"
+    "aiAudit": "Every AI call: who, which tool, which model",
+    "observability": "How your people use the app, where they struggle",
+    "platformDashboard": "Franchises, plans and usage",
+    "platformFranchises": "Add, suspend, change plan",
+    "platformPlans": "Plans and their versions",
+    "platformAudit": "Who did what on the platform",
+    "platformObservability": "Usage of every franchise",
+    "offlineBills": "Bills made without network, sync",
+    "syncDesk": "Phones, offline bills to decide"
   },
   "modules": {
     "account": {
@@ -2029,7 +2047,11 @@
     "off": "Off",
     "toggle": "Show {{name}} on home",
     "showAll": "Show all modules",
-    "hiddenNote": "All modules are hidden. Switch on to show them all again."
+    "hiddenNote": "All modules are hidden. Switch on to show them all again.",
+    "platform": {
+      "title": "Platform console",
+      "sub": "Franchises, plans, audit and usage"
+    }
   },
   "sec": {
     "title": "Security centre",
@@ -2131,7 +2153,7 @@
     "report": "Share error report",
     "reportReady": "The error report is ready to share.",
     "more": "Load more",
-    "notBuilt": "Not in the app: starting an import (file upload) and committing it. Use the web app."
+    "notBuilt": "An Excel file is read on the server: the first sheet, with the column names in the first row."
   },
   "cfg": {
     "title": "Forms and menu",
@@ -2305,7 +2327,11 @@
       "evaluations": "Sale checks",
       "rules": "Rules",
       "itcRecon": "GSTR-2B match",
-      "rcmRules": "Reverse charge rules"
+      "rcmRules": "Reverse charge rules",
+      "itcRegister": "Input credit",
+      "impact": "Affected stock",
+      "templates": "Report templates",
+      "trace": "Batch trace"
     },
     "empty": {
       "any": "Nothing to show yet.",
@@ -2315,7 +2341,10 @@
       "alerts": "Nothing is about to expire.",
       "snapshots": "Nothing frozen yet.",
       "itcRecon": "Nothing to reconcile. Import GSTR-2B on the web for this month.",
-      "rcmRules": "No rules yet."
+      "rcmRules": "No rules yet.",
+      "itcRegister": "No purchase bills in this month.",
+      "impact": "No stock is affected.",
+      "templates": "No template yet."
     },
     "act": {
       "removeBlock": "Remove",
@@ -2327,7 +2356,25 @@
       "acknowledge": "Acknowledge",
       "complete": "Mark done",
       "switchOff": "Switch off",
-      "switchOn": "Switch on"
+      "switchOn": "Switch on",
+      "claimItc": "Claim credit",
+      "blockItc": "Block credit",
+      "recallQuarantine": "Quarantine",
+      "recallClose": "Close",
+      "release": "Release",
+      "dispose": "Dispose",
+      "triage": "Triage",
+      "escalate": "Escalate",
+      "caseClose": "Close",
+      "result": "Result",
+      "custody": "Custody",
+      "ruleTest": "Test",
+      "ruleSubmit": "Submit",
+      "ruleApprove": "Approve",
+      "ruleActivate": "Activate",
+      "ruleRetire": "Retire",
+      "templateApprove": "Approve",
+      "generate": "Generate"
     },
     "ask": {
       "removeBlock": "Remove this blocked-credit rule?",
@@ -2336,7 +2383,25 @@
       "suspend": "Suspend this registration. Say why.",
       "revoke": "Revoke this authorisation. Say why.",
       "switchOff": "Switch this reverse charge rule off?",
-      "switchOn": "Switch this reverse charge rule on?"
+      "switchOn": "Switch this reverse charge rule on?",
+      "claimItc": "Claim the input credit of this bill. Say why.",
+      "blockItc": "Block the input credit of this bill. Say why.",
+      "recallQuarantine": "Quarantine the stock of this recall?",
+      "recallClose": "Close this recall. Write a closing note.",
+      "release": "Release this stock. Write why it is safe to sell.",
+      "dispose": "Destroying writes the stock off; returning sends it back to the supplier.",
+      "triage": "Mark this case as triaged?",
+      "escalate": "Escalate this case?",
+      "caseClose": "Close this case. Write the outcome.",
+      "result": "Record the result of this sample.",
+      "custody": "Record who handed the sample to whom.",
+      "ruleTest": "Test this draft rule?",
+      "ruleSubmit": "Submit this rule for approval?",
+      "ruleApprove": "Approve this rule version?",
+      "ruleActivate": "Put this rule version in force?",
+      "ruleRetire": "Retire this rule version?",
+      "templateApprove": "Approve the draft version of this template?",
+      "generate": "Make the report for these dates."
     },
     "v": {
       "ACTIVE": "Active",
@@ -2361,7 +2426,69 @@
       "WITHDRAWN": "Withdrawn",
       "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
       "SUPPLIER": "One supplier",
-      "CATEGORY": "A product category"
+      "CATEGORY": "A product category",
+      "LOCAL": "Local (this franchise)",
+      "GLOBAL": "Global",
+      "BANNED": "Banned",
+      "RESTRICTED": "Restricted",
+      "LICENCE": "Licence",
+      "REGISTRATION": "Registration",
+      "AUTHORISATION": "Authorisation",
+      "SDS": "Safety data sheet",
+      "CERTIFICATE": "Certificate",
+      "REGISTER": "Register",
+      "RETURN": "Return",
+      "INSPECTION": "Inspection",
+      "OTHER": "Other",
+      "MANUFACTURER": "Manufacturer",
+      "REGULATOR": "Regulator",
+      "INTERNAL": "Internal",
+      "CONTAMINATION": "Contamination",
+      "SUSPECT": "Suspect",
+      "RECALL": "Recall",
+      "AUTHENTICITY": "Authenticity",
+      "SAMPLE_FAIL": "Sample failed",
+      "RESTRICTED_INGREDIENT": "Restricted ingredient",
+      "COMPLAINT": "Complaint",
+      "INCIDENT": "Incident",
+      "EXPOSURE": "Exposure",
+      "POISONING": "Poisoning",
+      "SPILL": "Spill",
+      "FIRE": "Fire",
+      "CROP_DAMAGE": "Crop damage",
+      "ANIMAL_HARM": "Harm to animals",
+      "STORAGE": "Storage",
+      "AUTHORITY": "Authority",
+      "RECEIPT": "Receipt",
+      "SALE": "Sale",
+      "STOCK": "Stock",
+      "VERIFIED": "Verified",
+      "FAILED": "Failed",
+      "UNVERIFIABLE": "Cannot be verified",
+      "PURCHASE": "Purchase",
+      "ORDER": "Order",
+      "REQUIRE_APPROVAL": "Needs approval",
+      "REQUIRE_DOCUMENT": "Needs a document",
+      "DESTROY": "Destroy (written off)",
+      "INCONCLUSIVE": "Inconclusive",
+      "NONE": "Leave as is",
+      "QUARANTINE": "Quarantine",
+      "QUARANTINED": "Quarantined",
+      "MONTH": "Month",
+      "QUARTER": "Quarter",
+      "YEAR": "Year",
+      "ANY": "Any dates",
+      "SUBMITTED": "Submitted",
+      "APPROVED": "Approved",
+      "RETIRED": "Retired",
+      "pesticide_register": "Pesticide register",
+      "fertilizer_register": "Fertiliser register",
+      "seed_register": "Seed register",
+      "licence_status": "Licence status",
+      "restricted_impact": "Restricted ingredient impact",
+      "evaluation_log": "Sale check log",
+      "recall_summary": "Recall summary",
+      "hsn_summary": "HSN summary"
     },
     "f": {
       "returnType": "Return",
@@ -2468,7 +2595,160 @@
       "note": "What to do",
       "appliesTo": "Applies to",
       "refName": "For",
-      "active": "Active"
+      "active": "Active",
+      "number": "Bill",
+      "supplierInvoiceNo": "Supplier invoice",
+      "skuName": "Name",
+      "ingredient": "Ingredient",
+      "sourceKey": "Data from"
+    },
+    "ff": {
+      "batch": "Batch",
+      "variety": "Variety",
+      "producer": "Producer",
+      "lotNo": "Lot number",
+      "germinationPct": "Germination % (0-100)",
+      "testDate": "Test date",
+      "validFrom": "Valid from",
+      "validTo": "Valid to",
+      "name": "Name",
+      "scope": "List",
+      "restriction": "Restriction",
+      "reference": "Reference (notification, order)",
+      "reason": "Reason",
+      "effectiveFrom": "Effective from",
+      "skuId": "Product",
+      "regNumber": "Registration number",
+      "issuingAuthority": "Issuing authority",
+      "documentRef": "Document reference",
+      "manufacturerId": "Manufacturer",
+      "brandId": "Brand",
+      "scopeNote": "Product class / scope",
+      "territory": "Territory",
+      "docType": "Type",
+      "title": "Title",
+      "docNumber": "Number",
+      "fileRef": "Where the file is kept",
+      "period": "Month (YYYY-MM)",
+      "code": "Code",
+      "jurisdiction": "Jurisdiction",
+      "legalRef": "Legal register entry",
+      "sourceKey": "Data from",
+      "columns": "Columns (keys of the source, comma separated)",
+      "periodKind": "Period",
+      "source": "Source",
+      "noticeRef": "Notice reference",
+      "severity": "Severity",
+      "reasonCode": "Reason",
+      "kind": "Kind",
+      "description": "What happened",
+      "incidentType": "Type",
+      "location": "Location",
+      "occurredOn": "Date",
+      "peopleAffected": "People affected (number)",
+      "summary": "Summary",
+      "warehouseId": "Warehouse",
+      "qty": "Quantity",
+      "purpose": "Purpose",
+      "authority": "Authority",
+      "takenBy": "Taken by",
+      "takenOn": "Date",
+      "codeText": "Code or QR text",
+      "context": "Where",
+      "outcome": "Outcome",
+      "note": "Note",
+      "subject": "Applies to",
+      "legalSource": "Legal register entry (LR-...)",
+      "condition": "Condition (JSON, e.g. {\"regulatedType\":\"PESTICIDE\"})",
+      "message": "Message shown",
+      "overridable": "May be overridden with a reason",
+      "action": "Action",
+      "method": "Method",
+      "witness": "Witness (needed to destroy)",
+      "evidenceRef": "Evidence reference",
+      "lab": "Laboratory",
+      "reportRef": "Report reference",
+      "detail": "Detail",
+      "batchAction": "Batch",
+      "fromParty": "From",
+      "toParty": "To",
+      "from": "From (YYYY-MM-DD)",
+      "to": "To (YYYY-MM-DD)",
+      "ingredient": "Ingredient"
+    },
+    "form": {
+      "seedLot": "Add seed lot",
+      "seedLot_done": "Seed lot added.",
+      "restriction": "Add restriction",
+      "restriction_done": "Restriction added.",
+      "registration": "Add registration",
+      "registration_done": "Registration added.",
+      "authorisation": "Add authorisation",
+      "authorisation_done": "Authorisation added.",
+      "document": "Add document",
+      "document_done": "Document added.",
+      "alertsRun": "Check expiries now",
+      "alertsRun_done": "Checked.",
+      "auditPack": "Create audit pack",
+      "auditPack_done": "Audit pack created.",
+      "template": "New template",
+      "template_done": "Template added.",
+      "recall": "Open recall",
+      "recall_done": "Recall opened.",
+      "quarantine": "Quarantine a batch",
+      "quarantine_done": "Batch quarantined.",
+      "case": "Log complaint or incident",
+      "case_done": "Case logged.",
+      "incident": "Report incident",
+      "incident_done": "Incident reported.",
+      "sample": "Take sample",
+      "sample_done": "Sample recorded.",
+      "authenticity": "Record check",
+      "authenticity_done": "Check recorded.",
+      "rule": "New rule",
+      "rule_done": "Rule added as a draft.",
+      "restriction_hint": "The global list is the regulator list, entered with its reference; the local list is your own. A listed ingredient blocks purchase and sale from its effective date.",
+      "document_hint": "The file itself is not stored yet; record where it is kept (scan name, shelf, link).",
+      "auditPack_hint": "A ZIP of licences, registers and GST summaries for a month, with a list of files and their checksums.",
+      "template_hint": "Regulator report templates take their data from the registers. Filing is outside the system.",
+      "sample_hint": "The quantity leaves stock through an adjustment with a reason.",
+      "rule_hint": "A rule is never edited: each change is a new version that is tested, approved by a different person and then takes effect on its date.",
+      "quarantine_hint": "A quarantined batch cannot be sold. Release needs a different person to approve; destruction records the method and a witness.",
+      "save": "Save"
+    },
+    "fe": {
+      "text": "Fill this in.",
+      "area": "Fill this in.",
+      "date": "A real date as YYYY-MM-DD.",
+      "month": "A month as YYYY-MM.",
+      "num": "A number, up to 4 decimals.",
+      "select": "Choose one.",
+      "product": "Choose the product.",
+      "batch": "Choose the batch.",
+      "manufacturer": "Choose one.",
+      "brand": "Choose one.",
+      "warehouse": "Choose the warehouse."
+    },
+    "fv": {
+      "condition": "The condition must be valid JSON.",
+      "noSharing": "Sharing is not available on this phone."
+    },
+    "pick": {
+      "change": "Change",
+      "none": "No batch matches."
+    },
+    "trace": {
+      "hint": "From the supplier receipt to every sale and return of one batch. Customer details are hidden unless your role allows them. Type part of the product code or batch number.",
+      "failed": "The trace could not be loaded.",
+      "agrees": "The trace agrees with the stock movements of the batch.",
+      "differs": "The trace differs from stock movements: {{what}}",
+      "received": "Received",
+      "sold": "Sold",
+      "returned": "Returned",
+      "onHand": "On hand",
+      "receipt": "{{date}} receipt {{no}} from {{who}}: {{qty}}",
+      "sale": "{{date}} sale {{no}} to {{who}}: {{qty}}",
+      "return": "{{date}} return {{no}}: {{qty}}"
     }
   },
   "cus": {
@@ -3653,7 +3933,7 @@
       "reopenNow": "Reopen the month",
       "locked": "Month locked.",
       "reopened": "Month reopened. This is recorded in the audit trail.",
-      "noBudgets": "No budgets yet. Create a budget on the web app.",
+      "noBudgets": "No budgets yet.",
       "lineCount": "{{count}} lines",
       "view": "View {{name}}",
       "newVersion": "New version",
@@ -5963,5 +6243,1071 @@
         "units": "Enter units per acre above 0."
       }
     }
+  },
+  "wp6": {
+    "reason": "Reason",
+    "v": {
+      "reason": "Write a reason of 3 to 300 letters."
+    },
+    "tdsOn": "TDS / TCS on",
+    "g2b": {
+      "title": "Import GSTR-2B for {{period}}",
+      "hint": "Choose the portal JSON or an Excel export saved as CSV (columns: GSTIN, invoice number, date, taxable, CGST, SGST, IGST).",
+      "pick": "Choose the file",
+      "readFailed": "The file could not be read. Choose it again.",
+      "size": "The file is empty or larger than 5 MB.",
+      "import": "Import GSTR-2B",
+      "done": "GSTR-2B imported.",
+      "rejected_one": "{{count}} row could not be read.",
+      "rejected_other": "{{count}} rows could not be read."
+    },
+    "block": {
+      "open": "Block a product or category",
+      "title": "Block input credit",
+      "hint": "Products or categories whose input tax is not claimed. The reason comes from your tax adviser; no list is built in.",
+      "kind": "Applies to",
+      "sku": "Product",
+      "category": "Category",
+      "save": "Block the credit",
+      "done": "Credit blocked.",
+      "v": {
+        "ref": "Choose what it applies to."
+      }
+    },
+    "rule": {
+      "open": "Add a reverse charge rule",
+      "title": "New reverse charge rule",
+      "hint": "Applicability is your configuration, not built in. Ask your tax adviser which suppliers or products to add.",
+      "name": "Name",
+      "appliesTo": "Applies to",
+      "supplier": "Supplier",
+      "s": {
+        "UNREGISTERED_SUPPLIER": "Unregistered suppliers",
+        "SUPPLIER": "One supplier",
+        "CATEGORY": "A product category"
+      },
+      "save": "Add the rule",
+      "done": "Rule added.",
+      "v": {
+        "name": "Write a name of 2 to 120 letters.",
+        "ref": "Choose the supplier or category."
+      }
+    },
+    "tds": {
+      "open": "Add a section",
+      "title": "New TDS / TCS section",
+      "hint": "Enter what your tax adviser gives you. A change is a new row from a new date; old rows stay.",
+      "code": "Section code",
+      "name": "Name",
+      "kind": "Kind",
+      "k": {
+        "TDS": "TDS (from suppliers)",
+        "TCS": "TCS (from customers)"
+      },
+      "party": "Party",
+      "p": {
+        "SUPPLIER": "Supplier",
+        "CUSTOMER": "Customer"
+      },
+      "rate": "Rate %",
+      "noPan": "Rate % when PAN is missing",
+      "threshold": "Yearly threshold",
+      "from": "From (YYYY-MM-DD)",
+      "save": "Save the section",
+      "done": "Section saved.",
+      "run": "Run for {{from}} to {{to}}",
+      "ran": "Recorded.",
+      "v": {
+        "code": "Up to 20 letters, digits and ( ) _ - only.",
+        "name": "Write a name of 2 to 120 letters.",
+        "rate": "A rate from 0 to 100, up to 4 decimals.",
+        "noPan": "A rate from 0 to 100, up to 4 decimals.",
+        "threshold": "An amount with up to 4 decimals.",
+        "date": "A real date as YYYY-MM-DD."
+      }
+    }
+  },
+  "wp7": {
+    "cancel": "Cancel",
+    "io": {
+      "title": "Import and export products",
+      "export": "Download products CSV",
+      "template": "Download import template",
+      "noSharing": "Sharing is not available on this phone.",
+      "hint": "Up to 10,000 rows, from a CSV or an Excel (.xlsx) file in the template layout. Blank cells leave existing products unchanged. Errors are listed per row and column; nothing imports silently.",
+      "pick": "Choose a CSV or Excel file",
+      "readFailed": "The file could not be read. Choose it again.",
+      "size": "The file is empty or too large.",
+      "hsn": "HSN codes not in the library are confirmed",
+      "validate": "Check the file",
+      "checked": "File checked. Nothing is saved yet.",
+      "summary": "Rows {{total}}: create {{create}}, update {{update}}, unchanged {{same}}, errors {{errors}}.",
+      "committed": "Imported.",
+      "error": "Row {{row}}, {{column}}: {{message}}",
+      "moreErrors": "{{count}} more errors are in the report.",
+      "all": "Import all or nothing",
+      "valid": "Import valid rows only",
+      "imported": "Import done.",
+      "report": "Download report"
+    },
+    "comp": {
+      "edit": "Edit composition",
+      "hint": "One per line: ingredient name, percentage, optional formulation (EC, WP, SC, SL, WG, DP, GR, FS, OTHER). Ingredients come from the ingredient master.",
+      "rows": "Rows",
+      "save": "Save composition",
+      "saved": "Composition saved.",
+      "p": {
+        "format": "Line {{line}}: write the name, then a comma, then the percentage.",
+        "unknown": "Line {{line}}: \"{{name}}\" is not in the ingredient master. Add it first.",
+        "pct": "Line {{line}}: the percentage must be 0 to 100, up to 4 decimals.",
+        "formulation": "Line {{line}}: the formulation must be EC, WP, SC, SL, WG, DP, GR, FS or OTHER.",
+        "twice": "Line {{line}}: this ingredient is listed twice.",
+        "tooMany": "At most 50 ingredients."
+      }
+    },
+    "ing": {
+      "open": "Add ingredient to master",
+      "title": "New ingredient",
+      "name": "Name",
+      "banned": "Banned",
+      "banReason": "Ban reason",
+      "save": "Add ingredient",
+      "saved": "Ingredient added.",
+      "v": {
+        "name": "Write a name of up to 120 letters.",
+        "banReason": "A banned ingredient needs a reason."
+      }
+    },
+    "lab": {
+      "open": "Print labels",
+      "title": "Print labels",
+      "hint": "Product, price and barcode. One per line: product code, copies. Generate barcodes first on the product. The sheet is made as a PDF to print or share.",
+      "lines": "Product code, copies",
+      "bad": "Line {{line}}: write the product code and 1 to 500 copies (at most 200 products).",
+      "make": "Make the label sheet",
+      "missing": "Product {{code}} was not found.",
+      "mrp": "MRP",
+      "done": "Label sheet made."
+    }
+  },
+  "wp9": {
+    "cancel": "Cancel",
+    "v": {
+      "edit": "Edit draft",
+      "updated": "Draft voucher updated."
+    },
+    "e": {
+      "edit": "Edit draft",
+      "updated": "Draft expense updated."
+    },
+    "cc": {
+      "add": "Add cost centre",
+      "hint": "Every branch is already a cost centre. Add others, such as a delivery vehicle or a field team.",
+      "code": "Code",
+      "name": "Name",
+      "save": "Add",
+      "added": "Cost centre added.",
+      "off": "Switch off {{code}}",
+      "on": "Switch on {{code}}",
+      "switched": "Cost centre changed.",
+      "v": {
+        "code": "2-20 capital letters, digits or dashes.",
+        "name": "Write a name of 2 to 120 letters."
+      }
+    },
+    "b": {
+      "new": "New budget",
+      "title": "New budget",
+      "hint": "Enter a monthly amount for each account; it is spread over the 12 months. Edit the draft on the web for month-by-month figures.",
+      "name": "Name",
+      "year": "Financial year",
+      "noYear": "Create the financial year first.",
+      "account": "Account {{n}}",
+      "none": "(none)",
+      "monthly": "Monthly amount {{n}}",
+      "save": "Save as draft",
+      "saved": "Budget saved as a draft.",
+      "v": {
+        "name": "Write a name of 2 to 80 letters.",
+        "year": "Choose the financial year.",
+        "rows": "Choose at least one account with a monthly amount.",
+        "amount": "Each chosen account needs an amount above zero with up to 2 decimals."
+      }
+    },
+    "lt": {
+      "new": "New leave type",
+      "title": "New leave type",
+      "code": "Code",
+      "name": "Name",
+      "quota": "Days per year",
+      "paid": "Paid leave",
+      "carry": "Carry forward unused days",
+      "save": "Save",
+      "saved": "Leave type saved.",
+      "v": {
+        "code": "2-20 capital letters, digits and underscore only.",
+        "name": "Write a name of 2 to 80 letters.",
+        "quota": "Days from 0 to 366, up to 2 decimals."
+      }
+    },
+    "lic": {
+      "title": "Agro licences",
+      "hint": "Selling a regulated category needs a valid licence at the branch.",
+      "none": "No licences recorded.",
+      "edit": "Change {{no}}",
+      "add": "Add licence",
+      "addTitle": "New licence",
+      "editTitle": "Change licence {{no}}",
+      "branch": "Branch",
+      "typeLabel": "Type",
+      "type": {
+        "FERTILIZER": "Fertiliser",
+        "PESTICIDE": "Pesticide",
+        "SEED": "Seed"
+      },
+      "number": "Licence number",
+      "authority": "Issuing authority",
+      "from": "Valid from",
+      "to": "Valid to",
+      "categories": "Permitted product categories (comma separated codes)",
+      "status": "Record status",
+      "rs": {
+        "ACTIVE": "Active",
+        "REVOKED": "Revoked"
+      },
+      "save": "Save licence",
+      "added": "Licence added.",
+      "updated": "Licence updated.",
+      "v": {
+        "branch": "Choose the branch.",
+        "number": "Write the number (2 to 60 letters).",
+        "authority": "Write the authority (2 to 200 letters).",
+        "from": "A real date as YYYY-MM-DD.",
+        "to": "A real date as YYYY-MM-DD.",
+        "order": "Valid to must not be before valid from.",
+        "categories": "Write 1 to 50 category codes, comma separated."
+      }
+    },
+    "st": {
+      "pdf": "Statement as PDF",
+      "done": "Statement made.",
+      "noSharing": "Sharing is not available on this phone."
+    },
+    "grni": {
+      "tab": "Unbilled receipts",
+      "asOf": "As on {{date}}",
+      "total": "Not yet billed",
+      "books": "In the books",
+      "difference": "Difference",
+      "agrees": "The books agree with the receipts.",
+      "differs": "The books differ from the receipts. Find the document and correct it.",
+      "none": "Every receipt is billed.",
+      "accepted": "Received value",
+      "billed": "Billed",
+      "unbilled": "Unbilled"
+    }
+  },
+  "wp10": {
+    "cancel": "Cancel",
+    "scan": {
+      "run": "Run the daily scan now",
+      "skipped": "Skipped: {{why}}",
+      "ran_one": "Done: {{count}} job ran.",
+      "ran_other": "Done: {{count}} jobs ran."
+    },
+    "kn": {
+      "title": "Knowledge review",
+      "hint": "An entry is approved by someone other than its author. Only approved entries are ever shown to staff. Copy from a published source (ICAR, state agricultural university, KVK, CIB&RC label).",
+      "new": "New entry",
+      "kind": "Kind",
+      "season": "Season",
+      "anySeason": "Any",
+      "k": {
+        "PEST": "Pest",
+        "DISEASE": "Disease",
+        "DEFICIENCY": "Deficiency",
+        "WEED": "Weed",
+        "SOWING": "Sowing",
+        "NUTRIENT": "Nutrient",
+        "IRRIGATION": "Irrigation"
+      },
+      "s": {
+        "KHARIF": "Kharif",
+        "RABI": "Rabi",
+        "ZAID": "Zaid"
+      },
+      "f": {
+        "crop": "Crop *",
+        "nameEn": "Name (English) *",
+        "nameHi": "Name (Hindi)",
+        "nameMr": "Name (Marathi)",
+        "stage": "Stage",
+        "symptoms": "Symptoms (one per line; problems only)",
+        "summary": "Text (sowing window, nutrient schedule, irrigation)",
+        "cultural": "Cultural control",
+        "biological": "Biological control",
+        "chemical": "Chemical control",
+        "ingredients": "Recommended active ingredients (one per line)",
+        "doseText": "Dose text, only if the source states it",
+        "sourceRef": "Source reference (title, edition, page) *"
+      },
+      "required": "Fill this in.",
+      "source": "Source",
+      "save": "Save as draft",
+      "saved": "Entry saved as a draft.",
+      "none": "No entries yet. Production starts empty.",
+      "st": {
+        "DRAFT": "draft",
+        "SUBMITTED": "submitted",
+        "APPROVED": "approved",
+        "REJECTED": "rejected",
+        "RETIRED": "retired"
+      },
+      "step": {
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "retire": "Retire"
+      },
+      "done": {
+        "submit": "Submitted.",
+        "approve": "Approved.",
+        "reject": "Rejected.",
+        "retire": "Retired."
+      },
+      "reason": "Reason"
+    },
+    "cm": {
+      "title": "Save as a campaign message",
+      "none": "No approved campaign yet. Approve one in Recommendations first.",
+      "campaign": "Approved campaign",
+      "save": "Save as a proposal",
+      "saved": "Saved as a proposal. A person approves it in Recommendations; nothing is sent.",
+      "note": "Customers without consent are left out when a person queues the message."
+    },
+    "ev": {
+      "kind": "What kind",
+      "k": {
+        "INVOICE": "Invoice",
+        "PURCHASE_BILL": "Purchase bill",
+        "STOCK_MOVEMENT": "Stock movement",
+        "RECEIPT": "Receipt",
+        "CUSTOMER": "Customer",
+        "PRODUCT": "Product",
+        "DOCUMENT": "Document",
+        "OTHER": "Other"
+      },
+      "ref": "Number or id",
+      "add": "Attach evidence",
+      "added": "Evidence attached."
+    },
+    "tr": {
+      "required": "Fill this in (text up to 20,000 letters).",
+      "editTitle": "Change {{title}}",
+      "addTitle": "Add training text",
+      "hint": "Franchise-owned text only (SOPs, product handling, safety). Answers quote it word for word; a change raises the version.",
+      "title": "Title",
+      "source": "Source (document and section)",
+      "category": "Category",
+      "body": "Text",
+      "save": "Save",
+      "saved": "Training text saved.",
+      "add": "Add text",
+      "edit": "Change {{title}}"
+    },
+    "ocr": {
+      "recent": "Recent documents",
+      "none": "No documents read yet.",
+      "toCheck_one": "{{count}} to check",
+      "toCheck_other": "{{count}} to check",
+      "clean": "clean",
+      "review": "Review {{name}}",
+      "view": "View {{name}}",
+      "opened": "Document opened.",
+      "correct": "Correct what was read",
+      "grnLine": "Receipt line for line {{n}}",
+      "left": "{{qty}} left",
+      "matched": "Matched by GSTIN: {{name}}.",
+      "noSupplier": "No supplier matched the GSTIN. Choose one.",
+      "supplier": "Supplier",
+      "duplicateBill": "A bill with this invoice number is already entered for this supplier.",
+      "saved": "Corrections saved.",
+      "save": "Save corrections",
+      "createBill": "Create draft bill",
+      "billMade": "Draft bill created. Post it in Purchases.",
+      "billNote": "Match each invoice line to the goods receipt it is for. The bill is saved as a DRAFT; you post it in Purchases."
+    },
+    "sh": {
+      "recent": "Recent checks",
+      "none": "No shelf checks yet.",
+      "line": "{{when}} · {{products}} products · {{diff}} differences",
+      "countOpened": "stock count opened",
+      "show": "Show {{when}}"
+    },
+    "ex": {
+      "open": "Open {{name}}",
+      "opened": "Scenario opened."
+    }
+  },
+  "wp11": {
+    "shared": "File ready to share.",
+    "noSharing": "Sharing is not available on this phone.",
+    "csv": "Download CSV",
+    "xlsx": "Download Excel",
+    "branch": "Branch",
+    "allBranches": "All branches",
+    "compare": "Compare with previous period",
+    "previous": "Previous period {{from}} - {{to}}",
+    "open": "Open in full",
+    "close": "Close",
+    "br": {
+      "by": "Split by",
+      "branch": "Branch",
+      "costCentre": "Cost centre",
+      "consolidated": "Consolidated",
+      "adds": "Columns add up to the consolidated figure.",
+      "notAdds": "Columns do not add up.",
+      "netSales": "Net sales",
+      "costOfSales": "Cost of sales",
+      "grossProfit": "Gross profit",
+      "operatingExpenses": "Operating expenses",
+      "otherIncome": "Other income",
+      "netProfit": "Net profit"
+    },
+    "rc": {
+      "hint": "Each sub-ledger (customers, suppliers, stock, receipts not billed) against its control account. A difference is never plugged; find the document and correct it.",
+      "ok": "Every sub-ledger agrees with its control account.",
+      "bad": "There are differences to investigate.",
+      "sub": "Sub-ledger",
+      "books": "Books",
+      "diff": "Difference",
+      "agrees": "agrees",
+      "differs": "differs"
+    },
+    "guar": {
+      "picked": "Guarantor: {{name}} (an existing customer)",
+      "change": "Change",
+      "find": "An existing customer (type 2 letters of the name or mobile)",
+      "noHit": "No customer matches.",
+      "orNew": "Or fill in the name and mobile of someone who is not a customer."
+    },
+    "reorder": {
+      "button": "Reorder at the counter",
+      "ready": "Cart made from the purchase history. Check the quantities before billing.",
+      "missing": "Cart made. Not found or not for sale now: {{codes}}."
+    }
+  },
+  "wp12": {
+    "all": "All",
+    "none": "None",
+    "cancel": "Cancel",
+    "close": "Close",
+    "denied": "You do not have access to this screen.",
+    "offline": "No connection. Showing what was loaded last.",
+    "st": {
+      "DRAFT": "Being set up",
+      "ACTIVE": "Active",
+      "SUSPENDED": "Suspended",
+      "TERMINATED": "Terminated",
+      "PUBLISHED": "Published",
+      "RETIRED": "Retired"
+    },
+    "fr": {
+      "title": "Franchises",
+      "hint": "Every retailer on the platform. Contact details are masked unless you hold the PII permission.",
+      "search": "Search name, code, id, GSTIN",
+      "status": "Status",
+      "new": "New franchise",
+      "newTitle": "New franchise",
+      "newHint": "Creates the franchise and its day-one defaults. The first admin receives an invitation.",
+      "noPlan": "Publish a plan version first (Plans).",
+      "plan": "Plan",
+      "f": {
+        "legalName": "Legal name",
+        "displayName": "Display name",
+        "businessType": "Business type",
+        "stateCode": "State code (2 digits, e.g. 27)",
+        "gstin": "GSTIN (optional)",
+        "code": "Franchise code (optional, 3-12 letters/digits, cannot be changed later)",
+        "planVersionId": "Plan",
+        "contactName": "Admin full name",
+        "contactMobile": "Admin mobile",
+        "contactEmail": "Admin email"
+      },
+      "v": {
+        "legalName": "Fill this in.",
+        "displayName": "Fill this in.",
+        "businessType": "Fill this in.",
+        "stateCode": "A 2-digit state code.",
+        "gstin": "The GSTIN must start with the state code.",
+        "code": "3-12 letters or digits.",
+        "planVersionId": "Choose the plan.",
+        "contactName": "Fill this in.",
+        "contactMobile": "Fill this in.",
+        "contactEmail": "A valid email.",
+        "reason": "10 to 500 characters."
+      },
+      "create": "Create franchise",
+      "active": "Franchise {{code}} is active.",
+      "incomplete": "Franchise {{code}} created but set-up is incomplete. Open it and retry.",
+      "idCode": "Franchise id / code",
+      "stateGstin": "State / GSTIN",
+      "state": "State",
+      "contact": "Admin contact",
+      "setup": "Day-one setup",
+      "noSteps": "No setup steps recorded.",
+      "entitlements": "Entitlements",
+      "noEntitlements": "No entitlements (everything is denied).",
+      "unlimited": "Unlimited",
+      "enabled": "Enabled",
+      "off": "Off",
+      "recent": "Recent activity",
+      "reason": "Reason (recorded, 10-500 characters)",
+      "newPlan": "New plan version",
+      "ask": {
+        "suspend": "All of this franchise's users are refused within seconds and their sessions are ended.",
+        "reactivate": "Users can sign in again.",
+        "plan": "Choose the new plan and give a reason."
+      },
+      "go": {
+        "suspend": "Suspend",
+        "reactivate": "Reactivate",
+        "plan": "Change plan"
+      },
+      "done": {
+        "suspend": "Franchise suspended.",
+        "reactivate": "Franchise reactivated.",
+        "plan": "Plan changed."
+      },
+      "retry": "Retry setup",
+      "retried": "Setup re-run.",
+      "open": "Open {{name}}",
+      "none": "No franchises yet.",
+      "unavailable": "Not yet reported: {{list}}."
+    },
+    "pl": {
+      "title": "Plans",
+      "hint": "A plan version cannot change once published; to change what a plan offers, publish a new version.",
+      "new": "New plan",
+      "code": "Plan code (capital letters, digits)",
+      "name": "Plan name",
+      "bad": "Code: capital letters, digits or _; name: at least 2 letters.",
+      "create": "Create plan",
+      "created": "Plan created. Add and publish a version through the API for now.",
+      "none": "No plans yet.",
+      "noVersions": "No versions.",
+      "entitlements": "{{count}} entitlements defined"
+    },
+    "au": {
+      "title": "Platform audit trail",
+      "hint": "Every platform action: who, what, when and the outcome. Read only.",
+      "action": "Action",
+      "franchise": "Franchise id",
+      "none": "No audit events match.",
+      "system": "system"
+    },
+    "db": {
+      "title": "Platform dashboard",
+      "hint": "Franchises, plans and usage across the platform.",
+      "total": "Franchises",
+      "draft": "Being set up",
+      "newThis": "New this month",
+      "newLast": "New last month",
+      "plans": "Plans in use",
+      "noPlans": "No active franchises.",
+      "usage": "Usage this month",
+      "noUsage": "No usage recorded yet.",
+      "franchises_one": "{{count}} franchise",
+      "franchises_other": "{{count}} franchises",
+      "problems": "Set-up problems",
+      "noProblems": "No franchise has a set-up problem.",
+      "failed_one": "{{count}} failed step",
+      "failed_other": "{{count}} failed steps",
+      "newest": "Newest franchises",
+      "unavailable": "{{label}}: not available. {{reason}}"
+    },
+    "ob": {
+      "title": "User Application Observability",
+      "hint": "How your people use the application: website, APIs, background jobs and mobile. Activity is kept for {{days}} days.",
+      "platformHint": "Usage of the product, franchise by franchise. Activity is kept for {{days}} days.",
+      "period": "Period",
+      "lastDays": "Last {{count}} days",
+      "show": "Show",
+      "tab": {
+        "overview": "Overview",
+        "users": "Users ({{count}})",
+        "issues": "Issues ({{count}})"
+      },
+      "activeUsers": "Active users",
+      "activity": "Activity",
+      "errors": "Errors",
+      "warnings": "Warnings (refused or rejected)",
+      "slow": "Slow answers (over 2 seconds)",
+      "speed": "Typical speed (9 in 10 calls faster)",
+      "needTraining": "Need training",
+      "franchises": "Franchises",
+      "quiet": "Gone quiet",
+      "daily": "Activity by day",
+      "dayLine": "{{events}} · {{users}} users · {{errors}} errors",
+      "sources": "Where the activity comes from",
+      "surface": {
+        "WEB": "Website",
+        "API": "APIs",
+        "WORKER": "Workers",
+        "MOBILE": "Mobile"
+      },
+      "surfaceLine": "{{events}} · {{users}} users · {{errors}} errors",
+      "noActivity": "No activity.",
+      "howDoing": "How people are doing",
+      "noAccounts": "No accounts yet.",
+      "busiest": "Busiest screens",
+      "pageLine": "{{views}} · {{users}} users",
+      "noViews": "No screen views yet.",
+      "talkFirst": "Who to talk to first",
+      "allWell": "Everyone is using the application well in this period.",
+      "open": "Open {{name}}",
+      "unknown": "Unknown user",
+      "searchUser": "Search a user",
+      "filter": "How they are doing",
+      "everyone": "Everyone",
+      "noUsers": "No users match.",
+      "ad": {
+        "ACTIVE": "Active",
+        "LIGHT": "Light use",
+        "AT_RISK": "At risk",
+        "DORMANT": "Dormant",
+        "NEVER": "Never used",
+        "NEW": "New account"
+      },
+      "lastSeen": "Last seen",
+      "daysActive": "Days active",
+      "screens": "Screens opened",
+      "areas_one": "{{count}} area",
+      "areas_other": "{{count}} areas",
+      "never": "never",
+      "justNow": "just now",
+      "hoursAgo": "{{count}} h ago",
+      "yesterday": "yesterday",
+      "daysAgo": "{{count}} days ago",
+      "trouble": "Where people hit trouble",
+      "noIssues": "No errors, warnings or slow answers in this period.",
+      "issueLine": "{{errors}} errors · {{warnings}} warnings · {{slow}} slow · {{users}} users hit",
+      "allUsers": "All users",
+      "allFranchises": "All franchises",
+      "doing": "How they are doing",
+      "refused": "Refused or denied",
+      "refusedLine": "{{bad}} bad data · {{denied}} no access",
+      "signals": "What the signals say",
+      "nothing": "Nothing stands out.",
+      "sev": {
+        "bad": "Needs attention",
+        "warn": "Watch",
+        "info": "Note"
+      },
+      "training": "Training would help.",
+      "noTraining": "No training needed.",
+      "prepare": "Prepare the conversation",
+      "prepareHint": "Questions to ask, based on this person's own figures. Start by listening.",
+      "brief": "Write a briefing with AI",
+      "noBrief": "No briefing was written.",
+      "aiNote": "AI-written from the figures on this page. Check it before you use it.",
+      "path": "The path they took",
+      "visitLine": "{{minutes}} min · {{events}} events · {{errors}} errors · {{slow}} slow",
+      "step": {
+        "PAGE_VIEW": "Opened",
+        "REQUEST": "Worked",
+        "ACTION": "Did",
+        "ERROR": "Error",
+        "WARNING": "Warning",
+        "SLOW": "Slow"
+      },
+      "older": "Older visits are not shown.",
+      "theirScreens": "Screens they use",
+      "byUser": "Usage by user",
+      "nobody": "Nobody has used the application in this period.",
+      "searchFranchise": "Search a franchise",
+      "noFranchises": "No franchises yet.",
+      "health": {
+        "off": "Not active",
+        "quiet": "Gone quiet",
+        "struggling": "Struggling",
+        "healthy": "Healthy"
+      },
+      "where": "Where"
+    }
+  },
+  "wp13": {
+    "title": "Share app usage with my franchise",
+    "onHint": "Sends which screens you open, how long they take and app errors, so your administrator can help. Nothing you type is sent.",
+    "offHint": "Off: this phone sends no usage."
+  },
+  "wp14": {
+    "title": "Offline bills",
+    "hint": "Bills made at the counter without network are kept safely on this phone and sent when the network is back. The server books them with the same checks as an online bill.",
+    "denied": "You do not have access to offline billing.",
+    "readyTitle": "Ready to sell offline?",
+    "ready": "Yes, for {{hours}} more hours (until {{until}}).",
+    "notReady": {
+      "NOT_PREPARED": "Not yet. Tap \"Prepare for offline\" while the network is on.",
+      "EXPIRED": "The offline permission has expired. Prepare again while the network is on.",
+      "WRONG_DEVICE": "The offline permission is for another phone. Prepare again.",
+      "MALFORMED": "The offline permission could not be read. Prepare again."
+    },
+    "products": "Products kept on the phone",
+    "productsLine": "{{count}} (updated {{at}})",
+    "noProducts": "None yet",
+    "prepare": "Prepare for offline",
+    "prepared": "Ready. {{count}} products kept on this phone.",
+    "waiting": "Waiting to be sent",
+    "toReview": "For the office to review",
+    "sendNow": "Send now",
+    "stillOffline": "Still no network. They will be sent on their own when it is back.",
+    "sent": "Sent: {{applied}} booked, {{conflicts}} for review, {{rejected}} refused.",
+    "upgrade": "This app version is too old for the server. Update the app; the bills stay safe on the phone until then.",
+    "none": "No bills were saved offline.",
+    "st": {
+      "PENDING": "Waiting for network",
+      "SENDING": "Being sent",
+      "APPLIED": "Booked",
+      "CONFLICT": "For the office to review",
+      "REJECTED": "Refused"
+    },
+    "customer": "Customer",
+    "lines": "Items",
+    "estimate": "Estimate on the phone",
+    "number": "Invoice number",
+    "total": "Total booked",
+    "conflict": "The server could not book this bill as it was ({{message}}). Someone at the office reviews it; nothing more to do on the phone.",
+    "rejected": "Refused by the server: {{message}}",
+    "attempts_one": "Tried {{count}} time",
+    "attempts_other": "Tried {{count}} times",
+    "pos": {
+      "noNetwork": "No network: the server cannot price this bill now.",
+      "estimate": "Estimate: {{amount}}",
+      "noEstimate": "No estimate: a product has no price on the phone.",
+      "estimateHint": "Price x quantity less discounts, before tax. The server sets the final total when the bill is sent; a difference is reviewed at the office.",
+      "needPrice": "Type a price for every item, or choose the customer (credit), to save this bill offline.",
+      "save": "Save bill offline",
+      "saved": "Saved offline as {{number}}",
+      "estimateLine": "Estimate: {{amount}}",
+      "savedHint": "It is sent on its own when the network is back. See Offline bills for the invoice number."
+    }
+  },
+  "wp15": {
+    "partial": "{{pct}}% of the app in this language, the rest in English. Not yet checked by a native speaker."
+  },
+  "wp16": {
+    "mode": {
+      "ledger": "Ledger account",
+      "noLedger": "none linked",
+      "linkLedger": "Link a ledger to {{code}}",
+      "delete": "Delete {{code}}",
+      "deleteWhat": "{{code}} will be deleted from this list and switched off, so it can no longer be taken at billing. Its ledger link is cleared. Payments already recorded are not changed. You can add it back later.",
+      "confirmDelete": "Delete payment mode",
+      "deleted": "Payment mode deleted. You can add it back.",
+      "addBack": "Add payment mode back",
+      "addBackHint": "It comes back switched off: link a ledger account to enable it.",
+      "pick": "Deleted payment modes",
+      "addedBack": "Payment mode added back"
+    },
+    "tpl": {
+      "delete": "Delete",
+      "deleteWhat": "The {{doc}} template will be deleted from this list. Documents of this type still print with the standard default layout, and issued documents are not changed. You can add it back later.",
+      "confirmDelete": "Delete template",
+      "deleted": "Template deleted. You can add it back.",
+      "addBack": "Add template back",
+      "addBackHint": "Pick a deleted template. It comes back with the default layout.",
+      "addedBack": "Template added back"
+    },
+    "year": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "editIntro": "Dates of {{label}} can change only while nothing is booked in it. Its months are rebuilt for the new dates.",
+      "fixedByPrev": "Fixed by the previous year",
+      "fixedByNext": "Fixed by the next year",
+      "save": "Save dates",
+      "updated": "Financial year updated",
+      "deleteIntro": "{{label}} ({{start}} to {{end}}) has not started and nothing is booked in it. Its months and unused number series are removed with it. You can add the year again later.",
+      "confirmDelete": "Delete year",
+      "deleted": "Financial year deleted",
+      "why": {
+        "locked": "A locked year cannot be changed.",
+        "inUse": "Cannot be edited or deleted: something is booked in it (a locked month, an issued number, a budget or a year-end close).",
+        "started": "Cannot be deleted: it has already started.",
+        "notLast": "Only the last year can be deleted."
+      }
+    }
+  },
+  "wp17": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "reason": "Reason (recorded)",
+    "confirmVoid": "Mark as made in error",
+    "v": {
+      "required": "Fill this in.",
+      "reason": "Give a reason.",
+      "date": "A date like 2026-11-30.",
+      "year": "A year from 2000 to 2100.",
+      "area": "An area above 0.",
+      "line": {
+        "item": "Line {{line}}: the item is missing.",
+        "qty": "Line {{line}}: the quantity must be a number above 0.",
+        "date": "Line {{line}}: the date must look like 2026-11-30.",
+        "none": "Add at least one item."
+      }
+    },
+    "f": {
+      "search": "Search notes, advice, case number",
+      "all": "All activity",
+      "kind": {
+        "CALL": "Calls",
+        "VISIT": "Field visits",
+        "SHOP_VISIT": "Shop visits"
+      },
+      "from": "From date",
+      "to": "To date",
+      "badRange": "\"To\" is before \"From\"."
+    },
+    "i": {
+      "erased": "(erased)",
+      "correct": "Correct this entry",
+      "void": "Delete",
+      "fixHint": "The original stays on record.",
+      "notes": "Notes",
+      "cropIssue": "Crop issue seen",
+      "advice": "Advice given",
+      "why": "Why is it being corrected?",
+      "fixed": "Entry corrected (the original stays on record)",
+      "voidWhat": "The entry is struck out and marked as made in error. It stays on record with the reason, because a call or visit log is never erased.",
+      "voidedDone": "Entry marked as made in error",
+      "voided": "Made in error: {{reason}}",
+      "corrected": "Corrected: {{reason}}"
+    },
+    "c": {
+      "update": "Update case {{no}}",
+      "delete": "Delete case {{no}}",
+      "advice": "Advice",
+      "src": {
+        "EXPERT_PROVIDED": "An expert told us",
+        "APPROVED_SOURCE": "Approved document"
+      },
+      "reference": "Expert name or document",
+      "outcome": "Outcome",
+      "updated": "Case updated",
+      "voidWhat": "Case {{no}} is struck out and marked as made in error. It stays on record with the reason, because advice given to a farmer is never erased.",
+      "deleted": "Service case deleted",
+      "voided": "Made in error: {{reason}}"
+    },
+    "k": {
+      "edit": "Edit document details",
+      "hint": "Changes the details written about the document, not the file itself.",
+      "number": "Document number (leave empty to keep the stored one)",
+      "expires": "Expires on",
+      "updated": "Document updated",
+      "type": {
+        "AADHAAR": "Aadhaar",
+        "PAN": "PAN",
+        "VOTER_ID": "Voter ID",
+        "DRIVING_LICENCE": "Driving licence",
+        "PASSPORT": "Passport",
+        "LAND_RECORD": "Land record",
+        "BANK_PASSBOOK": "Bank passbook",
+        "OTHER": "Other"
+      }
+    },
+    "p": {
+      "edit": "Edit draft",
+      "delete": "Delete draft",
+      "close": "Close plan",
+      "hint": "One item per line: item | quantity | needed by (optional, like 2026-11-30).",
+      "year": "Year",
+      "lines": "Items",
+      "updated": "Plan updated",
+      "deleteWhat": "This draft plan and its items will be removed.",
+      "closeWhat": "The plan is closed and stays on record; it can no longer be changed.",
+      "confirmDelete": "Delete draft plan",
+      "confirmClose": "Close plan",
+      "deleted": "Draft plan deleted",
+      "closed": "Plan closed"
+    },
+    "l": {
+      "add": "Add land details",
+      "edit": "Edit total land",
+      "several": "This customer has several plots: change them one by one.",
+      "hintOne": "Changes the area of plot \"{{name}}\".",
+      "hintNew": "Records the land as a plot named \"Main plot\"; you can split it into plots and farms later.",
+      "area": "Land holding",
+      "unit": {
+        "ACRE": "acre",
+        "HECTARE": "hectare",
+        "GUNTHA": "guntha"
+      },
+      "saved": "Land updated"
+    }
+  },
+  "wp18": {
+    "statusActive": "Active",
+    "statusRetired": "Retired",
+    "retire": "Retire",
+    "reactivate": "Reactivate",
+    "ask": "{{name}} will no longer be asked for or shown on customers. Consents already given stay in the history.",
+    "retired": "Purpose retired",
+    "reactivated": "Purpose active again"
+  },
+  "wp19": {
+    "useButtons": "Typed or spoken words never confirm a change. Use the buttons above (Yes, do it / No), or type \"no\" to cancel."
+  },
+  "wp21": {
+    "title": "Offline sync desk",
+    "hint": "Phones that sell offline, and the bills the server could not book. Retry books a bill again now, as you; Discard drops it with a reason. Both are recorded.",
+    "denied": "You do not have access to the sync desk.",
+    "offline": "No connection.",
+    "show": "Show",
+    "tab": {
+      "conflicts": "To decide",
+      "devices": "Phones",
+      "failed": "Refused",
+      "settings": "Settings"
+    },
+    "t": {
+      "devices": "Phones that synced",
+      "attention": "Need attention",
+      "conflicts": "Bills to decide",
+      "rejected": "Refused in 7 days",
+      "applied": "Booked in 24 hours"
+    },
+    "status": "Status",
+    "open": "Open",
+    "resolved": "Decided",
+    "noConflicts": "Nothing to decide.",
+    "noDevices": "No phone has synced yet.",
+    "noFailed": "Nothing was refused.",
+    "failedHint": "Operations the server refused for good (they can never be booked as sent).",
+    "device": "phone {{id}}",
+    "kind": {
+      "SALE_INVOICE": "Bill",
+      "CUSTOMER_CREATE": "New customer"
+    },
+    "items": "Items",
+    "paid": "Paid",
+    "customer": "Customer",
+    "retry": "Retry",
+    "discard": "Discard",
+    "cancel": "Cancel",
+    "note": "Note (optional)",
+    "reason": "Reason (recorded)",
+    "v": {
+      "reason": "At least 5 characters.",
+      "version": "A version like 1.4.0.",
+      "grace": "A whole number from 1 to 720.",
+      "batch": "A whole number from 1 to 500."
+    },
+    "ask": {
+      "retry": "The bill is booked again now, with all the checks of an online bill, in your name. Its original time stays on the record.",
+      "discard": "The bill is dropped and never booked. Settle the money with the customer separately."
+    },
+    "go": {
+      "retry": "Book it now",
+      "discard": "Discard bill"
+    },
+    "done": {
+      "retry": "Booked.",
+      "discard": "Discarded."
+    },
+    "stillRefused": "The server still could not book it. It stays open.",
+    "resolution": {
+      "APPLIED": "Booked",
+      "DISCARDED": "Discarded"
+    },
+    "state": {
+      "OK": "Up to date",
+      "BEHIND": "Behind",
+      "SILENT": "Not heard from",
+      "CONFLICTS": "Bills to decide",
+      "OUTDATED": "App too old"
+    },
+    "d": {
+      "lastSeen": "Last seen",
+      "lastPush": "Last sent bills",
+      "waiting": "Waiting on the phone",
+      "oldest": "Oldest waiting",
+      "hours_one": "{{count}} hour",
+      "hours_other": "{{count}} hours"
+    },
+    "set": {
+      "hint": "Applies to every phone of this franchise.",
+      "default": "Default settings (never changed).",
+      "minVersion": "Oldest app version allowed (like 1.4.0)",
+      "grace": "Hours a phone may sell offline (1-720)",
+      "batch": "Bills per send (1-500)",
+      "save": "Save settings",
+      "saved": "Sync settings saved."
+    },
+    "seeBill": "See the bill"
+  },
+  "wp22": {
+    "title": "Land and farm (optional)",
+    "hint": "Leave it empty for a customer who does not farm; land can be added later from the customer's Farms section.",
+    "farmerHint": "This is a farmer category: please enter the land so the profile opens with its acreage. Leave it empty to skip for now.",
+    "area": "Land holding",
+    "unit": "Unit",
+    "plotName": "Farm or plot name",
+    "irrigation": "Irrigation",
+    "crop": "Primary crop",
+    "season": "Season",
+    "v": {
+      "area": "An area above 0, with at most 2 decimals."
+    },
+    "landFailed": "Customer registered, but the land details were not saved. Add them from the customer's Farms section."
+  },
+  "wp24": {
+    "title": "This screen could not be shown",
+    "hint": "The server's answer was not what this screen expected. The rest of the app still works. Try again, or go back.",
+    "retry": "Try again",
+    "back": "Go back",
+    "detail": "For support: {{message}}"
+  },
+  "wp25": {
+    "auto": "Closed automatically",
+    "title": "Automatic day-end",
+    "hint": "Per branch: the closing time, the reminder before it, and whether the day closes by itself. A manager can postpone it.",
+    "on": "On, closing at {{time}} ({{mode}})",
+    "off": "Off",
+    "modeAuto": "closes by itself",
+    "modeRemind": "only reminds",
+    "modeAutoLong": "Close the day automatically",
+    "modeRemindLong": "Only remind (a manager closes it)",
+    "closedToday": "today is closed",
+    "postponedTo": "postponed to {{time}}",
+    "countdown_one": "{{count}} minute to closing",
+    "countdown_other": "{{count}} minutes to closing",
+    "edit": "Schedule",
+    "postpone": "Postpone",
+    "postpone30": "Postpone 30 min",
+    "whyClosed": "The day is already closed.",
+    "whyOff": "Switch automatic day-end on first.",
+    "editTitle": "Automatic day-end - {{branch}}",
+    "editHint": "At the closing time the day is closed by itself (all shifts must be closed). Before it, this screen shows a countdown.",
+    "switchOn": "Automatic day-end is on",
+    "switchOff": "Automatic day-end is off",
+    "closeTime": "Closing time (India time, like 21:00)",
+    "reminder": "Start the reminder this many minutes before",
+    "badTime": "Write a time like 21:00.",
+    "badReminder": "A reminder of 0 to 240 minutes.",
+    "save": "Save schedule",
+    "cancel": "Cancel",
+    "saved": "Day-end schedule saved.",
+    "postponeTitle": "Postpone day-end - {{branch}}",
+    "postponeHint": "The automatic close and the alarm wait this long after the closing time. Use it when customers are still being billed.",
+    "minutes": "Postpone by (minutes)",
+    "badMinutes": "5 to 240 minutes.",
+    "postponeDo": "Postpone",
+    "postponed": "Day-end postponed.",
+    "postponed30": "Day-end postponed by 30 minutes.",
+    "left_one": "Day-end for {{branch}} at {{time}} - {{count}} minute left. Finish the bills on the counter.",
+    "left_other": "Day-end for {{branch}} at {{time}} - {{count}} minutes left. Finish the bills on the counter.",
+    "held": "Day-end for {{branch}} is postponed until {{time}}.",
+    "pastAuto": "It is past the closing time for {{branch}}. The day closes automatically once every shift is closed.",
+    "pastRemind": "It is past the closing time for {{branch}}. Please close the day."
   }
 }

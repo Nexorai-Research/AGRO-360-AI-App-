@@ -1,0 +1,29 @@
+{
+  "en": {
+    "wp24": {
+      "title": "This screen could not be shown",
+      "hint": "The server's answer was not what this screen expected. The rest of the app still works. Try again, or go back.",
+      "retry": "Try again",
+      "back": "Go back",
+      "detail": "For support: {{message}}"
+    }
+  },
+  "hi": {
+    "wp24": {
+      "title": "यह स्क्रीन नहीं दिखाई जा सकी",
+      "hint": "सर्वर का जवाब वैसा नहीं था जैसा यह स्क्रीन चाहती थी। बाकी ऐप चल रहा है। फिर कोशिश करें, या वापस जाएँ।",
+      "retry": "फिर कोशिश करें",
+      "back": "वापस जाएँ",
+      "detail": "सहायता के लिए: {{message}}"
+    }
+  },
+  "mr": {
+    "wp24": {
+      "title": "ही स्क्रीन दाखवता आली नाही",
+      "hint": "सर्व्हरचे उत्तर या स्क्रीनला अपेक्षित तसे नव्हते. बाकी अ‍ॅप चालू आहे. पुन्हा प्रयत्न करा, किंवा मागे जा.",
+      "retry": "पुन्हा प्रयत्न करा",
+      "back": "मागे जा",
+      "detail": "मदतीसाठी: {{message}}"
+    }
+  }
+}

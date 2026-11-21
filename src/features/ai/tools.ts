@@ -68,6 +68,11 @@ export interface ToolCtx {
   can: (permission: string) => boolean;
   /** Shows a Yes/No card; resolves true on Yes. */
   confirm: (title: string, rows: [string, string][]) => Promise<boolean>;
+  /**
+   * Web parity 19: whether this server lets the assistant make business changes (`GET /assistant/capabilities`, `chatWrites`).
+   * Asked before a change is even proposed; anything but a clear yes (an error, no answer) means no.
+   */
+  writesAllowed: () => Promise<boolean>;
   go: (route: string) => void;
   openCustomer: (id: string) => void;
   setLang: (code: 'en' | 'hi' | 'mr') => void;
@@ -77,6 +82,74 @@ export interface ToolCtx {
 }
 
 type Tool = (input: Record<string, unknown>) => Promise<string>;
+
+export const WRITES_OFF =
+  'Refused: this server does not allow changes through the assistant. Nothing was changed; the person can use the screen instead.';
+
+/** Asks the server once whether the assistant may make business changes; fails closed (web assistant.js). */
+export async function chatWritesAllowed(c: ApiClient): Promise<boolean> {
+  try {
+    return (await c.get<{ chatWrites?: boolean }>('/assistant/capabilities'))?.chatWrites === true;
+  } catch {
+    return false;
+  }
+}
+
+// ---- the confirmation control (web assistant-confirm.js, WP-I17) ------------------------------------------------------------------------
+/** The only words that cancel a pending change: the WHOLE message must be one of them. Words never confirm. */
+export const NEGATIVE_EXACT = new Set([
+  'no',
+  'nope',
+  'nahi',
+  'nahin',
+  'cancel',
+  'stop',
+  'ruko',
+  'mat',
+  'नहीं',
+  'रुको',
+  'रद्द',
+  'नाही',
+  'नको',
+  'मत',
+]);
+const REPLY_WORDS = new Set([
+  'yes',
+  'yeah',
+  'yep',
+  'confirm',
+  'ok',
+  'okay',
+  'proceed',
+  'haan',
+  'han',
+  'ha',
+  'haa',
+  'kar',
+  'karo',
+  'theek',
+  'thik',
+  'हाँ',
+  'हां',
+  'ठीक',
+  'करो',
+  'हो',
+  ...NEGATIVE_EXACT,
+]);
+const norm = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{M}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+/** 'negative' (an exact cancel word), 'reply' (looks like an answer: up to four words with a yes or no word; never acts) or 'unrelated'. */
+export function classifyReply(text: string): 'negative' | 'reply' | 'unrelated' {
+  const t = norm(text);
+  if (!t) return 'unrelated';
+  if (NEGATIVE_EXACT.has(t)) return 'negative';
+  const words = t.split(' ');
+  return words.length <= 4 && words.some((w) => REPLY_WORDS.has(w)) ? 'reply' : 'unrelated';
+}
 
 export function makeTools(ctx: ToolCtx): Record<string, Tool> {
   const customer = async (id: unknown) => {
@@ -106,6 +179,7 @@ export function makeTools(ctx: ToolCtx): Record<string, Tool> {
       if (!ctx.can('customer.create')) return 'Refused: this role cannot add customers.';
       if (typeof name !== 'string' || name.trim().length < 2 || !/^[6-9]\d{9}$/.test(String(mobile ?? '')))
         return 'Not done: a name and a 10-digit mobile starting 6-9 are needed.';
+      if (!(await ctx.writesAllowed())) return WRITES_OFF;
       const rows: [string, string][] = [
         ['Name', name.trim()],
         ['Mobile', String(mobile)],
@@ -126,6 +200,7 @@ export function makeTools(ctx: ToolCtx): Record<string, Tool> {
       if (!amt) return 'Not done: the amount must be more than 0, with at most 2 decimals.';
       if (!MODES.includes(mode as (typeof MODES)[number]))
         return `Not done: the payment mode must be one of ${MODES.join(', ')}.`;
+      if (!(await ctx.writesAllowed())) return WRITES_OFF;
       const c = await customer(customerId);
       const rows: [string, string][] = [
         ['Customer', `${c.name}${c.mobile ? ` (${c.mobile})` : ''}`],

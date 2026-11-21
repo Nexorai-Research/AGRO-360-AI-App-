@@ -57,7 +57,9 @@ export const validRejectNote = (v: string): boolean => v.trim().length >= 3;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 /** "2026-11-03" -> "3 Nov 2026", without a time zone. */
-export function shortDate(iso: string): string {
+export function shortDate(iso: string | null | undefined): string {
+  // display only: a missing date shows "–" instead of breaking the screen
+  if (typeof iso !== 'string' || !iso) return '–';
   const [y, m, d] = iso.slice(0, 10).split('-');
   const name = MONTHS[Number(m) - 1];
   return name && y && d ? `${Number(d)} ${name} ${y}` : iso;

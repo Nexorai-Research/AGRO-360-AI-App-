@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/Button';
@@ -8,7 +8,8 @@ import { StateView } from '../stock/StateView';
 import { Gate, retryNetworkOnce } from '../purchase/Gate';
 import { Chips, Field, k } from '../purchase/ui';
 import { useSal } from '../collections/sal-hook';
-import { G8, askTraining, fetchCompletions, fetchTrainingItems, gkey } from './api-g8';
+import { G8, askTraining, fetchCompletions, fetchTrainingItems, gkey, type TrainingItem } from './api-g8';
+import { TrainingEditor } from './Parity10';
 
 type Tab = 'ask' | 'items' | 'mine';
 
@@ -20,6 +21,9 @@ export default function TrainingG8Screen() {
   const [text, setText] = useState('');
   const [asked, setAsked] = useState('');
   const [tried, setTried] = useState(false);
+  // web parity 10.6: undefined = not editing, null = a new text, an item = changing it
+  const [editing, setEditing] = useState<TrainingItem | null | undefined>(undefined);
+  const qc = useQueryClient();
   const on = s.ready && s.can(G8.assistant);
   const items = useQuery({
     queryKey: gkey(s.userId, 'items'),
@@ -91,10 +95,29 @@ export default function TrainingG8Screen() {
           ) : null}
         </>
       ) : null}
+      {tab === 'items' && editing !== undefined ? (
+        <TrainingEditor
+          item={editing}
+          onDone={() => (
+            setEditing(undefined),
+            void qc.invalidateQueries({ queryKey: gkey(s.userId, 'items') })
+          )}
+        />
+      ) : null}
+      {tab === 'items' && editing === undefined && s.can('ai.governance.manage') ? (
+        <Button kind="ghost" label={t('wp10.tr.add')} onPress={() => setEditing(null)} />
+      ) : null}
       {tab === 'items' ? (
         <Gate q={items} ns="ai" emptyKey="ai.tr.noItems" isEmpty={(items.data ?? []).length === 0}>
           {(items.data ?? []).map((i) => (
             <View key={i.id} style={k.card}>
+              {s.can('ai.governance.manage') && editing === undefined ? (
+                <Button
+                  kind="ghost"
+                  label={t('wp10.tr.edit', { title: i.title })}
+                  onPress={() => setEditing(i)}
+                />
+              ) : null}
               <Text style={k.name}>{i.title}</Text>
               <Text
                 style={k.sub}

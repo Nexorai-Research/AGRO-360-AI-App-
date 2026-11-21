@@ -301,7 +301,7 @@ function Reconcile({ banks }: { banks: BankAccount[] }) {
                             </View>
                           ) : null}
                           {entryFor === l.id ? <LineEntry line={l} onDone={() => setEntryFor(null)} /> : null}
-                          {matching?.id === l.id ? (
+                          {matching && matching.id === l.id ? (
                             <>
                               {candidates(rec, l).length === 0 ? (
                                 <Text style={kit.sub}>{t('fin.bank.noCandidate')}</Text>

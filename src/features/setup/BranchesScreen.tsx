@@ -208,7 +208,7 @@ export default function BranchesScreen() {
                 ) : null}
               </View>
             ) : null}
-            {off?.id === b.id ? (
+            {off && off.id === b.id ? (
               <>
                 <Text style={k.sub}>{t('setup.branch.deactivateIntro')}</Text>
                 <Field

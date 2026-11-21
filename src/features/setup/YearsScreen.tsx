@@ -10,7 +10,12 @@ import { useSal } from '../collections/sal-hook';
 import {
   SP,
   createYear,
+  deleteYear,
+  editYear,
   fetchPeriods,
+  yearDeletable,
+  yearEditable,
+  yearWhyNot,
   fetchYears,
   lockPeriod,
   lockYear,
@@ -19,7 +24,12 @@ import {
 } from './api';
 import { nextDay, validReason, yearErrors } from './logic';
 
-type Ask = { what: 'year'; year: FinancialYear } | { what: 'period'; id: string; label: string } | null;
+type Ask =
+  | { what: 'year'; year: FinancialYear }
+  | { what: 'period'; id: string; label: string }
+  | { what: 'edit'; year: FinancialYear }
+  | { what: 'delete'; year: FinancialYear }
+  | null;
 
 export default function YearsScreen() {
   const { t } = useTranslation();
@@ -73,8 +83,51 @@ export default function YearsScreen() {
       () => (setAdding(false), key.reset()),
     );
   }
+  // web parity 16: edit the dates of a year nothing is booked in; delete the last one before it starts
+  const [eStart, setEStart] = useState('');
+  const [eEnd, setEEnd] = useState('');
+  const neighbours = (y: FinancialYear) => {
+    const i = rows.findIndex((x) => x.id === y.id);
+    return { prev: rows[i - 1], next: rows[i + 1] };
+  };
+  function openEdit(y: FinancialYear) {
+    closeAsk();
+    setEStart(y.startDate);
+    setEEnd(y.endDate);
+    setAsk({ what: 'edit', year: y });
+  }
+  const editErr = (s0: string, e0: string) => {
+    const errs = yearErrors(s0, e0);
+    if (!e0.trim()) errs.push('end');
+    if (errs.length === 0 && e0.trim() <= s0.trim()) errs.push('end');
+    return errs;
+  };
+  function saveEdit() {
+    if (ask?.what !== 'edit') return;
+    setTried(true);
+    if (editErr(eStart, eEnd).length > 0) return;
+    const yid = ask.year.id;
+    const body = { startDate: eStart.trim(), endDate: eEnd.trim() };
+    void s.act(
+      t('wp16.year.updated'),
+      () => editYear(s.client!, yid, body, key.keyFor(`ey|${yid}|${JSON.stringify(body)}`)),
+      closeAsk,
+    );
+  }
+  function confirmDelete() {
+    if (ask?.what !== 'delete') return;
+    setTried(true);
+    if (!validReason(reason)) return;
+    const yid = ask.year.id;
+    const r = reason.trim();
+    void s.act(
+      t('wp16.year.deleted'),
+      () => deleteYear(s.client!, yid, r, key.keyFor(`dy|${yid}|${r}`)),
+      closeAsk,
+    );
+  }
   function confirmLock() {
-    if (!ask) return;
+    if (!ask || (ask.what !== 'year' && ask.what !== 'period')) return;
     setTried(true);
     if (!validReason(reason)) return;
     const r = reason.trim();
@@ -98,28 +151,88 @@ export default function YearsScreen() {
     }
   }
 
-  const lockForm = ask ? (
-    <View style={k.card}>
-      <Text style={k.sub}>
-        {ask.what === 'year' ? t('setup.years.lockYearIntro') : t('setup.years.lockMonthIntro')}
-      </Text>
-      <Field
-        label={t('setup.reason')}
-        value={reason}
-        onChange={setReason}
-        multiline
-        error={tried && !validReason(reason) ? t('setup.v.reason') : null}
-      />
-      <View style={k.row}>
-        <Button
-          label={ask.what === 'year' ? t('setup.years.confirmLockYear') : t('setup.years.confirmLockMonth')}
-          disabled={s.busy}
-          onPress={confirmLock}
+  const askYearId = ask && 'year' in ask ? ask.year.id : null;
+  const editForm =
+    ask?.what === 'edit' ? (
+      <View style={k.card}>
+        <Text style={k.sub}>{t('wp16.year.editIntro', { label: ask.year.label })}</Text>
+        <Field
+          label={t('setup.years.start')}
+          value={eStart}
+          onChange={neighbours(ask.year).prev ? () => undefined : setEStart}
+          placeholder="YYYY-MM-DD"
+          error={
+            neighbours(ask.year).prev
+              ? t('wp16.year.fixedByPrev')
+              : tried && editErr(eStart, eEnd).includes('start')
+                ? t('setup.v.date')
+                : null
+          }
         />
-        <Button kind="ghost" label={t('setup.cancel')} onPress={closeAsk} />
+        <Field
+          label={t('setup.years.end')}
+          value={eEnd}
+          onChange={neighbours(ask.year).next ? () => undefined : setEEnd}
+          placeholder="YYYY-MM-DD"
+          error={
+            neighbours(ask.year).next
+              ? t('wp16.year.fixedByNext')
+              : tried && editErr(eStart, eEnd).includes('end')
+                ? t('setup.v.endDate')
+                : null
+          }
+        />
+        <View style={k.row}>
+          <Button label={t('wp16.year.save')} disabled={s.busy} onPress={saveEdit} />
+          <Button kind="ghost" label={t('setup.cancel')} onPress={closeAsk} />
+        </View>
       </View>
-    </View>
-  ) : null;
+    ) : ask?.what === 'delete' ? (
+      <View style={k.card}>
+        <Text style={k.sub}>
+          {t('wp16.year.deleteIntro', {
+            label: ask.year.label,
+            start: ask.year.startDate,
+            end: ask.year.endDate,
+          })}
+        </Text>
+        <Field
+          label={t('setup.reason')}
+          value={reason}
+          onChange={setReason}
+          multiline
+          error={tried && !validReason(reason) ? t('setup.v.reason') : null}
+        />
+        <View style={k.row}>
+          <Button label={t('wp16.year.confirmDelete')} disabled={s.busy} onPress={confirmDelete} />
+          <Button kind="ghost" label={t('setup.cancel')} onPress={closeAsk} />
+        </View>
+      </View>
+    ) : null;
+
+  const lockForm =
+    ask && (ask.what === 'year' || ask.what === 'period') ? (
+      <View style={k.card}>
+        <Text style={k.sub}>
+          {ask.what === 'year' ? t('setup.years.lockYearIntro') : t('setup.years.lockMonthIntro')}
+        </Text>
+        <Field
+          label={t('setup.reason')}
+          value={reason}
+          onChange={setReason}
+          multiline
+          error={tried && !validReason(reason) ? t('setup.v.reason') : null}
+        />
+        <View style={k.row}>
+          <Button
+            label={ask.what === 'year' ? t('setup.years.confirmLockYear') : t('setup.years.confirmLockMonth')}
+            disabled={s.busy}
+            onPress={confirmLock}
+          />
+          <Button kind="ghost" label={t('setup.cancel')} onPress={closeAsk} />
+        </View>
+      </View>
+    ) : null;
 
   return (
     <ScrollView
@@ -189,6 +302,7 @@ export default function YearsScreen() {
             </View>
           ) : null}
           {lockForm}
+          {editForm}
           <Gate q={years} ns="setup" emptyKey="setup.years.empty" isEmpty={rows.length === 0}>
             {rows.map((y) => (
               <View key={y.id} style={k.card}>
@@ -209,7 +323,27 @@ export default function YearsScreen() {
                       onPress={() => (closeAsk(), setAsk({ what: 'year', year: y }))}
                     />
                   ) : null}
+                  {manage && yearEditable(y) && askYearId !== y.id ? (
+                    <Button
+                      kind="ghost"
+                      label={`${t('wp16.year.edit')} ${y.label}`}
+                      onPress={() => openEdit(y)}
+                    />
+                  ) : null}
+                  {manage && yearDeletable(y, rows) && askYearId !== y.id ? (
+                    <Button
+                      kind="ghost"
+                      label={`${t('wp16.year.delete')} ${y.label}`}
+                      onPress={() => (closeAsk(), setAsk({ what: 'delete', year: y }))}
+                    />
+                  ) : null}
                 </View>
+                {manage &&
+                y.status === 'OPEN' &&
+                rows[rows.length - 1]?.id === y.id &&
+                yearWhyNot(y, 'delete', rows) ? (
+                  <Text style={k.sub}>{t(`wp16.year.why.${yearWhyNot(y, 'delete', rows)}`)}</Text>
+                ) : null}
               </View>
             ))}
           </Gate>

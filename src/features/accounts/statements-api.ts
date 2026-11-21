@@ -3,8 +3,16 @@ import type { ApiClient } from '@/api/client';
 // Hand-copied from modules/finance/src/domain/finance.ts (ProfitLoss, BalanceSheet), application/reports.ts (cashBook) and
 // apps/api/src/finance.controller.ts. Read only. Money arrives as decimal strings.
 export const STATEMENT_PERM = 'reports.financial';
-export type StatementKind = 'pl' | 'bs' | 'cash' | 'bank';
-export const STATEMENT_KINDS: StatementKind[] = ['pl', 'bs', 'cash', 'bank'];
+/** Web parity 11: branch-wise profit and the control-account reconciliation, as in the web's finance reports. */
+export type StatementKind = 'pl' | 'bs' | 'cash' | 'bank' | 'branch' | 'recon';
+export const STATEMENT_KINDS: StatementKind[] = ['pl', 'bs', 'cash', 'bank', 'branch', 'recon'];
+/** The report path of each kind, for its CSV (`<path>.csv`). */
+export const STATEMENT_PATH: Record<'pl' | 'bs' | 'cash' | 'bank', string> = {
+  pl: '/reports/profit-loss',
+  bs: '/reports/balance-sheet',
+  cash: '/reports/cash-book',
+  bank: '/reports/bank-book',
+};
 
 export interface PlLine {
   code: string;
@@ -81,14 +89,37 @@ export interface Book {
   accounts: BookAccount[];
 }
 
-export const fetchProfitLoss = (c: ApiClient, from: string, to: string, signal?: AbortSignal) =>
-  c.get<ProfitLossReport>('/reports/profit-loss', { query: { from, to }, signal });
-export const fetchBalanceSheet = (c: ApiClient, asOn: string, signal?: AbortSignal) =>
-  c.get<BalanceSheet>('/reports/balance-sheet', { query: { asOn }, signal });
+/** Web parity 11: a branch filter and, for profit and loss, the comparison with the period before. */
+export interface StatementFilter {
+  branchId?: string;
+  compare?: boolean;
+}
+export const statementQuery = (base: Record<string, string>, f: StatementFilter = {}) => ({
+  ...base,
+  ...(f.branchId ? { branchId: f.branchId } : {}),
+  ...(f.compare ? { compare: 'true' } : {}),
+});
+export const fetchProfitLoss = (
+  c: ApiClient,
+  from: string,
+  to: string,
+  signal?: AbortSignal,
+  f?: StatementFilter,
+) => c.get<ProfitLossReport>('/reports/profit-loss', { query: statementQuery({ from, to }, f), signal });
+export const fetchBalanceSheet = (c: ApiClient, asOn: string, signal?: AbortSignal, f?: StatementFilter) =>
+  c.get<BalanceSheet>('/reports/balance-sheet', {
+    query: statementQuery({ asOn }, { branchId: f?.branchId }),
+    signal,
+  });
 export const fetchBook = (
   c: ApiClient,
   kind: 'cash' | 'bank',
   from: string,
   to: string,
   signal?: AbortSignal,
-) => c.get<Book>(`/reports/${kind}-book`, { query: { from, to }, signal });
+  f?: StatementFilter,
+) =>
+  c.get<Book>(`/reports/${kind}-book`, {
+    query: statementQuery({ from, to }, { branchId: f?.branchId }),
+    signal,
+  });

@@ -2,8 +2,9 @@ import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { colors } from '@/ui/theme';
+import { useAuth } from '@/auth/AuthProvider';
 import { useModuleFlags } from './moduleFlags';
-import { MODULES, moduleTarget, tint, type AppModule } from './modules';
+import { moduleTarget, tint, visibleModules, type AppModule } from './modules';
 
 function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: (v: boolean) => void }) {
   const { t } = useTranslation();
@@ -27,7 +28,11 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
       >
         <View pointerEvents="none" style={[s.glow, { backgroundColor: tint(m.color, '1a') }]} />
         <View
-          style={[s.iconBox, { backgroundColor: tint(m.color, '1f'), borderColor: tint(m.color, '33') }, !on && s.dim]}
+          style={[
+            s.iconBox,
+            { backgroundColor: tint(m.color, '1f'), borderColor: tint(m.color, '33') },
+            !on && s.dim,
+          ]}
         >
           <Text style={s.icon}>{m.icon}</Text>
         </View>
@@ -54,10 +59,23 @@ function ModuleCard({ m, on, onToggle }: { m: AppModule; on: boolean; onToggle: 
   );
 }
 
+/** The roles of the signed-in user, or none outside the sign-in provider (the menu only adjusts what it shows). */
+export function useRoles(): unknown[] {
+  try {
+    const me = useAuth().me;
+    return Array.isArray(me?.roles) ? me.roles : [];
+  } catch {
+    return [];
+  }
+}
+
 /** The home menu: one card per module, like the web top menu. */
 export function ModuleGrid() {
   const { t } = useTranslation();
   const { isOn, setOn, showAll, setShowAll } = useModuleFlags();
+  const roles = useRoles();
+  // a module tied to roles (the platform console) is shown only to those roles; the server refuses everyone else anyway
+  const visible = visibleModules(roles);
   return (
     <View style={s.wrap}>
       <View style={s.headRow}>
@@ -75,7 +93,7 @@ export function ModuleGrid() {
       </View>
       {showAll ? (
         <View style={s.grid}>
-          {MODULES.map((m) => (
+          {visible.map((m) => (
             <ModuleCard key={m.id} m={m} on={isOn(m.id)} onToggle={(v) => setOn(m.id, v)} />
           ))}
         </View>

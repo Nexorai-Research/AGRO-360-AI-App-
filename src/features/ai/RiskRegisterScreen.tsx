@@ -47,9 +47,9 @@ export default function RiskRegisterScreen() {
       {q.data ? (
         <Text style={k.sub}>
           {t('ai.rk.summary', {
-            high: q.data.summary.open.HIGH ?? 0,
-            medium: q.data.summary.open.MEDIUM ?? 0,
-            low: q.data.summary.open.LOW ?? 0,
+            high: q.data.summary?.open?.HIGH ?? 0,
+            medium: q.data.summary?.open?.MEDIUM ?? 0,
+            low: q.data.summary?.open?.LOW ?? 0,
           })}
         </Text>
       ) : null}

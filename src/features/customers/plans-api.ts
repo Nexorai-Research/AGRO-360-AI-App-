@@ -78,6 +78,12 @@ export interface ServiceCase {
   adviceReference: string | null;
   status: string;
   followUpOn: string | null;
+  /** Sent by the web's server since commit 94a0617 (web parity 17). */
+  outcome?: string | null;
+  createdAt?: string;
+  version?: number;
+  voided?: boolean;
+  voidReason?: string | null;
 }
 export interface Contact {
   id: string;

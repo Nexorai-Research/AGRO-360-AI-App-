@@ -116,7 +116,7 @@ export default function NumberingScreen() {
               />
             ) : null}
             {x.issued > 0 ? <Text style={k.sub}>{t('setup.num.frozen', { n: x.issued })}</Text> : null}
-            {edit?.id === x.id ? (
+            {edit && edit.id === x.id ? (
               <>
                 <Field
                   label={t('setup.num.prefix')}

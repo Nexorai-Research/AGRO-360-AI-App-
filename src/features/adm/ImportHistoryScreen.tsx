@@ -7,6 +7,7 @@ import { fmtWhen } from '../admin/logic';
 import { queryState } from '../admin/kit';
 import { P, admKey, fetchImportJobs, fetchImportReport, type ImportJob } from './api';
 import { Banner, Card, k, useAccess, useRun } from './kit';
+import { ProductImportCard } from '../stk/Parity7';
 
 function outcome(j: ImportJob, t: (k: string, o?: Record<string, unknown>) => string): string {
   if (!j.result) return j.status === 'VALIDATED' ? t('imp.checkedOnly') : '-';
@@ -50,6 +51,7 @@ export default function ImportHistoryScreen() {
       <Text style={k.title}>{t('imp.title')}</Text>
       <Text style={k.sub}>{t('imp.hint')}</Text>
       <Banner msg={r.msg} failure={r.failure} />
+      <ProductImportCard />
       {rows.length === 0 ? <StateView state="empty" message={t('imp.empty')} /> : null}
       {rows.map((j) => (
         <Card key={j.id}>

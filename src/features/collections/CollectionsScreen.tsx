@@ -18,6 +18,8 @@ import { dec, formatINR, sub, sum } from '@/money';
 import { Button } from '@/ui/Button';
 import { colors, radius, surface } from '@/ui/theme';
 import { formatClock } from '@/features/home/format';
+import { CsvButton } from '../accounts/Parity11';
+import { todayIST } from './receipt';
 import {
   PERM,
   agingKey,
@@ -206,6 +208,13 @@ export default function CollectionsScreen() {
         </View>
       ) : null}
       {offline ? <Banner text={t('collections.offline', { time: asOf })} /> : null}
+      {!showDenied && tab === 'aging' && aging.data ? (
+        <CsvButton
+          path="/reports/receivables/aging"
+          query={{ asOn: todayIST() }}
+          fileName={`receivables-aging-${todayIST()}.csv`}
+        />
+      ) : null}
       {!showDenied && tab === 'aging' && totals && rows.length > 0 ? (
         <View style={s.card}>
           <Text style={s.sub}>{t('collections.asOn', { date: aging.data?.asOn ?? '' })}</Text>

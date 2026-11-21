@@ -3,7 +3,8 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { router, usePathname } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { MODULES, moduleTarget } from '@/features/home/modules';
+import { moduleTarget, visibleModules } from '@/features/home/modules';
+import { useRoles } from '@/features/home/ModuleGrid';
 import { colors } from './theme';
 
 function NavButton({
@@ -43,6 +44,7 @@ export function BottomNav() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
   const [menu, setMenu] = useState(false);
+  const roles = useRoles();
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   return (
     <>
@@ -55,7 +57,13 @@ export function BottomNav() {
           active={pathname === '/'}
           onPress={() => router.replace('/')}
         />
-        <NavButton testID="nav-menu" icon="☰" label={t('bottomNav.menu')} active={menu} onPress={() => setMenu(true)} />
+        <NavButton
+          testID="nav-menu"
+          icon="☰"
+          label={t('bottomNav.menu')}
+          active={menu}
+          onPress={() => setMenu(true)}
+        />
       </View>
       <Modal visible={menu} transparent animationType="slide" onRequestClose={() => setMenu(false)}>
         <Pressable style={s.scrim} onPress={() => setMenu(false)} accessibilityLabel={t('bottomNav.close')} />
@@ -65,7 +73,7 @@ export function BottomNav() {
             {t('bottomNav.menuTitle')}
           </Text>
           <ScrollView contentContainerStyle={s.list}>
-            {MODULES.map((m) => (
+            {visibleModules(roles).map((m) => (
               <Pressable
                 key={m.id}
                 testID={`menu-${m.id}`}
@@ -119,7 +127,14 @@ const s = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 10,
   },
-  grab: { alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: colors.line, marginBottom: 12 },
+  grab: {
+    alignSelf: 'center',
+    width: 44,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: colors.line,
+    marginBottom: 12,
+  },
   sheetTitle: { fontSize: 20, fontWeight: '800', color: colors.ink, marginBottom: 8, letterSpacing: -0.3 },
   list: { gap: 6, paddingBottom: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },

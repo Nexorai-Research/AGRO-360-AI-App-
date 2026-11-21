@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { i18n, setLanguage } from '../src/i18n';
 import { ModuleGrid } from '../src/features/home/ModuleGrid';
 import { ModuleScreen } from '../src/features/home/ModuleScreen';
-import { MODULES, findModule, moduleTarget } from '../src/features/home/modules';
+import { MODULES, findModule, moduleTarget, visibleModules } from '../src/features/home/modules';
 
 const fs = jest.requireActual('fs') as { existsSync: (p: string) => boolean };
 const mockPush = jest.fn();
@@ -56,7 +56,9 @@ describe('module catalog', () => {
 describe('home module cards', () => {
   it('shows one card per module with its number of screens', async () => {
     await render(<ModuleGrid />);
-    for (const m of MODULES) expect(screen.getByTestId(`module-${m.id}`)).toBeTruthy();
+    // the platform console is shown only to platform operators (web parity 12)
+    for (const m of visibleModules([])) expect(screen.getByTestId(`module-${m.id}`)).toBeTruthy();
+    expect(screen.queryByTestId('module-platform')).toBeNull();
     expect(screen.getByText('Operations')).toBeTruthy();
     expect(screen.getByText(`${findModule('ops')!.features.length} screens ›`)).toBeTruthy();
   });

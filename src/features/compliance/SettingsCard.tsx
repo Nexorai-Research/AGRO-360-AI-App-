@@ -24,6 +24,8 @@ export interface SettingsForm {
   b2cLargeLimit: string;
   docAlertDays: string;
   rcmEnabled: boolean;
+  /** Web parity 6.6: the web's TDS tab switches this with the same PUT. */
+  tdsEnabled: boolean;
 }
 const AMOUNT = /^\d{1,12}(\.\d{1,2})?$/;
 export type SettingsError = 'tolerance' | 'b2c' | 'days';
@@ -42,6 +44,7 @@ export const settingsBody = (f: SettingsForm) => ({
   b2cLargeLimit: f.b2cLargeLimit.trim(),
   docAlertDays: (f.docAlertDays.trim() || '60,30,7').split(',').map((x) => Number(x.trim())),
   rcmEnabled: f.rcmEnabled,
+  tdsEnabled: f.tdsEnabled,
 });
 
 export function ComplianceSettingsCard() {
@@ -96,6 +99,7 @@ export function ComplianceSettingsCard() {
               b2cLargeLimit: s.b2cLargeLimit,
               docAlertDays: s.docAlertDays.join(','),
               rcmEnabled: s.rcmEnabled,
+              tdsEnabled: s.tdsEnabled === true,
             })
           )}
         />
@@ -132,6 +136,11 @@ export function ComplianceSettingsCard() {
             label={t('wp3.set.rcmOn')}
             value={f.rcmEnabled}
             onChange={(v) => setF({ ...f, rcmEnabled: v })}
+          />
+          <Check
+            label={t('wp6.tdsOn')}
+            value={f.tdsEnabled}
+            onChange={(v) => setF({ ...f, tdsEnabled: v })}
           />
           <Button
             label={t('wp3.set.save')}

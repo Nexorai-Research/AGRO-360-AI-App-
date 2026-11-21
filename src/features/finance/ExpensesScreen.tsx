@@ -21,6 +21,8 @@ import {
   listAccounts,
   listBranches,
   listExpenses,
+  updateExpense,
+  type Expense,
 } from './api';
 import {
   Ask,
@@ -43,14 +45,15 @@ import {
   checkExpense,
   expenseAccounts,
   expenseActions,
+  expenseToDraft,
   isDate,
   type ExpenseDraft,
 } from './logic';
 
 const STATUSES = ['', 'DRAFT', 'SUBMITTED', 'APPROVED', 'PAID', 'REJECTED', 'REVERSED'] as const;
-type Mode = { m: 'list' } | { m: 'new' } | { m: 'detail'; id: string };
+type Mode = { m: 'list' } | { m: 'new' } | { m: 'detail'; id: string } | { m: 'edit'; e: Expense };
 
-function Detail({ id, onBack }: { id: string; onBack: () => void }) {
+function Detail({ id, onBack, onEdit }: { id: string; onBack: () => void; onEdit: (e: Expense) => void }) {
   const { t } = useTranslation();
   const { can, uid, client } = useFin();
   const w = useWrite();
@@ -158,6 +161,9 @@ function Detail({ id, onBack }: { id: string; onBack: () => void }) {
                 />
               ) : (
                 <View style={kit.row}>
+                  {e.status === 'DRAFT' && can(FP.expCreate) ? (
+                    <Button kind="ghost" label={t('wp9.e.edit')} onPress={() => onEdit(e)} />
+                  ) : null}
                   {a.submit ? (
                     <Button
                       label={t('fin.submit')}
@@ -189,7 +195,16 @@ function Detail({ id, onBack }: { id: string; onBack: () => void }) {
   );
 }
 
-function NewExpense({ onDone, onBack }: { onDone: (id: string) => void; onBack: () => void }) {
+function NewExpense({
+  onDone,
+  onBack,
+  existing,
+}: {
+  onDone: (id: string) => void;
+  onBack: () => void;
+  /** Web parity 9: a draft expense opened for editing (PUT with its version). */
+  existing?: Expense;
+}) {
   const { t } = useTranslation();
   const { client, uid } = useFin();
   const w = useWrite();
@@ -204,18 +219,22 @@ function NewExpense({ onDone, onBack }: { onDone: (id: string) => void; onBack: 
     enabled: client !== null,
     retry: false,
   });
-  const [d, setD] = useState<ExpenseDraft>({
-    date: todayIST(),
-    accountId: '',
-    payee: '',
-    amount: '',
-    tax: '',
-    eligible: false,
-    docNo: '',
-    ref: '',
-    branchId: '',
-    notes: '',
-  });
+  const [d, setD] = useState<ExpenseDraft>(() =>
+    existing
+      ? expenseToDraft(existing)
+      : {
+          date: todayIST(),
+          accountId: '',
+          payee: '',
+          amount: '',
+          tax: '',
+          eligible: false,
+          docNo: '',
+          ref: '',
+          branchId: '',
+          notes: '',
+        },
+  );
   const [dup, setDup] = useState(false);
   const [shown, setShown] = useState(false);
   const set = (p: Partial<ExpenseDraft>) => {
@@ -229,11 +248,15 @@ function NewExpense({ onDone, onBack }: { onDone: (id: string) => void; onBack: 
     if (err) return;
     const body = buildExpense(d, confirm);
     void w.go(
-      `new|${JSON.stringify(body)}`,
-      t('fin.expenses.saved'),
+      existing
+        ? `edit|${existing.id}|${existing.version}|${JSON.stringify(body)}`
+        : `new|${JSON.stringify(body)}`,
+      existing ? t('wp9.e.updated') : t('fin.expenses.saved'),
       async (c, k) => {
         try {
-          created.current = (await createExpense(c, k, body)).id;
+          created.current = (
+            existing ? await updateExpense(c, k, existing, body) : await createExpense(c, k, body)
+          ).id;
         } catch (e) {
           if (e instanceof ApiError && e.code === 'DUPLICATE_WARNING') setDup(true);
           throw e;
@@ -307,13 +330,23 @@ export default function ExpensesScreen() {
   const [status, setStatus] = useState('');
   return (
     <Page title={t('fin.expenses.title')} perm={FP.view}>
-      {mode.m === 'new' ? (
+      {mode.m === 'edit' ? (
+        <NewExpense
+          existing={mode.e}
+          onBack={() => setMode({ m: 'detail', id: mode.e.id })}
+          onDone={() => setMode({ m: 'detail', id: mode.e.id })}
+        />
+      ) : mode.m === 'new' ? (
         <NewExpense
           onBack={() => setMode({ m: 'list' })}
           onDone={(id) => setMode(id ? { m: 'detail', id } : { m: 'list' })}
         />
       ) : mode.m === 'detail' ? (
-        <Detail id={mode.id} onBack={() => setMode({ m: 'list' })} />
+        <Detail
+          id={mode.id}
+          onBack={() => setMode({ m: 'list' })}
+          onEdit={(e) => setMode({ m: 'edit', e })}
+        />
       ) : (
         <>
           {can(FP.expCreate) ? (

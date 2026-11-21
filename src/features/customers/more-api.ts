@@ -10,6 +10,9 @@ export interface PlotView {
   soilType: string | null;
   irrigationSource: string | null;
   status: string;
+  areaValue?: string;
+  areaUnit?: string;
+  version?: number;
 }
 export interface FarmView {
   id: string;
@@ -63,10 +66,14 @@ export interface InteractionView {
   id: string;
   kind: string;
   occurredAt: string;
-  notes: string;
+  /** null when it was erased on request (privacy). */
+  notes: string | null;
   cropIssue: string | null;
   advice: string | null;
   followUpOn: string | null;
+  corrected?: boolean;
+  voided?: boolean;
+  correctionReason?: string | null;
 }
 
 const base = (id: string) => `/customers/${encodeURIComponent(id)}`;

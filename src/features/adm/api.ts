@@ -232,12 +232,34 @@ export interface PayMode {
   upiVpa: string | null;
   version: number;
 }
+/** `removed`: the codes deleted from the list (web parity 16), which can be added back. */
 export const fetchModes = (c: ApiClient, signal?: AbortSignal) =>
-  c.get<{ items: PayMode[] }>('/settings/payment-modes', { signal });
+  c.get<{ items: PayMode[]; removed?: string[] }>('/settings/payment-modes', { signal });
+/** Deleted from the list: switched off, ledger link and UPI address cleared; payments already recorded are not changed. */
+export const deleteMode = (c: ApiClient, code: string, idempotencyKey: string) =>
+  c.post<{ code: string }>('/settings/payment-modes:delete', { body: { code }, idempotencyKey });
+/** Added back, switched off: link a ledger account to enable it. */
+export const restoreMode = (c: ApiClient, code: string, idempotencyKey: string) =>
+  c.post<PayMode>('/settings/payment-modes:restore', { body: { code }, idempotencyKey });
+export interface LedgerOption {
+  id: string;
+  label: string;
+}
+/** Ledger accounts a payment mode can be linked to, like the web: assets and liabilities, cash and bank first, shown as "code - name". */
+export async function fetchModeLedgers(c: ApiClient, signal?: AbortSignal): Promise<LedgerOption[]> {
+  const r = await c.get<{
+    items: { id: string; code: string; name: string; type: string; cashBank?: boolean }[];
+  }>('/finance/accounts', { query: { active: 'true' }, signal });
+  const all = r.items.filter((a) => a.type === 'ASSET' || a.type === 'LIABILITY');
+  return [...all.filter((a) => a.cashBank), ...all.filter((a) => !a.cashBank)].map((a) => ({
+    id: a.id,
+    label: `${a.code} - ${a.name}`,
+  }));
+}
 export const saveMode = (
   c: ApiClient,
   m: PayMode,
-  body: { enabled?: boolean; upiVpa?: string | null },
+  body: { enabled?: boolean; upiVpa?: string | null; ledgerAccountId?: string | null },
   idempotencyKey: string,
 ) =>
   c.put<PayMode>('/settings/payment-modes', {
