@@ -7259,5 +7259,39 @@
       "area": "An area above 0, with at most 2 decimals."
     },
     "landFailed": "Customer registered, but the land details were not saved. Add them from the customer's Farms section."
+  },
+  "wp24": {
+    "title": "Automatic day-end",
+    "hint": "Per branch: the closing time, the reminder before it, and whether the day closes by itself. A manager can postpone it.",
+    "loading": "Loading the schedules...",
+    "error": "The day-end schedules could not be loaded.",
+    "empty": "No branches.",
+    "off": "Automatic day-end is off",
+    "line": "Closes at {{time}} · reminder {{reminder}} min before · {{mode}}",
+    "modeAuto": "Closes automatically",
+    "modeRemind": "Only reminds",
+    "closedToday": "Today is closed",
+    "postponedTo": "Postponed to {{time}}",
+    "edit": "Edit",
+    "enabled": "Automatic day-end is on",
+    "closeTime": "Closing time (India time), like 21:00",
+    "reminder": "Start the reminder this many minutes before",
+    "save": "Save schedule",
+    "saved": "Day-end schedule saved.",
+    "postpone": "Postpone",
+    "postpone30": "Postpone 30 min",
+    "postponed": "Day-end postponed.",
+    "postponeHint": "The automatic close and the alarm wait this long after the closing time. Use it when customers are still being billed.",
+    "minutes": "Postpone by (minutes)",
+    "v": {
+      "time": "Enter a time like 21:00.",
+      "reminder": "A reminder of 0 to 240 minutes.",
+      "minutes": "Between 5 and 240 minutes."
+    },
+    "bannerLeft_one": "Day-end for {{branch}} at {{time}} - {{count}} minute left. Finish the bills on the counter.",
+    "bannerLeft_other": "Day-end for {{branch}} at {{time}} - {{count}} minutes left. Finish the bills on the counter.",
+    "bannerHeld": "Day-end for {{branch}} is postponed until {{time}}.",
+    "bannerPastAuto": "It is past the closing time for {{branch}}. The day closes automatically once every shift is closed.",
+    "bannerPast": "It is past the closing time for {{branch}}. Please close the day."
   }
 }

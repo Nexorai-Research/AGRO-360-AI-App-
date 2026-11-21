@@ -9,6 +9,7 @@ import { dec, formatINR } from '@/money';
 import { Button } from '@/ui/Button';
 import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
+import { DayEndBanner, DayEndSchedules } from './DayEndSchedules';
 import { todayIST } from '../collections/receipt';
 import { fetchBranches } from './api';
 import {
@@ -131,6 +132,7 @@ export default function ShiftsScreen() {
   return (
     <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
       <Text style={s.title}>{t('shifts.title')}</Text>
+      <DayEndBanner />
       {msg ? (
         <Text style={s.ok} accessibilityRole="alert">
           {msg}
@@ -288,6 +290,8 @@ export default function ShiftsScreen() {
           ) : null}
         </View>
       ))}
+
+      <DayEndSchedules />
 
       {can(PERM2.dayEnd) ? (
         <View style={s.card}>
