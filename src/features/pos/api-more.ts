@@ -166,3 +166,32 @@ export const fetchActiveReservations = async (c: ApiClient, signal?: AbortSignal
   });
   return Array.isArray(r) ? r : (r.items ?? []);
 };
+
+// Web parity 24: the automatic day-end of each branch (apps/web/src/pages/sales.js; server modules/sales dayend-schedule.ts). Needs pos.dayend.
+export interface DayEndSchedule {
+  branchId: string;
+  branchName: string;
+  enabled: boolean;
+  /** HH:MM, India time */
+  closeTime: string;
+  reminderMinutes: number;
+  autoClose: boolean;
+  postponedUntil: string | null;
+  lastResult: string | null;
+  businessDate: string;
+  closedToday: boolean;
+  /** ISO time of today's cut-off */
+  closeAt: string;
+}
+export interface DayEndScheduleInput {
+  enabled: boolean;
+  closeTime: string;
+  reminderMinutes: number;
+  autoClose: boolean;
+}
+export const fetchDayEndSchedules = async (c: ApiClient, signal?: AbortSignal) =>
+  (await c.get<{ items: DayEndSchedule[] }>('/pos/day-end-schedules', { signal })).items;
+export const saveDayEndSchedule = (c: ApiClient, branchId: string, b: DayEndScheduleInput, idempotencyKey: string) =>
+  c.put<DayEndSchedule>(`/pos/day-end-schedules/${branchId}`, { body: b, idempotencyKey });
+export const postponeDayEnd = (c: ApiClient, branchId: string, minutes: number, idempotencyKey: string) =>
+  c.post<DayEndSchedule>(`/pos/day-end-schedules/${branchId}/postpone`, { body: { minutes }, idempotencyKey });

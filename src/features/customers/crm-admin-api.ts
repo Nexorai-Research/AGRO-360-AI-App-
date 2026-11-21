@@ -233,6 +233,8 @@ export interface Tier {
 export interface Purpose {
   code: string;
   name: string;
+  /** ACTIVE or INACTIVE (retired, web parity 18). */
+  status?: string;
   wordingVersion: number | null;
   wording?: { en?: string; hi?: string; mr?: string } | null;
 }
@@ -282,6 +284,11 @@ export const fetchPurposes = async (c: ApiClient, signal?: AbortSignal) =>
   (await c.get<{ items: Purpose[] }>('/crm/consent/purposes', { signal })).items;
 export const createPurpose = (c: ApiClient, body: Rec, key: string) =>
   c.post<unknown>('/crm/consent/purposes', { body, idempotencyKey: key });
+/** The three built-in purposes cannot be retired (the web shows no button for them). */
+export const FIXED_PURPOSES = ['TRANSACTIONAL', 'PROMOTIONAL', 'DATA_ADVISORY'];
+/** Web parity 18: a retired purpose leaves every customer's consent list; consents already given stay in the history. */
+export const setPurposeStatus = (c: ApiClient, code: string, status: 'ACTIVE' | 'INACTIVE', key: string) =>
+  c.post<unknown>(`/crm/consent/purposes/${enc(code)}/status`, { body: { status }, idempotencyKey: key });
 export const createWording = (c: ApiClient, code: string, body: Rec, key: string) =>
   c.post<unknown>(`/crm/consent/purposes/${enc(code)}/wording`, { body, idempotencyKey: key });
 export const fetchCoverage = (c: ApiClient, signal?: AbortSignal) =>

@@ -1,0 +1,434 @@
+{
+  "en": {
+    "wp10": {
+      "cancel": "Cancel",
+      "scan": {
+        "run": "Run the daily scan now",
+        "skipped": "Skipped: {{why}}",
+        "ran_one": "Done: {{count}} job ran.",
+        "ran_other": "Done: {{count}} jobs ran."
+      },
+      "kn": {
+        "title": "Knowledge review",
+        "hint": "An entry is approved by someone other than its author. Only approved entries are ever shown to staff. Copy from a published source (ICAR, state agricultural university, KVK, CIB&RC label).",
+        "new": "New entry",
+        "kind": "Kind",
+        "season": "Season",
+        "anySeason": "Any",
+        "k": {
+          "PEST": "Pest",
+          "DISEASE": "Disease",
+          "DEFICIENCY": "Deficiency",
+          "WEED": "Weed",
+          "SOWING": "Sowing",
+          "NUTRIENT": "Nutrient",
+          "IRRIGATION": "Irrigation"
+        },
+        "s": {
+          "KHARIF": "Kharif",
+          "RABI": "Rabi",
+          "ZAID": "Zaid"
+        },
+        "f": {
+          "crop": "Crop *",
+          "nameEn": "Name (English) *",
+          "nameHi": "Name (Hindi)",
+          "nameMr": "Name (Marathi)",
+          "stage": "Stage",
+          "symptoms": "Symptoms (one per line; problems only)",
+          "summary": "Text (sowing window, nutrient schedule, irrigation)",
+          "cultural": "Cultural control",
+          "biological": "Biological control",
+          "chemical": "Chemical control",
+          "ingredients": "Recommended active ingredients (one per line)",
+          "doseText": "Dose text, only if the source states it",
+          "sourceRef": "Source reference (title, edition, page) *"
+        },
+        "required": "Fill this in.",
+        "source": "Source",
+        "save": "Save as draft",
+        "saved": "Entry saved as a draft.",
+        "none": "No entries yet. Production starts empty.",
+        "st": {
+          "DRAFT": "draft",
+          "SUBMITTED": "submitted",
+          "APPROVED": "approved",
+          "REJECTED": "rejected",
+          "RETIRED": "retired"
+        },
+        "step": {
+          "submit": "Submit",
+          "approve": "Approve",
+          "reject": "Reject",
+          "retire": "Retire"
+        },
+        "done": {
+          "submit": "Submitted.",
+          "approve": "Approved.",
+          "reject": "Rejected.",
+          "retire": "Retired."
+        },
+        "reason": "Reason"
+      },
+      "cm": {
+        "title": "Save as a campaign message",
+        "none": "No approved campaign yet. Approve one in Recommendations first.",
+        "campaign": "Approved campaign",
+        "save": "Save as a proposal",
+        "saved": "Saved as a proposal. A person approves it in Recommendations; nothing is sent.",
+        "note": "Customers without consent are left out when a person queues the message."
+      },
+      "ev": {
+        "kind": "What kind",
+        "k": {
+          "INVOICE": "Invoice",
+          "PURCHASE_BILL": "Purchase bill",
+          "STOCK_MOVEMENT": "Stock movement",
+          "RECEIPT": "Receipt",
+          "CUSTOMER": "Customer",
+          "PRODUCT": "Product",
+          "DOCUMENT": "Document",
+          "OTHER": "Other"
+        },
+        "ref": "Number or id",
+        "add": "Attach evidence",
+        "added": "Evidence attached."
+      },
+      "tr": {
+        "required": "Fill this in (text up to 20,000 letters).",
+        "editTitle": "Change {{title}}",
+        "addTitle": "Add training text",
+        "hint": "Franchise-owned text only (SOPs, product handling, safety). Answers quote it word for word; a change raises the version.",
+        "title": "Title",
+        "source": "Source (document and section)",
+        "category": "Category",
+        "body": "Text",
+        "save": "Save",
+        "saved": "Training text saved.",
+        "add": "Add text",
+        "edit": "Change {{title}}"
+      },
+      "ocr": {
+        "recent": "Recent documents",
+        "none": "No documents read yet.",
+        "toCheck_one": "{{count}} to check",
+        "toCheck_other": "{{count}} to check",
+        "clean": "clean",
+        "review": "Review {{name}}",
+        "view": "View {{name}}",
+        "opened": "Document opened.",
+        "correct": "Correct what was read",
+        "grnLine": "Receipt line for line {{n}}",
+        "left": "{{qty}} left",
+        "matched": "Matched by GSTIN: {{name}}.",
+        "noSupplier": "No supplier matched the GSTIN. Choose one.",
+        "supplier": "Supplier",
+        "duplicateBill": "A bill with this invoice number is already entered for this supplier.",
+        "saved": "Corrections saved.",
+        "save": "Save corrections",
+        "createBill": "Create draft bill",
+        "billMade": "Draft bill created. Post it in Purchases.",
+        "billNote": "Match each invoice line to the goods receipt it is for. The bill is saved as a DRAFT; you post it in Purchases."
+      },
+      "sh": {
+        "recent": "Recent checks",
+        "none": "No shelf checks yet.",
+        "line": "{{when}} · {{products}} products · {{diff}} differences",
+        "countOpened": "stock count opened",
+        "show": "Show {{when}}"
+      },
+      "ex": {
+        "open": "Open {{name}}",
+        "opened": "Scenario opened."
+      }
+    }
+  },
+  "hi": {
+    "wp10": {
+      "cancel": "रद्द करें",
+      "scan": {
+        "run": "दैनिक स्कैन अभी चलाएँ",
+        "skipped": "छोड़ा गया: {{why}}",
+        "ran_one": "हो गया: {{count}} काम चला।",
+        "ran_other": "हो गया: {{count}} काम चले।"
+      },
+      "kn": {
+        "title": "ज्ञान समीक्षा",
+        "hint": "प्रविष्टि उसके लेखक के अलावा कोई और मंज़ूर करता है। स्टाफ को सिर्फ मंज़ूर प्रविष्टियाँ दिखती हैं। प्रकाशित स्रोत (ICAR, कृषि विश्वविद्यालय, KVK, CIB&RC लेबल) से लिखें।",
+        "new": "नई प्रविष्टि",
+        "kind": "प्रकार",
+        "season": "मौसम",
+        "anySeason": "कोई भी",
+        "k": {
+          "PEST": "कीट",
+          "DISEASE": "रोग",
+          "DEFICIENCY": "कमी",
+          "WEED": "खरपतवार",
+          "SOWING": "बुवाई",
+          "NUTRIENT": "पोषक तत्व",
+          "IRRIGATION": "सिंचाई"
+        },
+        "s": {
+          "KHARIF": "खरीफ",
+          "RABI": "रबी",
+          "ZAID": "ज़ायद"
+        },
+        "f": {
+          "crop": "फसल *",
+          "nameEn": "नाम (अंग्रेज़ी) *",
+          "nameHi": "नाम (हिंदी)",
+          "nameMr": "नाम (मराठी)",
+          "stage": "अवस्था",
+          "symptoms": "लक्षण (हर पंक्ति में एक; सिर्फ समस्याएँ)",
+          "summary": "विवरण (बुवाई समय, पोषण, सिंचाई)",
+          "cultural": "कृषि नियंत्रण",
+          "biological": "जैविक नियंत्रण",
+          "chemical": "रासायनिक नियंत्रण",
+          "ingredients": "सुझाए सक्रिय घटक (हर पंक्ति में एक)",
+          "doseText": "मात्रा, सिर्फ अगर स्रोत में लिखी हो",
+          "sourceRef": "स्रोत संदर्भ (शीर्षक, संस्करण, पृष्ठ) *"
+        },
+        "required": "यह भरें।",
+        "source": "स्रोत",
+        "save": "ड्राफ्ट सेव करें",
+        "saved": "प्रविष्टि ड्राफ्ट के रूप में सेव हुई।",
+        "none": "अभी कोई प्रविष्टि नहीं।",
+        "st": {
+          "DRAFT": "ड्राफ्ट",
+          "SUBMITTED": "भेजा गया",
+          "APPROVED": "मंज़ूर",
+          "REJECTED": "अस्वीकार",
+          "RETIRED": "हटाया गया"
+        },
+        "step": {
+          "submit": "भेजें",
+          "approve": "मंज़ूर करें",
+          "reject": "अस्वीकार करें",
+          "retire": "हटाएँ"
+        },
+        "done": {
+          "submit": "भेज दिया।",
+          "approve": "मंज़ूर हुआ।",
+          "reject": "अस्वीकार हुआ।",
+          "retire": "हटा दिया।"
+        },
+        "reason": "कारण"
+      },
+      "cm": {
+        "title": "कैंपेन संदेश के रूप में सेव करें",
+        "none": "अभी कोई मंज़ूर कैंपेन नहीं। पहले सुझावों में मंज़ूर करें।",
+        "campaign": "मंज़ूर कैंपेन",
+        "save": "प्रस्ताव के रूप में सेव करें",
+        "saved": "प्रस्ताव के रूप में सेव हुआ। सुझावों में कोई व्यक्ति मंज़ूर करेगा; कुछ भेजा नहीं गया।",
+        "note": "जिन ग्राहकों ने सहमति नहीं दी, वे संदेश भेजते समय छोड़ दिए जाते हैं।"
+      },
+      "ev": {
+        "kind": "किस तरह का",
+        "k": {
+          "INVOICE": "बिल",
+          "PURCHASE_BILL": "खरीद बिल",
+          "STOCK_MOVEMENT": "स्टॉक गतिविधि",
+          "RECEIPT": "रसीद",
+          "CUSTOMER": "ग्राहक",
+          "PRODUCT": "उत्पाद",
+          "DOCUMENT": "दस्तावेज़",
+          "OTHER": "अन्य"
+        },
+        "ref": "नंबर या आईडी",
+        "add": "सबूत जोड़ें",
+        "added": "सबूत जुड़ गया।"
+      },
+      "tr": {
+        "required": "यह भरें (20,000 अक्षर तक)।",
+        "editTitle": "{{title}} बदलें",
+        "addTitle": "प्रशिक्षण सामग्री जोड़ें",
+        "hint": "सिर्फ फ्रैंचाइज़ी की अपनी सामग्री (SOP, उत्पाद रख-रखाव, सुरक्षा)। जवाब इसे शब्दशः उद्धृत करते हैं; बदलाव से संस्करण बढ़ता है।",
+        "title": "शीर्षक",
+        "source": "स्रोत (दस्तावेज़ और भाग)",
+        "category": "श्रेणी",
+        "body": "सामग्री",
+        "save": "सेव करें",
+        "saved": "प्रशिक्षण सामग्री सेव हुई।",
+        "add": "सामग्री जोड़ें",
+        "edit": "{{title}} बदलें"
+      },
+      "ocr": {
+        "recent": "हाल के दस्तावेज़",
+        "none": "अभी कोई दस्तावेज़ नहीं पढ़ा गया।",
+        "toCheck_one": "{{count}} जाँचना है",
+        "toCheck_other": "{{count}} जाँचने हैं",
+        "clean": "साफ़",
+        "review": "{{name}} जाँचें",
+        "view": "{{name}} देखें",
+        "opened": "दस्तावेज़ खुला।",
+        "correct": "जो पढ़ा गया उसे सुधारें",
+        "grnLine": "पंक्ति {{n}} की प्राप्ति पंक्ति",
+        "left": "{{qty}} बाकी",
+        "matched": "GSTIN से मिला: {{name}}।",
+        "noSupplier": "GSTIN से कोई सप्लायर नहीं मिला। एक चुनें।",
+        "supplier": "सप्लायर",
+        "duplicateBill": "इस सप्लायर के लिए इस इनवॉइस नंबर का बिल पहले से है।",
+        "saved": "सुधार सेव हुए।",
+        "save": "सुधार सेव करें",
+        "createBill": "ड्राफ्ट बिल बनाएँ",
+        "billMade": "ड्राफ्ट बिल बन गया। खरीद में पोस्ट करें।",
+        "billNote": "हर इनवॉइस पंक्ति को उसकी माल प्राप्ति से मिलाएँ। बिल ड्राफ्ट के रूप में सेव होता है; खरीद में पोस्ट करें।"
+      },
+      "sh": {
+        "recent": "हाल की जाँचें",
+        "none": "अभी कोई शेल्फ जाँच नहीं।",
+        "line": "{{when}} · {{products}} उत्पाद · {{diff}} अंतर",
+        "countOpened": "स्टॉक गिनती खुली",
+        "show": "{{when}} दिखाएँ"
+      },
+      "ex": {
+        "open": "{{name}} खोलें",
+        "opened": "परिदृश्य खुला।"
+      }
+    }
+  },
+  "mr": {
+    "wp10": {
+      "cancel": "रद्द करा",
+      "scan": {
+        "run": "दैनिक स्कॅन आता चालवा",
+        "skipped": "वगळले: {{why}}",
+        "ran_one": "झाले: {{count}} काम चालले.",
+        "ran_other": "झाले: {{count}} कामे चालली."
+      },
+      "kn": {
+        "title": "ज्ञान पुनरावलोकन",
+        "hint": "नोंद तिच्या लेखकाशिवाय दुसरी व्यक्ती मंजूर करते. कर्मचाऱ्यांना फक्त मंजूर नोंदी दिसतात. प्रकाशित स्रोतातून (ICAR, कृषी विद्यापीठ, KVK, CIB&RC लेबल) लिहा.",
+        "new": "नवीन नोंद",
+        "kind": "प्रकार",
+        "season": "हंगाम",
+        "anySeason": "कोणताही",
+        "k": {
+          "PEST": "कीड",
+          "DISEASE": "रोग",
+          "DEFICIENCY": "कमतरता",
+          "WEED": "तण",
+          "SOWING": "पेरणी",
+          "NUTRIENT": "पोषक घटक",
+          "IRRIGATION": "सिंचन"
+        },
+        "s": {
+          "KHARIF": "खरीप",
+          "RABI": "रब्बी",
+          "ZAID": "उन्हाळी"
+        },
+        "f": {
+          "crop": "पीक *",
+          "nameEn": "नाव (इंग्रजी) *",
+          "nameHi": "नाव (हिंदी)",
+          "nameMr": "नाव (मराठी)",
+          "stage": "अवस्था",
+          "symptoms": "लक्षणे (प्रत्येक ओळीत एक; फक्त समस्या)",
+          "summary": "मजकूर (पेरणी काळ, पोषण, सिंचन)",
+          "cultural": "मशागत नियंत्रण",
+          "biological": "जैविक नियंत्रण",
+          "chemical": "रासायनिक नियंत्रण",
+          "ingredients": "सुचवलेले सक्रिय घटक (प्रत्येक ओळीत एक)",
+          "doseText": "मात्रा, फक्त स्रोतात लिहिली असेल तर",
+          "sourceRef": "स्रोत संदर्भ (शीर्षक, आवृत्ती, पान) *"
+        },
+        "required": "हे भरा.",
+        "source": "स्रोत",
+        "save": "मसुदा जतन करा",
+        "saved": "नोंद मसुदा म्हणून जतन झाली.",
+        "none": "अजून नोंद नाही.",
+        "st": {
+          "DRAFT": "मसुदा",
+          "SUBMITTED": "सादर",
+          "APPROVED": "मंजूर",
+          "REJECTED": "नाकारले",
+          "RETIRED": "निवृत्त"
+        },
+        "step": {
+          "submit": "सादर करा",
+          "approve": "मंजूर करा",
+          "reject": "नाकारा",
+          "retire": "निवृत्त करा"
+        },
+        "done": {
+          "submit": "सादर केले.",
+          "approve": "मंजूर झाले.",
+          "reject": "नाकारले.",
+          "retire": "निवृत्त केले."
+        },
+        "reason": "कारण"
+      },
+      "cm": {
+        "title": "मोहीम संदेश म्हणून जतन करा",
+        "none": "अजून मंजूर मोहीम नाही. आधी शिफारशींमध्ये मंजूर करा.",
+        "campaign": "मंजूर मोहीम",
+        "save": "प्रस्ताव म्हणून जतन करा",
+        "saved": "प्रस्ताव म्हणून जतन झाले. शिफारशींमध्ये व्यक्ती मंजूर करेल; काहीही पाठवले नाही.",
+        "note": "संमती न दिलेले ग्राहक संदेश पाठवताना वगळले जातात."
+      },
+      "ev": {
+        "kind": "कोणत्या प्रकारचा",
+        "k": {
+          "INVOICE": "बिल",
+          "PURCHASE_BILL": "खरेदी बिल",
+          "STOCK_MOVEMENT": "साठा हालचाल",
+          "RECEIPT": "पावती",
+          "CUSTOMER": "ग्राहक",
+          "PRODUCT": "उत्पादन",
+          "DOCUMENT": "दस्तऐवज",
+          "OTHER": "इतर"
+        },
+        "ref": "क्रमांक किंवा आयडी",
+        "add": "पुरावा जोडा",
+        "added": "पुरावा जोडला."
+      },
+      "tr": {
+        "required": "हे भरा (20,000 अक्षरांपर्यंत).",
+        "editTitle": "{{title}} बदला",
+        "addTitle": "प्रशिक्षण मजकूर जोडा",
+        "hint": "फक्त फ्रँचायझीचा स्वतःचा मजकूर (SOP, उत्पादन हाताळणी, सुरक्षा). उत्तरे तो शब्दशः उद्धृत करतात; बदल केल्यास आवृत्ती वाढते.",
+        "title": "शीर्षक",
+        "source": "स्रोत (दस्तऐवज आणि भाग)",
+        "category": "वर्ग",
+        "body": "मजकूर",
+        "save": "जतन करा",
+        "saved": "प्रशिक्षण मजकूर जतन झाला.",
+        "add": "मजकूर जोडा",
+        "edit": "{{title}} बदला"
+      },
+      "ocr": {
+        "recent": "अलीकडील दस्तऐवज",
+        "none": "अजून दस्तऐवज वाचला नाही.",
+        "toCheck_one": "{{count}} तपासायचे",
+        "toCheck_other": "{{count}} तपासायचे",
+        "clean": "स्वच्छ",
+        "review": "{{name}} तपासा",
+        "view": "{{name}} पाहा",
+        "opened": "दस्तऐवज उघडला.",
+        "correct": "जे वाचले ते दुरुस्त करा",
+        "grnLine": "ओळ {{n}} साठी प्राप्ती ओळ",
+        "left": "{{qty}} उरले",
+        "matched": "GSTIN ने जुळले: {{name}}.",
+        "noSupplier": "GSTIN ने पुरवठादार जुळला नाही. एक निवडा.",
+        "supplier": "पुरवठादार",
+        "duplicateBill": "या पुरवठादारासाठी या इनव्हॉइस क्रमांकाचे बिल आधीच आहे.",
+        "saved": "दुरुस्त्या जतन झाल्या.",
+        "save": "दुरुस्त्या जतन करा",
+        "createBill": "मसुदा बिल तयार करा",
+        "billMade": "मसुदा बिल तयार झाले. खरेदीमध्ये पोस्ट करा.",
+        "billNote": "प्रत्येक इनव्हॉइस ओळ तिच्या माल प्राप्तीशी जुळवा. बिल मसुदा म्हणून जतन होते; खरेदीमध्ये पोस्ट करा."
+      },
+      "sh": {
+        "recent": "अलीकडील तपासण्या",
+        "none": "अजून शेल्फ तपासणी नाही.",
+        "line": "{{when}} · {{products}} उत्पादने · {{diff}} फरक",
+        "countOpened": "साठा मोजणी उघडली",
+        "show": "{{when}} दाखवा"
+      },
+      "ex": {
+        "open": "{{name}} उघडा",
+        "opened": "परिस्थिती उघडली."
+      }
+    }
+  }
+}

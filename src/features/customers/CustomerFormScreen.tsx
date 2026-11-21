@@ -8,6 +8,16 @@ import { ApiError, errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { Card, Check, Chips, Field, Notice, kit, useActionKey } from '@/ui/kit';
 import { StateView } from '../stock/StateView';
+import { newId } from '@/device';
+import {
+  RegisterLandFields,
+  emptyLand,
+  hasLand,
+  isFarmerCategory,
+  landError,
+  saveRegistrationLand,
+  type LandDraft,
+} from './RegisterLand';
 import {
   CPERM,
   createCustomer,
@@ -58,7 +68,10 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
   const [failure, setFailure] = useState<ErrorMessage | null>(null);
   const [dup, setDup] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [saved, setSaved] = useState<{ id: string; name: string } | null>(null);
+  const [saved, setSaved] = useState<{ id: string; name: string; landFailed?: boolean } | null>(null);
+  // web parity 22: the land of a new customer is entered with the registration
+  const withLand = creating && can('customer.farm');
+  const [land, setLand] = useState<LandDraft>(emptyLand());
 
   const cats = useQuery({
     queryKey: ['customers', me?.tenantId ?? '', me?.userId ?? '', 'categories'],
@@ -80,6 +93,7 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
     const e = validateDraft(d);
     setErrors(e);
     if (Object.keys(e).length > 0) return;
+    if (withLand && landError(land)) return;
     const changes = toBody(d, customer);
     if (!creating && !isChanged(changes)) {
       setFailure({ key: 'customers.form.nothingChanged', params: { code: 'NOCHANGE' } });
@@ -99,8 +113,13 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
             ak.keyFor(`${customer.id}|${customer.version}|${JSON.stringify(body)}`),
           );
       ak.reset();
+      // the land is saved after the customer exists; a failure here never undoes the registration
+      const landOk =
+        creating && withLand && r?.id && hasLand(land)
+          ? await saveRegistrationLand(client, r.id, land, newId)
+          : true;
       void qc.invalidateQueries({ queryKey: ['customers'] });
-      setSaved({ id: r?.id ?? customer?.id ?? '', name: r?.name ?? d.name.trim() });
+      setSaved({ id: r?.id ?? customer?.id ?? '', name: r?.name ?? d.name.trim(), landFailed: !landOk });
     } catch (x) {
       if (x instanceof ApiError && x.code === 'DUPLICATE_WARNING') setDup(true);
       else setFailure(errorMessage(x));
@@ -117,6 +136,7 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
           tone="ok"
           text={t(creating ? 'customers.form.created' : 'customers.form.saved', { name: saved.name })}
         />
+        {saved.landFailed ? <Notice tone="warn" text={t('wp22.landFailed')} /> : null}
         {saved.id ? (
           <Button
             label={t('customers.form.open')}
@@ -209,6 +229,16 @@ function CustomerForm({ customer }: { customer: CustomerFull | null }) {
         value={d.language as 'en'}
         onChange={(v) => set('language', v)}
       />
+      {withLand ? (
+        <Card>
+          <RegisterLandFields
+            value={land}
+            onChange={setLand}
+            farmer={isFarmerCategory(cats.data?.find((c) => c.id === d.categoryId)?.name)}
+            canCrop={can('customer.crop')}
+          />
+        </Card>
+      ) : null}
       {failure ? (
         <Notice
           tone="error"

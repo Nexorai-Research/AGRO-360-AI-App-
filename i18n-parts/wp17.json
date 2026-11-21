@@ -1,0 +1,329 @@
+{
+  "en": {
+    "wp17": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "reason": "Reason (recorded)",
+      "confirmVoid": "Mark as made in error",
+      "v": {
+        "required": "Fill this in.",
+        "reason": "Give a reason.",
+        "date": "A date like 2026-11-30.",
+        "year": "A year from 2000 to 2100.",
+        "area": "An area above 0.",
+        "line": {
+          "item": "Line {{line}}: the item is missing.",
+          "qty": "Line {{line}}: the quantity must be a number above 0.",
+          "date": "Line {{line}}: the date must look like 2026-11-30.",
+          "none": "Add at least one item."
+        }
+      },
+      "f": {
+        "search": "Search notes, advice, case number",
+        "all": "All activity",
+        "kind": {
+          "CALL": "Calls",
+          "VISIT": "Field visits",
+          "SHOP_VISIT": "Shop visits"
+        },
+        "from": "From date",
+        "to": "To date",
+        "badRange": "\"To\" is before \"From\"."
+      },
+      "i": {
+        "erased": "(erased)",
+        "correct": "Correct this entry",
+        "void": "Delete",
+        "fixHint": "The original stays on record.",
+        "notes": "Notes",
+        "cropIssue": "Crop issue seen",
+        "advice": "Advice given",
+        "why": "Why is it being corrected?",
+        "fixed": "Entry corrected (the original stays on record)",
+        "voidWhat": "The entry is struck out and marked as made in error. It stays on record with the reason, because a call or visit log is never erased.",
+        "voidedDone": "Entry marked as made in error",
+        "voided": "Made in error: {{reason}}",
+        "corrected": "Corrected: {{reason}}"
+      },
+      "c": {
+        "update": "Update case {{no}}",
+        "delete": "Delete case {{no}}",
+        "advice": "Advice",
+        "src": {
+          "EXPERT_PROVIDED": "An expert told us",
+          "APPROVED_SOURCE": "Approved document"
+        },
+        "reference": "Expert name or document",
+        "outcome": "Outcome",
+        "updated": "Case updated",
+        "voidWhat": "Case {{no}} is struck out and marked as made in error. It stays on record with the reason, because advice given to a farmer is never erased.",
+        "deleted": "Service case deleted",
+        "voided": "Made in error: {{reason}}"
+      },
+      "k": {
+        "edit": "Edit document details",
+        "hint": "Changes the details written about the document, not the file itself.",
+        "number": "Document number (leave empty to keep the stored one)",
+        "expires": "Expires on",
+        "updated": "Document updated",
+        "type": {
+          "AADHAAR": "Aadhaar",
+          "PAN": "PAN",
+          "VOTER_ID": "Voter ID",
+          "DRIVING_LICENCE": "Driving licence",
+          "PASSPORT": "Passport",
+          "LAND_RECORD": "Land record",
+          "BANK_PASSBOOK": "Bank passbook",
+          "OTHER": "Other"
+        }
+      },
+      "p": {
+        "edit": "Edit draft",
+        "delete": "Delete draft",
+        "close": "Close plan",
+        "hint": "One item per line: item | quantity | needed by (optional, like 2026-11-30).",
+        "year": "Year",
+        "lines": "Items",
+        "updated": "Plan updated",
+        "deleteWhat": "This draft plan and its items will be removed.",
+        "closeWhat": "The plan is closed and stays on record; it can no longer be changed.",
+        "confirmDelete": "Delete draft plan",
+        "confirmClose": "Close plan",
+        "deleted": "Draft plan deleted",
+        "closed": "Plan closed"
+      },
+      "l": {
+        "add": "Add land details",
+        "edit": "Edit total land",
+        "several": "This customer has several plots: change them one by one.",
+        "hintOne": "Changes the area of plot \"{{name}}\".",
+        "hintNew": "Records the land as a plot named \"Main plot\"; you can split it into plots and farms later.",
+        "area": "Land holding",
+        "unit": {
+          "ACRE": "acre",
+          "HECTARE": "hectare",
+          "GUNTHA": "guntha"
+        },
+        "saved": "Land updated"
+      }
+    }
+  },
+  "hi": {
+    "wp17": {
+      "save": "सहेजें",
+      "cancel": "रद्द करें",
+      "reason": "कारण (दर्ज होगा)",
+      "confirmVoid": "गलती से बना चिह्नित करें",
+      "v": {
+        "required": "यह भरें।",
+        "reason": "कारण लिखें।",
+        "date": "2026-11-30 जैसी तारीख।",
+        "year": "2000 से 2100 का वर्ष।",
+        "area": "0 से अधिक क्षेत्र।",
+        "line": {
+          "item": "पंक्ति {{line}}: वस्तु नहीं लिखी।",
+          "qty": "पंक्ति {{line}}: मात्रा 0 से अधिक संख्या हो।",
+          "date": "पंक्ति {{line}}: तारीख 2026-11-30 जैसी हो।",
+          "none": "कम से कम एक वस्तु जोड़ें।"
+        }
+      },
+      "f": {
+        "search": "नोट, सलाह, केस नंबर खोजें",
+        "all": "सभी गतिविधि",
+        "kind": {
+          "CALL": "कॉल",
+          "VISIT": "खेत भेट",
+          "SHOP_VISIT": "दुकान भेट"
+        },
+        "from": "से तारीख",
+        "to": "तक तारीख",
+        "badRange": "\"तक\" तारीख \"से\" से पहले है।"
+      },
+      "i": {
+        "erased": "(मिटाया गया)",
+        "correct": "यह प्रविष्टि सुधारें",
+        "void": "हटाएँ",
+        "fixHint": "मूल प्रविष्टि रिकॉर्ड में रहती है।",
+        "notes": "नोट",
+        "cropIssue": "फसल समस्या",
+        "advice": "दी गई सलाह",
+        "why": "क्यों सुधारा जा रहा है?",
+        "fixed": "प्रविष्टि सुधारी गई (मूल रिकॉर्ड में है)",
+        "voidWhat": "प्रविष्टि काटी जाएगी और गलती से बनी चिह्नित होगी। कारण के साथ रिकॉर्ड में रहेगी, क्योंकि कॉल या भेट का लॉग कभी मिटाया नहीं जाता।",
+        "voidedDone": "प्रविष्टि गलती से बनी चिह्नित",
+        "voided": "गलती से बना: {{reason}}",
+        "corrected": "सुधारा गया: {{reason}}"
+      },
+      "c": {
+        "update": "केस {{no}} अपडेट करें",
+        "delete": "केस {{no}} हटाएँ",
+        "advice": "सलाह",
+        "src": {
+          "EXPERT_PROVIDED": "विशेषज्ञ ने बताया",
+          "APPROVED_SOURCE": "स्वीकृत दस्तावेज़"
+        },
+        "reference": "विशेषज्ञ का नाम या दस्तावेज़",
+        "outcome": "परिणाम",
+        "updated": "केस अपडेट हुआ",
+        "voidWhat": "केस {{no}} काटा जाएगा और गलती से बना चिह्नित होगा। कारण के साथ रिकॉर्ड में रहेगा, क्योंकि किसान को दी गई सलाह कभी मिटाई नहीं जाती।",
+        "deleted": "सेवा केस हटाया",
+        "voided": "गलती से बना: {{reason}}"
+      },
+      "k": {
+        "edit": "दस्तावेज़ विवरण बदलें",
+        "hint": "दस्तावेज़ के बारे में लिखा विवरण बदलता है, फ़ाइल नहीं।",
+        "number": "दस्तावेज़ नंबर (रखा हुआ रखने के लिए खाली छोड़ें)",
+        "expires": "समाप्ति तारीख",
+        "updated": "दस्तावेज़ अपडेट हुआ",
+        "type": {
+          "AADHAAR": "आधार",
+          "PAN": "पैन",
+          "VOTER_ID": "वोटर आईडी",
+          "DRIVING_LICENCE": "ड्राइविंग लाइसेंस",
+          "PASSPORT": "पासपोर्ट",
+          "LAND_RECORD": "भूमि रिकॉर्ड",
+          "BANK_PASSBOOK": "बैंक पासबुक",
+          "OTHER": "अन्य"
+        }
+      },
+      "p": {
+        "edit": "ड्राफ़्ट बदलें",
+        "delete": "ड्राफ़्ट हटाएँ",
+        "close": "योजना बंद करें",
+        "hint": "हर पंक्ति में एक वस्तु: वस्तु | मात्रा | कब तक (वैकल्पिक, जैसे 2026-11-30)।",
+        "year": "वर्ष",
+        "lines": "वस्तुएँ",
+        "updated": "योजना अपडेट हुई",
+        "deleteWhat": "यह ड्राफ़्ट योजना और इसकी वस्तुएँ हटेंगी।",
+        "closeWhat": "योजना बंद होगी और रिकॉर्ड में रहेगी; फिर बदली नहीं जा सकेगी।",
+        "confirmDelete": "ड्राफ़्ट योजना हटाएँ",
+        "confirmClose": "योजना बंद करें",
+        "deleted": "ड्राफ़्ट योजना हटाई",
+        "closed": "योजना बंद हुई"
+      },
+      "l": {
+        "add": "ज़मीन विवरण जोड़ें",
+        "edit": "कुल ज़मीन बदलें",
+        "several": "इस ग्राहक के कई प्लॉट हैं: एक-एक करके बदलें।",
+        "hintOne": "प्लॉट \"{{name}}\" का क्षेत्र बदलता है।",
+        "hintNew": "ज़मीन \"Main plot\" नाम के प्लॉट में दर्ज होगी; बाद में प्लॉट और खेत में बाँट सकते हैं।",
+        "area": "ज़मीन",
+        "unit": {
+          "ACRE": "एकड़",
+          "HECTARE": "हेक्टेयर",
+          "GUNTHA": "गुंठा"
+        },
+        "saved": "ज़मीन अपडेट हुई"
+      }
+    }
+  },
+  "mr": {
+    "wp17": {
+      "save": "जतन करा",
+      "cancel": "रद्द करा",
+      "reason": "कारण (नोंदले जाईल)",
+      "confirmVoid": "चुकून केलेले म्हणून चिन्हांकित करा",
+      "v": {
+        "required": "हे भरा.",
+        "reason": "कारण लिहा.",
+        "date": "2026-11-30 सारखी तारीख.",
+        "year": "2000 ते 2100 मधील वर्ष.",
+        "area": "0 पेक्षा जास्त क्षेत्र.",
+        "line": {
+          "item": "ओळ {{line}}: वस्तू लिहिलेली नाही.",
+          "qty": "ओळ {{line}}: प्रमाण 0 पेक्षा जास्त संख्या हवी.",
+          "date": "ओळ {{line}}: तारीख 2026-11-30 सारखी हवी.",
+          "none": "किमान एक वस्तू जोडा."
+        }
+      },
+      "f": {
+        "search": "नोंदी, सल्ला, केस क्रमांक शोधा",
+        "all": "सर्व हालचाल",
+        "kind": {
+          "CALL": "कॉल",
+          "VISIT": "शेत भेटी",
+          "SHOP_VISIT": "दुकान भेटी"
+        },
+        "from": "पासून तारीख",
+        "to": "पर्यंत तारीख",
+        "badRange": "\"पर्यंत\" तारीख \"पासून\" च्या आधी आहे."
+      },
+      "i": {
+        "erased": "(पुसले)",
+        "correct": "ही नोंद दुरुस्त करा",
+        "void": "हटवा",
+        "fixHint": "मूळ नोंद रेकॉर्डवर राहते.",
+        "notes": "नोंदी",
+        "cropIssue": "पीक समस्या",
+        "advice": "दिलेला सल्ला",
+        "why": "का दुरुस्त केले जात आहे?",
+        "fixed": "नोंद दुरुस्त केली (मूळ रेकॉर्डवर आहे)",
+        "voidWhat": "नोंद खोडली जाईल आणि चुकून केलेली म्हणून चिन्हांकित होईल. कारणासह रेकॉर्डवर राहील, कारण कॉल किंवा भेटीची नोंद कधीही पुसली जात नाही.",
+        "voidedDone": "नोंद चुकून केलेली म्हणून चिन्हांकित",
+        "voided": "चुकून केले: {{reason}}",
+        "corrected": "दुरुस्त केले: {{reason}}"
+      },
+      "c": {
+        "update": "केस {{no}} अद्ययावत करा",
+        "delete": "केस {{no}} हटवा",
+        "advice": "सल्ला",
+        "src": {
+          "EXPERT_PROVIDED": "तज्ञाने सांगितले",
+          "APPROVED_SOURCE": "मान्य दस्तऐवज"
+        },
+        "reference": "तज्ञाचे नाव किंवा दस्तऐवज",
+        "outcome": "परिणाम",
+        "updated": "केस अद्ययावत झाली",
+        "voidWhat": "केस {{no}} खोडली जाईल आणि चुकून केलेली म्हणून चिन्हांकित होईल. कारणासह रेकॉर्डवर राहील, कारण शेतकऱ्याला दिलेला सल्ला कधीही पुसला जात नाही.",
+        "deleted": "सेवा केस हटवली",
+        "voided": "चुकून केले: {{reason}}"
+      },
+      "k": {
+        "edit": "दस्तऐवज तपशील बदला",
+        "hint": "दस्तऐवजाबद्दल लिहिलेला तपशील बदलतो, फाइल नाही.",
+        "number": "दस्तऐवज क्रमांक (साठवलेला ठेवण्यासाठी रिकामे ठेवा)",
+        "expires": "मुदत संपण्याची तारीख",
+        "updated": "दस्तऐवज अद्ययावत झाला",
+        "type": {
+          "AADHAAR": "आधार",
+          "PAN": "पॅन",
+          "VOTER_ID": "मतदार ओळखपत्र",
+          "DRIVING_LICENCE": "वाहन परवाना",
+          "PASSPORT": "पासपोर्ट",
+          "LAND_RECORD": "जमीन नोंद",
+          "BANK_PASSBOOK": "बँक पासबुक",
+          "OTHER": "इतर"
+        }
+      },
+      "p": {
+        "edit": "मसुदा बदला",
+        "delete": "मसुदा हटवा",
+        "close": "योजना बंद करा",
+        "hint": "प्रत्येक ओळीत एक वस्तू: वस्तू | प्रमाण | केव्हापर्यंत (ऐच्छिक, उदा. 2026-11-30).",
+        "year": "वर्ष",
+        "lines": "वस्तू",
+        "updated": "योजना अद्ययावत झाली",
+        "deleteWhat": "हा मसुदा योजना आणि तिच्या वस्तू हटतील.",
+        "closeWhat": "योजना बंद होईल आणि रेकॉर्डवर राहील; नंतर बदलता येणार नाही.",
+        "confirmDelete": "मसुदा योजना हटवा",
+        "confirmClose": "योजना बंद करा",
+        "deleted": "मसुदा योजना हटवली",
+        "closed": "योजना बंद झाली"
+      },
+      "l": {
+        "add": "जमीन तपशील जोडा",
+        "edit": "एकूण जमीन बदला",
+        "several": "या ग्राहकाचे अनेक प्लॉट आहेत: एक-एक करून बदला.",
+        "hintOne": "प्लॉट \"{{name}}\" चे क्षेत्र बदलते.",
+        "hintNew": "जमीन \"Main plot\" नावाच्या प्लॉटमध्ये नोंदली जाईल; नंतर प्लॉट आणि शेतात विभागता येईल.",
+        "area": "जमीन धारणा",
+        "unit": {
+          "ACRE": "एकर",
+          "HECTARE": "हेक्टर",
+          "GUNTHA": "गुंठा"
+        },
+        "saved": "जमीन अद्ययावत झाली"
+      }
+    }
+  }
+}

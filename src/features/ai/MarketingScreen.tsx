@@ -18,6 +18,7 @@ import {
   type ProductRef,
 } from './api';
 import { ProductPicker } from './ProductPicker';
+import { CampaignMessage } from './Parity10';
 
 const NEED = [AI_CUST, 'crm.greeting.manage'];
 
@@ -122,6 +123,7 @@ export default function MarketingScreen() {
             <Text style={k.sub}>{t('ai.mk.notSent')}</Text>
           </View>
         ) : null}
+        {out ? <CampaignMessage text={out.text} branch={br} /> : null}
         <Text style={k.sub}>{templates.data?.sending}</Text>
       </Gate>
     </ScrollView>
