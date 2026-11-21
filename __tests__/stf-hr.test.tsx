@@ -148,7 +148,8 @@ describe('employees', () => {
     mockMe = { userId: 'u-1', roles: [], permissions: ['sales.view'] };
     await render(<EmployeesScreen />, { wrapper });
     expect(await screen.findByText('You do not have permission to see this.')).toBeTruthy();
-    expect(mockGet).toHaveBeenCalledTimes(4); // the denied screen made no call; the offline one retried once
+    // the denied screen made no call; the offline one retried once (the branch list for the filter is a separate call)
+    expect(mockGet.mock.calls.filter((c) => c[0] === '/hr/employees')).toHaveLength(4);
   });
 
   test('server 403 shows permission denied', async () => {

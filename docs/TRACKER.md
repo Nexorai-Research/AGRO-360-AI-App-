@@ -1346,3 +1346,15 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 36.2 Three confirmations with the web's three messages; stopping at any one sends nothing and the next try starts again at the first | DONE (mocked client) | `__tests__/wp36.test.tsx` |
 | 36.3 After the third: `POST /me/deactivate-account` `{confirmations: 3}` with one Idempotency-Key (a retry after a refusal uses the same key), "Your account is deactivated", sign-out after 900 ms | DONE (mocked client) | `__tests__/wp36.test.tsx` |
 | Limit: tested with a mocked API only. When the platform switches the account on again the owner signs in with the same login id and password (phase 26 "Activate admin account"). Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 37: staff list like the web (delete, designation, branch, search)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `hr.js` and `hr.controller.ts`. Code: `src/features/staff/EmployeesScreen.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| 37.1 Delete an employee (`DELETE /hr/employees/:id`, `hr.employee.manage`): asks first with the web sentence (only an employee with no attendance, leave, salary or payslips can be deleted, otherwise use Exit), one Idempotency-Key, Cancel sends nothing, the server's refusal is shown with its reference | DONE (mocked client) | `__tests__/wp37.test.tsx` |
+| 37.2 Search by name, code or designation (in any case) over the loaded staff, like the web; the search is no longer sent to the server | DONE (mocked client) | `__tests__/wp37.test.tsx` |
+| 37.3 Designation filter from the loaded staff; branch filter (shown with more than one branch) sent as `branchId` | DONE (mocked client) | `__tests__/wp37.test.tsx` |
+| Already built before, found while comparing: the profile shows the emergency contact; Exit with last working day and reason | DONE | `__tests__/stf-hr.test.tsx` |
+| Limits: Delete is on the employee's profile (the web has it in the row). The list does not show a Bank column (the profile does). Hindi and Marathi need a native check | Limit | - |

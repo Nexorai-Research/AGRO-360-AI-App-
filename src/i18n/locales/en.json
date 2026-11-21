@@ -4135,7 +4135,7 @@
       "exitNow": "Record exit",
       "exitDone": "Exit recorded.",
       "lastDay": "Last working day",
-      "search": "Search by name or code",
+      "search": "Search by name, code or designation",
       "status": "Status",
       "st_ACTIVE": "Active",
       "st_ON_LEAVE": "On leave",
@@ -7539,5 +7539,11 @@
       "go": "Deactivate my account"
     },
     "done": "Your account is deactivated"
+  },
+  "wp37": {
+    "delete": "Delete employee",
+    "title": "Delete employee?",
+    "ask": "{{code}} {{name}} will be removed. Only an employee with no attendance, leave, salary or payslips can be deleted; otherwise use Exit.",
+    "done": "Employee deleted."
   }
 }

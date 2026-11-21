@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { todayIST } from '../collections/receipt';
 import { isDate, shortDate } from '../hr/logic';
 import { StateView } from '../stock/StateView';
@@ -20,9 +21,25 @@ import {
 import { Banner, Card, Chips, Field, Gate, Line, Screen, isNetwork, kit, useCan, useWrite, yn } from './ui';
 
 type Mode =
-  { k: 'list' } | { k: 'view'; id: string } | { k: 'form'; id: string | null } | { k: 'exit'; emp: Employee };
+  | { k: 'list' }
+  | { k: 'view'; id: string }
+  | { k: 'form'; id: string | null }
+  | { k: 'exit'; emp: Employee }
+  | { k: 'delete'; emp: Employee };
 
 const STATUSES = ['', 'ACTIVE', 'ON_LEAVE', 'EXITED'] as const;
+/** The search of the web: name, code or designation, in any case; and the designation filter. */
+export function filterEmployees(rows: Employee[], q: string, designation: string): Employee[] {
+  const needle = q.trim().toLowerCase();
+  return rows.filter(
+    (e) =>
+      (!designation || e.designation === designation) &&
+      (!needle || `${e.code} ${e.name} ${e.designation ?? ''}`.toLowerCase().includes(needle)),
+  );
+}
+/** The distinct designations of the loaded employees, sorted, like the web's filter. */
+export const designationsOf = (rows: Employee[]): string[] =>
+  [...new Set(rows.map((e) => e.designation).filter((d): d is string => Boolean(d)))].sort();
 const clean = (v: string) => (v.trim() === '' ? null : v.trim());
 
 export default function EmployeesScreen() {
@@ -36,20 +53,31 @@ export default function EmployeesScreen() {
   const [mode, setMode] = useState<Mode>({ k: 'list' });
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<string>('');
+  const [designation, setDesignation] = useState('');
+  const [branch, setBranch] = useState('');
   const w = useWrite();
   const retry = (n: number, e: unknown) => isNetwork(e) && n < 1;
 
   const list = useQuery({
-    queryKey: stfKey(userId, 'employees', q, status),
+    queryKey: stfKey(userId, 'employees', status, branch),
     queryFn: ({ signal }) =>
       fetchEmployees(
         client!,
-        { ...(q.trim() ? { q: q.trim() } : {}), ...(status ? { status } : {}) },
+        { ...(status ? { status } : {}), ...(branch ? { branchId: branch } : {}) },
         signal,
       ),
     enabled: ready && mode.k === 'list',
     retry,
   });
+  const branches = useQuery({
+    queryKey: stfKey(userId, 'branches'),
+    queryFn: ({ signal }) => fetchBranches(client!, signal),
+    enabled: ready && mode.k === 'list',
+    retry,
+  });
+  const rows = list.data?.items ?? [];
+  const shown = filterEmployees(rows, q, designation);
+  const designations = designationsOf(rows);
   const detailId = mode.k === 'view' ? mode.id : mode.k === 'form' ? mode.id : null;
   const detail = useQuery({
     queryKey: stfKey(userId, 'employee', detailId ?? ''),
@@ -73,16 +101,33 @@ export default function EmployeesScreen() {
           <Button label={t('stf.emp.add')} onPress={() => (w.clear(), setMode({ k: 'form', id: null }))} />
         ) : null}
         <Field label={t('stf.emp.search')} value={q} onChange={setQ} />
+        {(branches.data ?? []).length > 1 ? (
+          <Chips
+            label={t('stf.emp.branch')}
+            options={[
+              { id: '', label: t('stf.all') },
+              ...(branches.data ?? []).map((b) => ({ id: b.id, label: b.name })),
+            ]}
+            value={branch}
+            onChange={setBranch}
+          />
+        ) : null}
+        {designations.length > 0 ? (
+          <Chips
+            label={t('stf.emp.designation')}
+            options={[{ id: '', label: t('stf.all') }, ...designations.map((d) => ({ id: d, label: d }))]}
+            value={designation}
+            onChange={setDesignation}
+          />
+        ) : null}
         <Chips
           label={t('stf.emp.status')}
           options={STATUSES.map((s) => ({ id: s, label: s === '' ? t('stf.all') : t(`stf.emp.st_${s}`) }))}
           value={status}
           onChange={setStatus}
         />
-        {(list.data?.items ?? []).length === 0 ? (
-          <StateView state="empty" message={t('stf.emp.empty')} />
-        ) : null}
-        {(list.data?.items ?? []).map((e) => (
+        {shown.length === 0 ? <StateView state="empty" message={t('stf.emp.empty')} /> : null}
+        {shown.map((e) => (
           <Card key={e.id}>
             <Text style={kit.name}>
               {e.code} · {e.name}
@@ -112,6 +157,13 @@ export default function EmployeesScreen() {
               onPress={() => (w.clear(), setMode({ k: 'exit', emp: detail.data! }))}
             />
           </>
+        ) : null}
+        {detail.data && can(P.employee) ? (
+          <Button
+            kind="ghost"
+            label={t('wp37.delete')}
+            onPress={() => (w.clear(), w.newAction(), setMode({ k: 'delete', emp: detail.data! }))}
+          />
         ) : null}
         <Button kind="ghost" label={t('stf.back')} onPress={back} />
       </Gate>
@@ -145,6 +197,27 @@ export default function EmployeesScreen() {
           ) : null}
         </Gate>
       );
+  } else if (mode.k === 'delete') {
+    const e = mode.emp;
+    body = (
+      <Card>
+        <Banner w={w} />
+        <ConfirmBox
+          title={t('wp37.title')}
+          text={t('wp37.ask', { code: e.code, name: e.name })}
+          confirm={t('wp37.delete')}
+          cancel={t('stf.cancel')}
+          busy={w.busy}
+          onConfirm={() =>
+            void w.send('DELETE', `/hr/employees/${e.id}`, undefined, t('wp37.done'), () => {
+              refresh();
+              back();
+            })
+          }
+          onCancel={() => setMode({ k: 'view', id: e.id })}
+        />
+      </Card>
+    );
   } else {
     body = (
       <ExitForm
