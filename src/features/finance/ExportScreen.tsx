@@ -101,7 +101,7 @@ export default function ExportScreen() {
           label={t('fx.export.from')}
           value={from}
           onChange={setFrom}
-          error={tried && errs.includes('from') ? t('fx.v.date') : null}
+          error={tried && errs.includes('from') ? t('wp30.exportFrom') : null}
         />
         <Field
           label={t('fx.export.to')}

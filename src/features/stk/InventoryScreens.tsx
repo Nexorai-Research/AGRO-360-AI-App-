@@ -768,7 +768,7 @@ export function ValuationScreen() {
   const { t, can } = useStk();
   const [asOn, setAsOn] = useState('');
   const [groupBy, setGroupBy] = useState<'sku' | 'warehouse'>('sku');
-  const dateOk = asOn === '' || validDay(asOn);
+  const dateOk = asOn === '' || (validDay(asOn) && asOn.trim() <= today());
   return (
     <Page title={t('stkValuation.title')} hint={t('stkValuation.hint')} allowed={can('inventory.value.view')}>
       <Field
@@ -776,7 +776,7 @@ export function ValuationScreen() {
         value={asOn}
         onChange={setAsOn}
         placeholder="YYYY-MM-DD"
-        error={dateOk ? null : t('stk.badDate')}
+        error={dateOk ? null : t(validDay(asOn) ? 'wp30.valuationFuture' : 'stk.badDate')}
       />
       <Chips
         label={t('stkValuation.group')}

@@ -1,5 +1,6 @@
 import { dec } from '@/money';
 import { isDate } from '../hr/logic';
+import { todayIST } from '../collections/receipt';
 import type { Account, Expense, Voucher, VoucherKind } from './api';
 
 // Pure checks and body builders. The server checks everything again and decides numbers and permissions.
@@ -25,7 +26,7 @@ export const emptyLine = (): DraftLine => ({
 });
 
 export type VoucherError =
-  'date' | 'narration' | 'lines' | 'amount' | 'account' | 'balance' | 'bank' | 'contra' | 'same';
+  'date' | 'future' | 'narration' | 'lines' | 'amount' | 'account' | 'balance' | 'bank' | 'contra' | 'same';
 export interface VoucherDraft {
   kind: VoucherKind;
   date: string;
@@ -49,8 +50,9 @@ export function journalDiff(lines: DraftLine[]): string {
   return d.toFixed(2);
 }
 
-export function checkVoucher(v: VoucherDraft): VoucherError | null {
+export function checkVoucher(v: VoucherDraft, today: string = todayIST()): VoucherError | null {
   if (!isDate(v.date)) return 'date';
+  if (v.date.trim() > today) return 'future';
   if (v.narration.trim().length < 3) return 'narration';
   if (v.kind === 'CONTRA') {
     if (!v.fromAccountId || !v.toAccountId) return 'contra';

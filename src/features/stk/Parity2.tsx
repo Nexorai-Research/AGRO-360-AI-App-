@@ -111,10 +111,12 @@ export interface BulkTaxForm {
   hsnConfirmed: boolean;
   dryRun: boolean;
 }
-export type BulkTaxError = 'date' | 'pick' | 'fromHsn' | 'set' | 'hsn' | 'tax';
-export function bulkTaxErrors(f: BulkTaxForm): BulkTaxError[] {
+export type BulkTaxError = 'date' | 'today' | 'pick' | 'fromHsn' | 'set' | 'hsn' | 'tax';
+/** The web: a tax change cannot be dated in the past or the future, it applies from today. */
+export function bulkTaxErrors(f: BulkTaxForm, todayDay: string = today()): BulkTaxError[] {
   const e: BulkTaxError[] = [];
   if (!validDay(f.effectiveFrom)) e.push('date');
+  else if (f.effectiveFrom.trim() !== todayDay) e.push('today');
   if (!f.categoryId && !f.fromHsn.trim()) e.push('pick');
   if (f.fromHsn.trim() && !/^[0-9]{4,8}$/.test(f.fromHsn.trim())) e.push('fromHsn');
   if (!f.hsnCode.trim() && !f.taxCode.trim()) e.push('set');
@@ -197,7 +199,7 @@ export function BulkTaxCard() {
         value={f.effectiveFrom}
         onChange={(v) => setF({ ...f, effectiveFrom: v })}
         placeholder="YYYY-MM-DD"
-        error={bad('date')}
+        error={bad('date') ?? bad('today')}
       />
       {cats.data ? (
         <Chips

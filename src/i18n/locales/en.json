@@ -2735,7 +2735,12 @@
     },
     "fv": {
       "condition": "The condition must be valid JSON.",
-      "noSharing": "Sharing is not available on this phone."
+      "noSharing": "Sharing is not available on this phone.",
+      "testFuture": "A test that has already happened: the test date cannot be in the future.",
+      "issueFuture": "The day it was issued: the issue date cannot be in the future.",
+      "incidentFuture": "An incident has already happened: the date cannot be in the future.",
+      "sampleFuture": "The sample was already taken: the date cannot be in the future.",
+      "validBefore": "Valid to cannot be before its start."
     },
     "pick": {
       "change": "Change",
@@ -3760,7 +3765,8 @@
       "err_balance": "Debit and credit must be equal.",
       "err_bank": "Choose the cash or bank account.",
       "err_contra": "Choose both the account money leaves and the one it arrives in.",
-      "err_same": "The two accounts must be different."
+      "err_same": "The two accounts must be different.",
+      "err_future": "A voucher cannot be dated in the future."
     },
     "chart": {
       "title": "Chart of accounts",
@@ -4858,7 +4864,7 @@
       "noHistory": "None yet.",
       "noAccounts": "No accounts.",
       "v": {
-        "to": "End date must be a real date and not before the start.",
+        "to": "End date must be a real date, not in the future and not before the start.",
         "name": "Ledger name can be 100 letters at most."
       }
     },
@@ -5933,7 +5939,7 @@
     },
     "tax": {
       "title": "Bulk tax update",
-      "hint": "Choose products by category (with sub-categories) or HSN prefix, set the new mapping from a date. Preview first.",
+      "hint": "Choose products by category (with sub-categories) or HSN prefix, and set the new mapping. It applies from today. Preview first.",
       "from": "Effective from (YYYY-MM-DD)",
       "category": "Category",
       "anyCategory": "No category",
@@ -5952,7 +5958,8 @@
         "fromHsn": "The HSN prefix is 4 to 8 digits.",
         "set": "Give a new HSN, a new tax category, or both.",
         "hsn": "HSN must be 4, 6 or 8 digits.",
-        "tax": "Tax category is 2 to 20 capital letters, digits or _."
+        "tax": "Tax category is 2 to 20 capital letters, digits or _.",
+        "today": "A tax change applies from today: it cannot be dated in the past or the future."
       }
     },
     "note": {
@@ -7566,5 +7573,9 @@
     "delete": "Delete run",
     "deleted": "Run deleted.",
     "onlyDraft": "Only a draft run can be edited or deleted. Reopen a calculated run first; an approved run is reversed instead."
+  },
+  "wp30": {
+    "valuationFuture": "The valuation date cannot be in the future.",
+    "exportFrom": "Start date must be a real date, not in the future."
   }
 }

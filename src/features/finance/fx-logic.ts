@@ -1,6 +1,7 @@
 import { dec } from '@/money';
 import { validDate } from '../collections/sal-logic';
 import type { FinSettings } from './fx-api';
+import { todayIST } from '../collections/receipt';
 
 // Same limits as the server (modules/finance/src/domain/finance.ts and finance-b.ts). Money stays a decimal string.
 export { validDate };
@@ -77,10 +78,11 @@ export const openingBody = (asOn: string, lines: OpeningLine[]) => ({
 });
 
 // ---- export ----
-export const exportErrors = (from: string, to: string): ('from' | 'to')[] => {
+/** Neither date can be in the future and From can never be after To, like the web. */
+export const exportErrors = (from: string, to: string, today: string = todayIST()): ('from' | 'to')[] => {
   const e: ('from' | 'to')[] = [];
-  if (!validDate(from)) e.push('from');
-  if (!validDate(to) || (validDate(from) && to.trim() < from.trim())) e.push('to');
+  if (!validDate(from) || from.trim() > today) e.push('from');
+  if (!validDate(to) || to.trim() > today || (validDate(from) && to.trim() < from.trim())) e.push('to');
   return e;
 };
 export const mappingItems = (names: Record<string, string>) =>

@@ -1372,3 +1372,16 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | Already built before, found while comparing: no leave type yet is handled on the leave screen (the web's "no leave types" empty state) | DONE | `__tests__/wp38-leave.test.tsx` |
 | Not for the app: the web's incentives "internal error" fix and "toasts at the top" are server and web layout changes | Not applicable | - |
 | Limits: edit and delete are on each run's card (the web has them in the row menu). The run's branch name is not shown on the card. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 30: date rules
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `products.js`, `compliance-agri.js`, `inventory.js`, `finance.js`, `finance-ops.js`. The app checks first and the server checks again.
+
+| Feature | State | Test |
+|---|---|---|
+| 30.1 Bulk tax update: the new mapping applies from today; a past or future date is refused | DONE (mocked client) | `__tests__/wp30.test.tsx`, `__tests__/wp2.test.tsx` |
+| 30.2 Seed lot: test date not in the future, "Valid to" not before it; product registration: issue date not in the future, "Valid to" not before it (a future end is allowed); safety incident date and sample date not in the future (checked before sending, with the web's reasons) | DONE (the checks of each form are tested; the form screen itself is not rendered in the test) | `__tests__/wp30.test.tsx` |
+| 30.3 Stock valuation "As on date" not in the future (refused on the field, nothing asked of the server) | DONE (mocked client) | `__tests__/wp30.test.tsx` |
+| 30.4 Accounting export: From and To not in the future and From not after To; a voucher cannot be dated in the future (the opening balances date was already checked) | DONE (mocked client) | `__tests__/wp30.test.tsx` |
+| Not applicable, found while comparing: the HSN summary, the TDS run and the tax records hub work on "this month" or "last month" (never a future month), the registers hub the same, the statements on preset periods, so there is no free From / To or month to restrict. The app's product form has no pack size or pack unit field | Not applicable | - |
+| Limits: days are typed as YYYY-MM-DD (no calendar). The stock screens use the UTC day for "today" as before; the compliance, finance and observability checks use the India day. Hindi and Marathi need a native check | Limit | - |

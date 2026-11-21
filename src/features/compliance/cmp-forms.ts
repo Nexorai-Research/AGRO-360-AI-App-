@@ -8,9 +8,14 @@ import {
   type RowAction,
   type Values,
 } from './cmp-api';
+import { todayIST } from '../collections/receipt';
 
 // Web parity phase 8: the add / run dialogs and the step dialogs of apps/web/src/pages/compliance-agri.js, field for field.
 // The web form checks only "required"; everything else is decided by the server (modules/compliance/src/application/*).
+
+/** Day rules of the web's forms (compliance-agri.js): a day that has already happened is not in the future; an end is not before its start. */
+const notFuture = (v: Values, k: string, today: string) => tx(v, k) > today;
+const before = (v: Values, end: string, start: string) => tx(v, end) < tx(v, start);
 
 const SEVERITY = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
 const C = (p: string) => `/compliance/${p}`;
@@ -22,6 +27,7 @@ export const seedLotForm: FormDef = {
   id: 'seedLot',
   perm: 'compliance.seed.manage',
   path: C('seed-lots'),
+  check: (v) => (notFuture(v, 'testDate', todayIST()) ? 'testFuture' : before(v, 'validTo', 'testDate') ? 'validBefore' : null),
   fields: [
     f('batch', { kind: 'batch', required: true }),
     f('variety', { required: true }),
@@ -70,6 +76,7 @@ export const registrationForm: FormDef = {
   id: 'registration',
   perm: 'compliance.registration.manage',
   path: C('registrations'),
+  check: (v) => (notFuture(v, 'validFrom', todayIST()) ? 'issueFuture' : before(v, 'validTo', 'validFrom') ? 'validBefore' : null),
   fields: [
     f('skuId', { kind: 'product', required: true }),
     f('regNumber', { required: true }),
@@ -277,6 +284,7 @@ export const incidentForm: FormDef = {
   id: 'incident',
   perm: 'compliance.incident.report',
   path: C('incidents'),
+  check: (v) => (notFuture(v, 'occurredOn', todayIST()) ? 'incidentFuture' : null),
   fields: [
     f('incidentType', { kind: 'select', options: INCIDENT_TYPES }),
     f('severity', { kind: 'select', options: SEVERITY }),
@@ -304,6 +312,7 @@ export const sampleForm: FormDef = {
   id: 'sample',
   perm: 'compliance.sample.manage',
   path: C('samples'),
+  check: (v) => (notFuture(v, 'takenOn', todayIST()) ? 'sampleFuture' : null),
   fields: [
     f('batch', { kind: 'batch', required: true }),
     f('warehouseId', { kind: 'warehouse', required: true }),
