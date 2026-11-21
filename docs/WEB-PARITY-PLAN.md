@@ -218,3 +218,30 @@ Not built, on purpose: right-to-left mirroring for Urdu and Kashmiri (React Nati
 
 - Tested against mocked APIs only; there is no staging URL yet. Nothing is checked against real data.
 - This finds missing API use. A screen that calls the same API but shows fewer fields or filters than the web is not caught here; each phase also compares those pages side by side.
+
+## Seventh scan: web commit 7b8d087 (21 November 2026)
+
+The web moved 31 commits after 94a0617 (the fifth scan). Read again as a read-only snapshot through the GitHub API (compare `94a0617...7b8d087`, 145 files, nothing cloned) and compared with the app. Most of the commits are "owner issues" fixes of web screens. Rule as before: same API, same checks and messages as the web, the app's own look stays.
+
+Not for the app, on purpose: the new landing page and its self-playing tour, the Keycloak sign-in theme, the header logo animation, the removal of the CI workflows, the web's translation tooling, the observability "skyline" chart and the web-only layout of Roles & permissions (cards, switches, a save bar). The same permissions can already be changed in the app's role screen.
+
+### New server routes the app does not call yet
+
+| Phase | What | Endpoints | Permission | Web source |
+|---|---|---|---|---|
+| 25 | Automatic day-end: per branch closing time, reminder minutes, close automatically or only remind; postpone; closed days show who closed them and whether by hand or automatically; a countdown notice with Postpone in the reminder window | `GET/PUT /pos/day-end-schedules`, `POST /pos/day-end-schedules/:branchId/postpone` | `pos.dayend` | `sales.js`, `dayend-schedule.ts` |
+| 26 | Platform: a new franchise gets its first admin's login (login id and a one-time password, shown once, Copy); "Issue a new login" on an active or suspended franchise; Location (city or district) on create and edit; state shown with its name; the plan list says what each plan includes | `POST /platform/franchises` (reply `adminCredentials`), `POST /platform/franchises/:id:issue-admin-login`, `PATCH /platform/franchises/:id` | `platform.franchise.update` | `platform.js`, `platform.controller.ts` |
+| 27 | Observability with a chosen period: two dates (not in the future, From not after To, inside the 90 days kept) on the franchise and platform overviews and on one franchise | `GET /observability/overview?from&to`, `GET /platform/observability/overview?from&to`, `GET /platform/observability/franchises/:id?from&to` | as today | `observability.js` |
+| 28 | Where a sign-in came from: Location instead of the masked address on account sessions, a user's sessions and security events (the masked address stays as the hint); security event user ids with the `001-` prefix; users list newest first | `GET /auth/sessions`, `/users/:id/sessions`, `/security/events` (field `location`), `GET /users?order=newest` | as today | `security.controller.ts`, `users.js` |
+| 29 | Delete: a document with every version (confirm first), a manufacturer, a unit (refused while in use), a draft expense, a draft budget; edit a unit (name, precision, active) | `DELETE /documents/:id`, `/manufacturers/:id`, `/uoms/:id`, `/finance/expenses/:id`, `/finance/budgets/:id`; `PATCH /uoms/:id`, `/manufacturers/:id` | `org.document.manage`, `product.brand.manage`, `product.uom.manage`, `finance.expense.create`, `finance.budget.manage` | `documents.js`, `products.js`, `finance-ops.js` |
+
+### Rules and screen details the web changed (same API, new checks)
+
+| Phase | What | Web source |
+|---|---|---|
+| 30 | Date rules: bulk tax update applies from today only (future date refused); HSN summary, TDS report and finance reports: From and To never in the future and From never after To; valuation "As on date" not in the future; seed lot test date, product registration issue date, safety incident date and sample date not in the future, "Valid to" not before its start; registers: the month cannot be one that has not started; the pack unit follows the base unit, and pack size and pack unit go together | `products.js`, `compliance*.js`, `finance*.js`, `inventory.js` |
+| 31 | Lists like the web: products newest first (`GET /products?sort=newest`) with one search; import history with search, status filter, date range and View / Edit (a checked import goes back to the import screen, an applied one says why not); invoices filter "Paid by" (cash, UPI / card / bank, on credit); search, status and date filters on purchase orders, receipts, bills, payments, suppliers, stock, adjustments, transfers, expiry and reorder; View / Edit / Delete meanings as the web (invoice Delete cancels, customer Delete makes inactive, order Delete cancels, receipt Delete reverses, an audit record says why it cannot change) | `import-history.js`, `sales.js`, `purchase.js`, `inventory.js`, `products.js` |
+| 32 | Home: a tap on a dashboard part opens the matching list already filtered (how customers paid, latest bill, expiring batch, stock line, customer due) | `home.js` |
+| 33 | Languages: Hindi and Marathi for every new text of phases 25 to 32 | `i18n-parts/wp25..wp32.json` |
+
+Order: 25, 26, 27, 28, 29 (each adds server calls), then 30, 31, 32, then 33. One commit and one tracker section per phase, every feature with a test. Phases 31 and 32 are screen-level: before each one the web page is read side by side with the app's screen and only what is really missing is built. Limits as before: mocked API only, nothing checked on a phone or the real backend.

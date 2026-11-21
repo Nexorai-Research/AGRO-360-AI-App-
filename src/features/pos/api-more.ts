@@ -61,6 +61,8 @@ export interface Shift {
 export interface DayEndRow {
   id: string;
   business_date: string;
+  /** AUTO: closed by the timer at the scheduled time; MANUAL (or missing on an older day): closed by a person. */
+  source?: "AUTO" | "MANUAL";
   note: string | null;
   summary: {
     invoices?: string;

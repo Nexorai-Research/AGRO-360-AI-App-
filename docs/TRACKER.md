@@ -1258,3 +1258,15 @@ Found by opening every menu screen of the running app on the emulator against th
 | 24.5 AI digest and risk register counts read safely (a missing count is 0) | DONE | `__tests__/wp24.test.tsx` (helpers), existing AI tests |
 | Already in place: server errors become a translated message with a reference code and Retry on every screen (`src/api/errors.ts`, `StateView`, `Notice`); no network is its own "offline" state | DONE | existing tests |
 | Seen on the emulator: the Reports screen now shows the error panel instead of stopping the app. Limit: about 78 menu screens are not yet walked on the emulator (the laptop ran out of memory); report in `Documents\AGRO360-Runtime-Errors-2026-11-20.pdf` | Limit | - |
+
+## Web parity, phase 25: automatic day-end
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `sales.js` and the server's `GET/PUT /pos/day-end-schedules`, `POST /pos/day-end-schedules/:branchId/postpone`. Code: `src/features/pos/DayEndSchedulePanel.tsx`, `src/features/pos/dayend-schedule.ts`, shown on the shifts screen only with `pos.dayend`.
+
+| Feature | State | Test |
+|---|---|---|
+| 25.1 Schedule per branch: on / off, closing time (HH:MM, India time), reminder minutes (0 to 240), close by itself or only remind; one Idempotency-Key per save | DONE (mocked client) | `__tests__/wp25.test.tsx` |
+| 25.2 Postpone by 30 minutes or by 5 to 240 minutes; the reminder countdown notice (minutes left, past closing, held) | DONE (mocked client) | `__tests__/wp25.test.tsx` |
+| 25.3 Closed days in the history say "Closed automatically" when the server marks the source AUTO | DONE (mocked client) | `__tests__/wp25.test.tsx` |
+| 25.4 No `pos.dayend`: the schedule routes are not called; a failing schedule route never hides the shifts | DONE (mocked client) | `__tests__/wp25.test.tsx` |
+| Limit: tested with a mocked API only. The notice is shown on the shifts screen, not as a banner on every screen. Hindi and Marathi need a native check | Limit | - |
