@@ -7293,5 +7293,35 @@
     "bannerHeld": "Day-end for {{branch}} is postponed until {{time}}.",
     "bannerPastAuto": "It is past the closing time for {{branch}}. The day closes automatically once every shift is closed.",
     "bannerPast": "It is past the closing time for {{branch}}. Please close the day."
+  },
+  "wp25": {
+    "link": "Farmer? Open the farmer portal",
+    "title": "Farmer portal",
+    "intro": "Sign in with your mobile number. We send a one-time code by SMS.",
+    "shop": "Shop code",
+    "mobile": "10-digit mobile",
+    "code": "6-digit code",
+    "send": "Send code",
+    "signIn": "Sign in",
+    "again": "Use another number",
+    "signOut": "Sign out",
+    "devCode": "Development code: {{code}}",
+    "loadFailed": "Your details could not be loaded.",
+    "v": {
+      "mobile": "Enter a 10-digit mobile number."
+    },
+    "dues": "Dues",
+    "owe": "You owe {{amount}}.",
+    "noDues": "You have no dues.",
+    "pay": "Pay dues",
+    "payUpi": "Pay {{amount}} by UPI",
+    "loyalty": "Loyalty",
+    "tier": "{{tier}} tier, {{points}} points.",
+    "noTier": "No tier yet, {{points}} points.",
+    "crops": "Your crops",
+    "noCrops": "No crops recorded.",
+    "harvest": "harvest {{date}}",
+    "purchases": "Recent purchases",
+    "noPurchases": "No purchases yet."
   }
 }

@@ -1298,3 +1298,17 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 24.3 Postpone 5 to 240 minutes, only when the schedule is on and today is not closed (`POST .../postpone`) | DONE | `__tests__/wp24.test.tsx` |
 | 24.4 Countdown banner on the Shifts screen for a branch inside its reminder window, with Postpone 30 min | DONE | `__tests__/wp24.test.tsx` |
 | Limit: the web also shows the banner above every POS tab and plays a sound; here it is on the Shifts screen only, with no sound | Limit | - |
+
+## Web parity, phase 25: the farmer portal
+
+Mocked API, not run against the real backend, an emulator or a phone. Copied from the web's `portal.js` and the server's `portal.controller.ts` (UC-159). Code `src/features/portal/`, route `/portal`, linked from the sign-in screen. Texts in `i18n-parts/wp25.json`.
+
+| Feature | State | Test |
+|---|---|---|
+| 25.1 A farmer asks for a one-time code with the shop code and a 10-digit mobile (`POST /portal/auth/otp`), then signs in with the 6-digit code (`POST /portal/auth/verify`); both checked before sending, one Idempotency-Key per action | DONE | `__tests__/wp25.test.tsx` |
+| 25.2 The portal token is kept only in secure storage, is sent only to the portal calls, and is cleared on sign out and on a 401 | DONE | `__tests__/wp25.test.tsx` |
+| 25.3 The farmer sees their own dues, loyalty tier and points, current crops and recent purchases (`GET /portal/me`, `/outstanding`, `/loyalty`, `/crops`, `/invoices`) | DONE | `__tests__/wp25.test.tsx` |
+| 25.4 Pay dues: asks for the UPI link and opens it (`GET /portal/me/pay-link`), only when something is owed | DONE | `__tests__/wp25.test.tsx` |
+| Limit: the one-time code is sent by SMS, and no real SMS provider exists yet (M14), so the full sign-in cannot be tried on a real server | Limit | - |
+| Limit: the web's opt-out link (`POST /public/opt-out/:token`) is not built; it is opened from an SMS link in a browser | Limit | - |
+| Limit: the shop code is typed by the farmer or comes from the link `agro360://portal?f=<code>`; the web uses `portal.html?f=<code>` | Limit | - |

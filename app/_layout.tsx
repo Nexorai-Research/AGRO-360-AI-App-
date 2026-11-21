@@ -26,14 +26,15 @@ function Gate() {
   const atHome = (segments as string[]).length === 0;
   const topGap = atHome || segments[0] === 'login' ? 0 : insets.top;
   const onLogin = segments[0] === 'login';
+  const onPortal = segments[0] === 'portal'; // the farmer portal has its own one-time-code sign-in, no staff session
   // Until the saved session is checked (and the redirect has happened) show a plain background, never a flash of the wrong screen.
   const covering =
-    status === 'loading' || (status === 'signedOut' && !onLogin) || (status === 'signedIn' && onLogin);
+    status === 'loading' || (status === 'signedOut' && !onLogin && !onPortal) || (status === 'signedIn' && onLogin);
   useEffect(() => {
     if (status === 'loading') return;
-    if (status === 'signedOut' && !onLogin) router.replace('/login');
+    if (status === 'signedOut' && !onLogin && !onPortal) router.replace('/login');
     if (status === 'signedIn' && onLogin) router.replace('/');
-  }, [status, segments, router, onLogin]);
+  }, [status, segments, router, onLogin, onPortal]);
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingTop: topGap }}>
