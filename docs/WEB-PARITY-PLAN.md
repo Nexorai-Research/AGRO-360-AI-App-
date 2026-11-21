@@ -286,3 +286,21 @@ Branch `27-feature-implementation-from-25-to-33` (web-parity phases 1 to 25 merg
 | 36 The owner switches their own account off | Done |
 | 37 Staff: delete, designation and branch filters, search | Done |
 | 38 Payroll runs: cards, filters, edit and delete a draft | Done |
+
+## Pending (22 November 2026)
+
+Everything not done yet, in one place. Nothing here is hidden elsewhere.
+
+| # | Pending | Phase | Why |
+|---|---|---|---|
+| 1 | Search, status and date filters on supplier payments, stock, stock adjustments, stock transfers and reorder | 31 | Not built yet |
+| 2 | The web's row meanings View / Edit / Delete for customers, orders, receipts (customer Delete makes inactive, order Delete cancels, receipt Delete reverses, an audit record says why it cannot change) | 31 | Not built as a new menu; the screens keep the actions they already had |
+| 3 | "Edit" of a checked product import going back to the import screen | 31 | Not built |
+| 4 | Home taps for "customers who owe" and "biggest stock lines" | 32 | The app's home has no such widgets; they would have to be built first |
+| 5 | The 19 other languages for the new texts of phases 25 to 38 | 33 | They show English; only Hindi and Marathi are written |
+| 6 | Native-speaker check of every Hindi and Marathi text written in phases 25 to 38 | 33 | Not done |
+| 7 | Copy button for the owner's login (the app offers Share) | 26 | No clipboard package installed; adding one is a choice for the owner |
+| 8 | A state picker list on the franchise form and the web's quick period choices and calendar on observability | 26, 27 | The app uses typed values |
+| 9 | Form-screen test for the compliance date checks; a test that the products list asks for `sort=newest` | 30, 31 | Only the checks / the request are covered |
+| 10 | Everything checked only against mocked APIs: no staging URL, no real backend, no phone or emulator walk | all | No environment yet |
+| 11 | Pull request into `main` for this branch | all | Branch is pushed; the PR is not opened |
