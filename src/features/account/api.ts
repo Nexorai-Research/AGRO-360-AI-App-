@@ -17,6 +17,8 @@ export interface Preferences {
 export interface SessionInfo {
   id: string;
   ip: string | null;
+  /** The place of the sign-in ("Pune, Maharashtra, India"), when the server could tell. */
+  location?: string | null;
   browser: string | null;
   startedAt: string;
   lastAccessAt: string;

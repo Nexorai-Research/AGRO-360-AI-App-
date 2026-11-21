@@ -62,7 +62,10 @@ export interface SecurityEvent {
   id: string;
   type: string;
   userId: string | null;
+  /** The user id with the franchise prefix, like 001-..., as the web shows it. */
+  userRef?: string | null;
   ip: string | null;
+  location?: string | null;
   at: string;
 }
 
@@ -299,6 +302,7 @@ export interface UserRow {
 export interface UserSession {
   id: string;
   ip: string | null;
+  location?: string | null;
   browser: string | null;
   startedAt: string;
   lastAccessAt: string;

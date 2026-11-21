@@ -26,6 +26,7 @@ export const updateUser = (
 export interface UserSession {
   id: string;
   ip: string | null;
+  location?: string | null;
   browser: string | null;
   startedAt: string;
   lastAccessAt: string;

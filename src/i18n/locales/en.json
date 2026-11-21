@@ -7388,5 +7388,10 @@
       "future": "A date in the future cannot be chosen.",
       "old": "That day is older than the activity kept (90 days)."
     }
+  },
+  "wp28": {
+    "notAvailable": "Not available",
+    "place": "Location: {{place}} · address {{ip}}",
+    "placeOnly": "Location: {{place}}"
   }
 }

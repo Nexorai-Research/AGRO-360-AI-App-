@@ -120,7 +120,7 @@ export const fetchUsers = (
   signal?: AbortSignal,
 ) =>
   c.get<Page<UserView>>('/users', {
-    query: { q: q.q.trim(), status: q.status, limit: LIMIT, cursor: q.cursor },
+    query: { q: q.q.trim(), status: q.status, order: 'newest', limit: LIMIT, cursor: q.cursor },
     signal,
   });
 export const fetchRoles = (c: ApiClient, signal?: AbortSignal) =>

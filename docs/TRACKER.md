@@ -1298,3 +1298,14 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 27.3 A chosen range asks `GET /observability/overview?from&to`, `GET /platform/observability/overview?from&to`, `GET /platform/observability/franchises/:id?from&to` (no `days`); the franchise page shows "from to to" when the server answers with a range | DONE (mocked client) | `__tests__/wp27.test.tsx` |
 | 27.4 One person's page only knows days, like the web: it keeps using the last chosen number of days | DONE (mocked client) | `__tests__/wp27.test.tsx` |
 | Limits: dates are typed (no calendar picker; the web has a calendar). The web's quick choices "Today", "This month" and "Last month" are not built. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 28: where a sign-in came from
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `ui.js` (`place`), `account.js`, `users.js`, `security.js`. Code: `src/features/account/place.ts`, the account, user-security and security screens, `fetchUsers`.
+
+| Feature | State | Test |
+|---|---|---|
+| 28.1 My sessions and one user's sessions show "Location: place · address masked-ip"; with an address but no place the place reads "Not available", with nothing recorded "-" | DONE (mocked client) | `__tests__/wp28.test.tsx` |
+| 28.2 Security events show the place (with the masked address after it) and the user id as the franchise-prefixed reference (`userRef`, like `001-...`); older answers without it still show the short id | DONE (mocked client) | `__tests__/wp28.test.tsx`, `__tests__/adm-security.test.tsx` |
+| 28.3 The users list asks for the newest first (`GET /users?order=newest`) | DONE (mocked client) | `__tests__/wp28.test.tsx` |
+| Limits: the place comes from the server (it is off there until the operator sets a lookup service), so it can read "Not available". The web keeps the masked address only as hover text; the phone shows it in the line. Hindi and Marathi need a native check | Limit | - |

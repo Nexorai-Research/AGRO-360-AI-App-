@@ -91,7 +91,7 @@ describe('security centre', () => {
     expect(await screen.findByText('Many failed sign-ins')).toBeTruthy();
     expect(screen.getByLabelText('Minimum password length (8 to 64)').props.value).toBe('8');
     expect(screen.getByText(/Raised automatically: LOGIN_FAILED_BURST/)).toBeTruthy();
-    expect(screen.getByText(/LOGIN_FAILED · 12345678 · 10.1.\*.\*/)).toBeTruthy();
+    expect(screen.getByText(/LOGIN_FAILED · 12345678 · Not available \(10\.1\.\*\.\*\)/)).toBeTruthy();
   });
 
   test('loading state', async () => {

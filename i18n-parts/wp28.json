@@ -1,0 +1,23 @@
+{
+  "en": {
+    "wp28": {
+      "notAvailable": "Not available",
+      "place": "Location: {{place}} · address {{ip}}",
+      "placeOnly": "Location: {{place}}"
+    }
+  },
+  "hi": {
+    "wp28": {
+      "notAvailable": "उपलब्ध नहीं",
+      "place": "जगह: {{place}} · पता {{ip}}",
+      "placeOnly": "जगह: {{place}}"
+    }
+  },
+  "mr": {
+    "wp28": {
+      "notAvailable": "उपलब्ध नाही",
+      "place": "ठिकाण: {{place}} · पत्ता {{ip}}",
+      "placeOnly": "ठिकाण: {{place}}"
+    }
+  }
+}

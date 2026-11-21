@@ -1,3 +1,4 @@
+import { placeLine } from './place';
 import { useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -165,6 +166,7 @@ export default function AccountScreen() {
               ip: s.ip ?? '-',
             })}
           </Text>
+          <Text style={k.sub}>{placeLine(t, s)}</Text>
           <Button
             kind="ghost"
             label={t('account.endSession')}
