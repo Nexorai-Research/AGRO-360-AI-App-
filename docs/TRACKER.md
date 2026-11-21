@@ -1309,3 +1309,16 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 28.2 Security events show the place (with the masked address after it) and the user id as the franchise-prefixed reference (`userRef`, like `001-...`); older answers without it still show the short id | DONE (mocked client) | `__tests__/wp28.test.tsx`, `__tests__/adm-security.test.tsx` |
 | 28.3 The users list asks for the newest first (`GET /users?order=newest`) | DONE (mocked client) | `__tests__/wp28.test.tsx` |
 | Limits: the place comes from the server (it is off there until the operator sets a lookup service), so it can read "Not available". The web keeps the masked address only as hover text; the phone shows it in the line. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 29: delete and edit (documents, manufacturers, units, draft expenses, draft budgets)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `documents.js`, `products.js`, `finance-ops.js` and `catalogue.controller.ts`. Code: `src/ui/ConfirmBox.tsx` (the phone's "Are you sure?"), `CatalogueScreens.tsx`, `DocumentsScreen.tsx`, `ExpensesScreen.tsx`, `ControlScreen.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| 29.1 Delete a document with every version (`DELETE /documents/:id`, `org.document.manage`): asks first, says the file and all versions go for good and that Deactivate keeps it | DONE (mocked client) | `__tests__/wp29.test.tsx` |
+| 29.2 Edit a manufacturer (`PATCH /manufacturers/:id`, version as If-Match; contact, email, address) and delete one (`DELETE`, asks first; the button is off while brands use it) | DONE (mocked client) | `__tests__/wp29.test.tsx` |
+| 29.3 Edit a unit (`PATCH /uoms/:id`: name, decimal places, Active; the code never changes) and delete one (`DELETE /uoms/:id`, asks first; the server refuses a unit that products use and the answer is shown) | DONE (mocked client) | `__tests__/wp29.test.tsx` |
+| 29.4 Delete a draft expense (`DELETE /finance/expenses/:id`) and a draft budget with its lines (`DELETE /finance/budgets/:id`); only drafts show Delete | DONE (mocked client) | `__tests__/wp29.test.tsx` |
+| Every delete sends one Idempotency-Key and nothing before the confirming button; Cancel sends nothing | DONE (mocked client) | `__tests__/wp29.test.tsx` |
+| Limits: the web's unit delete is not disabled by the screen either (the server refuses a unit in use). The unit's Active tick sits in the edit form like the web. Hindi and Marathi need a native check | Limit | - |

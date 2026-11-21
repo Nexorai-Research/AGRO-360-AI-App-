@@ -175,6 +175,10 @@ export const setDocumentActive = (c: ApiClient, id: string, active: boolean, ide
     idempotencyKey,
   });
 
+/** Delete a document with every version (org.document.manage). The file is erased for good; Deactivate keeps it. */
+export const deleteDocument = (c: ApiClient, id: string, idempotencyKey: string) =>
+  c.delete<unknown>(`/documents/${encodeURIComponent(id)}`, { idempotencyKey });
+
 export const fetchCompany = (c: ApiClient, signal?: AbortSignal) =>
   c.get<CompanyProfile>('/settings/company', { signal });
 export const fetchBranches = (c: ApiClient, signal?: AbortSignal) =>

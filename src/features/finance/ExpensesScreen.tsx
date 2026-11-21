@@ -1,3 +1,4 @@
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -16,6 +17,7 @@ import {
   expensePay,
   expenseReject,
   expenseReverse,
+  deleteExpense,
   expenseStep,
   getExpense,
   listAccounts,
@@ -57,7 +59,7 @@ function Detail({ id, onBack, onEdit }: { id: string; onBack: () => void; onEdit
   const { t } = useTranslation();
   const { can, uid, client } = useFin();
   const w = useWrite();
-  const [ask, setAsk] = useState<'reject' | 'reverse' | 'pay' | null>(null);
+  const [ask, setAsk] = useState<'reject' | 'reverse' | 'pay' | 'delete' | null>(null);
   const [payFrom, setPayFrom] = useState('');
   const [paidOn, setPaidOn] = useState(todayIST());
   const accts = useQuery({
@@ -143,6 +145,25 @@ function Detail({ id, onBack, onEdit }: { id: string; onBack: () => void; onEdit
                     </View>
                   </Gate>
                 </Card>
+              ) : ask === 'delete' ? (
+                <Card>
+                  <ConfirmBox
+                    title={t('wp29.deleteExpenseTitle')}
+                    text={t('wp29.deleteExpenseAsk', { no: e.expenseNo, payee: e.payee })}
+                    confirm={t('wp29.delete')}
+                    cancel={t('fin.cancel')}
+                    busy={w.busy}
+                    onConfirm={() =>
+                      void w.go(
+                        `delete|${e.id}`,
+                        t('wp29.expenseDeleted'),
+                        (c, k) => deleteExpense(c, k, e.id),
+                        onBack,
+                      )
+                    }
+                    onCancel={() => setAsk(null)}
+                  />
+                </Card>
               ) : ask ? (
                 <Ask
                   label={ask === 'reject' ? t('fin.reasonReject') : t('fin.reasonReverse')}
@@ -163,6 +184,9 @@ function Detail({ id, onBack, onEdit }: { id: string; onBack: () => void; onEdit
                 <View style={kit.row}>
                   {e.status === 'DRAFT' && can(FP.expCreate) ? (
                     <Button kind="ghost" label={t('wp9.e.edit')} onPress={() => onEdit(e)} />
+                  ) : null}
+                  {e.status === 'DRAFT' && can(FP.expCreate) ? (
+                    <Button kind="ghost" label={t('wp29.delete')} onPress={() => setAsk('delete')} />
                   ) : null}
                   {a.submit ? (
                     <Button

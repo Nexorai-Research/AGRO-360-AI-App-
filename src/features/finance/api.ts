@@ -308,6 +308,11 @@ export const updateVoucher = (c: ApiClient, key: string, v: { id: string; versio
   c.put<Voucher>(`/finance/vouchers/${v.id}`, W(key, body, v.version));
 export const updateExpense = (c: ApiClient, key: string, e: { id: string; version: number }, body: unknown) =>
   c.put<Expense>(`/finance/expenses/${e.id}`, W(key, body, e.version));
+/** Delete a draft expense (nothing was posted for it) or a draft budget with its lines. The server refuses any other status. */
+export const deleteExpense = (c: ApiClient, key: string, id: string) =>
+  c.delete<unknown>(`/finance/expenses/${id}`, { idempotencyKey: key });
+export const deleteBudget = (c: ApiClient, key: string, id: string) =>
+  c.delete<unknown>(`/finance/budgets/${id}`, { idempotencyKey: key });
 export const createBudget = (c: ApiClient, key: string, body: unknown) =>
   c.post<Budget>('/finance/budgets', W(key, body));
 

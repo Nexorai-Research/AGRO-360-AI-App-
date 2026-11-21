@@ -1,3 +1,4 @@
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { useState } from 'react';
 import { ScrollView, Text, TextInput } from 'react-native';
 import { keepPreviousData, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
@@ -5,7 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { errorMessage, type ErrorMessage } from '@/api/errors';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
-import { DOC_CATEGORIES, DOC_STATUSES, PERM, adminKey, fetchDocuments, setDocumentActive } from './api';
+import {
+  DOC_CATEGORIES,
+  DOC_STATUSES,
+  PERM,
+  adminKey,
+  deleteDocument,
+  fetchDocuments,
+  setDocumentActive,
+} from './api';
 import { DocActions, DocDashboard, UploadForm } from './DocAdmin';
 import { Card, Chips, failText, isNetwork, k, queryState, useAccess, useIdemKey } from './kit';
 import { formatBytes } from './logic';
@@ -24,6 +33,7 @@ export default function DocumentsScreen() {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const idem = useIdemKey();
 
   const docs = useInfiniteQuery({
@@ -46,6 +56,26 @@ export default function DocumentsScreen() {
       idem.clear();
       setMsg(t(active ? 'documents.restored' : 'documents.deactivated'));
       void qc.invalidateQueries({ queryKey: adminKey(userId, 'documents') });
+    } catch (e) {
+      setFailure(errorMessage(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function remove(id: string) {
+    if (busy) return;
+    setBusy(true);
+    setFailure(null);
+    setMsg(null);
+    try {
+      await deleteDocument(client!, id, idem.keyFor(`delete|${id}`));
+      idem.clear();
+      setDeleteId(null);
+      setOpenId(null);
+      setMsg(t('wp29.documentDeleted'));
+      void qc.invalidateQueries({ queryKey: adminKey(userId, 'documents') });
+      void qc.invalidateQueries({ queryKey: adminKey(userId, 'doc-dash') });
     } catch (e) {
       setFailure(errorMessage(e));
     } finally {
@@ -153,6 +183,20 @@ export default function DocumentsScreen() {
               label={t(d.active ? 'documents.deactivate' : 'documents.restore')}
               disabled={busy}
               onPress={() => void toggle(d.id, !d.active)}
+            />
+          ) : null}
+          {can(PERM.docManage) ? (
+            <Button kind="ghost" label={t('wp29.delete')} disabled={busy} onPress={() => setDeleteId(d.id)} />
+          ) : null}
+          {deleteId === d.id ? (
+            <ConfirmBox
+              title={t('wp29.deleteDocumentTitle')}
+              text={t('wp29.deleteDocumentAsk', { title: d.title, count: d.currentVersion })}
+              confirm={t('wp29.delete')}
+              cancel={t('wp29.cancel')}
+              busy={busy}
+              onConfirm={() => void remove(d.id)}
+              onCancel={() => setDeleteId(null)}
             />
           ) : null}
         </Card>
