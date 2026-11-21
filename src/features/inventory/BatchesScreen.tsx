@@ -121,7 +121,7 @@ export default function BatchesScreen() {
               }}
             />
           ) : null}
-          {open?.id === b.id ? (
+          {open && open.id === b.id ? (
             <>
               <Field label={t('adjust.rejectReason')} value={reason} onChange={setReason} />
               <Button

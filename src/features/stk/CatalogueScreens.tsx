@@ -4,6 +4,7 @@ import { formatINR } from '@/money';
 import { ApiError } from '@/api/errors';
 import { shortDate } from '../hr/logic';
 import { Line } from '../hr/kit';
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import {
   Area,
   Btn,
@@ -215,6 +216,10 @@ interface Maker {
   name: string;
   registrationNo: string | null;
   phone: string | null;
+  contactName?: string | null;
+  email?: string | null;
+  address?: string | null;
+  version?: number;
 }
 
 function BrandForm({ makers, b, onDone }: { makers: Maker[]; b?: Brand; onDone: () => void }) {
@@ -263,29 +268,54 @@ function BrandForm({ makers, b, onDone }: { makers: Maker[]; b?: Brand; onDone: 
   );
 }
 
-function MakerForm({ onDone }: { onDone: () => void }) {
+function MakerForm({ m, onDone }: { m?: Maker; onDone: () => void }) {
   const { t } = useStk();
   const w = useWrite();
-  const [name, setName] = useState('');
-  const [reg, setReg] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState(m?.name ?? '');
+  const [reg, setReg] = useState(m?.registrationNo ?? '');
+  const [phone, setPhone] = useState(m?.phone ?? '');
+  const [contact, setContact] = useState(m?.contactName ?? '');
+  const [email, setEmail] = useState(m?.email ?? '');
+  const [address, setAddress] = useState(m?.address ?? '');
   const save = (confirm: boolean) =>
-    w.post(
-      '/manufacturers',
-      {
-        name: name.trim(),
-        registrationNo: blank(reg) ?? null,
-        phone: blank(phone) ?? null,
-        ...(confirm ? { confirmDuplicate: true } : {}),
-      },
-      t('stkBrand.saved'),
-      { after: onDone },
-    );
+    m
+      ? w.patch(
+          `/manufacturers/${m.id}`,
+          {
+            name: name.trim(),
+            registrationNo: blank(reg) ?? null,
+            phone: blank(phone) ?? null,
+            contactName: blank(contact) ?? null,
+            email: blank(email) ?? null,
+            address: blank(address) ?? null,
+            ...(confirm ? { confirmDuplicate: true } : {}),
+          },
+          t('stkBrand.saved'),
+          { version: m.version, after: onDone },
+        )
+      : w.post(
+          '/manufacturers',
+          {
+            name: name.trim(),
+            registrationNo: blank(reg) ?? null,
+            phone: blank(phone) ?? null,
+            ...(confirm ? { confirmDuplicate: true } : {}),
+          },
+          t('stkBrand.saved'),
+          { after: onDone },
+        );
   return (
     <Card>
       <Field label={t('stkBrand.makerName')} value={name} onChange={setName} />
       <Field label={t('stkBrand.reg')} value={reg} onChange={setReg} />
       <Field label={t('stkBrand.phone')} value={phone} onChange={setPhone} keyboard="phone-pad" />
+      {m ? (
+        <>
+          <Field label={t('wp29.contact')} value={contact} onChange={setContact} />
+          <Field label={t('wp29.email')} value={email} onChange={setEmail} keyboard="email-address" />
+          <Field label={t('wp29.address')} value={address} onChange={setAddress} />
+        </>
+      ) : null}
       <Msgs w={w} />
       {w.warn ? (
         <>
@@ -299,6 +329,66 @@ function MakerForm({ onDone }: { onDone: () => void }) {
         onPress={() => void save(false)}
       />
     </Card>
+  );
+}
+
+/** The makers, with Edit and Delete (product.brand.manage). A maker that brands use cannot be deleted, like the web. */
+function MakersList({ makers, manage }: { makers: Maker[]; manage: boolean }) {
+  const { t } = useStk();
+  const w = useWrite();
+  const [edit, setEdit] = useState<Maker | null>(null);
+  const [del, setDel] = useState<Maker | null>(null);
+  return (
+    <>
+      <Msgs w={w} />
+      <Read<{ items: Brand[] }> path="/brands">
+        {(b) => (
+          <>
+            {makers.map((x) => {
+              const used = b.items.some((z) => z.manufacturerId === x.id);
+              return (
+                <Card key={x.id}>
+                  <Text style={kit.name}>{x.name}</Text>
+                  <Text style={kit.sub}>{[x.registrationNo, x.phone].filter(Boolean).join(' · ')}</Text>
+                  {manage ? (
+                    <View style={kit.row}>
+                      <Btn
+                        kind="ghost"
+                        label={t('wp29.editMaker', { name: x.name })}
+                        onPress={() => (setDel(null), setEdit(edit?.id === x.id ? null : x))}
+                      />
+                      <Btn
+                        kind="ghost"
+                        label={t('wp29.deleteMaker', { name: x.name })}
+                        disabled={used || w.busy}
+                        onPress={() => (setEdit(null), setDel(x))}
+                      />
+                    </View>
+                  ) : null}
+                  {manage && used ? <Text style={kit.sub}>{t('wp29.makerUsed')}</Text> : null}
+                  {edit?.id === x.id ? <MakerForm key={x.id} m={x} onDone={() => setEdit(null)} /> : null}
+                  {del?.id === x.id ? (
+                    <ConfirmBox
+                      title={t('wp29.deleteMakerTitle')}
+                      text={t('wp29.deleteMakerAsk', { name: x.name })}
+                      confirm={t('wp29.delete')}
+                      cancel={t('wp29.cancel')}
+                      busy={w.busy}
+                      onConfirm={() =>
+                        void w.del(`/manufacturers/${x.id}`, undefined, t('wp29.makerDeleted'), {
+                          after: () => setDel(null),
+                        })
+                      }
+                      onCancel={() => setDel(null)}
+                    />
+                  ) : null}
+                </Card>
+              );
+            })}
+          </>
+        )}
+      </Read>
+    </>
   );
 }
 
@@ -356,12 +446,7 @@ export function BrandsScreen() {
               )}
             </Read>
             <Text style={kit.name}>{t('stkBrand.makers')}</Text>
-            {m.items.map((x) => (
-              <Card key={x.id}>
-                <Text style={kit.name}>{x.name}</Text>
-                <Text style={kit.sub}>{[x.registrationNo, x.phone].filter(Boolean).join(' · ')}</Text>
-              </Card>
-            ))}
+            <MakersList makers={m.items} manage={manage} />
           </>
         )}
       </Read>
@@ -396,6 +481,42 @@ interface Uom {
 export const validUnit = (code: string, name: string, precision: string): boolean =>
   /^[A-Za-z0-9._-]{1,12}$/.test(code.trim()) && name.trim().length > 0 && /^[0-6]$/.test(precision.trim());
 
+/** Edit a unit like the web: the code never changes; name, decimal places and Active do (PATCH /uoms/:id). */
+export const unitBody = (name: string, precision: string, active: boolean) => ({
+  name: name.trim(),
+  precision: Number(precision.trim()),
+  active,
+});
+function UnitEdit({ u, onDone }: { u: Uom; onDone: () => void }) {
+  const { t } = useStk();
+  const w = useWrite();
+  const [name, setName] = useState(u.name);
+  const [prec, setPrec] = useState(String(u.precision));
+  const [active, setActive] = useState(u.active);
+  return (
+    <Card>
+      <Text style={kit.sub}>{t('wp29.codeFixed', { code: u.code })}</Text>
+      <Field label={t('stkUnits.name')} value={name} onChange={setName} />
+      <Field
+        label={t('stkUnits.precision')}
+        value={prec}
+        onChange={setPrec}
+        keyboard="numeric"
+        error={validUnit(u.code, 'a', prec) ? null : t('stkUnits.badPrecision')}
+      />
+      <Check label={t('wp29.active')} value={active} onChange={setActive} />
+      <Msgs w={w} />
+      <Btn
+        label={t('wp29.saveUnit')}
+        disabled={w.busy || !validUnit(u.code, name, prec)}
+        onPress={() =>
+          void w.patch(`/uoms/${u.id}`, unitBody(name, prec, active), t('wp29.unitSaved'), { after: onDone })
+        }
+      />
+    </Card>
+  );
+}
+
 export function UnitsScreen() {
   const { t, can } = useStk();
   const w = useWrite();
@@ -403,6 +524,8 @@ export function UnitsScreen() {
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [prec, setPrec] = useState('3');
+  const [edit, setEdit] = useState<Uom | null>(null);
+  const [del, setDel] = useState<Uom | null>(null);
   return (
     <Page title={t('stkUnits.title')} hint={t('stkUnits.hint')} allowed={can('product.view')}>
       {can('product.uom.manage') ? <Btn label={t('stkUnits.add')} onPress={() => setOpen(!open)} /> : null}
@@ -453,6 +576,37 @@ export function UnitsScreen() {
                   {t('stkUnits.places', { count: u.precision })} ·{' '}
                   {u.active ? t('stkUnits.active') : t('stkUnits.inactive')}
                 </Text>
+                {can('product.uom.manage') ? (
+                  <View style={kit.row}>
+                    <Btn
+                      kind="ghost"
+                      label={t('wp29.editUnit', { code: u.code })}
+                      onPress={() => (setDel(null), setEdit(edit?.id === u.id ? null : u))}
+                    />
+                    <Btn
+                      kind="ghost"
+                      label={t('wp29.deleteUnit', { code: u.code })}
+                      disabled={w.busy}
+                      onPress={() => (setEdit(null), setDel(u))}
+                    />
+                  </View>
+                ) : null}
+                {edit?.id === u.id ? <UnitEdit key={u.id} u={u} onDone={() => setEdit(null)} /> : null}
+                {del?.id === u.id ? (
+                  <ConfirmBox
+                    title={t('wp29.deleteUnitTitle')}
+                    text={t('wp29.deleteUnitAsk', { code: u.code })}
+                    confirm={t('wp29.delete')}
+                    cancel={t('wp29.cancel')}
+                    busy={w.busy}
+                    onConfirm={() =>
+                      void w.del(`/uoms/${u.id}`, undefined, t('wp29.unitDeleted'), {
+                        after: () => setDel(null),
+                      })
+                    }
+                    onCancel={() => setDel(null)}
+                  />
+                ) : null}
               </Card>
             ))}
           </>

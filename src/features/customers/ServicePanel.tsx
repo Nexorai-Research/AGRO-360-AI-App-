@@ -23,6 +23,13 @@ import {
   type CaseForm,
   type ContactForm,
 } from './plans-logic';
+import {
+  ActivityFilter,
+  CaseActions,
+  NO_FILTER,
+  matchesActivity,
+  type ActivityFilterValue,
+} from './Parity17';
 
 const emptyCase = (): CaseForm => ({
   kind: 'QUERY',
@@ -40,6 +47,7 @@ function Cases({ customerId, open }: { customerId: string; open: boolean }) {
   const [adding, setAdding] = useState(false);
   const [f, setF] = useState<CaseForm>(emptyCase());
   const [tried, setTried] = useState(false);
+  const [flt, setFlt] = useState<ActivityFilterValue>(NO_FILTER);
   const { sal, q } = usePanel(open, 'cases', customerId, (c, sig) => fetchCases(c, customerId, sig));
   const qc = useQueryClient();
   const errs = caseErrors(f);
@@ -121,9 +129,18 @@ function Cases({ customerId, open }: { customerId: string; open: boolean }) {
           </View>
         </View>
       ) : null}
+      <ActivityFilter value={flt} onChange={setFlt} />
       <Body q={q}>
-        {(rows) =>
-          rows.length === 0 ? (
+        {(all) => {
+          // web parity 17: search and date range over the cases (client side, the list is already loaded)
+          const rows = all.filter((x) =>
+            matchesActivity(flt, {
+              kind: '',
+              date: x.createdAt ?? x.followUpOn ?? '',
+              text: [x.caseNo, x.queryText, x.adviceText, x.adviceReference, x.outcome],
+            }),
+          );
+          return rows.length === 0 ? (
             <Text style={s.sub}>{t('customers.service.noCases')}</Text>
           ) : (
             <>
@@ -132,7 +149,9 @@ function Cases({ customerId, open }: { customerId: string; open: boolean }) {
                   <Text style={s.name}>
                     {x.caseNo} · {t(`customers.service.kind.${x.kind}`, { defaultValue: x.kind })}
                   </Text>
-                  <Text style={s.sub}>{x.queryText}</Text>
+                  <Text style={[s.sub, x.voided ? { textDecorationLine: 'line-through' } : null]}>
+                    {x.queryText}
+                  </Text>
                   {x.adviceText ? (
                     <Text style={s.sub}>
                       {x.adviceText} ({x.adviceReference ?? '-'})
@@ -142,11 +161,12 @@ function Cases({ customerId, open }: { customerId: string; open: boolean }) {
                     {x.status}
                     {x.followUpOn ? ` · ${t('customers.service.followUpOn', { date: x.followUpOn })}` : ''}
                   </Text>
+                  <CaseActions customerId={customerId} x={x} />
                 </View>
               ))}
             </>
-          )
-        }
+          );
+        }}
       </Body>
     </>
   );

@@ -3,8 +3,9 @@ import { Text } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/auth/AuthProvider';
-import { formatINR, sub, isZero, cmp } from '@/money';
+import { formatINR, sub, sum, isZero, cmp } from '@/money';
 import { Button } from '@/ui/Button';
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { todayIST } from '../collections/receipt';
 import { isDate } from '../hr/logic';
 import { StateView } from '../stock/StateView';
@@ -13,6 +14,7 @@ import {
   PAY_MODES,
   P,
   fetchBankFile,
+  fetchBranches,
   fetchRun,
   fetchRuns,
   stfKey,
@@ -42,6 +44,36 @@ import {
 type Write = ReturnType<typeof useWrite>;
 const dueOf = (s: Slip) => sub(s.net, s.paidAmount);
 
+/** The cards over the list, like the web: a reversed run is not counted in what was paid. Money is added as decimals. */
+export function payrollSummary(rows: Run[]) {
+  const live = rows.filter((r) => r.status !== 'REVERSED');
+  return {
+    runs: rows.length,
+    employees: live.reduce((n, r) => n + Number(r.employeeCount ?? 0), 0),
+    gross: sum(live.map((r) => r.grossTotal ?? '0')),
+    net: sum(live.map((r) => r.netTotal ?? '0')),
+    drafts: rows.filter((r) => r.status === 'DRAFT').length,
+    toReview: live.reduce((n, r) => n + (r.exceptions?.length ?? 0), 0),
+  };
+}
+/** The search (run number, month or status), the status filter, the month filter and the branch filter of the web. */
+export function filterRuns(
+  rows: Run[],
+  f: { q: string; status: string; month: string; branch: string },
+): Run[] {
+  const needle = f.q.trim().toLowerCase();
+  return rows.filter(
+    (r) =>
+      (!f.status || r.status === f.status) &&
+      (!f.month || r.period === f.month) &&
+      (!f.branch || r.branchId === f.branch) &&
+      (!needle || `${r.runNo} ${r.period} ${r.status}`.toLowerCase().includes(needle)),
+  );
+}
+export const RUN_STATUSES = ['', 'DRAFT', 'CALCULATED', 'APPROVED', 'PAID', 'REVERSED'] as const;
+/** A month is typed as YYYY-MM; an empty one means every month. */
+export const monthOk = (v: string) => v.trim() === '' || /^\d{4}-(0[1-9]|1[0-2])$/.test(v.trim());
+
 export default function PayrollScreen() {
   const { t } = useTranslation();
   const { me, client } = useAuth();
@@ -53,6 +85,12 @@ export default function PayrollScreen() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [period, setPeriod] = useState(todayIST().slice(0, 7));
+  const [q, setQ] = useState('');
+  const [status, setStatus] = useState('');
+  const [month, setMonth] = useState('');
+  const [branch, setBranch] = useState('');
+  const [edit, setEdit] = useState<{ id: string; period: string } | null>(null);
+  const [del, setDel] = useState<Run | null>(null);
   const w = useWrite();
   const retry = (n: number, e: unknown) => isNetwork(e) && n < 1;
   const refresh = () => void qc.invalidateQueries({ queryKey: ['stf', userId, 'runs'] });
@@ -63,6 +101,16 @@ export default function PayrollScreen() {
     enabled: ready && openId === null,
     retry,
   });
+
+  const branches = useQuery({
+    queryKey: stfKey(userId, 'branches'),
+    queryFn: ({ signal }) => fetchBranches(client!, signal),
+    enabled: ready && openId === null,
+    retry,
+  });
+  const all = runs.data?.items ?? [];
+  const shown = filterRuns(all, { q, status, month: month.trim(), branch });
+  const sumOf = payrollSummary(all);
 
   if (openId) {
     return (
@@ -109,10 +157,91 @@ export default function PayrollScreen() {
             />
           )
         ) : null}
-        {(runs.data?.items ?? []).length === 0 ? (
-          <StateView state="empty" message={t('stf.pay.empty')} />
+        {all.length > 0 ? (
+          <Card>
+            <Line label={t('wp38.runs')} value={String(sumOf.runs)} />
+            <Line label={t('wp38.paid')} value={String(sumOf.employees)} />
+            <Line label={t('stf.pay.gross')} value={formatINR(sumOf.gross)} />
+            <Line label={t('stf.pay.net')} value={formatINR(sumOf.net)} strong />
+            <Line label={t('wp38.drafts')} value={String(sumOf.drafts)} />
+            <Line label={t('wp38.review')} value={String(sumOf.toReview)} />
+          </Card>
         ) : null}
-        {(runs.data?.items ?? []).map((r) => (
+        <Field label={t('wp38.search')} value={q} onChange={setQ} />
+        <Chips
+          label={t('stf.emp.status')}
+          options={RUN_STATUSES.map((x) => ({
+            id: x,
+            label: x === '' ? t('stf.all') : t(`stf.pay.st_${x}`),
+          }))}
+          value={status}
+          onChange={setStatus}
+        />
+        <Field
+          label={t('wp38.month')}
+          value={month}
+          onChange={setMonth}
+          placeholder="YYYY-MM"
+          error={monthOk(month) ? null : t('wp38.badMonth')}
+        />
+        {(branches.data ?? []).length > 1 ? (
+          <Chips
+            label={t('stf.emp.branch')}
+            options={[
+              { id: '', label: t('stf.all') },
+              ...(branches.data ?? []).map((b) => ({ id: b.id, label: b.name })),
+            ]}
+            value={branch}
+            onChange={setBranch}
+          />
+        ) : null}
+        {edit ? (
+          <Card>
+            <Text style={kit.name}>{t('wp38.editTitle')}</Text>
+            <Text style={kit.sub}>{t('wp38.editNote')}</Text>
+            <MonthPicker value={edit.period} onChange={(p) => setEdit({ ...edit, period: p })} />
+            <Button
+              label={t('wp38.save')}
+              disabled={w.busy}
+              onPress={() =>
+                void w.send(
+                  'PATCH',
+                  `/hr/payroll-runs/${edit.id}`,
+                  { period: edit.period },
+                  t('wp38.updated'),
+                  () => (setEdit(null), refresh()),
+                )
+              }
+            />
+            <Button kind="ghost" label={t('stf.cancel')} onPress={() => setEdit(null)} />
+          </Card>
+        ) : null}
+        {del ? (
+          <Card>
+            <ConfirmBox
+              title={t('wp38.deleteTitle', { no: del.runNo })}
+              text={t('wp38.deleteAsk', { period: del.period })}
+              confirm={t('wp38.delete')}
+              cancel={t('stf.cancel')}
+              busy={w.busy}
+              onConfirm={() =>
+                void w.send(
+                  'DELETE',
+                  `/hr/payroll-runs/${del.id}`,
+                  undefined,
+                  t('wp38.deleted'),
+                  () => (setDel(null), refresh()),
+                )
+              }
+              onCancel={() => setDel(null)}
+            />
+          </Card>
+        ) : null}
+        {all.length === 0 ? <StateView state="empty" message={t('stf.pay.empty')} /> : null}
+        {all.length > 0 && shown.length === 0 ? (
+          <StateView state="empty" message={t('wp38.noMatch')} />
+        ) : null}
+        {shown.map((r) => (
           <Card key={r.id}>
             <Text style={kit.name}>
               {r.period} · {r.runNo}
@@ -125,6 +254,28 @@ export default function PayrollScreen() {
               <Text style={kit.sub}>{t('stf.pay.toReview', { count: r.exceptions.length })}</Text>
             ) : null}
             <Button kind="ghost" label={t('stf.open')} onPress={() => (w.clear(), setOpenId(r.id))} />
+            {can(P.prepare) ? (
+              <>
+                <Button
+                  kind="ghost"
+                  label={t('wp38.edit', { no: r.runNo })}
+                  disabled={r.status !== 'DRAFT'}
+                  onPress={() => (
+                    w.clear(),
+                    w.newAction(),
+                    setDel(null),
+                    setEdit({ id: r.id, period: r.period })
+                  )}
+                />
+                <Button
+                  kind="ghost"
+                  label={t('wp38.deleteRun', { no: r.runNo })}
+                  disabled={r.status !== 'DRAFT'}
+                  onPress={() => (w.clear(), w.newAction(), setEdit(null), setDel(r))}
+                />
+                {r.status !== 'DRAFT' ? <Text style={kit.sub}>{t('wp38.onlyDraft')}</Text> : null}
+              </>
+            ) : null}
           </Card>
         ))}
       </Gate>

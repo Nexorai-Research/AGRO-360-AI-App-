@@ -80,6 +80,8 @@ export interface Voucher {
   needsApproval: boolean;
   lines?: VoucherLine[];
   warnings?: string[];
+  branchId?: string | null;
+  attachmentRef?: string | null;
 }
 export interface JournalRow {
   id: string;
@@ -134,6 +136,9 @@ export interface Expense {
   reverseReason: string | null;
   version: number;
   warnings?: string[];
+  attachmentRef?: string | null;
+  branchId?: string | null;
+  notes?: string | null;
 }
 
 export interface BankAccount {
@@ -294,6 +299,22 @@ export const generalLedger = (c: ApiClient, accountId: string, from: string, to:
   c.get<GeneralLedger>('/reports/general-ledger', { query: { accountId, from, to }, signal: s });
 export const listCostCentres = (c: ApiClient, s?: AbortSignal) =>
   c.get<Items<CostCentre>>('/finance/cost-centres', { signal: s });
+// ---- web parity phase 9: cost centres, edit a draft voucher / expense, a new budget ----
+export const createCostCentre = (c: ApiClient, key: string, b: { code: string; name: string }) =>
+  c.post<CostCentre>('/finance/cost-centres', W(key, b));
+export const switchCostCentre = (c: ApiClient, key: string, cc: CostCentre) =>
+  c.patch<CostCentre>(`/finance/cost-centres/${cc.id}`, W(key, { active: !cc.active }, cc.version));
+export const updateVoucher = (c: ApiClient, key: string, v: { id: string; version: number }, body: unknown) =>
+  c.put<Voucher>(`/finance/vouchers/${v.id}`, W(key, body, v.version));
+export const updateExpense = (c: ApiClient, key: string, e: { id: string; version: number }, body: unknown) =>
+  c.put<Expense>(`/finance/expenses/${e.id}`, W(key, body, e.version));
+/** Delete a draft expense (nothing was posted for it) or a draft budget with its lines. The server refuses any other status. */
+export const deleteExpense = (c: ApiClient, key: string, id: string) =>
+  c.delete<unknown>(`/finance/expenses/${id}`, { idempotencyKey: key });
+export const deleteBudget = (c: ApiClient, key: string, id: string) =>
+  c.delete<unknown>(`/finance/budgets/${id}`, { idempotencyKey: key });
+export const createBudget = (c: ApiClient, key: string, body: unknown) =>
+  c.post<Budget>('/finance/budgets', W(key, body));
 
 export const listVouchers = (c: ApiClient, q: { kind?: string; status?: string }, s?: AbortSignal) =>
   c.get<Items<Voucher>>('/finance/vouchers', { query: { ...q, limit: 100 }, signal: s });

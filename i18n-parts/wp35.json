@@ -1,0 +1,81 @@
+{
+  "en": {
+    "wp35": {
+      "title": "Access control",
+      "hint": "Choose a person, then switch on or off what they can use: whole menus, pages, or single features. The role gives the starting point; what you change here applies to this person only. Only what the platform has allowed for your franchise is listed.",
+      "find": "Find a person",
+      "people": "People ({{count}})",
+      "noMatch": "No one matches.",
+      "choose": "Choose {{name}}",
+      "pick": "Choose a person",
+      "pickHint": "Pick someone from the list to see and change what they can use.",
+      "denied": "You do not have permission to change who can use what.",
+      "offline": "No network. Check your connection and try again.",
+      "noRole": "no role",
+      "fullAccessBadge": "Full access (Franchise Admin)",
+      "deactivated": "Deactivated",
+      "fullAccessNote": "A Franchise Admin can use everything in the franchise. To give this person less, change their role on the Users screen.",
+      "origin": {
+        "extra": "Extra for this person",
+        "taken": "Taken away for this person",
+        "role": "From the role"
+      },
+      "locked": {
+        "fullAccess": "A Franchise Admin has full access. Change the role to change what this person can do.",
+        "deactivated": "This account is deactivated.",
+        "cannotGive": "You do not hold this permission yourself, so you cannot give it to someone else.",
+        "cannotTake": "You do not hold this permission yourself, so you cannot take it away."
+      }
+    }
+  },
+  "hi": {
+    "wp35": {
+      "title": "एक्सेस कंट्रोल",
+      "hint": "एक व्यक्ति चुनें, फिर चालू या बंद करें कि वे क्या इस्तेमाल कर सकते हैं: पूरे मेनू, पेज या अकेली सुविधाएँ। भूमिका शुरुआत देती है; यहाँ जो बदलेंगे वह सिर्फ़ इस व्यक्ति पर लागू होगा। सिर्फ़ वही दिखती है जो प्लेटफ़ॉर्म ने आपकी फ्रैंचाइज़ी को दी है।",
+      "find": "व्यक्ति खोजें",
+      "people": "लोग ({{count}})",
+      "noMatch": "कोई नहीं मिला।",
+      "choose": "{{name}} चुनें",
+      "pick": "व्यक्ति चुनें",
+      "pickHint": "सूची से किसी को चुनें ताकि देख और बदल सकें कि वे क्या इस्तेमाल कर सकते हैं।",
+      "denied": "आपको यह बदलने की अनुमति नहीं है कि कौन क्या इस्तेमाल करे।",
+      "offline": "नेटवर्क नहीं है। कनेक्शन जाँचकर फिर कोशिश करें।",
+      "noRole": "कोई भूमिका नहीं",
+      "fullAccessBadge": "पूरी पहुँच (फ्रैंचाइज़ी एडमिन)",
+      "deactivated": "बंद किया हुआ",
+      "fullAccessNote": "फ्रैंचाइज़ी एडमिन फ्रैंचाइज़ी में सब कुछ इस्तेमाल कर सकता है। इस व्यक्ति को कम देना हो तो उपयोगकर्ता स्क्रीन पर उसकी भूमिका बदलें।",
+      "origin": { "extra": "इस व्यक्ति के लिए अतिरिक्त", "taken": "इस व्यक्ति से हटाया गया", "role": "भूमिका से" },
+      "locked": {
+        "fullAccess": "फ्रैंचाइज़ी एडमिन के पास पूरी पहुँच है। इस व्यक्ति का काम बदलना हो तो भूमिका बदलें।",
+        "deactivated": "यह खाता बंद है।",
+        "cannotGive": "यह अनुमति आपके पास खुद नहीं है, इसलिए आप इसे किसी और को नहीं दे सकते।",
+        "cannotTake": "यह अनुमति आपके पास खुद नहीं है, इसलिए आप इसे हटा नहीं सकते।"
+      }
+    }
+  },
+  "mr": {
+    "wp35": {
+      "title": "अ‍ॅक्सेस कंट्रोल",
+      "hint": "एक व्यक्ती निवडा, मग ती काय वापरू शकते ते चालू किंवा बंद करा: संपूर्ण मेनू, पाने किंवा एकेक सुविधा. भूमिका सुरुवात देते; इथे तुम्ही बदलाल ते फक्त या व्यक्तीला लागू होते. प्लॅटफॉर्मने तुमच्या फ्रँचायझीला दिलेलेच दाखवले जाते.",
+      "find": "व्यक्ती शोधा",
+      "people": "लोक ({{count}})",
+      "noMatch": "कोणीही जुळले नाही.",
+      "choose": "{{name}} निवडा",
+      "pick": "व्यक्ती निवडा",
+      "pickHint": "यादीतून कोणाला तरी निवडा म्हणजे ते काय वापरू शकतात ते पाहता व बदलता येईल.",
+      "denied": "कोण काय वापरू शकते हे बदलण्याची तुम्हाला परवानगी नाही.",
+      "offline": "नेटवर्क नाही. कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.",
+      "noRole": "भूमिका नाही",
+      "fullAccessBadge": "पूर्ण प्रवेश (फ्रँचायझी अ‍ॅडमिन)",
+      "deactivated": "बंद केलेले",
+      "fullAccessNote": "फ्रँचायझी अ‍ॅडमिन फ्रँचायझीमधील सर्व काही वापरू शकतो. या व्यक्तीला कमी द्यायचे असेल तर वापरकर्ते स्क्रीनवर तिची भूमिका बदला.",
+      "origin": { "extra": "या व्यक्तीसाठी जास्तीचे", "taken": "या व्यक्तीकडून काढलेले", "role": "भूमिकेतून" },
+      "locked": {
+        "fullAccess": "फ्रँचायझी अ‍ॅडमिनकडे पूर्ण प्रवेश असतो. या व्यक्तीचे काम बदलायचे असेल तर भूमिका बदला.",
+        "deactivated": "हे खाते बंद आहे.",
+        "cannotGive": "ही परवानगी तुमच्याकडे स्वतः नाही, म्हणून तुम्ही ती दुसऱ्याला देऊ शकत नाही.",
+        "cannotTake": "ही परवानगी तुमच्याकडे स्वतः नाही, म्हणून तुम्ही ती काढू शकत नाही."
+      }
+    }
+  }
+}

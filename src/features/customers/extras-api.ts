@@ -228,6 +228,8 @@ export interface GuarantorForm {
   relationship: string;
   documentRef: string;
   limitCovered: string;
+  /** Web parity 11.6: an existing customer as the guarantor; then name and mobile are not needed. */
+  guarantorCustomerId?: string;
 }
 export const emptyGuarantor = (): GuarantorForm => ({
   name: '',
@@ -235,27 +237,62 @@ export const emptyGuarantor = (): GuarantorForm => ({
   relationship: '',
   documentRef: '',
   limitCovered: '',
+  guarantorCustomerId: '',
 });
 export type GuarantorError = 'name' | 'mobile' | 'relationship' | 'document' | 'amount';
-/** Same rules as parseGuarantor for someone who is not a customer: name and a 10 digit mobile starting 6-9. */
+/** Same rules as parseGuarantor: someone who is not a customer needs a name and a 10 digit mobile starting 6-9. */
 export function guarantorErrors(f: GuarantorForm): GuarantorError[] {
   const e: GuarantorError[] = [];
   const n = f.name.trim();
-  if (n.length < 2 || n.length > 120) e.push('name');
-  if (!/^[6-9]\d{9}$/.test(f.mobile.trim())) e.push('mobile');
+  const existing = !!f.guarantorCustomerId;
+  if (!existing && (n.length < 2 || n.length > 120)) e.push('name');
+  if (
+    existing
+      ? f.mobile.trim() !== '' && !/^[6-9]\d{9}$/.test(f.mobile.trim())
+      : !/^[6-9]\d{9}$/.test(f.mobile.trim())
+  )
+    e.push('mobile');
   const r = f.relationship.trim();
   if (r.length < 2 || r.length > 60) e.push('relationship');
   if (f.documentRef.trim().length > 200) e.push('document');
   if (f.limitCovered.trim() !== '' && !positiveDecimal(f.limitCovered, 4, '999999999999')) e.push('amount');
   return e;
 }
-export const guarantorBody = (f: GuarantorForm) => ({
-  relationship: f.relationship.trim(),
-  name: f.name.trim(),
-  mobile: f.mobile.trim(),
-  ...(f.documentRef.trim() ? { documentRef: f.documentRef.trim() } : {}),
-  ...(f.limitCovered.trim() ? { limitCovered: f.limitCovered.trim() } : {}),
-});
+/** Like the web: an existing customer is sent by id, name and mobile only when typed. */
+export const guarantorBody = (f: GuarantorForm) =>
+  f.guarantorCustomerId
+    ? {
+        relationship: f.relationship.trim(),
+        guarantorCustomerId: f.guarantorCustomerId,
+        ...(f.name.trim() ? { name: f.name.trim() } : {}),
+        ...(f.mobile.trim() ? { mobile: f.mobile.trim() } : {}),
+        ...(f.documentRef.trim() ? { documentRef: f.documentRef.trim() } : {}),
+        ...(f.limitCovered.trim() ? { limitCovered: f.limitCovered.trim() } : {}),
+      }
+    : {
+        relationship: f.relationship.trim(),
+        name: f.name.trim(),
+        mobile: f.mobile.trim(),
+        ...(f.documentRef.trim() ? { documentRef: f.documentRef.trim() } : {}),
+        ...(f.limitCovered.trim() ? { limitCovered: f.limitCovered.trim() } : {}),
+      };
+
+// ---- 11.7 reorder at the counter from the purchase history ----------------------------------------------------------------
+export interface ReorderLine {
+  code: string;
+  qty: number;
+}
+/**
+ * Like the web: lines of bills that are not cancelled, net of returns, added up per product first and floored at zero once at
+ * the end, so a fully returned bill cannot hide an earlier purchase or invent a quantity.
+ */
+export function reorderLines(rows: PurchaseRow[]): ReorderLine[] {
+  const by = new Map<string, number>();
+  for (const x of rows.filter((y) => y.status !== 'CANCELLED'))
+    by.set(x.sku_code, (by.get(x.sku_code) ?? 0) + Number(x.qty) - Number(x.returned));
+  return [...by.entries()].map(([code, qty]) => ({ code, qty: Math.max(qty, 0) })).filter((l) => l.qty > 0);
+}
+export const REORDER_PERM = 'sales.pos.use';
 export const addGuarantor = (
   c: ApiClient,
   id: string,

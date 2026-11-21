@@ -7,13 +7,64 @@ import hi from './locales/hi.json';
 import mr from './locales/mr.json';
 import webHi from './locales/web-hi.json';
 import webMr from './locales/web-mr.json';
+// web parity 15: the other languages of the web (scripts/gen-langs.mjs). Each holds only the texts it translates; the rest is English.
+import as from './locales/as.json';
+import bn from './locales/bn.json';
+import brx from './locales/brx.json';
+import doi from './locales/doi.json';
+import gu from './locales/gu.json';
+import kn from './locales/kn.json';
+import kok from './locales/kok.json';
+import ks from './locales/ks.json';
+import mai from './locales/mai.json';
+import ml from './locales/ml.json';
+import mni from './locales/mni.json';
+import ne from './locales/ne.json';
+import or from './locales/or.json';
+import pa from './locales/pa.json';
+import sa from './locales/sa.json';
+import sat from './locales/sat.json';
+import sd from './locales/sd.json';
+import ta from './locales/ta.json';
+import te from './locales/te.json';
+import ur from './locales/ur.json';
+import langs from './locales/langs.json';
 
-export const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'hi', label: 'हिन्दी' },
-  { code: 'mr', label: 'मराठी' },
+const CODES = [
+  'en',
+  'hi',
+  'bn',
+  'te',
+  'mr',
+  'ta',
+  'ur',
+  'gu',
+  'kn',
+  'ml',
+  'or',
+  'pa',
+  'as',
+  'mai',
+  'sat',
+  'ks',
+  'ne',
+  'sd',
+  'kok',
+  'doi',
+  'mni',
+  'brx',
+  'sa',
 ] as const;
-export type LangCode = (typeof LANGUAGES)[number]['code'];
+export type LangCode = (typeof CODES)[number];
+/** English and the 22 scheduled languages of India, in the web's order, each named in its own script. */
+export const LANGUAGES: readonly { code: LangCode; label: string }[] = CODES.map((code) => ({
+  code,
+  label: (langs.names as Record<string, string>)[code] ?? code,
+}));
+/** Written right to left (Urdu, Kashmiri). */
+export const RTL_LANGS: readonly string[] = langs.rtl;
+/** Share of the app's texts translated, per added language (the rest shows in English). */
+export const COVERAGE = langs.coverage as Record<string, number>;
 
 const LANG_KEY = 'agro360.lang';
 // Phrases of the web app, keyed by their English text ("{0}" placeholders). English is the key itself.
@@ -23,7 +74,33 @@ const i18next = createInstance();
 const isLang = (v: unknown): v is LangCode => LANGUAGES.some((l) => l.code === v);
 
 void i18next.use(initReactI18next).init({
-  resources: { en: { translation: en }, hi: { translation: hi }, mr: { translation: mr } },
+  resources: Object.fromEntries(
+    Object.entries({
+      en,
+      hi,
+      mr,
+      as,
+      bn,
+      brx,
+      doi,
+      gu,
+      kn,
+      kok,
+      ks,
+      mai,
+      ml,
+      mni,
+      ne,
+      or,
+      pa,
+      sa,
+      sat,
+      sd,
+      ta,
+      te,
+      ur,
+    }).map(([code, translation]) => [code, { translation }]),
+  ),
   lng: 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },

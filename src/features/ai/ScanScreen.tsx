@@ -10,6 +10,7 @@ import { useSal } from '../collections/sal-hook';
 import { AP, akey, fetchBranchRefs } from './api';
 import { G4P, confirmLabel, rejectOcr, uploadOcr, type OcrDocument, type OcrField } from './api-g4';
 import { SCAN_TYPES, pickScan, type PickedFile } from './file-g4';
+import { OcrDocumentList, OcrReview, fetchOcrDocument, type OcrOpen } from './Parity10';
 
 type Kind = 'PURCHASE_BILL' | 'LABEL';
 const low = (f: OcrField | undefined, doc: OcrDocument, name: string) =>
@@ -50,6 +51,16 @@ export default function ScanScreen({ kind }: { kind: Kind }) {
   const [doc, setDoc] = useState<OcrDocument | null>(null);
   const [dup, setDup] = useState(false);
   const [draft, setDraft] = useState<Record<string, unknown> | null>(null);
+  // web parity 10.4: the document with its purchase side (supplier, receipt lines) for review
+  const [opened, setOpened] = useState<OcrOpen | null>(null);
+  const load = (id: string, supplierId?: string) =>
+    void s.act(t('wp10.ocr.opened'), async () => {
+      const o = await fetchOcrDocument(s.client!, id, supplierId);
+      setOpened(o);
+      setDoc(o.document);
+      setDup(false);
+      setDraft(null);
+    });
   const allowed = s.can(AP.digest) && s.can(need);
   const branches = useQuery({
     queryKey: akey(s.userId, 'branches'),
@@ -81,6 +92,7 @@ export default function ScanScreen({ kind }: { kind: Kind }) {
         setDoc(r.document);
         setDup(r.duplicate);
         setDraft(null);
+        setOpened(await fetchOcrDocument(s.client!, r.document.id));
       },
       () => kUp.reset(),
     );
@@ -183,9 +195,18 @@ export default function ScanScreen({ kind }: { kind: Kind }) {
               <Text style={k.sub}>{t('ai.sc.notCreated')}</Text>
             </View>
           ) : null}
+          {opened && opened.document.id === doc.id ? (
+            <OcrReview
+              key={`${doc.id}|${doc.version}|${opened.purchase?.supplier?.id ?? ''}`}
+              open={opened}
+              onChanged={(o) => (setOpened(o), setDoc(o.document))}
+              onSupplier={(sid) => load(doc.id, sid)}
+            />
+          ) : null}
           {kind === 'PURCHASE_BILL' ? <Text style={k.sub}>{t('ai.sc.billNote')}</Text> : null}
         </>
       ) : null}
+      <OcrDocumentList kind={kind} onOpen={(id) => load(id)} />
     </ScrollView>
   );
 }

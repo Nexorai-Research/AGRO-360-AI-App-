@@ -1,4 +1,5 @@
 import type { Row, RowAction, TabDef } from './cmp-api';
+import * as F from './cmp-forms';
 
 const act = (a: RowAction): RowAction => a;
 const id = (r: Row) => String(r.id);
@@ -10,6 +11,8 @@ const snapshots: TabDef = {
   query: 'none',
   title: [{ k: 'returnType' }, { k: 'period' }],
   fields: [{ k: 'version' }, { k: 'createdAt', kind: 'date' }, { k: 'checksum' }],
+  // web parity 11.4: the frozen return opened in full (the web shows its payload)
+  detail: { path: (r) => `/gst/snapshots/${id(r)}`, pick: 'payload' },
 };
 const blocks: TabDef = {
   id: 'blocks',
@@ -104,6 +107,7 @@ const seedLots: TabDef = {
   perm: 'compliance.registers.view',
   path: '/compliance/seed-lots',
   query: 'none',
+  create: [F.seedLotForm],
   title: [{ k: 'skuCode' }, { k: 'batchNo' }],
   fields: [
     { k: 'variety' },
@@ -119,6 +123,7 @@ const restricted: TabDef = {
   perm: 'compliance.registers.view',
   path: '/compliance/restricted-ingredients',
   query: 'none',
+  create: [F.restrictionForm],
   title: [{ k: 'name' }],
   fields: [
     { k: 'scope', kind: 'status' },
@@ -142,6 +147,7 @@ const registrations: TabDef = {
   perm: 'compliance.registers.view',
   path: '/compliance/registrations',
   query: 'none',
+  create: [F.registrationForm],
   title: [{ k: 'skuCode' }, { k: 'regNumber' }],
   fields: [
     { k: 'validTo', kind: 'date' },
@@ -170,6 +176,7 @@ const authorisations: TabDef = {
   perm: 'compliance.authorisation.manage',
   path: '/compliance/authorisations',
   query: 'none',
+  create: [F.authorisationForm],
   title: [{ k: 'manufacturerName' }, { k: 'brandName' }],
   fields: [
     { k: 'scopeNote' },
@@ -192,6 +199,7 @@ const documents: TabDef = {
   perm: 'compliance.vault.view',
   path: '/compliance/documents',
   query: 'none',
+  create: [F.documentForm, F.auditPackForm],
   title: [{ k: 'title' }],
   fields: [
     { k: 'docType', kind: 'status' },
@@ -206,6 +214,7 @@ const alerts: TabDef = {
   perm: 'compliance.vault.view',
   path: '/compliance/alerts',
   query: 'openOnly',
+  create: [F.alertsRunForm],
   title: [{ k: 'title' }],
   fields: [{ k: 'dueDate', kind: 'date' }, { k: 'leadDays' }],
   actions: [
@@ -242,6 +251,10 @@ const recalls: TabDef = {
   perm: 'compliance.recall.manage',
   path: '/compliance/recalls',
   query: 'none',
+  // web parity 11.5: the recall opened in full
+  detail: { path: (r) => `/compliance/recalls/${id(r)}` },
+  create: [F.recallForm],
+  actions: F.recallActions,
   title: [{ k: 'caseNo' }, { k: 'title' }],
   fields: [
     { k: 'source', kind: 'status' },
@@ -258,6 +271,8 @@ const quarantine: TabDef = {
   perm: 'compliance.quarantine.manage',
   path: '/compliance/quarantine',
   query: 'none',
+  create: [F.quarantineForm],
+  actions: F.quarantineActions,
   title: [{ k: 'caseNo' }, { k: 'skuCode' }],
   fields: [
     { k: 'batchNo' },
@@ -271,6 +286,8 @@ const cases: TabDef = {
   perm: 'compliance.case.manage',
   path: '/compliance/cases',
   query: 'none',
+  create: [F.caseForm],
+  actions: F.caseActions,
   title: [{ k: 'caseNo' }],
   fields: [
     { k: 'kind', kind: 'status' },
@@ -284,6 +301,7 @@ const incidents: TabDef = {
   perm: 'compliance.incident.view',
   path: '/compliance/incidents',
   query: 'none',
+  create: [F.incidentForm],
   title: [{ k: 'incidentNo' }],
   fields: [
     { k: 'incidentType', kind: 'status' },
@@ -298,6 +316,8 @@ const samples: TabDef = {
   perm: 'compliance.sample.manage',
   path: '/compliance/samples',
   query: 'none',
+  create: [F.sampleForm],
+  actions: F.sampleActions,
   title: [{ k: 'sampleNo' }, { k: 'skuCode' }],
   fields: [
     { k: 'batchNo' },
@@ -312,6 +332,7 @@ const authenticity: TabDef = {
   perm: 'compliance.authenticity.manage',
   path: '/compliance/authenticity-checks',
   query: 'none',
+  create: [F.authenticityForm],
   title: [{ k: 'skuCode' }, { k: 'codeText' }],
   fields: [
     { k: 'checkedAt', kind: 'date' },
@@ -332,6 +353,9 @@ const rules: TabDef = {
   perm: 'compliance.evaluation.view',
   path: '/compliance/rules',
   query: 'none',
+  create: [F.ruleForm],
+  rows: F.ruleRows,
+  actions: F.ruleActions,
   title: [{ k: 'code' }, { k: 'name' }],
   fields: [
     { k: 'version' },
@@ -386,6 +410,67 @@ const rcmRules: TabDef = {
   ],
 };
 
+// ---- web parity 6.1 (apps/web/src/pages/compliance.js itcTab: decide one bill) ----
+const decide = (tid: string, decision: 'CLAIM' | 'BLOCK'): RowAction =>
+  act({
+    id: tid,
+    perm: 'compliance.itc.manage',
+    path: (r) => `/gst/bills/${String(r.billId)}/itc-decision`,
+    body: () => ({ decision }),
+    reason: true,
+  });
+const itcRegister: TabDef = {
+  id: 'itcRegister',
+  perm: 'compliance.gst.view',
+  path: '/gst/itc-register',
+  query: 'period',
+  itemsKey: 'rows',
+  title: [{ k: 'number' }, { k: 'supplierName' }],
+  fields: [
+    { k: 'supplierInvoiceNo' },
+    { k: 'tax', kind: 'money' },
+    { k: 'status', kind: 'status' },
+    { k: 'reason' },
+  ],
+  actions: [decide('claimItc', 'CLAIM'), decide('blockItc', 'BLOCK')],
+};
+
+// ---- web parity 8 (apps/web/src/pages/compliance-agri.js restrictedTab "Affected stock", templatesTab, traceTab) ----
+const impact: TabDef = {
+  id: 'impact',
+  perm: 'compliance.registers.view',
+  path: '/compliance/restricted-ingredients/impact',
+  query: 'none',
+  itemsKey: 'products',
+  title: [{ k: 'skuCode' }, { k: 'skuName' }],
+  fields: [
+    { k: 'ingredient' },
+    { k: 'restriction', kind: 'status' },
+    { k: 'reference' },
+    { k: 'effectiveFrom', kind: 'date' },
+  ],
+};
+const templates: TabDef = {
+  id: 'templates',
+  perm: 'compliance.reports.manage',
+  path: '/compliance/report-templates',
+  query: 'none',
+  title: [{ k: 'code' }, { k: 'name' }],
+  fields: [{ k: 'sourceKey', kind: 'status' }, { k: 'version' }, { k: 'status', kind: 'status' }],
+  create: [F.templateForm],
+  rows: F.templateRows,
+  actions: F.templateActions,
+};
+const trace: TabDef = {
+  id: 'trace',
+  perm: 'compliance.trace.view',
+  path: '/compliance/trace',
+  query: 'none',
+  title: [],
+  fields: [],
+  view: 'trace',
+};
+
 export interface HubDef {
   titleKey: string;
   tabs: TabDef[];
@@ -393,7 +478,7 @@ export interface HubDef {
 export const HUBS: Record<string, HubDef> = {
   taxRecords: {
     titleKey: 'taxRecords',
-    tabs: [rcm, rcmRules, itcRecon, blocks, tdsReport, tdsSections, snapshots],
+    tabs: [rcm, rcmRules, itcRegister, itcRecon, blocks, tdsReport, tdsSections, snapshots],
   },
   agriRegisters: {
     titleKey: 'agriRegisters',
@@ -406,10 +491,10 @@ export const HUBS: Record<string, HubDef> = {
   },
   licences: {
     titleKey: 'licences',
-    tabs: [registrations, authorisations, documents, alerts, tasks, restricted],
+    tabs: [registrations, authorisations, documents, alerts, tasks, restricted, impact, templates],
   },
   safety: {
     titleKey: 'safety',
-    tabs: [recalls, quarantine, cases, incidents, samples, authenticity, evaluations, rules],
+    tabs: [recalls, trace, quarantine, cases, incidents, samples, authenticity, evaluations, rules],
   },
 };

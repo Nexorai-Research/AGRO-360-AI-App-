@@ -69,8 +69,12 @@ export function StaleBanner({ error, updatedAt }: { error: unknown; updatedAt: n
   );
 }
 
-export const fmtDate = (d: string) =>
-  /^\d{4}-\d{2}-\d{2}$/.test(d) ? `${d.slice(8)}-${d.slice(5, 7)}-${d.slice(0, 4)}` : d;
+export const fmtDate = (d: string | null | undefined) =>
+  typeof d !== 'string' || !d
+    ? '–'
+    : /^\d{4}-\d{2}-\d{2}$/.test(d)
+      ? `${d.slice(8)}-${d.slice(5, 7)}-${d.slice(0, 4)}`
+      : d;
 
 const s = StyleSheet.create({
   box: { padding: 24, alignItems: 'center', gap: 12 },

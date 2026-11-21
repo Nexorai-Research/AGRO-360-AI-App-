@@ -163,6 +163,11 @@ export const fetchReport = <T>(
 /** The same report as CSV text (audited on the server). */
 export const fetchReportCsv = (c: ApiClient, kind: Exclude<MoreKind, 'saved'>, f: Filters) =>
   c.get<string>(PATH[kind], { query: query(kind, f, { format: 'csv' }), as: 'text' });
+/** Web parity 11.3: the same report as an Excel file (`format=xlsx`), the path and filters for the share helper. */
+export const reportXlsxRequest = (kind: Exclude<MoreKind, 'saved'>, f: Filters) => ({
+  path: PATH[kind],
+  query: query(kind, f),
+});
 export const fetchViews = (c: ApiClient, signal?: AbortSignal) =>
   c.get<{ items: SavedView[] }>('/reports/views', { signal });
 /** Running a saved view is a POST that changes nothing; it still carries the key the client adds. */

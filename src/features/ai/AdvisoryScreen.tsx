@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { KnowledgeImport } from './Parity5';
+import { KnowledgeEntries } from './Parity10';
 import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -45,6 +46,7 @@ export default function AdvisoryScreen() {
     <ScrollView contentContainerStyle={k.page} keyboardShouldPersistTaps="handled">
       <Text style={k.title}>{t('ai.av.title')}</Text>
       <KnowledgeImport />
+      <KnowledgeEntries />
       <Field
         label={t('ai.cd.crop')}
         value={crop}

@@ -24,6 +24,8 @@ export interface InvoiceRow {
   customerName: string | null;
   total: Amount;
   creditAmount: Amount;
+  /** How it was tendered (CASH, UPI, CARD...), the split of the web's "Paid by" filter reads it. */
+  tenderMode?: string | null;
   status: string;
 }
 export interface InvoiceLine {
@@ -61,6 +63,8 @@ export interface Shift {
 export interface DayEndRow {
   id: string;
   business_date: string;
+  /** AUTO: closed by the timer at the scheduled time; MANUAL (or missing on an older day): closed by a person. */
+  source?: 'AUTO' | 'MANUAL';
   note: string | null;
   summary: {
     invoices?: string;

@@ -18,6 +18,7 @@ import {
   reopenRisk,
   setRiskStatus,
 } from './api-g67';
+import { RiskEvidence } from './Parity10';
 
 export const validReason = (v: string) => v.trim().length >= 3 && v.trim().length <= 500;
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -131,6 +132,7 @@ export default function RiskCaseScreen() {
                   disabled={s.busy || note.trim() === ''}
                   onPress={addNote}
                 />
+                <RiskEvidence riskId={id} onDone={refresh} />
                 <Field
                   label={t('ai.rk.dueLabel')}
                   value={due}

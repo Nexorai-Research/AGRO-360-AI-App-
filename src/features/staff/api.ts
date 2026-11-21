@@ -148,6 +148,8 @@ export interface Run {
   id: string;
   runNo: string;
   period: string;
+  /** The branch of a branch run; empty for the whole franchise. */
+  branchId?: string | null;
   status: 'DRAFT' | 'CALCULATED' | 'APPROVED' | 'PAID' | 'REVERSED';
   employeeCount: number;
   grossTotal: string;

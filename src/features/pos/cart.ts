@@ -9,6 +9,8 @@ export interface CartLine {
   qty: string;
   /** Left blank = the server uses the price list. */
   unitPrice: string;
+  /** The product's selling price when it was added; only for the estimate of a bill saved offline, never sent. */
+  listPrice?: string | null;
   discountPct: string;
   /** Crop protection capture (UC-129): all three are sent together, or none. */
   crop?: string;
@@ -129,6 +131,7 @@ export function addProduct(c: Cart, p: ProductLite, warehouseId: string): Cart {
     qty: '1',
     unitPrice: '',
     discountPct: '',
+    listPrice: p.sellingPrice ?? p.mrp ?? null,
   };
   return { ...c, lines: [...c.lines, line] };
 }

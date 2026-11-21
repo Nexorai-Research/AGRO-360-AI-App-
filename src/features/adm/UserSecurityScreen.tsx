@@ -1,3 +1,4 @@
+import { placeLine } from '../account/place';
 import { useState } from 'react';
 import { ScrollView, Text, TextInput } from 'react-native';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -105,6 +106,7 @@ function UserTools({ user, userId, run }: { user: UserRow; userId: string; run: 
               ip: s.ip ?? '-',
             })}
           </Text>
+          <Text style={k.sub}>{placeLine(t, s)}</Text>
           <Button
             kind="ghost"
             label={t('usec.endSession')}

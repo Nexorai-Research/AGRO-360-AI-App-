@@ -9,6 +9,7 @@ import { Chips, Notice, k, useActionKey } from '../purchase/ui';
 import { useSal } from '../collections/sal-hook';
 import { AP, akey } from './api';
 import { G4P, createShelfCheck, fetchWarehouses, openCountDraft, type ShelfCheck } from './api-g4';
+import { ShelfHistory, type ShelfHistoryItem } from './Parity10';
 import { SHELF_TYPES, pickScan, type PickedFile } from './file-g4';
 import { units } from './fmt';
 
@@ -93,6 +94,7 @@ export default function ShelfCheckScreen() {
           ) : null}
         </>
       ) : null}
+      <ShelfHistory<ShelfCheck & ShelfHistoryItem> onShow={(c) => setOut(c)} />
     </ScrollView>
   );
 }

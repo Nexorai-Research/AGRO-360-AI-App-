@@ -1,0 +1,164 @@
+{
+  "en": {
+    "wp11": {
+      "shared": "File ready to share.",
+      "noSharing": "Sharing is not available on this phone.",
+      "csv": "Download CSV",
+      "xlsx": "Download Excel",
+      "branch": "Branch",
+      "allBranches": "All branches",
+      "compare": "Compare with previous period",
+      "previous": "Previous period {{from}} - {{to}}",
+      "open": "Open in full",
+      "close": "Close",
+      "br": {
+        "by": "Split by",
+        "branch": "Branch",
+        "costCentre": "Cost centre",
+        "consolidated": "Consolidated",
+        "adds": "Columns add up to the consolidated figure.",
+        "notAdds": "Columns do not add up.",
+        "netSales": "Net sales",
+        "costOfSales": "Cost of sales",
+        "grossProfit": "Gross profit",
+        "operatingExpenses": "Operating expenses",
+        "otherIncome": "Other income",
+        "netProfit": "Net profit"
+      },
+      "rc": {
+        "hint": "Each sub-ledger (customers, suppliers, stock, receipts not billed) against its control account. A difference is never plugged; find the document and correct it.",
+        "ok": "Every sub-ledger agrees with its control account.",
+        "bad": "There are differences to investigate.",
+        "sub": "Sub-ledger",
+        "books": "Books",
+        "diff": "Difference",
+        "agrees": "agrees",
+        "differs": "differs"
+      },
+      "guar": {
+        "picked": "Guarantor: {{name}} (an existing customer)",
+        "change": "Change",
+        "find": "An existing customer (type 2 letters of the name or mobile)",
+        "noHit": "No customer matches.",
+        "orNew": "Or fill in the name and mobile of someone who is not a customer."
+      },
+      "reorder": {
+        "button": "Reorder at the counter",
+        "ready": "Cart made from the purchase history. Check the quantities before billing.",
+        "missing": "Cart made. Not found or not for sale now: {{codes}}."
+      }
+    },
+    "statements": {
+      "kind_branch": "Branch-wise profit",
+      "kind_recon": "Reconciliation"
+    }
+  },
+  "hi": {
+    "wp11": {
+      "shared": "फ़ाइल शेयर के लिए तैयार।",
+      "noSharing": "इस फ़ोन पर शेयर करना उपलब्ध नहीं है।",
+      "csv": "CSV डाउनलोड करें",
+      "xlsx": "Excel डाउनलोड करें",
+      "branch": "शाखा",
+      "allBranches": "सभी शाखाएँ",
+      "compare": "पिछली अवधि से तुलना करें",
+      "previous": "पिछली अवधि {{from}} - {{to}}",
+      "open": "पूरा खोलें",
+      "close": "बंद करें",
+      "br": {
+        "by": "किस हिसाब से",
+        "branch": "शाखा",
+        "costCentre": "कॉस्ट सेंटर",
+        "consolidated": "कुल मिलाकर",
+        "adds": "कॉलम का जोड़ कुल आंकड़े के बराबर है।",
+        "notAdds": "कॉलम का जोड़ मेल नहीं खाता।",
+        "netSales": "शुद्ध बिक्री",
+        "costOfSales": "बिक्री की लागत",
+        "grossProfit": "सकल लाभ",
+        "operatingExpenses": "परिचालन खर्च",
+        "otherIncome": "अन्य आय",
+        "netProfit": "शुद्ध लाभ"
+      },
+      "rc": {
+        "hint": "हर उप-खाता (ग्राहक, सप्लायर, स्टॉक, बिना बिल प्राप्ति) अपने नियंत्रण खाते से मिलाया जाता है। अंतर कभी भरा नहीं जाता; दस्तावेज़ ढूँढकर सुधारें।",
+        "ok": "हर उप-खाता अपने नियंत्रण खाते से मेल खाता है।",
+        "bad": "जाँचने लायक अंतर हैं।",
+        "sub": "उप-खाता",
+        "books": "खाते",
+        "diff": "अंतर",
+        "agrees": "मेल खाता है",
+        "differs": "अलग है"
+      },
+      "guar": {
+        "picked": "गारंटर: {{name}} (मौजूदा ग्राहक)",
+        "change": "बदलें",
+        "find": "मौजूदा ग्राहक (नाम या मोबाइल के 2 अक्षर लिखें)",
+        "noHit": "कोई ग्राहक नहीं मिला।",
+        "orNew": "या जो ग्राहक नहीं है उसका नाम और मोबाइल भरें।"
+      },
+      "reorder": {
+        "button": "काउंटर पर फिर से ऑर्डर",
+        "ready": "खरीद इतिहास से कार्ट बना। बिल से पहले मात्रा जाँचें।",
+        "missing": "कार्ट बना। नहीं मिले या अभी बिक्री के लिए नहीं: {{codes}}।"
+      }
+    },
+    "statements": {
+      "kind_branch": "शाखा-वार लाभ",
+      "kind_recon": "मिलान"
+    }
+  },
+  "mr": {
+    "wp11": {
+      "shared": "फाइल शेअरसाठी तयार.",
+      "noSharing": "या फोनवर शेअर करणे उपलब्ध नाही.",
+      "csv": "CSV डाउनलोड करा",
+      "xlsx": "Excel डाउनलोड करा",
+      "branch": "शाखा",
+      "allBranches": "सर्व शाखा",
+      "compare": "मागील कालावधीशी तुलना करा",
+      "previous": "मागील कालावधी {{from}} - {{to}}",
+      "open": "पूर्ण उघडा",
+      "close": "बंद करा",
+      "br": {
+        "by": "कशानुसार",
+        "branch": "शाखा",
+        "costCentre": "कॉस्ट सेंटर",
+        "consolidated": "एकत्रित",
+        "adds": "कॉलमची बेरीज एकत्रित आकड्याइतकी आहे.",
+        "notAdds": "कॉलमची बेरीज जुळत नाही.",
+        "netSales": "निव्वळ विक्री",
+        "costOfSales": "विक्री खर्च",
+        "grossProfit": "एकूण नफा",
+        "operatingExpenses": "परिचालन खर्च",
+        "otherIncome": "इतर उत्पन्न",
+        "netProfit": "निव्वळ नफा"
+      },
+      "rc": {
+        "hint": "प्रत्येक उप-खाते (ग्राहक, पुरवठादार, साठा, बिल न झालेल्या प्राप्ती) त्याच्या नियंत्रण खात्याशी जुळवले जाते. फरक कधी भरला जात नाही; दस्तऐवज शोधून दुरुस्त करा.",
+        "ok": "प्रत्येक उप-खाते नियंत्रण खात्याशी जुळते.",
+        "bad": "तपासण्यासारखे फरक आहेत.",
+        "sub": "उप-खाते",
+        "books": "खाती",
+        "diff": "फरक",
+        "agrees": "जुळते",
+        "differs": "वेगळे आहे"
+      },
+      "guar": {
+        "picked": "जामीनदार: {{name}} (सध्याचा ग्राहक)",
+        "change": "बदला",
+        "find": "सध्याचा ग्राहक (नाव किंवा मोबाईलची 2 अक्षरे लिहा)",
+        "noHit": "जुळणारा ग्राहक नाही.",
+        "orNew": "किंवा ग्राहक नसलेल्या व्यक्तीचे नाव आणि मोबाईल भरा."
+      },
+      "reorder": {
+        "button": "काउंटरवर पुन्हा ऑर्डर",
+        "ready": "खरेदी इतिहासातून कार्ट तयार झाली. बिलापूर्वी प्रमाण तपासा.",
+        "missing": "कार्ट तयार झाली. सापडले नाहीत किंवा आता विक्रीसाठी नाहीत: {{codes}}."
+      }
+    },
+    "statements": {
+      "kind_branch": "शाखानिहाय नफा",
+      "kind_recon": "जुळवणी"
+    }
+  }
+}

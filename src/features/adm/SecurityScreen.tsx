@@ -1,3 +1,4 @@
+import { eventUser, placeInline } from '../account/place';
 import { useState } from 'react';
 import { ScrollView, Text, TextInput } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -320,7 +321,7 @@ export default function SecurityScreen() {
       {events.data && events.data.items.length === 0 ? <Text style={k.sub}>{t('sec.noEvents')}</Text> : null}
       {events.data?.items.map((e) => (
         <Text key={e.id} style={k.sub}>
-          {fmtWhen(e.at)} · {e.type} · {e.userId ? shortId(e.userId) : '-'} · {e.ip ?? '-'}
+          {fmtWhen(e.at)} · {e.type} · {eventUser(e, shortId)} · {placeInline(t, e)}
         </Text>
       ))}
       <Text style={k.sub}>{t('sec.notBuilt')}</Text>

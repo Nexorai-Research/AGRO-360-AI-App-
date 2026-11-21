@@ -88,14 +88,14 @@ describe('logic', () => {
       hsnConfirmed: false,
       dryRun: true,
     };
-    expect(bulkTaxErrors(f)).toEqual([]);
+    expect(bulkTaxErrors(f, '2026-12-01')).toEqual([]);
     expect(bulkTaxBody(f)).toEqual({
       effectiveFrom: '2026-12-01',
       fromHsn: '3102',
       set: { hsnCode: '310210' },
       dryRun: true,
     });
-    expect(bulkTaxErrors({ ...f, fromHsn: '', hsnCode: '12345', taxCode: 'g' })).toEqual([
+    expect(bulkTaxErrors({ ...f, fromHsn: '', hsnCode: '12345', taxCode: 'g' }, '2026-12-01')).toEqual([
       'pick',
       'hsn',
       'tax',

@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import * as SecureStore from 'expo-secure-store';
@@ -28,6 +29,41 @@ import {
   sharePct,
   validGoal,
 } from './extras';
+
+/**
+ * A part of the dashboard that opens the matching list already filtered, like the web's hand-off from Home. The route and its filter are
+ * plain parameters of the target screen; the target screen and the server decide what is shown.
+ */
+function Tap({
+  to,
+  label,
+  children,
+  style,
+}: {
+  to: { pathname: string; params?: Record<string, string> };
+  label: string;
+  children: ReactNode;
+  style?: object;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={label}
+      onPress={() => router.push(to as never)}
+      style={style}
+    >
+      {children}
+    </Pressable>
+  );
+}
+
+/** Where each "needs attention" row leads: the list that holds those items. */
+export const ATTENTION_ROUTE: Record<string, { pathname: string; params?: Record<string, string> }> = {
+  po: { pathname: '/purchase' },
+  complaints: { pathname: '/complaints' },
+  alerts: { pathname: '/inventory-reorder' },
+  credit: { pathname: '/invoices', params: { paidBy: 'CREDIT' } },
+};
 
 const keyOf = (userId: string, what: string) => ['home', 'extra', userId, what] as const;
 const retry = (n: number, e: unknown) => e instanceof ApiError && e.code === 'NETWORK' && n < 1;
@@ -167,11 +203,14 @@ export default function HomeExtras() {
             ) : (
               <>
                 {(['cash', 'digital', 'credit'] as const).map((k) => (
-                  <View
+                  <Tap
                     key={k}
                     style={s.mixRow}
-                    accessible
-                    accessibilityLabel={`${t(`homex.mix_${k}`)} ${sharePct(w.mix[k], w.total)}%`}
+                    to={{
+                      pathname: '/invoices',
+                      params: { paidBy: k === 'digital' ? 'DIGITAL' : k.toUpperCase() },
+                    }}
+                    label={t('wp32.openPaid', { how: t(`homex.mix_${k}`), pct: sharePct(w.mix[k], w.total) })}
                   >
                     <Text style={s.mixLabel}>{t(`homex.mix_${k}`)}</Text>
                     <View style={s.track}>
@@ -186,7 +225,7 @@ export default function HomeExtras() {
                     <Text style={s.mixVal}>
                       {sharePct(w.mix[k], w.total)}% · {formatINRShort(w.mix[k])}
                     </Text>
-                  </View>
+                  </Tap>
                 ))}
                 <Text style={s.sub}>
                   {t('homex.mixNote', { total: formatINRShort(w.total), bills: w.bills })}
@@ -204,7 +243,12 @@ export default function HomeExtras() {
               <Text style={s.sub}>{t('homex.billsEmpty')}</Text>
             ) : (
               rows.map((b) => (
-                <View key={b.id} style={s.billRow}>
+                <Tap
+                  key={b.id}
+                  style={s.billRow}
+                  to={{ pathname: '/invoices', params: { q: b.number } }}
+                  label={t('wp32.openBill', { number: b.number })}
+                >
                   <View style={s.flex}>
                     <Text style={s.line}>{b.number}</Text>
                     <Text style={s.sub}>
@@ -213,7 +257,7 @@ export default function HomeExtras() {
                     </Text>
                   </View>
                   <Text style={s.line}>{formatINR(b.total)}</Text>
-                </View>
+                </Tap>
               ))
             )
           }
@@ -227,7 +271,12 @@ export default function HomeExtras() {
               <Text style={s.sub}>{t('homex.expiringEmpty')}</Text>
             ) : (
               rows.slice(0, 5).map((b, i) => (
-                <View key={`${b.skuName}-${b.batchNo}-${i}`} style={s.billRow}>
+                <Tap
+                  key={`${b.skuName}-${b.batchNo}-${i}`}
+                  style={s.billRow}
+                  to={{ pathname: '/inventory-expiry', params: { q: b.skuName } }}
+                  label={t('wp32.openBatch', { name: b.skuName })}
+                >
                   <View style={s.flex}>
                     <Text style={s.line}>{b.skuName}</Text>
                     <Text style={s.sub}>
@@ -246,7 +295,7 @@ export default function HomeExtras() {
                   >
                     {t('homex.days', { count: b.daysToExpiry ?? 0 })}
                   </Text>
-                </View>
+                </Tap>
               ))
             )
           }
@@ -257,7 +306,12 @@ export default function HomeExtras() {
         <View style={s.card} testID="extra-attention">
           <Text style={s.h}>{t('homex.attention')}</Text>
           {attention.map((a) => (
-            <View key={a.id} style={s.billRow}>
+            <Tap
+              key={a.id}
+              style={s.billRow}
+              to={ATTENTION_ROUTE[a.id]!}
+              label={t('wp32.openList', { name: a.label })}
+            >
               <Text style={[s.line, s.flex]}>{a.label}</Text>
               <Text
                 style={[s.badge, a.count ? s.badgeOn : null]}
@@ -265,7 +319,7 @@ export default function HomeExtras() {
               >
                 {a.count === null ? '-' : String(a.count)}
               </Text>
-            </View>
+            </Tap>
           ))}
         </View>
       ) : null}

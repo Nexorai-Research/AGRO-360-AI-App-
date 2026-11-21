@@ -120,7 +120,7 @@ export const fetchUsers = (
   signal?: AbortSignal,
 ) =>
   c.get<Page<UserView>>('/users', {
-    query: { q: q.q.trim(), status: q.status, limit: LIMIT, cursor: q.cursor },
+    query: { q: q.q.trim(), status: q.status, order: 'newest', limit: LIMIT, cursor: q.cursor },
     signal,
   });
 export const fetchRoles = (c: ApiClient, signal?: AbortSignal) =>
@@ -174,6 +174,10 @@ export const setDocumentActive = (c: ApiClient, id: string, active: boolean, ide
   c.post<DocumentView>(`/documents/${encodeURIComponent(id)}:${active ? 'restore' : 'deactivate'}`, {
     idempotencyKey,
   });
+
+/** Delete a document with every version (org.document.manage). The file is erased for good; Deactivate keeps it. */
+export const deleteDocument = (c: ApiClient, id: string, idempotencyKey: string) =>
+  c.delete<unknown>(`/documents/${encodeURIComponent(id)}`, { idempotencyKey });
 
 export const fetchCompany = (c: ApiClient, signal?: AbortSignal) =>
   c.get<CompanyProfile>('/settings/company', { signal });

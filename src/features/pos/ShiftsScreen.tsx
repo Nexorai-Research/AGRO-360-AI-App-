@@ -11,6 +11,7 @@ import { colors, radius, lineStrong, surface } from '@/ui/theme';
 import { StateView } from '../stock/StateView';
 import { todayIST } from '../collections/receipt';
 import { fetchBranches } from './api';
+import { DayEndSchedulePanel } from './DayEndSchedulePanel';
 import {
   PERM2,
   addCashMovement,
@@ -141,6 +142,7 @@ export default function ShiftsScreen() {
           {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
         </Text>
       ) : null}
+      {can(PERM2.dayEnd) ? <DayEndSchedulePanel /> : null}
       <Button label={t('shifts.open')} onPress={() => show('open')} />
       {can(PERM2.dayEnd) ? (
         <Button kind="ghost" label={t('shifts.dayEnd')} onPress={() => show('dayend')} />
@@ -305,6 +307,7 @@ export default function ShiftsScreen() {
           ) : null}
           {(history.data ?? []).map((d) => (
             <Text key={d.id} style={s.sub}>
+              {d.source === 'AUTO' ? `${t('wp25.auto')} · ` : ''}
               {t('shifts.historyLine', {
                 date: d.business_date,
                 sales: formatINR(d.summary.sales ?? '0'),

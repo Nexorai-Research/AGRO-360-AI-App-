@@ -24,6 +24,7 @@ import {
 } from '../hr/kit';
 import { rangeOf } from '../reports/api';
 import { BranchDashboard, SeasonsCard, ViewBuilder, ViewManage } from './Parity4';
+import { ShareButton, shareXlsx } from '../accounts/Parity11';
 import { StateView } from '../stock/StateView';
 import { fetchBranches } from '../staff/api';
 import { shareText } from '../staff/ui';
@@ -36,6 +37,7 @@ import {
   SEASON_GROUPS,
   fetchReport,
   fetchReportCsv,
+  reportXlsxRequest,
   fetchViews,
   runView,
   type BranchComparison,
@@ -341,7 +343,7 @@ function Saved({ ctx }: { ctx: Ctx }) {
             onPress={() => void open(v.id)}
           />
           <ViewManage view={v} />
-          {run?.id === v.id ? (
+          {run && run.id === v.id ? (
             <>
               {run.data.rows.length === 0 ? <Text style={kit.sub}>{t('stf.rep.noRows')}</Text> : null}
               {run.data.rows.slice(0, 50).map((row, i) => (
@@ -500,6 +502,15 @@ export default function MoreReportsScreen() {
               label={t('stf.rep.exportCsv')}
               disabled={!ctx.enabled}
               onPress={() => void exportCsv()}
+            />
+          ) : null}
+          {kind !== 'saved' && ctx.enabled ? (
+            <ShareButton
+              label={t('wp11.xlsx')}
+              load={() => {
+                const r = reportXlsxRequest(kind as Exclude<MoreKind, 'saved'>, f);
+                return shareXlsx(client!, r.path, r.query, `${kind}.xlsx`);
+              }}
             />
           ) : null}
           {shareMsg ? <Notice tone="ok" text={shareMsg} /> : null}

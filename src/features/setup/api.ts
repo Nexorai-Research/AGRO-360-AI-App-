@@ -26,6 +26,10 @@ export interface FinancialYear {
   status: 'OPEN' | 'LOCKED';
   lockedAt: string | null;
   periodCount: number;
+  /** Something is booked in it (a locked month, an issued number, a budget, a year-end close): it can no longer change. */
+  inUse?: boolean;
+  /** It has not started yet. */
+  future?: boolean;
 }
 export interface Period {
   id: string;
@@ -47,6 +51,30 @@ export const createYear = (
 ) => c.post<FinancialYear>('/financial-years', { body, idempotencyKey });
 export const lockYear = (c: ApiClient, yearId: string, reason: string, idempotencyKey: string) =>
   c.post<FinancialYear>(`/financial-years/${id(yearId)}:lock`, { body: { reason }, idempotencyKey });
+/** Web parity 16: new dates for an open year nothing is booked in; its months are rebuilt. */
+export const editYear = (
+  c: ApiClient,
+  yearId: string,
+  body: { startDate: string; endDate: string },
+  idempotencyKey: string,
+) => c.put<FinancialYear>(`/financial-years/${id(yearId)}`, { body, idempotencyKey });
+/** Web parity 16: removes the last year when it has not started and nothing is booked in it, with a recorded reason. */
+export const deleteYear = (c: ApiClient, yearId: string, reason: string, idempotencyKey: string) =>
+  c.post<{ id: string; label: string }>(`/financial-years/${id(yearId)}:delete`, {
+    body: { reason },
+    idempotencyKey,
+  });
+export const yearEditable = (y: FinancialYear) => y.status === 'OPEN' && y.inUse === false;
+export const yearDeletable = (y: FinancialYear, all: FinancialYear[]) =>
+  yearEditable(y) && y.future === true && all[all.length - 1]?.id === y.id;
+/** Why Edit or Delete is not offered (the web's reasons), or null. */
+export function yearWhyNot(y: FinancialYear, what: 'edit' | 'delete', all: FinancialYear[] = []) {
+  if (y.status === 'LOCKED') return 'locked';
+  if (y.inUse !== false) return 'inUse';
+  if (what === 'delete' && y.future !== true) return 'started';
+  if (what === 'delete' && all[all.length - 1]?.id !== y.id) return 'notLast';
+  return null;
+}
 export const lockPeriod = (c: ApiClient, periodId: string, reason: string, idempotencyKey: string) =>
   c.post<Period>(`/accounting-periods/${id(periodId)}:lock`, { body: { reason }, idempotencyKey });
 
@@ -145,7 +173,20 @@ export interface PrintTemplate {
   isDefault: boolean;
 }
 export const fetchTemplates = async (c: ApiClient, signal?: AbortSignal) =>
-  (await c.get<{ items: PrintTemplate[] }>('/settings/print-templates', { signal })).items;
+  (await fetchTemplateList(c, signal)).items;
+/** With the document types deleted from the list (web parity 16), which can be added back. */
+export const fetchTemplateList = async (c: ApiClient, signal?: AbortSignal) => {
+  const r = await c.get<{ items: PrintTemplate[]; removed?: string[] }>('/settings/print-templates', {
+    signal,
+  });
+  return { items: r.items, removed: r.removed ?? [] };
+};
+/** Deleted from the list: documents of this type still print with the standard layout; issued documents do not change. */
+export const deleteTemplate = (c: ApiClient, docType: string, idempotencyKey: string) =>
+  c.post<unknown>('/settings/print-templates:delete', { body: { docType }, idempotencyKey });
+/** Added back with the default layout. */
+export const restoreTemplate = (c: ApiClient, docType: string, idempotencyKey: string) =>
+  c.post<unknown>('/settings/print-templates:restore', { body: { docType }, idempotencyKey });
 export const saveTemplate = (c: ApiClient, version: number, body: unknown, idempotencyKey: string) =>
   c.put<PrintTemplate>('/settings/print-templates', { version, body, idempotencyKey });
 

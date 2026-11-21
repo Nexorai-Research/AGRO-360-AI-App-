@@ -1,3 +1,4 @@
+import { ConfirmBox } from '@/ui/ConfirmBox';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ import {
   budgetVariance,
   exceptionAck,
   exceptionResolve,
+  deleteBudget,
   getBudget,
   listBudgets,
   listExceptions,
@@ -24,6 +26,7 @@ import {
   type Period,
 } from './api';
 import { Ask, Button, Card, Chips, Page, Result, kit, useFin, useWrite } from './kit';
+import { NewBudget } from './NewBudget';
 
 type Tab = 'periods' | 'budgets' | 'exceptions';
 
@@ -184,8 +187,10 @@ function Budgets() {
   const w = useWrite();
   const [open, setOpen] = useState('');
   const [rejecting, setRejecting] = useState('');
+  const [deleting, setDeleting] = useState('');
   return (
     <>
+      <NewBudget />
       <Result w={w} />
       <ReadBox
         queryKey={['fin', uid, 'budgets']}
@@ -226,6 +231,9 @@ function Budgets() {
                         }
                       />
                     ) : null}
+                    {b.status === 'DRAFT' && can(FP.budgetManage) ? (
+                      <Button kind="ghost" label={t('wp29.delete')} onPress={() => setDeleting(b.id)} />
+                    ) : null}
                     {b.status === 'PENDING_APPROVAL' && can(FP.budgetApprove) ? (
                       <Button
                         label={t('fin.approve')}
@@ -253,6 +261,24 @@ function Budgets() {
                       />
                     ) : null}
                   </View>
+                  {deleting === b.id ? (
+                    <ConfirmBox
+                      title={t('wp29.deleteBudgetTitle')}
+                      text={t('wp29.deleteBudgetAsk', { name: b.name, fy: b.fyLabel, version: b.version })}
+                      confirm={t('wp29.delete')}
+                      cancel={t('fin.cancel')}
+                      busy={w.busy}
+                      onConfirm={() =>
+                        void w.go(
+                          `delete|${b.id}`,
+                          t('wp29.budgetDeleted'),
+                          (c, k) => deleteBudget(c, k, b.id),
+                          () => setDeleting(''),
+                        )
+                      }
+                      onCancel={() => setDeleting('')}
+                    />
+                  ) : null}
                   {rejecting === b.id ? (
                     <Ask
                       label={t('fin.reasonReject')}

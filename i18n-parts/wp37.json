@@ -1,0 +1,29 @@
+{
+  "en": {
+    "stf": { "emp": { "search": "Search by name, code or designation" } },
+    "wp37": {
+      "delete": "Delete employee",
+      "title": "Delete employee?",
+      "ask": "{{code}} {{name}} will be removed. Only an employee with no attendance, leave, salary or payslips can be deleted; otherwise use Exit.",
+      "done": "Employee deleted."
+    }
+  },
+  "hi": {
+    "stf": { "emp": { "search": "नाम, कोड या पद से खोजें" } },
+    "wp37": {
+      "delete": "कर्मचारी हटाएँ",
+      "title": "कर्मचारी हटाएँ?",
+      "ask": "{{code}} {{name}} हटा दिया जाएगा। सिर्फ़ वही कर्मचारी हटाया जा सकता है जिसकी हाज़िरी, छुट्टी, वेतन या पेस्लिप नहीं है; वरना \"निकासी दर्ज करें\" इस्तेमाल करें।",
+      "done": "कर्मचारी हटा दिया गया।"
+    }
+  },
+  "mr": {
+    "stf": { "emp": { "search": "नाव, कोड किंवा पदाने शोधा" } },
+    "wp37": {
+      "delete": "कर्मचारी हटवा",
+      "title": "कर्मचारी हटवायचा?",
+      "ask": "{{code}} {{name}} काढून टाकला जाईल. ज्याची हजेरी, रजा, पगार किंवा पेस्लिप नाही फक्त तोच कर्मचारी हटवता येतो; अन्यथा \"बाहेर पडणे नोंदवा\" वापरा.",
+      "done": "कर्मचारी हटवला."
+    }
+  }
+}

@@ -313,7 +313,7 @@ export default function WarehousesScreen() {
                 ) : null}
               </View>
             ) : null}
-            {off?.id === w.id ? (
+            {off && off.id === w.id ? (
               <>
                 <Text style={k.sub}>{t('setup.wh.deactivateIntro')}</Text>
                 <Field

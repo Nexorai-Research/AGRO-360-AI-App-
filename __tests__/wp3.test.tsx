@@ -69,6 +69,7 @@ describe('logic', () => {
       b2cLargeLimit: '250000',
       docAlertDays: '60, 30,7',
       rcmEnabled: true,
+      tdsEnabled: false,
     };
     expect(settingsErrors(f)).toEqual([]);
     expect(settingsBody(f)).toEqual({
@@ -77,6 +78,7 @@ describe('logic', () => {
       b2cLargeLimit: '250000',
       docAlertDays: [60, 30, 7],
       rcmEnabled: true,
+      tdsEnabled: false,
     });
     expect(settingsErrors({ ...f, itcTolerance: '1.234', docAlertDays: '60,30,' })).toEqual([
       'tolerance',
@@ -177,6 +179,7 @@ describe('screens', () => {
       b2cLargeLimit: '250000.00',
       docAlertDays: [45, 15],
       rcmEnabled: true,
+      tdsEnabled: true,
     });
   });
   test('compliance settings: no change button without compliance.settings.manage', async () => {

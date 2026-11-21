@@ -1,0 +1,35 @@
+{
+  "en": {
+    "wp18": {
+      "statusActive": "Active",
+      "statusRetired": "Retired",
+      "retire": "Retire",
+      "reactivate": "Reactivate",
+      "ask": "{{name}} will no longer be asked for or shown on customers. Consents already given stay in the history.",
+      "retired": "Purpose retired",
+      "reactivated": "Purpose active again"
+    }
+  },
+  "hi": {
+    "wp18": {
+      "statusActive": "सक्रिय",
+      "statusRetired": "हटाया गया",
+      "retire": "हटाएँ (रिटायर)",
+      "reactivate": "फिर चालू करें",
+      "ask": "{{name}} अब ग्राहकों से नहीं पूछा जाएगा और नहीं दिखेगा। पहले दी गई सहमतियाँ इतिहास में रहेंगी।",
+      "retired": "उद्देश्य हटाया गया",
+      "reactivated": "उद्देश्य फिर चालू"
+    }
+  },
+  "mr": {
+    "wp18": {
+      "statusActive": "सक्रिय",
+      "statusRetired": "निवृत्त",
+      "retire": "निवृत्त करा",
+      "reactivate": "पुन्हा चालू करा",
+      "ask": "{{name}} आता ग्राहकांना विचारले जाणार नाही आणि दिसणार नाही. आधी दिलेल्या संमती इतिहासात राहतील.",
+      "retired": "उद्देश निवृत्त केला",
+      "reactivated": "उद्देश पुन्हा चालू"
+    }
+  }
+}

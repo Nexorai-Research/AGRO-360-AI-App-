@@ -1,0 +1,73 @@
+{
+  "en": {
+    "wp30": {
+      "valuationFuture": "The valuation date cannot be in the future.",
+      "exportFrom": "Start date must be a real date, not in the future."
+    },
+    "wp2": {
+      "tax": {
+        "hint": "Choose products by category (with sub-categories) or HSN prefix, and set the new mapping. It applies from today. Preview first.",
+        "v": { "today": "A tax change applies from today: it cannot be dated in the past or the future." }
+      }
+    },
+    "fx": {
+      "export": { "v": { "to": "End date must be a real date, not in the future and not before the start." } }
+    },
+    "cmp": {
+      "fv": {
+        "testFuture": "A test that has already happened: the test date cannot be in the future.",
+        "issueFuture": "The day it was issued: the issue date cannot be in the future.",
+        "incidentFuture": "An incident has already happened: the date cannot be in the future.",
+        "sampleFuture": "The sample was already taken: the date cannot be in the future.",
+        "validBefore": "Valid to cannot be before its start."
+      }
+    },
+    "fin": { "vouchers": { "err_future": "A voucher cannot be dated in the future." } }
+  },
+  "hi": {
+    "wp30": {
+      "valuationFuture": "मूल्यांकन की तारीख आने वाली नहीं हो सकती।",
+      "exportFrom": "शुरू की तारीख सही हो और आने वाली न हो।"
+    },
+    "wp2": {
+      "tax": {
+        "hint": "उत्पाद श्रेणी (उप-श्रेणियों सहित) या HSN उपसर्ग से चुनें और नई मैपिंग तय करें। यह आज से लागू होती है। पहले पूर्वावलोकन देखें।",
+        "v": { "today": "कर बदलाव आज से लागू होता है: उसकी तारीख बीती या आने वाली नहीं हो सकती।" }
+      }
+    },
+    "fx": { "export": { "v": { "to": "अंतिम तारीख सही हो, आने वाली न हो और शुरुआत से पहले की न हो।" } } },
+    "cmp": {
+      "fv": {
+        "testFuture": "जाँच हो चुकी है: जाँच की तारीख आने वाली नहीं हो सकती।",
+        "issueFuture": "जारी होने का दिन: जारी करने की तारीख आने वाली नहीं हो सकती।",
+        "incidentFuture": "घटना हो चुकी है: तारीख आने वाली नहीं हो सकती।",
+        "sampleFuture": "नमूना लिया जा चुका है: तारीख आने वाली नहीं हो सकती।",
+        "validBefore": "\"तक मान्य\" अपनी शुरुआत से पहले का नहीं हो सकता।"
+      }
+    },
+    "fin": { "vouchers": { "err_future": "वाउचर पर आने वाली तारीख नहीं हो सकती।" } }
+  },
+  "mr": {
+    "wp30": {
+      "valuationFuture": "मूल्यांकनाची तारीख भविष्यातील असू शकत नाही.",
+      "exportFrom": "सुरुवातीची तारीख खरी असावी व भविष्यातील नसावी."
+    },
+    "wp2": {
+      "tax": {
+        "hint": "उत्पादने श्रेणी (उप-श्रेणींसह) किंवा HSN उपसर्गाने निवडा आणि नवी मॅपिंग ठरवा. ती आजपासून लागू होते. आधी पूर्वावलोकन पहा.",
+        "v": { "today": "कर बदल आजपासून लागू होतो: त्याची तारीख गेलेली किंवा भविष्यातील असू शकत नाही." }
+      }
+    },
+    "fx": { "export": { "v": { "to": "शेवटची तारीख खरी असावी, भविष्यातील नसावी आणि सुरुवातीपूर्वीची नसावी." } } },
+    "cmp": {
+      "fv": {
+        "testFuture": "चाचणी झाली आहे: चाचणीची तारीख भविष्यातील असू शकत नाही.",
+        "issueFuture": "जारी केल्याचा दिवस: जारी तारीख भविष्यातील असू शकत नाही.",
+        "incidentFuture": "घटना घडून गेली आहे: तारीख भविष्यातील असू शकत नाही.",
+        "sampleFuture": "नमुना घेतला गेला आहे: तारीख भविष्यातील असू शकत नाही.",
+        "validBefore": "\"पर्यंत वैध\" त्याच्या सुरुवातीपूर्वीचे असू शकत नाही."
+      }
+    },
+    "fin": { "vouchers": { "err_future": "व्हाउचरवर भविष्यातील तारीख असू शकत नाही." } }
+  }
+}

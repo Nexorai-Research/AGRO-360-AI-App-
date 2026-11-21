@@ -69,7 +69,7 @@ export async function fetchProducts(
   signal?: AbortSignal,
 ) {
   const r = await c.get<{ items: Product[]; total: number }>('/products', {
-    query: { q: q || undefined, status: status || undefined, limit: 100 },
+    query: { q: q || undefined, status: status || undefined, sort: 'newest', limit: 100 },
     signal,
   });
   return r;

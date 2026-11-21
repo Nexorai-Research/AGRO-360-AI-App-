@@ -10,8 +10,11 @@ import {
   COMPANY_FIELDS,
   P,
   admKey,
+  deleteMode,
   fetchCompanyFull,
+  fetchModeLedgers,
   fetchModes,
+  restoreMode,
   fetchPolicyView,
   saveCompany,
   saveMode,
@@ -94,15 +97,41 @@ function ModesPanel({ canEdit, run, userId }: { canEdit: boolean; run: Run; user
   const { t } = useTranslation();
   const { client } = useAccess();
   const [vpa, setVpa] = useState<string | null>(null);
+  const [linking, setLinking] = useState<string | null>(null);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [restore, setRestore] = useState('');
   const q = useQuery({
     queryKey: admKey(userId, 'modes-full'),
     queryFn: ({ signal }) => fetchModes(client!, signal),
+    retry: false,
+  });
+  // web parity 16: the ledger is shown by code and name; a role that may not read the chart of accounts sees the short id
+  const ledgers = useQuery({
+    queryKey: admKey(userId, 'mode-ledgers'),
+    queryFn: ({ signal }) => fetchModeLedgers(client!, signal),
     retry: false,
   });
   if (q.error)
     return <PartFailed error={q.error} offline={t('setEdit.offline')} onRetry={() => void q.refetch()} />;
   if (q.isPending) return <Text style={k.sub}>{t('common.loading')}</Text>;
   const refresh = ['modes-full', 'modes'];
+  const ledgerLabel = (id: string | null) =>
+    id ? (ledgers.data?.find((l) => l.id === id)?.label ?? `${id.slice(0, 8)}...`) : t('wp16.mode.noLedger');
+  const removed = q.data.removed ?? [];
+  const link = (m: PayMode, ledgerAccountId: string) =>
+    void run
+      .run(
+        () =>
+          saveMode(
+            client!,
+            m,
+            { ledgerAccountId },
+            run.idem.keyFor(`ledger|${m.code}|${m.version}|${ledgerAccountId}`),
+          ),
+        t('setEdit.modeSaved'),
+        refresh,
+      )
+      .then((ok) => ok && setLinking(null));
   const toggle = (m: PayMode) =>
     void run.run(
       () =>
@@ -119,6 +148,31 @@ function ModesPanel({ canEdit, run, userId }: { canEdit: boolean; run: Run; user
   return (
     <>
       <Text style={k.sub}>{t('setEdit.modesHint')}</Text>
+      {canEdit && removed.length > 0 ? (
+        <Card>
+          <Text style={k.name}>{t('wp16.mode.addBack')}</Text>
+          <Text style={k.sub}>{t('wp16.mode.addBackHint')}</Text>
+          <Chips
+            label={t('wp16.mode.pick')}
+            value={restore}
+            options={removed.map((c): [string, string] => [c, c.replace(/_/g, ' ')])}
+            onChange={setRestore}
+          />
+          <Button
+            label={t('wp16.mode.addBack')}
+            disabled={run.busy || !removed.includes(restore)}
+            onPress={() =>
+              void run
+                .run(
+                  () => restoreMode(client!, restore, run.idem.keyFor(`restore-mode|${restore}`)),
+                  t('wp16.mode.addedBack'),
+                  refresh,
+                )
+                .then((ok) => ok && setRestore(''))
+            }
+          />
+        </Card>
+      ) : null}
       {q.data.items.length === 0 ? <Text style={k.sub}>{t('setEdit.none')}</Text> : null}
       {q.data.items.map((m) => {
         const shownVpa = vpa ?? m.upiVpa ?? '';
@@ -128,6 +182,9 @@ function ModesPanel({ canEdit, run, userId }: { canEdit: boolean; run: Run; user
           <Card key={m.code}>
             <Text style={k.name}>{m.code}</Text>
             <Text style={k.sub}>{t(m.enabled ? 'setEdit.enabled' : 'setEdit.disabled')}</Text>
+            <Text style={k.sub}>
+              {t('wp16.mode.ledger')}: {ledgerLabel(m.ledgerAccountId)}
+            </Text>
             {canEdit ? (
               !m.enabled && !m.ledgerAccountId ? (
                 <Text style={k.sub}>{t('setEdit.needsLedger')}</Text>
@@ -139,6 +196,51 @@ function ModesPanel({ canEdit, run, userId }: { canEdit: boolean; run: Run; user
                   onPress={() => toggle(m)}
                 />
               )
+            ) : null}
+            {canEdit && ledgers.data && linking !== m.code ? (
+              <Button
+                kind="ghost"
+                label={t('wp16.mode.linkLedger', { code: m.code })}
+                onPress={() => setLinking(m.code)}
+              />
+            ) : null}
+            {canEdit && linking === m.code && ledgers.data ? (
+              <>
+                <Chips
+                  label={t('wp16.mode.ledger')}
+                  value={m.ledgerAccountId ?? ''}
+                  options={ledgers.data.map((l): [string, string] => [l.id, l.label])}
+                  onChange={(id) => link(m, id)}
+                />
+                <Button kind="ghost" label={t('setup.cancel')} onPress={() => setLinking(null)} />
+              </>
+            ) : null}
+            {canEdit && removing !== m.code ? (
+              <Button
+                kind="ghost"
+                label={t('wp16.mode.delete', { code: m.code })}
+                onPress={() => setRemoving(m.code)}
+              />
+            ) : null}
+            {canEdit && removing === m.code ? (
+              <>
+                <Text style={k.sub}>{t('wp16.mode.deleteWhat', { code: m.code })}</Text>
+                <Button
+                  label={t('wp16.mode.confirmDelete')}
+                  disabled={run.busy}
+                  onPress={() =>
+                    void run
+                      .run(
+                        () =>
+                          deleteMode(client!, m.code, run.idem.keyFor(`delete-mode|${m.code}|${m.version}`)),
+                        t('wp16.mode.deleted'),
+                        refresh,
+                      )
+                      .then(() => setRemoving(null))
+                  }
+                />
+                <Button kind="ghost" label={t('setup.cancel')} onPress={() => setRemoving(null)} />
+              </>
             ) : null}
             {canEdit && m.code === 'UPI' ? (
               <>

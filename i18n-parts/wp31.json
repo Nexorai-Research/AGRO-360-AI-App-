@@ -1,0 +1,92 @@
+{
+  "en": {
+    "wp31": {
+      "status": "Status",
+      "all": "All",
+      "paidBy": "Paid by",
+      "from": "From (YYYY-MM-DD)",
+      "to": "To (YYYY-MM-DD)",
+      "paid": { "CASH": "Cash", "DIGITAL": "UPI / card / bank", "CREDIT": "On credit" },
+      "range": {
+        "format": "Write the dates like 2026-11-21.",
+        "order": "The start date cannot be after the end date."
+      },
+      "noMatch": "Nothing matches the search and filters.",
+      "invoices": { "search": "Search by number, customer, amount" },
+      "orders": { "search": "Search by number, supplier, amount" },
+      "receipts": { "search": "Search by number, order, supplier" },
+      "bills": { "search": "Search by number, supplier invoice, supplier" },
+      "expiry": { "search": "Search by product or batch number" },
+      "imports": {
+        "search": "Search by file name",
+        "applied": "This import is applied and cannot be changed. The report shows what happened to each row."
+      }
+    },
+    "wp32": {
+      "openPaid": "{{how}} {{pct}} percent. Open these bills",
+      "openBill": "Open bill {{number}}",
+      "openBatch": "Open the expiry list for {{name}}",
+      "openList": "Open {{name}}"
+    }
+  },
+  "hi": {
+    "wp31": {
+      "status": "स्थिति",
+      "all": "सभी",
+      "paidBy": "भुगतान का तरीका",
+      "from": "से (YYYY-MM-DD)",
+      "to": "तक (YYYY-MM-DD)",
+      "paid": { "CASH": "नकद", "DIGITAL": "यूपीआई / कार्ड / बैंक", "CREDIT": "उधार" },
+      "range": {
+        "format": "तारीखें 2026-11-21 की तरह लिखें।",
+        "order": "शुरू की तारीख अंत की तारीख के बाद नहीं हो सकती।"
+      },
+      "noMatch": "खोज और फ़िल्टर से कुछ नहीं मिला।",
+      "invoices": { "search": "नंबर, ग्राहक या रकम से खोजें" },
+      "orders": { "search": "नंबर, सप्लायर या रकम से खोजें" },
+      "receipts": { "search": "नंबर, ऑर्डर या सप्लायर से खोजें" },
+      "bills": { "search": "नंबर, सप्लायर बिल या सप्लायर से खोजें" },
+      "expiry": { "search": "उत्पाद या बैच नंबर से खोजें" },
+      "imports": {
+        "search": "फ़ाइल के नाम से खोजें",
+        "applied": "यह इम्पोर्ट लागू हो चुका है और बदला नहीं जा सकता। रिपोर्ट में हर पंक्ति का नतीजा है।"
+      }
+    },
+    "wp32": {
+      "openPaid": "{{how}} {{pct}} प्रतिशत। ये बिल खोलें",
+      "openBill": "बिल {{number}} खोलें",
+      "openBatch": "{{name}} की एक्सपायरी सूची खोलें",
+      "openList": "{{name}} खोलें"
+    }
+  },
+  "mr": {
+    "wp31": {
+      "status": "स्थिती",
+      "all": "सर्व",
+      "paidBy": "पैसे भरण्याची पद्धत",
+      "from": "पासून (YYYY-MM-DD)",
+      "to": "पर्यंत (YYYY-MM-DD)",
+      "paid": { "CASH": "रोख", "DIGITAL": "यूपीआय / कार्ड / बँक", "CREDIT": "उधार" },
+      "range": {
+        "format": "तारखा 2026-11-21 अशा लिहा.",
+        "order": "सुरुवातीची तारीख शेवटच्या तारखेनंतर असू शकत नाही."
+      },
+      "noMatch": "शोध आणि फिल्टरशी काहीही जुळले नाही.",
+      "invoices": { "search": "क्रमांक, ग्राहक किंवा रकमेने शोधा" },
+      "orders": { "search": "क्रमांक, पुरवठादार किंवा रकमेने शोधा" },
+      "receipts": { "search": "क्रमांक, ऑर्डर किंवा पुरवठादाराने शोधा" },
+      "bills": { "search": "क्रमांक, पुरवठादार बिल किंवा पुरवठादाराने शोधा" },
+      "expiry": { "search": "उत्पादन किंवा बॅच क्रमांकाने शोधा" },
+      "imports": {
+        "search": "फाइलच्या नावाने शोधा",
+        "applied": "हा इम्पोर्ट लागू झाला आहे आणि बदलता येत नाही. अहवालात प्रत्येक ओळीचे काय झाले ते आहे."
+      }
+    },
+    "wp32": {
+      "openPaid": "{{how}} {{pct}} टक्के. ही बिले उघडा",
+      "openBill": "बिल {{number}} उघडा",
+      "openBatch": "{{name}} ची एक्सपायरी यादी उघडा",
+      "openList": "{{name}} उघडा"
+    }
+  }
+}

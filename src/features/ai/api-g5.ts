@@ -97,5 +97,8 @@ export interface ExpansionSaved {
 }
 export const fetchExpansions = async (c: ApiClient, signal?: AbortSignal) =>
   (await c.get<{ items: ExpansionSaved[] }>('/ai/expansion/scenarios', { signal })).items;
+/** Web parity 10.8: one saved scenario with its assumptions and the result worked out again by the server. */
+export const fetchExpansion = (c: ApiClient, id: string) =>
+  c.get<ExpansionSaved>(`/ai/expansion/scenarios/${encodeURIComponent(id)}`);
 export const deleteExpansion = (c: ApiClient, id: string, idempotencyKey: string) =>
   c.delete<unknown>(`/ai/expansion/scenarios/${id}`, { idempotencyKey });

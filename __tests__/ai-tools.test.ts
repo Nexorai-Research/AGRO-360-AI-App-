@@ -26,6 +26,7 @@ beforeEach(() => {
     setLang,
     signOut,
     today: () => '2026-11-13',
+    writesAllowed: async () => true,
   };
 });
 

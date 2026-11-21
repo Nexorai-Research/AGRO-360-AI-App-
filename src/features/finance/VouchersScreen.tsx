@@ -17,9 +17,11 @@ import {
   listBranches,
   listJournals,
   listVouchers,
+  updateVoucher,
   voucherReject,
   voucherReverse,
   voucherStep,
+  type Voucher,
   type VoucherKind,
 } from './api';
 import {
@@ -45,15 +47,17 @@ import {
   journalDiff,
   postableAccounts,
   voucherActions,
+  voucherToDraft,
   type DraftLine,
   type VoucherDraft,
 } from './logic';
 
 const KINDS: VoucherKind[] = ['JOURNAL', 'PAYMENT', 'RECEIPT', 'CONTRA'];
 const STATUSES = ['', 'DRAFT', 'PENDING_APPROVAL', 'POSTED', 'CANCELLED'] as const;
-type View2 = { mode: 'list' } | { mode: 'new' } | { mode: 'detail'; id: string };
+type View2 =
+  { mode: 'list' } | { mode: 'new' } | { mode: 'detail'; id: string } | { mode: 'edit'; v: Voucher };
 
-function Detail({ id, onBack }: { id: string; onBack: () => void }) {
+function Detail({ id, onBack, onEdit }: { id: string; onBack: () => void; onEdit: (v: Voucher) => void }) {
   const { t } = useTranslation();
   const { can, uid, client } = useFin();
   const w = useWrite();
@@ -118,6 +122,9 @@ function Detail({ id, onBack }: { id: string; onBack: () => void }) {
                 />
               ) : (
                 <View style={kit.row}>
+                  {v.status === 'DRAFT' && can(FP.voucherCreate) ? (
+                    <Button kind="ghost" label={t('wp9.v.edit')} onPress={() => onEdit(v)} />
+                  ) : null}
                   {a.post ? (
                     <Button
                       label={t('fin.post')}
@@ -163,22 +170,35 @@ function Detail({ id, onBack }: { id: string; onBack: () => void }) {
   );
 }
 
-function NewVoucher({ onDone, onBack }: { onDone: (id: string) => void; onBack: () => void }) {
+function NewVoucher({
+  onDone,
+  onBack,
+  existing,
+}: {
+  onDone: (id: string) => void;
+  onBack: () => void;
+  /** Web parity 9: a saved draft opened for editing (PUT with its version). */
+  existing?: Voucher;
+}) {
   const { t } = useTranslation();
   const { client, uid } = useFin();
   const w = useWrite();
-  const [d, setD] = useState<VoucherDraft>({
-    kind: 'JOURNAL',
-    date: todayIST(),
-    narration: '',
-    branchId: '',
-    ref: '',
-    lines: [emptyLine(), emptyLine()],
-    bankAccountId: '',
-    fromAccountId: '',
-    toAccountId: '',
-    amount: '',
-  });
+  const [d, setD] = useState<VoucherDraft>(() =>
+    existing
+      ? voucherToDraft(existing)
+      : {
+          kind: 'JOURNAL',
+          date: todayIST(),
+          narration: '',
+          branchId: '',
+          ref: '',
+          lines: [emptyLine(), emptyLine()],
+          bankAccountId: '',
+          fromAccountId: '',
+          toAccountId: '',
+          amount: '',
+        },
+  );
   const [shown, setShown] = useState(false);
   const accts = useQuery({
     queryKey: ['fin', uid, 'accounts'],
@@ -204,10 +224,14 @@ function NewVoucher({ onDone, onBack }: { onDone: (id: string) => void; onBack: 
     if (err) return;
     const body = buildVoucher(d);
     void w.go(
-      `create|${d.kind}|${JSON.stringify(body)}`,
-      t('fin.vouchers.saved'),
+      existing
+        ? `edit|${existing.id}|${existing.version}|${JSON.stringify(body)}`
+        : `create|${d.kind}|${JSON.stringify(body)}`,
+      existing ? t('wp9.v.updated') : t('fin.vouchers.saved'),
       async (c, k) => {
-        const v = await createVoucher(c, k, d.kind, body);
+        const v = existing
+          ? await updateVoucher(c, k, existing, body)
+          : await createVoucher(c, k, d.kind, body);
         created.current = v.id;
       },
       () => onDone(created.current),
@@ -217,14 +241,18 @@ function NewVoucher({ onDone, onBack }: { onDone: (id: string) => void; onBack: 
     <>
       <Button kind="ghost" label={t('fin.back')} onPress={onBack} />
       <Gate query={accts} denied={false} deniedText={t('fin.denied')} offlineText={t('fin.offline')}>
-        <Chips
-          label={t('fin.vouchers.kind')}
-          options={KINDS.map((k) => ({ id: k, label: t(`fin.vouchers.kind_${k}`) }))}
-          value={d.kind}
-          onChange={(k) =>
-            set({ kind: k, lines: k === 'JOURNAL' ? [emptyLine(), emptyLine()] : [emptyLine()] })
-          }
-        />
+        {existing ? (
+          <Text style={kit.name}>{`${existing.voucherNo} · ${t(`fin.vouchers.kind_${existing.kind}`)}`}</Text>
+        ) : (
+          <Chips
+            label={t('fin.vouchers.kind')}
+            options={KINDS.map((k) => ({ id: k, label: t(`fin.vouchers.kind_${k}`) }))}
+            value={d.kind}
+            onChange={(k) =>
+              set({ kind: k, lines: k === 'JOURNAL' ? [emptyLine(), emptyLine()] : [emptyLine()] })
+            }
+          />
+        )}
         <Field
           label={t('fin.date')}
           value={d.date}
@@ -410,13 +438,23 @@ export default function VouchersScreen() {
   const [status, setStatus] = useState<string>('');
   return (
     <Page title={t('fin.vouchers.title')} perm={FP.view}>
-      {view.mode === 'new' ? (
+      {view.mode === 'edit' ? (
+        <NewVoucher
+          existing={view.v}
+          onBack={() => setView({ mode: 'detail', id: view.v.id })}
+          onDone={() => setView({ mode: 'detail', id: view.v.id })}
+        />
+      ) : view.mode === 'new' ? (
         <NewVoucher
           onBack={() => setView({ mode: 'list' })}
           onDone={(id) => setView(id ? { mode: 'detail', id } : { mode: 'list' })}
         />
       ) : view.mode === 'detail' ? (
-        <Detail id={view.id} onBack={() => setView({ mode: 'list' })} />
+        <Detail
+          id={view.id}
+          onBack={() => setView({ mode: 'list' })}
+          onEdit={(v) => setView({ mode: 'edit', v })}
+        />
       ) : (
         <>
           <Chips

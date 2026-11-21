@@ -9,8 +9,8 @@ import { colors, radius } from '@/ui/theme';
 import { ApiError } from '@/api/errors';
 import { newId } from '@/device';
 import { Notice, k, useErrorText } from '../purchase/ui';
-import { sendChat, type Block, type ChatMessage } from './api';
-import { makeTools, runToolUses } from './tools';
+import { askAssistant, type Block, type ChatMessage } from './api';
+import { chatWritesAllowed, classifyReply, makeTools, runToolUses } from './tools';
 
 /** At most this many model calls for one question: a model that keeps asking for tools is stopped. */
 export const MAX_STEPS = 8;
@@ -46,6 +46,8 @@ export default function AssistantScreen() {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [ask, setAsk] = useState<Ask | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
+  const [live, setLive] = useState('');
   const history = useRef<ChatMessage[]>([]);
   const lock = useRef(false);
   const seq = useRef(0);
@@ -58,9 +60,11 @@ export default function AssistantScreen() {
             client,
             can,
             confirm: (title, rows) =>
-              new Promise<boolean>((resolve) =>
-                setAsk({ title, rows, answer: (y) => (setAsk(null), resolve(y)) }),
-              ),
+              new Promise<boolean>((resolve) => {
+                setHint(null);
+                setAsk({ title, rows, answer: (y) => (setAsk(null), setHint(null), resolve(y)) });
+              }),
+            writesAllowed: () => chatWritesAllowed(client),
             go: (r) => router.push(r as never),
             openCustomer: (id) => router.push(`/customers/${id}` as never),
             setLang: (c) => void setLanguage(c),
@@ -77,6 +81,15 @@ export default function AssistantScreen() {
 
   async function submit() {
     const q = draft.trim();
+    // web parity 19 (the web's confirmation control): while a change waits for the Yes button, words never confirm it.
+    // Only an exact "no" / "nahi" / "cancel" cancels; anything else leaves it waiting and says to use the buttons.
+    if (q && ask) {
+      setDraft('');
+      push('me', q);
+      if (classifyReply(q) === 'negative') ask.answer(false);
+      else setHint(t('wp19.useButtons'));
+      return;
+    }
     if (!q || lock.current || !client || !tools) return;
     lock.current = true;
     setBusy(true);
@@ -88,11 +101,14 @@ export default function AssistantScreen() {
     try {
       for (let step = 0; step < MAX_STEPS; step++) {
         // One key per model call: a retry after a lost answer is a new tap, so a new call and a new key.
-        const r = await sendChat(
+        // web parity 23: the words show as they are written; the final answer replaces the preview
+        const r = await askAssistant(
           client,
           { messages: [...history.current], today: indiaToday(), lang: currentLanguage() },
-          newId(),
+          newId,
+          setLive,
         );
+        setLive('');
         history.current.push({ role: 'assistant', content: r.content });
         const said = textOf(r.content);
         if (said) push('bot', said);
@@ -107,6 +123,7 @@ export default function AssistantScreen() {
       setFailure(e instanceof ApiError && e.code === 'NETWORK' ? t('ai.offline') : errText(e));
     } finally {
       lock.current = false;
+      setLive('');
       setBusy(false);
     }
   }
@@ -151,7 +168,16 @@ export default function AssistantScreen() {
             <Text style={k.name}>{l.text}</Text>
           </View>
         ))}
-        {busy && !ask ? <Text style={k.sub}>{t('ai.thinking')}</Text> : null}
+        {busy && !ask && live ? (
+          <View
+            accessibilityLabel={`${t('ai.bot')}: ${live}`}
+            style={[k.card, { alignSelf: 'flex-start', maxWidth: '90%' }]}
+          >
+            <Text style={k.sub}>{t('ai.bot')}</Text>
+            <Text style={k.name}>{live}</Text>
+          </View>
+        ) : null}
+        {busy && !ask && !live ? <Text style={k.sub}>{t('ai.thinking')}</Text> : null}
         {ask ? (
           <View style={[k.card, { borderColor: colors.warn }]}>
             <Text style={k.name}>{ask.title}</Text>
@@ -164,6 +190,7 @@ export default function AssistantScreen() {
               <Button label={t('ai.yes')} onPress={() => ask.answer(true)} />
               <Button kind="ghost" label={t('ai.no')} onPress={() => ask.answer(false)} />
             </View>
+            {hint ? <Text style={k.sub}>{hint}</Text> : null}
           </View>
         ) : null}
         {failure ? <Notice tone="error" text={failure} /> : null}
@@ -183,12 +210,16 @@ export default function AssistantScreen() {
           onChangeText={setDraft}
           accessibilityLabel={t('ai.input')}
           placeholder={t('ai.input')}
-          editable={!busy}
+          editable={!busy || ask !== null}
           multiline
           style={[k.input, { maxHeight: 120, borderRadius: radius }]}
         />
         <View style={k.row}>
-          <Button label={t('ai.send')} disabled={busy || draft.trim() === ''} onPress={() => void submit()} />
+          <Button
+            label={t('ai.send')}
+            disabled={(busy && ask === null) || draft.trim() === ''}
+            onPress={() => void submit()}
+          />
           {lines.length > 0 ? (
             <Button kind="ghost" label={t('ai.clear')} disabled={busy} onPress={clear} />
           ) : null}
