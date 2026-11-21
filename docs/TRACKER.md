@@ -1286,3 +1286,15 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 26.7 Edit a franchise (`PATCH`, version sent as If-Match; empty location, address and GSTIN go as null) | DONE (mocked client) | `__tests__/wp26.test.tsx` |
 | 26.8 The plan change and the plan chips are gone from the franchise (the web removed them); the detail points to Access control (phase 34) | DONE | `__tests__/wp26.test.tsx` |
 | Limits: the web's Copy button is Share on the phone (no clipboard package is installed). The state is typed as a 2-digit code with its name shown, not picked from a list. The Plans screen stays as the web still has it. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 27: observability with a chosen period
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `observability.js`. Code: `src/features/platform/obs-period.ts`, `PeriodBar` in `src/features/platform/ObservabilityScreens.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| 27.1 "Choose dates" next to Last 7 / 14 / 30 / 60 / 90 days on the franchise overview, the platform overview and one franchise: From and To (`YYYY-MM-DD`) | DONE (mocked client) | `__tests__/wp27.test.tsx` |
+| 27.2 The web's checks: both dates, real dates, From not after To, nothing in the future, nothing older than the 90 days kept; a wrong range blocks the button and says why | DONE (mocked client) | `__tests__/wp27.test.tsx` |
+| 27.3 A chosen range asks `GET /observability/overview?from&to`, `GET /platform/observability/overview?from&to`, `GET /platform/observability/franchises/:id?from&to` (no `days`); the franchise page shows "from to to" when the server answers with a range | DONE (mocked client) | `__tests__/wp27.test.tsx` |
+| 27.4 One person's page only knows days, like the web: it keeps using the last chosen number of days | DONE (mocked client) | `__tests__/wp27.test.tsx` |
+| Limits: dates are typed (no calendar picker; the web has a calendar). The web's quick choices "Today", "This month" and "Last month" are not built. Hindi and Marathi need a native check | Limit | - |

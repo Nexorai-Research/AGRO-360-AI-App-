@@ -7373,5 +7373,20 @@
       "title": "What this franchise can use",
       "hint": "Which menus, pages and features the franchise and its people can see and use is set on the Access control screen."
     }
+  },
+  "wp27": {
+    "custom": "Choose dates",
+    "from": "From (YYYY-MM-DD)",
+    "to": "To (YYYY-MM-DD)",
+    "apply": "Show this period",
+    "hint": "Only the days the activity is kept for can be chosen: from {{from}} up to today.",
+    "range": "{{from}} to {{to}}",
+    "err": {
+      "both": "Choose both dates.",
+      "format": "Write the dates like 2026-11-21.",
+      "order": "The start date cannot be after the end date.",
+      "future": "A date in the future cannot be chosen.",
+      "old": "That day is older than the activity kept (90 days)."
+    }
   }
 }

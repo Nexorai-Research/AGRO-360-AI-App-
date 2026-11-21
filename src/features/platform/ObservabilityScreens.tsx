@@ -20,6 +20,16 @@ import {
   useFailureText,
 } from '../hr/kit';
 import { isPlatformUser } from './PlatformScreens';
+import { todayIST } from '../collections/receipt';
+import {
+  defaultPeriod,
+  earliestDay,
+  isCustom,
+  periodKey,
+  periodQuery,
+  rangeError,
+  type Period,
+} from './obs-period';
 
 // Web parity phase 12: User Application Observability (apps/web/src/pages/observability.js). A franchise administrator
 // (identity.security.manage) sees the own franchise; a platform operator sees every franchise. The API decides who may read what.
@@ -92,6 +102,8 @@ interface UserRow {
 }
 export interface Overview {
   days: number;
+  from?: string | null;
+  to?: string | null;
   retentionDays: number;
   totals: Totals;
   daily: Daily[];
@@ -131,21 +143,55 @@ const Page = ({ title, hint, children }: { title: string; hint?: string; childre
     {children}
   </ScrollView>
 );
-function Days({
+/** The period: the last N days, or (when `custom`) a range of two dates. One person's page only knows days. */
+export function PeriodBar({
   value,
   onChange,
+  custom = true,
 }: {
-  value: (typeof DAY_CHOICES)[number];
-  onChange: (v: (typeof DAY_CHOICES)[number]) => void;
+  value: Period;
+  onChange: (v: Period) => void;
+  custom?: boolean;
 }) {
   const { t } = useTranslation();
+  const today = todayIST();
+  const [open, setOpen] = useState(isCustom(value));
+  const [from, setFrom] = useState(value.from || earliestDay(today));
+  const [to, setTo] = useState(value.to || today);
+  const err = rangeError(from, to, today);
+  const showRange = custom && open;
+  const options: { id: string; label: string }[] = DAY_CHOICES.map((d) => ({
+    id: d,
+    label: t('wp12.ob.lastDays', { count: Number(d) }),
+  }));
+  if (custom) options.push({ id: 'custom', label: t('wp27.custom') });
   return (
-    <Chips
-      label={t('wp12.ob.period')}
-      options={DAY_CHOICES.map((d) => ({ id: d, label: t('wp12.ob.lastDays', { count: Number(d) }) }))}
-      value={value}
-      onChange={onChange}
-    />
+    <>
+      <Chips
+        label={t('wp12.ob.period')}
+        options={options}
+        value={showRange ? 'custom' : value.days}
+        onChange={(id) => {
+          if (id === 'custom') return setOpen(true);
+          setOpen(false);
+          onChange({ days: id, from: '', to: '' });
+        }}
+      />
+      {showRange ? (
+        <>
+          <Field label={t('wp27.from')} value={from} onChange={setFrom} placeholder="YYYY-MM-DD" />
+          <Field label={t('wp27.to')} value={to} onChange={setTo} placeholder="YYYY-MM-DD" />
+          <Text style={kit.sub}>
+            {err ? t(`wp27.err.${err}`) : t('wp27.hint', { from: earliestDay(today) })}
+          </Text>
+          <Button
+            label={t('wp27.apply')}
+            disabled={err !== null}
+            onPress={() => onChange({ days: value.days, from: from.trim(), to: to.trim() })}
+          />
+        </>
+      ) : null}
+    </>
   );
 }
 function Bars({ rows, empty }: { rows: { label: string; value: number; note?: string }[]; empty: string }) {
@@ -191,13 +237,11 @@ function DailyCard({ daily }: { daily: Daily[] }) {
     <Card>
       <Text style={kit.name}>{t('wp12.ob.daily')}</Text>
       <Bars
-        rows={[...daily]
-          .reverse()
-          .map((d) => ({
-            label: d.day,
-            value: d.events,
-            note: t('wp12.ob.dayLine', { events: d.events, users: d.users, errors: d.errors }),
-          }))}
+        rows={[...daily].reverse().map((d) => ({
+          label: d.day,
+          value: d.events,
+          note: t('wp12.ob.dayLine', { events: d.events, users: d.users, errors: d.errors }),
+        }))}
         empty={t('wp12.ob.noActivity')}
       />
     </Card>
@@ -412,15 +456,17 @@ export function ObservabilityScreen() {
   const { t } = useTranslation();
   const { me, client } = useAuth();
   const can = useCan();
-  const [days, setDays] = useState<(typeof DAY_CHOICES)[number]>('30');
+  const [period, setPeriod] = useState<Period>(defaultPeriod());
+  const days = period.days;
   const [tab, setTab] = useState<'overview' | 'users' | 'issues'>('overview');
   const [adoption, setAdoption] = useState('');
   const [search, setSearch] = useState('');
   const [user, setUser] = useState<string | null>(null);
   const allowed = can(OBS_PERM);
   const q = useQuery({
-    queryKey: ['obs', me?.userId ?? '', 'overview', days],
-    queryFn: ({ signal }) => client!.get<Overview>('/observability/overview', { query: { days }, signal }),
+    queryKey: ['obs', me?.userId ?? '', 'overview', periodKey(period)],
+    queryFn: ({ signal }) =>
+      client!.get<Overview>('/observability/overview', { query: periodQuery(period), signal }),
     enabled: client !== null && me !== null && allowed && user === null,
     retry,
   });
@@ -434,7 +480,7 @@ export function ObservabilityScreen() {
   );
   return (
     <Page title={t('wp12.ob.title')} hint={o ? t('wp12.ob.hint', { days: o.retentionDays }) : undefined}>
-      <Days value={days} onChange={setDays} />
+      <PeriodBar value={period} onChange={setPeriod} custom={user === null} />
       {user ? (
         <UserDetail userId={user} days={days} onBack={() => setUser(null)} />
       ) : (
@@ -557,6 +603,8 @@ export function ObservabilityScreen() {
 // ---- the platform operator's view -----------------------------------------------------------------------------------------------
 interface PlatformOverview {
   days: number;
+  from?: string | null;
+  to?: string | null;
   retentionDays: number;
   totals: Totals;
   daily: Daily[];
@@ -579,6 +627,8 @@ interface PlatformOverview {
 }
 interface FranchiseView {
   days: number;
+  from?: string | null;
+  to?: string | null;
   franchise: { name: string; code: string; status: string };
   totals: Totals;
   daily: Daily[];
@@ -587,14 +637,14 @@ interface FranchiseView {
   pages: { route: string; views: number }[];
   issues: Issue[];
 }
-function FranchiseUsage({ id, days, onBack }: { id: string; days: string; onBack: () => void }) {
+function FranchiseUsage({ id, period, onBack }: { id: string; period: Period; onBack: () => void }) {
   const { t } = useTranslation();
   const { me, client } = useAuth();
   const q = useQuery({
-    queryKey: ['obs', me?.userId ?? '', 'franchise', id, days],
+    queryKey: ['obs', me?.userId ?? '', 'franchise', id, periodKey(period)],
     queryFn: ({ signal }) =>
       client!.get<FranchiseView>(`/platform/observability/franchises/${encodeURIComponent(id)}`, {
-        query: { days },
+        query: periodQuery(period),
         signal,
       }),
     enabled: client !== null,
@@ -609,7 +659,10 @@ function FranchiseUsage({ id, days, onBack }: { id: string; days: string; onBack
           <>
             <Text style={kit.name}>{o.franchise.name}</Text>
             <Text style={kit.sub}>
-              {o.franchise.code} · {o.franchise.status} · {t('wp12.ob.lastDays', { count: o.days })}
+              {o.franchise.code} · {o.franchise.status} ·{' '}
+              {o.from && o.to
+                ? t('wp27.range', { from: o.from, to: o.to })
+                : t('wp12.ob.lastDays', { count: o.days })}
             </Text>
             <Tiles
               rows={[
@@ -651,14 +704,17 @@ function FranchiseUsage({ id, days, onBack }: { id: string; days: string; onBack
 export function PlatformObservabilityScreen() {
   const { t } = useTranslation();
   const { me, client } = useAuth();
-  const [days, setDays] = useState<(typeof DAY_CHOICES)[number]>('30');
+  const [period, setPeriod] = useState<Period>(defaultPeriod());
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState<string | null>(null);
   const allowed = isPlatformUser(me?.roles);
   const q = useQuery({
-    queryKey: ['obs', me?.userId ?? '', 'platform', days],
+    queryKey: ['obs', me?.userId ?? '', 'platform', periodKey(period)],
     queryFn: ({ signal }) =>
-      client!.get<PlatformOverview>('/platform/observability/overview', { query: { days }, signal }),
+      client!.get<PlatformOverview>('/platform/observability/overview', {
+        query: periodQuery(period),
+        signal,
+      }),
     enabled: client !== null && me !== null && allowed && open === null,
     retry,
   });
@@ -672,9 +728,9 @@ export function PlatformObservabilityScreen() {
       title={t('wp12.ob.title')}
       hint={o ? t('wp12.ob.platformHint', { days: o.retentionDays }) : undefined}
     >
-      <Days value={days} onChange={setDays} />
+      <PeriodBar value={period} onChange={setPeriod} />
       {open ? (
-        <FranchiseUsage id={open} days={days} onBack={() => setOpen(null)} />
+        <FranchiseUsage id={open} period={period} onBack={() => setOpen(null)} />
       ) : (
         <Gate query={q} denied={false} deniedText={t('wp12.denied')} offlineText={t('wp12.offline')}>
           {o ? (

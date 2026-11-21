@@ -1,0 +1,53 @@
+{
+  "en": {
+    "wp27": {
+      "custom": "Choose dates",
+      "from": "From (YYYY-MM-DD)",
+      "to": "To (YYYY-MM-DD)",
+      "apply": "Show this period",
+      "hint": "Only the days the activity is kept for can be chosen: from {{from}} up to today.",
+      "range": "{{from}} to {{to}}",
+      "err": {
+        "both": "Choose both dates.",
+        "format": "Write the dates like 2026-11-21.",
+        "order": "The start date cannot be after the end date.",
+        "future": "A date in the future cannot be chosen.",
+        "old": "That day is older than the activity kept (90 days)."
+      }
+    }
+  },
+  "hi": {
+    "wp27": {
+      "custom": "तारीखें चुनें",
+      "from": "से (YYYY-MM-DD)",
+      "to": "तक (YYYY-MM-DD)",
+      "apply": "यह अवधि दिखाएँ",
+      "hint": "सिर्फ़ वही दिन चुने जा सकते हैं जिनकी गतिविधि रखी जाती है: {{from}} से आज तक।",
+      "range": "{{from}} से {{to}}",
+      "err": {
+        "both": "दोनों तारीखें चुनें।",
+        "format": "तारीखें 2026-11-21 की तरह लिखें।",
+        "order": "शुरू की तारीख अंत की तारीख के बाद नहीं हो सकती।",
+        "future": "आने वाली तारीख नहीं चुनी जा सकती।",
+        "old": "वह दिन रखी गई गतिविधि (90 दिन) से पुराना है।"
+      }
+    }
+  },
+  "mr": {
+    "wp27": {
+      "custom": "तारखा निवडा",
+      "from": "पासून (YYYY-MM-DD)",
+      "to": "पर्यंत (YYYY-MM-DD)",
+      "apply": "हा कालावधी दाखवा",
+      "hint": "फक्त ज्या दिवसांची नोंद ठेवली जाते तेच दिवस निवडता येतात: {{from}} पासून आजपर्यंत.",
+      "range": "{{from}} ते {{to}}",
+      "err": {
+        "both": "दोन्ही तारखा निवडा.",
+        "format": "तारखा 2026-11-21 अशा लिहा.",
+        "order": "सुरुवातीची तारीख शेवटच्या तारखेनंतर असू शकत नाही.",
+        "future": "भविष्यातील तारीख निवडता येत नाही.",
+        "old": "तो दिवस ठेवलेल्या नोंदीपेक्षा (90 दिवस) जुना आहे."
+      }
+    }
+  }
+}
