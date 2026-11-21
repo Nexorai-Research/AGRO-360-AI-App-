@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
   Pressable,
@@ -22,6 +23,8 @@ import { StateView } from '../stock/StateView';
 import { printInvoice, shareInvoicePdf } from './print';
 import { todayIST } from '../collections/receipt';
 import { fetchPayModes } from './api';
+import { ListFilters } from '../lists/ListFilters';
+import { distinct, emptyFilter, filterRows, paidKinds, type ListFilter } from '../lists/list-filter';
 import {
   PERM2,
   cancelInvoice,
@@ -52,6 +55,13 @@ export default function InvoicesScreen() {
   const can = (p: string) => me?.permissions === undefined || me.permissions.includes(p);
   const ready = client !== null && me !== null && can(PERM2.view);
 
+  // A tap on the Home dashboard comes here already filtered (the web's hand-off): how customers paid, or one bill number.
+  const params = useLocalSearchParams<{ paidBy?: string; q?: string }>();
+  const [filter, setFilter] = useState<ListFilter>(() => ({
+    ...emptyFilter(),
+    paidBy: ['CASH', 'DIGITAL', 'CREDIT'].includes(String(params.paidBy)) ? String(params.paidBy) : '',
+    q: typeof params.q === 'string' ? params.q : '',
+  }));
   const [openId, setOpenId] = useState<string | null>(null);
   const [mode, setMode] = useState<'return' | 'cancel' | null>(null);
   const [detail, setDetail] = useState<InvoiceDetail | null>(null);
@@ -151,6 +161,12 @@ export default function InvoicesScreen() {
     }
   }
 
+  const shown = filterRows(list.data ?? [], filter, {
+    text: (i) => `${i.number} ${i.customerName ?? ''} ${i.total} ${i.status}`,
+    status: (i) => i.status,
+    date: (i) => i.invoiceDate,
+    paidBy: (i) => paidKinds(i),
+  });
   if (!can(PERM2.view)) return <StateView state="denied" message={t('invoices.denied')} />;
   if (list.isPending && list.fetchStatus !== 'idle') return <StateView state="loading" />;
   if (list.error) {
@@ -181,8 +197,19 @@ export default function InvoicesScreen() {
           {t(failure.key, { ...failure.params, correlationId: failure.params.correlationId ?? '-' })}
         </Text>
       ) : null}
+      <ListFilters
+        value={filter}
+        onChange={setFilter}
+        searchLabel={t('wp31.invoices.search')}
+        statuses={distinct(list.data ?? [], (i) => i.status)}
+        dates
+        paidBy
+      />
       {(list.data ?? []).length === 0 ? <Text style={s.sub}>{t('invoices.empty')}</Text> : null}
-      {(list.data ?? []).map((i) => (
+      {(list.data ?? []).length > 0 && shown.length === 0 ? (
+        <Text style={s.sub}>{t('wp31.noMatch')}</Text>
+      ) : null}
+      {shown.map((i) => (
         <View key={i.id} style={s.card}>
           <Text style={s.name}>
             {i.number} · {formatINR(i.total)}

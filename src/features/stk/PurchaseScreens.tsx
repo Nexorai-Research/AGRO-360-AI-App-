@@ -27,6 +27,8 @@ import {
   validDec,
   type PickedProduct,
 } from './kit';
+import { ListFilters } from '../lists/ListFilters';
+import { distinct, emptyFilter, filterRows, type ListFilter } from '../lists/list-filter';
 import { humanCode } from '@/format';
 
 // Procurement screens the web "Purchase" page has and the first purchase screens did not. Paths and permissions come from
@@ -475,19 +477,37 @@ function GrnCard({ g }: { g: Grn }) {
   );
 }
 
+/** The search, status and date filters of the web's receipts list. */
+export const receiptAccessors = {
+  text: (g: Grn) => `${g.number ?? ''} ${g.poNumber ?? ''} ${g.supplierName} ${g.status} ${g.value}`,
+  status: (g: Grn) => g.status,
+  date: (g: Grn) => g.receiptDate,
+};
 export function ReceiptsScreen() {
   const { t, can } = useStk();
+  const [filter, setFilter] = useState<ListFilter>(emptyFilter());
   return (
     <Page title={t('stkGrn.title')} hint={t('stkGrn.hint')} allowed={can('purchase.view')}>
       <Read<{ items: Grn[] }> path="/procurement/goods-receipts" query={{ limit: 100 }}>
-        {(d) => (
-          <>
-            {d.items.length === 0 ? <Empty text={t('stkGrn.empty')} /> : null}
-            {d.items.map((g) => (
-              <GrnCard key={g.id} g={g} />
-            ))}
-          </>
-        )}
+        {(d) => {
+          const shown = filterRows(d.items, filter, receiptAccessors);
+          return (
+            <>
+              <ListFilters
+                value={filter}
+                onChange={setFilter}
+                searchLabel={t('wp31.receipts.search')}
+                statuses={distinct(d.items, (g) => g.status)}
+                dates
+              />
+              {d.items.length === 0 ? <Empty text={t('stkGrn.empty')} /> : null}
+              {d.items.length > 0 && shown.length === 0 ? <Empty text={t('wp31.noMatch')} /> : null}
+              {shown.map((g) => (
+                <GrnCard key={g.id} g={g} />
+              ))}
+            </>
+          );
+        }}
       </Read>
     </Page>
   );
@@ -953,9 +973,17 @@ function BillCard({ b }: { b: BillRow }) {
   );
 }
 
+/** The search, status and date filters of the web's purchase bills list. */
+export const billAccessors = {
+  text: (b: BillRow) =>
+    `${b.number ?? ''} ${b.supplierInvoiceNo} ${b.supplierName} ${b.status} ${b.paymentStatus} ${b.total}`,
+  status: (b: BillRow) => b.status,
+  date: (b: BillRow) => b.invoiceDate,
+};
 export function BillsScreen() {
   const { t, can } = useStk();
   const [form, setForm] = useState<'receipt' | 'direct' | null>(null);
+  const [filter, setFilter] = useState<ListFilter>(emptyFilter());
   return (
     <Page title={t('stkBill.title')} allowed={can('purchase.view')}>
       <View style={kit.row}>
@@ -973,14 +1001,25 @@ export function BillsScreen() {
       {form === 'receipt' ? <BillFromReceipt onDone={() => setForm(null)} /> : null}
       {form === 'direct' ? <DirectBill onDone={() => setForm(null)} /> : null}
       <Read<{ items: BillRow[] }> path="/procurement/purchase-bills" query={{ limit: 100 }}>
-        {(d) => (
-          <>
-            {d.items.length === 0 ? <Empty text={t('stkBill.empty')} /> : null}
-            {d.items.map((b) => (
-              <BillCard key={b.id} b={b} />
-            ))}
-          </>
-        )}
+        {(d) => {
+          const shown = filterRows(d.items, filter, billAccessors);
+          return (
+            <>
+              <ListFilters
+                value={filter}
+                onChange={setFilter}
+                searchLabel={t('wp31.bills.search')}
+                statuses={distinct(d.items, (b) => b.status)}
+                dates
+              />
+              {d.items.length === 0 ? <Empty text={t('stkBill.empty')} /> : null}
+              {d.items.length > 0 && shown.length === 0 ? <Empty text={t('wp31.noMatch')} /> : null}
+              {shown.map((b) => (
+                <BillCard key={b.id} b={b} />
+              ))}
+            </>
+          );
+        }}
       </Read>
     </Page>
   );

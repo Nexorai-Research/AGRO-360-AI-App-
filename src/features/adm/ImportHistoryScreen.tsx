@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ScrollView, Share, Text } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,8 @@ import { queryState } from '../admin/kit';
 import { P, admKey, fetchImportJobs, fetchImportReport, type ImportJob } from './api';
 import { Banner, Card, k, useAccess, useRun } from './kit';
 import { ProductImportCard } from '../stk/Parity7';
+import { ListFilters } from '../lists/ListFilters';
+import { distinct, emptyFilter, filterRows, type ListFilter } from '../lists/list-filter';
 
 function outcome(j: ImportJob, t: (k: string, o?: Record<string, unknown>) => string): string {
   if (!j.result) return j.status === 'VALIDATED' ? t('imp.checkedOnly') : '-';
@@ -19,8 +22,16 @@ function outcome(j: ImportJob, t: (k: string, o?: Record<string, unknown>) => st
   });
 }
 
+/** The search, status and date filters of the web's import history: file name, status, the day it was made. */
+export const importAccessors = {
+  text: (j: ImportJob) => `${j.filename ?? ''} ${j.status} ${j.mode ?? ''} ${j.createdBy ?? ''}`,
+  status: (j: ImportJob) => j.status,
+  date: (j: ImportJob) => j.createdAt,
+};
+
 export default function ImportHistoryScreen() {
   const { t } = useTranslation();
+  const [filter, setFilter] = useState<ListFilter>(emptyFilter());
   const { client, can, userId } = useAccess();
   const r = useRun(userId);
   const ready = client !== null && userId !== '' && can(P.productImport);
@@ -37,7 +48,8 @@ export default function ImportHistoryScreen() {
   if (!can(P.productImport)) return <StateView state="denied" message={t('imp.denied')} />;
   const early = queryState(jobs, t, t('imp.offline'));
   if (early) return early;
-  const rows = jobs.data?.pages.flatMap((p) => p.items) ?? [];
+  const all = jobs.data?.pages.flatMap((p) => p.items) ?? [];
+  const rows = filterRows(all, filter, importAccessors);
 
   // The error report is a CSV of the failed rows. It is handed to the phone's share sheet; the app keeps no copy.
   const report = (j: ImportJob) =>
@@ -52,7 +64,16 @@ export default function ImportHistoryScreen() {
       <Text style={k.sub}>{t('imp.hint')}</Text>
       <Banner msg={r.msg} failure={r.failure} />
       <ProductImportCard />
-      {rows.length === 0 ? <StateView state="empty" message={t('imp.empty')} /> : null}
+      <ListFilters
+        value={filter}
+        onChange={setFilter}
+        searchLabel={t('wp31.imports.search')}
+        statuses={distinct(all, (j) => j.status)}
+        statusLabel={(x) => t(x === 'COMMITTED' ? 'imp.applied' : 'imp.checked')}
+        dates
+      />
+      {all.length === 0 ? <StateView state="empty" message={t('imp.empty')} /> : null}
+      {all.length > 0 && rows.length === 0 ? <StateView state="empty" message={t('wp31.noMatch')} /> : null}
       {rows.map((j) => (
         <Card key={j.id}>
           <Text style={k.name}>{t('imp.what', { file: j.filename ?? '-' })}</Text>
@@ -61,6 +82,7 @@ export default function ImportHistoryScreen() {
           </Text>
           <Text style={k.sub}>{t('imp.rows', { total: j.totalRows, errors: j.errorRows })}</Text>
           <Text style={k.sub}>{outcome(j, t as never)}</Text>
+          {j.status === 'COMMITTED' ? <Text style={k.sub}>{t('wp31.imports.applied')}</Text> : null}
           <Button kind="ghost" label={t('imp.report')} disabled={r.busy} onPress={() => report(j)} />
         </Card>
       ))}

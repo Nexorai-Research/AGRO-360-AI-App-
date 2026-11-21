@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 import { useActionKey } from '@/ui/kit';
 import { formatINR } from '@/money';
@@ -31,6 +32,8 @@ import {
   type PickedProduct,
 } from './kit';
 import { checkRule, parseOpeningCsv } from './logic';
+import { ListFilters } from '../lists/ListFilters';
+import { emptyFilter, filterRows, type ListFilter } from '../lists/list-filter';
 
 const money = (v: string | null | undefined) => (v === null || v === undefined ? null : formatINR(v));
 
@@ -99,7 +102,9 @@ export function LedgerScreen() {
                 <Text style={kit.sub}>
                   {[
                     m.sourceType ? m.sourceType + (m.reasonCode ? ` (${m.reasonCode})` : '') : null,
-                    m.runningBalance !== null ? t('stkLedger.balance', { qty: formatQty(m.runningBalance) }) : null,
+                    m.runningBalance !== null
+                      ? t('stkLedger.balance', { qty: formatQty(m.runningBalance) })
+                      : null,
                     money(m.value),
                   ]
                     .filter(Boolean)
@@ -402,13 +407,21 @@ function ExtendForm({ b, onDone }: { b: ExpBatch; onDone: () => void }) {
   );
 }
 
-function BatchList({ items }: { items: ExpBatch[] }) {
+/** The search, status and date filters of the web's expiry list: product, batch number, status, expiry day. */
+export const batchAccessors = {
+  text: (b: ExpBatch) => `${b.skuCode} ${b.skuName} ${b.batchNo} ${b.status}`,
+  status: (b: ExpBatch) => b.status,
+  date: (b: ExpBatch) => b.expiryDate,
+};
+function BatchList({ items, filter }: { items: ExpBatch[]; filter: ListFilter }) {
   const { t, can } = useStk();
   const [ext, setExt] = useState<string | null>(null);
+  const shown = filterRows(items, filter, batchAccessors);
   if (items.length === 0) return <Empty text={t('stkExpiry.none')} />;
+  if (shown.length === 0) return <Empty text={t('wp31.noMatch')} />;
   return (
     <>
-      {items.map((b) => (
+      {shown.map((b) => (
         <Card key={b.id}>
           <Text style={kit.name}>
             {b.skuCode} {b.skuName}
@@ -483,6 +496,12 @@ export function ExpiryScreen() {
   const { t, can } = useStk();
   const w = useWrite();
   const [tab, setTab] = useState<'soon' | 'expired' | 'pending'>('soon');
+  // a tap on an expiring batch on the Home dashboard comes here already searched for that product
+  const params = useLocalSearchParams<{ q?: string }>();
+  const [filter, setFilter] = useState<ListFilter>(() => ({
+    ...emptyFilter(),
+    q: typeof params.q === 'string' ? params.q : '',
+  }));
   return (
     <Page title={t('stkExpiry.title')} hint={t('stkExpiry.hint')} allowed={can('inventory.view')}>
       <Chips
@@ -494,6 +513,9 @@ export function ExpiryScreen() {
         value={tab}
         onChange={setTab}
       />
+      {tab !== 'pending' ? (
+        <ListFilters value={filter} onChange={setFilter} searchLabel={t('wp31.expiry.search')} dates />
+      ) : null}
       {can('inventory.jobs.run') ? (
         <Btn
           kind="ghost"
@@ -505,12 +527,12 @@ export function ExpiryScreen() {
       <Msgs w={w} />
       {tab === 'soon' ? (
         <Read<{ items: ExpBatch[] }> path="/inventory/batches" query={{ expiringWithinDays: 60, limit: 200 }}>
-          {(d) => <BatchList items={d.items} />}
+          {(d) => <BatchList items={d.items} filter={filter} />}
         </Read>
       ) : null}
       {tab === 'expired' ? (
         <Read<{ items: ExpBatch[] }> path="/inventory/batches" query={{ expired: 'true', limit: 200 }}>
-          {(d) => <BatchList items={d.items} />}
+          {(d) => <BatchList items={d.items} filter={filter} />}
         </Read>
       ) : null}
       {tab === 'pending' ? (

@@ -11,6 +11,8 @@ import { StateView } from '../stock/StateView';
 import { PERM, fetchApprovals, fetchOrders, fetchReceipts, fetchSuppliers, key, type OrderRow } from './api';
 import { Gate, retryNetworkOnce } from './Gate';
 import { Chips, k } from './ui';
+import { ListFilters } from '../lists/ListFilters';
+import { emptyFilter, filterRows, type ListFilter } from '../lists/list-filter';
 
 type Tab = 'orders' | 'approvals' | 'suppliers' | 'receipts';
 const STATUSES = [
@@ -25,6 +27,11 @@ const STATUSES = [
   'CANCELLED',
 ];
 
+/** The search and date filters of the web's purchase orders list (the status is the chips above, asked of the server). */
+export const orderAccessors = {
+  text: (o: OrderRow) => `${o.number ?? ''} ${o.supplierName} ${o.status} ${o.total}`,
+  date: (o: OrderRow) => o.orderDate,
+};
 export default function PurchaseScreen() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -36,6 +43,7 @@ export default function PurchaseScreen() {
   const [tab, setTab] = useState<Tab>('orders');
   const [status, setStatus] = useState('');
   const [text, setText] = useState('');
+  const [filter, setFilter] = useState<ListFilter>(emptyFilter());
 
   const orders = useQuery({
     queryKey: key(userId, 'orders', status),
@@ -118,13 +126,14 @@ export default function PurchaseScreen() {
           {can(PERM.create) ? (
             <Button label={t('purchase.newOrder')} onPress={() => router.push('/purchase/order-new')} />
           ) : null}
+          <ListFilters value={filter} onChange={setFilter} searchLabel={t('wp31.orders.search')} dates />
           <Gate
             q={orders}
             ns="purchase"
             emptyKey="purchase.emptyOrders"
             isEmpty={(orders.data ?? []).length === 0}
           >
-            {(orders.data ?? []).map(orderCard)}
+            {filterRows(orders.data ?? [], filter, orderAccessors).map(orderCard)}
           </Gate>
         </>
       ) : null}

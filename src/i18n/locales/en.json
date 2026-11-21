@@ -7577,5 +7577,47 @@
   "wp30": {
     "valuationFuture": "The valuation date cannot be in the future.",
     "exportFrom": "Start date must be a real date, not in the future."
+  },
+  "wp31": {
+    "status": "Status",
+    "all": "All",
+    "paidBy": "Paid by",
+    "from": "From (YYYY-MM-DD)",
+    "to": "To (YYYY-MM-DD)",
+    "paid": {
+      "CASH": "Cash",
+      "DIGITAL": "UPI / card / bank",
+      "CREDIT": "On credit"
+    },
+    "range": {
+      "format": "Write the dates like 2026-11-21.",
+      "order": "The start date cannot be after the end date."
+    },
+    "noMatch": "Nothing matches the search and filters.",
+    "invoices": {
+      "search": "Search by number, customer, amount"
+    },
+    "orders": {
+      "search": "Search by number, supplier, amount"
+    },
+    "receipts": {
+      "search": "Search by number, order, supplier"
+    },
+    "bills": {
+      "search": "Search by number, supplier invoice, supplier"
+    },
+    "expiry": {
+      "search": "Search by product or batch number"
+    },
+    "imports": {
+      "search": "Search by file name",
+      "applied": "This import is applied and cannot be changed. The report shows what happened to each row."
+    }
+  },
+  "wp32": {
+    "openPaid": "{{how}} {{pct}} percent. Open these bills",
+    "openBill": "Open bill {{number}}",
+    "openBatch": "Open the expiry list for {{name}}",
+    "openList": "Open {{name}}"
   }
 }
