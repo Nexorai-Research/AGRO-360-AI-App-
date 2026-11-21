@@ -12,7 +12,6 @@ import {
   franchiseErrors,
   isPlatformUser,
   planOk,
-  publishedVersions,
   reasonOk,
 } from '../src/features/platform/PlatformScreens';
 import {
@@ -80,10 +79,17 @@ const franchise = {
   stateCode: '27',
   gstin: null,
   createdAt: '2026-01-01T00:00:00Z',
-  subscription: { planCode: 'GROW', versionNo: 2, effectiveFrom: '2026-01-01' },
+  version: 3,
+  city: 'Pune',
+  address: null,
+  adminLogin: {
+    loginId: 'KISAN-admin',
+    state: 'ACTIVE',
+    passwordStatus: 'TEMPORARY',
+    passwordIssuedAt: '2026-01-02T00:00:00Z',
+  },
   contact: { fullName: 'Ravi', mobile: '98******10', email: null },
   provisioning: { status: 'READY', steps: [{ key: 'roles', status: 'DONE', lastError: null }] },
-  entitlements: [{ key: 'limit.users', kind: 'LIMIT', limit: null }],
   usage: { reason: 'Usage is counted monthly.' },
   recentAudit: [],
 };
@@ -98,11 +104,9 @@ describe('logic', () => {
     expect(franchiseErrors(emptyFranchise())).toEqual([
       'legalName',
       'displayName',
-      'planVersionId',
       'contactName',
       'contactMobile',
       'contactEmail',
-      'stateCode',
     ]);
     const f = {
       ...emptyFranchise(),
@@ -110,7 +114,6 @@ describe('logic', () => {
       displayName: 'Kisan Agro',
       stateCode: '27',
       gstin: '29ABCDE1234F1Z5',
-      planVersionId: 'v2',
       contactName: 'Ravi',
       contactMobile: '9876543210',
       contactEmail: 'ravi@example.com',
@@ -121,11 +124,9 @@ describe('logic', () => {
       displayName: 'Kisan Agro',
       businessType: 'Agro input retailer',
       stateCode: '27',
-      planVersionId: 'v2',
       contact: { fullName: 'Ravi', mobile: '9876543210', email: 'ravi@example.com' },
       code: 'KISAN',
     });
-    expect(publishedVersions(plans.items)).toEqual([{ id: 'v2', label: 'Grow v2' }]);
     expect(reasonOk('too short')).toBe(false);
     expect(reasonOk('Owner asked to pause the account')).toBe(true);
     expect(planOk({ code: 'grow', name: 'Grow' })).toBe(true);
@@ -161,11 +162,7 @@ describe('screens', () => {
   });
   test('franchises: list, open one, suspend with a recorded reason', async () => {
     mockGet.mockImplementation((p: string) =>
-      Promise.resolve(
-        p === '/platform/franchises'
-          ? { items: [{ ...franchise, plan: { code: 'GROW', versionNo: 2 } }] }
-          : franchise,
-      ),
+      Promise.resolve(p === '/platform/franchises' ? { items: [franchise] } : franchise),
     );
     mockPost.mockResolvedValue({});
     await render(<FranchisesScreen />, { wrapper });

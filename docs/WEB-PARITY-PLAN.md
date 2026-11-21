@@ -245,3 +245,23 @@ Not for the app, on purpose: the new landing page and its self-playing tour, the
 | 33 | Languages: Hindi and Marathi for every new text of phases 25 to 32 | `i18n-parts/wp25..wp32.json` |
 
 Order: 25, 26, 27, 28, 29 (each adds server calls), then 30, 31, 32, then 33. One commit and one tracker section per phase, every feature with a test. Phases 31 and 32 are screen-level: before each one the web page is read side by side with the app's screen and only what is really missing is built. Limits as before: mocked API only, nothing checked on a phone or the real backend.
+
+## Eighth scan: web commit e90cee5 (22 November 2026)
+
+The web moved 5 commits after 7b8d087 (62 files). Read as a read-only snapshot through the GitHub API (compare `7b8d087...e90cee5`, nothing cloned).
+
+### Change to phase 26
+
+The web removed plans from a franchise: a new franchise has no plan, and the platform decides what it may use on a new Access control screen. So phase 26 no longer builds the plan list in the plan text above: the plan chips on "New franchise" and "Change plan" in the franchise detail are removed from the app (the web's Plans page still exists and stays). Phase 26 keeps what the plan text listed (first admin's login, Issue a new login, Location, state names) and adds Show password, Activate admin account and Edit.
+
+### New phases from the web commits
+
+| Phase | What | Endpoints | Permission | Web source |
+|---|---|---|---|---|
+| 34 | Access control for a franchise: tick the menus, pages and features a franchise may use; a franchise starts with Administration and Settings only | `GET/PUT /platform/franchises/:id/access` | view `platform.franchise.read`; change `platform.franchise.update` | `franchise-access.js`, `platform.controller.ts` |
+| 35 | Access control for a person: the franchise admin ticks what one user may use (Settings, tab Access) | `GET/PUT /users/:id/access` | `identity.user.manage` | `access.js`, `settings.js`, `identity.controller.ts` |
+| 36 | The owner switches their own account off: three confirmations, then sign-out | `POST /me/deactivate-account` | `identity.session.view` | `account.js`, `security.controller.ts` |
+| 37 | Staff: delete an employee; Exit with last working day and reason; search by name, code or designation; designation filter; emergency contact in the view | `DELETE /hr/employees/:id`, `POST /hr/employees/:id/exit` | `hr.employee.manage` | `hr.js` |
+| 38 | Payroll runs: edit and delete a draft run; cards (runs, employees paid, gross, net, drafts, to review); search, status, month and branch filters; leave type empty state | `PATCH/DELETE /hr/payroll-runs/:id` | `hr.payroll.prepare` | `hr-payroll.js`, `hr.controller.ts` |
+
+Order: 26 (done), 27, 28, 29, 34, 35, 36, 37, 38, then 30, 31, 32, and last 33 (languages for every new text of phases 25 to 38).

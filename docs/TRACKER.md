@@ -1270,3 +1270,19 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 25.3 Closed days in the history say "Closed automatically" when the server marks the source AUTO | DONE (mocked client) | `__tests__/wp25.test.tsx` |
 | 25.4 No `pos.dayend`: the schedule routes are not called; a failing schedule route never hides the shifts | DONE (mocked client) | `__tests__/wp25.test.tsx` |
 | Limit: tested with a mocked API only. The notice is shown on the shifts screen, not as a banner on every screen. Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 26: platform franchises without plans, with the owner's login
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `platform.js` and `platform.controller.ts` (web commits `abaeefd`, `542ac8f`, `e90cee5`). Code: `src/features/platform/PlatformScreens.tsx`, `src/features/platform/franchise-login.ts`.
+
+| Feature | State | Test |
+|---|---|---|
+| 26.1 A new franchise no longer picks a plan; Location (city or district) is sent when written; the state starts at 27 and is shown with its name | DONE (mocked client) | `__tests__/wp26.test.tsx`, `__tests__/wp12.test.tsx` |
+| 26.2 The reply of a new franchise carries the first admin's login: login id and one-time password shown once, Share both; a login that could not be made says why and shows no password | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.3 Owner login in the franchise list and detail: login id, badge (deactivated by the owner / owner set their own password / issued password in use / active) and the sentence the web shows | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.4 Show password (`GET /platform/franchises/:id/admin-login`) only while the issued password is in use; why it cannot be shown otherwise | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.5 Issue a new login (`POST ...:issue-admin-login`, only for an active or suspended franchise, asks first, one Idempotency-Key) | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.6 Activate the admin account (`POST ...:activate-admin`) when the owner switched their own account off | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.7 Edit a franchise (`PATCH`, version sent as If-Match; empty location, address and GSTIN go as null) | DONE (mocked client) | `__tests__/wp26.test.tsx` |
+| 26.8 The plan change and the plan chips are gone from the franchise (the web removed them); the detail points to Access control (phase 34) | DONE | `__tests__/wp26.test.tsx` |
+| Limits: the web's Copy button is Share on the phone (no clipboard package is installed). The state is typed as a 2-digit code with its name shown, not picked from a list. The Plans screen stays as the web still has it. Hindi and Marathi need a native check | Limit | - |

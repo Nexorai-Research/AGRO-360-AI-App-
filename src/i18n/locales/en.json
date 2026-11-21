@@ -6719,7 +6719,7 @@
       "status": "Status",
       "new": "New franchise",
       "newTitle": "New franchise",
-      "newHint": "Creates the franchise and its day-one defaults. The first admin receives an invitation.",
+      "newHint": "Creates the franchise and a login for the first admin (a login ID and a one-time password). The franchise starts with the Administration menu and Settings only: afterwards open Access control and tick the menus and features it should get.",
       "noPlan": "Publish a plan version first (Plans).",
       "plan": "Plan",
       "f": {
@@ -6732,7 +6732,8 @@
         "planVersionId": "Plan",
         "contactName": "Admin full name",
         "contactMobile": "Admin mobile",
-        "contactEmail": "Admin email"
+        "contactEmail": "Admin email",
+        "city": "Location (city or district, e.g. Pune)"
       },
       "v": {
         "legalName": "Fill this in.",
@@ -7309,5 +7310,68 @@
     "held": "Day-end for {{branch}} is postponed until {{time}}.",
     "pastAuto": "It is past the closing time for {{branch}}. The day closes automatically once every shift is closed.",
     "pastRemind": "It is past the closing time for {{branch}}. Please close the day."
+  },
+  "wp26": {
+    "location": "Location",
+    "notSet": "Not set",
+    "owner": "Owner login",
+    "adminLogin": "Admin login",
+    "notRecorded": "Not recorded",
+    "show": "Show password",
+    "login": {
+      "none": "No login recorded",
+      "off": "Deactivated by the owner",
+      "changed": "Owner set their own password",
+      "temporary": "Issued password in use",
+      "active": "Active"
+    },
+    "note": {
+      "none": "No login is recorded for this franchise. Use \"Issue a new login\".",
+      "off": "The owner switched their own account off on {{date}}. They cannot sign in until you activate it.",
+      "CHANGED": "The owner chose their own password on {{date}}. It cannot be shown; use \"Issue a new login\" if they are locked out.",
+      "TEMPORARY": "The password issued on {{date}} is still in use. The owner must choose their own at the first sign-in.",
+      "NOT_STORED": "The issued password is not kept for this franchise."
+    },
+    "reveal": {
+      "none": "No login is recorded for this franchise yet. Use \"Issue a new login\".",
+      "changed": "The owner has chosen their own password: it cannot be shown.",
+      "notKept": "The issued password is not kept for this franchise."
+    },
+    "cred": {
+      "created": "Login created",
+      "again": "Owner login",
+      "failed": "Login not created",
+      "intro": "Share these with the owner of {{name}}. They sign in with the login below and must choose a new password at the first sign-in.",
+      "loginId": "Login ID",
+      "password": "Temporary password",
+      "loginIdLater": "Login ID (when the password is set)",
+      "onceNote": "Share it before closing. You can also see it again later (Show password) until the owner chooses their own password.",
+      "againNote": "This is the password issued at creation. It stops being shown when the owner chooses their own. Every look is recorded in the audit trail.",
+      "share": "Share both",
+      "done": "Done"
+    },
+    "issue": {
+      "open": "Issue a new login",
+      "go": "Issue login",
+      "ask": "A new one-time password is made for the owner of {{name}}. The old password stops working and the owner must choose a new one at the next sign-in."
+    },
+    "activate": {
+      "open": "Activate admin account",
+      "go": "Activate",
+      "done": "The admin account is active again",
+      "ask": "{{name}} - the owner switched their own account off. Activating it lets them sign in again with the same login id and password."
+    },
+    "edit": {
+      "open": "Edit",
+      "title": "Edit {{name}}",
+      "save": "Save franchise",
+      "saved": "Franchise saved",
+      "address": "Address",
+      "bad": "Check this field."
+    },
+    "access": {
+      "title": "What this franchise can use",
+      "hint": "Which menus, pages and features the franchise and its people can see and use is set on the Access control screen."
+    }
   }
 }

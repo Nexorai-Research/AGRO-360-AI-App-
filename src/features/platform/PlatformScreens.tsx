@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Share, Text, View } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { ApiClient } from '@/api/client';
@@ -7,6 +7,14 @@ import { useAuth } from '@/auth/AuthProvider';
 import { Button } from '@/ui/Button';
 import { StateView } from '../stock/StateView';
 import { PLATFORM_ROLES, isPlatformUser } from './roles';
+import {
+  loginMessage,
+  loginStateKey,
+  revealOutcome,
+  stateName,
+  type AdminCredentials,
+  type AdminLogin,
+} from './franchise-login';
 import { Card, Chips, Field, Gate, Line, Notice, isNetwork, kit, useAction, useActionKey } from '../hr/kit';
 
 // Web parity phase 12: the platform console (apps/web/src/pages/platform.js and reports.js platformDashboardPage). Only platform
@@ -24,7 +32,8 @@ export interface FranchiseRow {
   displayName: string;
   status: string;
   stateCode: string | null;
-  plan: { code: string; versionNo: number } | null;
+  city: string | null;
+  adminLogin: AdminLogin | null;
   contact: { fullName: string | null; mobile: string | null } | null;
 }
 export interface FranchiseDetail {
@@ -36,19 +45,15 @@ export interface FranchiseDetail {
   businessType: string;
   status: string;
   statusReason: string | null;
+  version: number;
   stateCode: string | null;
+  city: string | null;
+  address: string | null;
   gstin: string | null;
   createdAt: string;
-  subscription: { planCode: string; versionNo: number; effectiveFrom: string } | null;
+  adminLogin: AdminLogin | null;
   contact: { fullName: string | null; mobile: string | null; email: string | null } | null;
   provisioning: { status: string; steps?: { key: string; status: string; lastError: string | null }[] };
-  entitlements: {
-    key: string;
-    kind: string;
-    enabled?: boolean;
-    limit?: number | null;
-    source?: string | null;
-  }[];
   usage: { reason: string };
   recentAudit: { at: string; action: string; outcome: string }[];
 }
@@ -72,23 +77,15 @@ export const fetchFranchises = (c: ApiClient, q: string, status: string, signal?
   });
 export const fetchPlans = async (c: ApiClient, signal?: AbortSignal) =>
   (await c.get<{ items: Plan[] }>('/platform/plans', { signal })).items;
-/** Published plan versions, the only ones a franchise can be put on (the web's `versions`). */
-export const publishedVersions = (plans: Plan[]) =>
-  plans.flatMap((p) =>
-    p.versions
-      .filter((v) => v.status === 'PUBLISHED')
-      .map((v) => ({ id: v.id, label: `${p.name} v${v.versionNo}` })),
-  );
-
 // ---- forms ----------------------------------------------------------------------------------------------------------------------
 export interface NewFranchise {
   legalName: string;
   displayName: string;
   businessType: string;
   stateCode: string;
+  city: string;
   gstin: string;
   code: string;
-  planVersionId: string;
   contactName: string;
   contactMobile: string;
   contactEmail: string;
@@ -97,10 +94,10 @@ export const emptyFranchise = (): NewFranchise => ({
   legalName: '',
   displayName: '',
   businessType: 'Agro input retailer',
-  stateCode: '',
+  stateCode: '27',
+  city: '',
   gstin: '',
   code: '',
-  planVersionId: '',
   contactName: '',
   contactMobile: '',
   contactEmail: '',
@@ -113,7 +110,6 @@ export function franchiseErrors(f: NewFranchise): FranchiseError[] {
     'legalName',
     'displayName',
     'businessType',
-    'planVersionId',
     'contactName',
     'contactMobile',
     'contactEmail',
@@ -136,13 +132,48 @@ export function franchiseBody(f: NewFranchise) {
     displayName: f.displayName.trim(),
     businessType: f.businessType.trim(),
     stateCode: f.stateCode.trim(),
-    planVersionId: f.planVersionId,
     contact: { fullName: f.contactName.trim(), mobile: f.contactMobile.trim(), email: f.contactEmail.trim() },
+    ...(f.city.trim() ? { city: f.city.trim() } : {}),
     ...(f.gstin.trim() ? { gstin: f.gstin.trim().toUpperCase() } : {}),
     ...(f.code.trim() ? { code: f.code.trim().toUpperCase() } : {}),
   };
 }
-/** Suspend, reactivate and a plan change need a recorded reason of 10-500 characters. */
+/** The fields of "Edit franchise" (PATCH, with If-Match): empty location, address and GSTIN are sent as null like the web. */
+export interface FranchiseEdit {
+  displayName: string;
+  legalName: string;
+  businessType: string;
+  stateCode: string;
+  city: string;
+  address: string;
+  gstin: string;
+}
+export const editFromDetail = (d: FranchiseDetail): FranchiseEdit => ({
+  displayName: d.displayName,
+  legalName: d.legalName ?? '',
+  businessType: d.businessType ?? '',
+  stateCode: d.stateCode ?? '27',
+  city: d.city ?? '',
+  address: d.address ?? '',
+  gstin: d.gstin ?? '',
+});
+export function editErrors(f: FranchiseEdit): (keyof FranchiseEdit)[] {
+  const e: (keyof FranchiseEdit)[] = [];
+  for (const k of ['displayName', 'legalName', 'businessType'] as const) if (!f[k].trim()) e.push(k);
+  if (!/^\d{2}$/.test(f.stateCode.trim())) e.push('stateCode');
+  if (f.gstin.trim() && f.gstin.trim().slice(0, 2) !== f.stateCode.trim()) e.push('gstin');
+  return e;
+}
+export const editBody = (f: FranchiseEdit) => ({
+  displayName: f.displayName.trim(),
+  legalName: f.legalName.trim(),
+  businessType: f.businessType.trim(),
+  stateCode: f.stateCode.trim(),
+  city: f.city.trim() || null,
+  address: f.address.trim() || null,
+  gstin: f.gstin.trim() ? f.gstin.trim().toUpperCase() : null,
+});
+/** Suspend and reactivate need a recorded reason of 10-500 characters. */
 export const reasonOk = (s: string) => s.trim().length >= 10 && s.trim().length <= 500;
 export const planOk = (f: { code: string; name: string }) =>
   /^[A-Z0-9_]{2,40}$/.test(f.code.trim().toUpperCase()) && f.name.trim().length >= 2;
@@ -167,21 +198,65 @@ const Page = ({ title, hint, children }: { title: string; hint?: string; childre
   </ScrollView>
 );
 
+// ---- the owner's login (phase 26) -------------------------------------------------------------------------------------------------
+/** The login id and the one-time password of a franchise owner. The web shows them once after creating or issuing; the phone offers Share instead of Copy. */
+export function CredentialsCard({
+  c,
+  name,
+  again,
+  onDone,
+}: {
+  c: AdminCredentials;
+  name: string;
+  again?: boolean;
+  onDone: () => void;
+}) {
+  const { t } = useTranslation();
+  const ready = c.status === 'READY' && !!c.loginId && !!c.temporaryPassword;
+  return (
+    <Card>
+      <Text style={kit.name}>
+        {t(!ready ? 'wp26.cred.failed' : again ? 'wp26.cred.again' : 'wp26.cred.created')}
+      </Text>
+      {ready ? (
+        <>
+          <Text style={kit.sub}>{t('wp26.cred.intro', { name })}</Text>
+          <Line label={t('wp26.cred.loginId')} value={c.loginId!} strong />
+          <Line label={t('wp26.cred.password')} value={c.temporaryPassword!} strong />
+          <Text style={kit.sub}>{t(again ? 'wp26.cred.againNote' : 'wp26.cred.onceNote')}</Text>
+          <Button
+            kind="ghost"
+            label={t('wp26.cred.share')}
+            onPress={() => void Share.share({ message: loginMessage(c.loginId!, c.temporaryPassword!) })}
+          />
+        </>
+      ) : (
+        <>
+          <Notice tone="error" text={c.reason ?? ''} />
+          {c.loginId ? <Line label={t('wp26.cred.loginIdLater')} value={c.loginId} /> : null}
+        </>
+      )}
+      <Button label={t('wp26.cred.done')} onPress={onDone} />
+    </Card>
+  );
+}
+const stateKind = (a: AdminLogin | null) => `wp26.login.${loginStateKey(a)}`;
+
 // ---- franchises -------------------------------------------------------------------------------------------------------------------
 function NewFranchiseForm({ onDone }: { onDone: () => void }) {
   const { t, client, userId } = useP();
+  void userId;
   const qc = useQueryClient();
   const keys = useActionKey();
   const act = useAction(keys);
   const [f, setF] = useState<NewFranchise>(emptyFranchise());
   const [tried, setTried] = useState(false);
-  const [made, setMade] = useState<{ code: string; status: string } | null>(null);
-  const plans = useQuery({
-    queryKey: K(userId, 'plans'),
-    queryFn: ({ signal }) => fetchPlans(client!, signal),
-    retry,
-  });
-  const versions = publishedVersions(plans.data ?? []);
+  const [made, setMade] = useState<{
+    code: string;
+    displayName: string;
+    status: string;
+    adminCredentials?: AdminCredentials;
+  } | null>(null);
   const errs = franchiseErrors(f);
   const set = (k: keyof NewFranchise) => (v: string) => setF({ ...f, [k]: v });
   const bad = (k: FranchiseError) => (tried && errs.includes(k) ? t(`wp12.fr.v.${k}`) : null);
@@ -190,27 +265,33 @@ function NewFranchiseForm({ onDone }: { onDone: () => void }) {
     'displayName',
     'businessType',
     'stateCode',
+    'city',
     'gstin',
     'code',
     'contactName',
     'contactMobile',
     'contactEmail',
   ];
+  if (made?.adminCredentials)
+    return (
+      <>
+        <Notice
+          tone={made.status === 'ACTIVE' ? 'ok' : 'error'}
+          text={t(made.status === 'ACTIVE' ? 'wp12.fr.active' : 'wp12.fr.incomplete', { code: made.code })}
+        />
+        <CredentialsCard c={made.adminCredentials} name={made.displayName} onDone={onDone} />
+      </>
+    );
   return (
     <Card>
       <Text style={kit.name}>{t('wp12.fr.newTitle')}</Text>
       <Text style={kit.sub}>{t('wp12.fr.newHint')}</Text>
-      {plans.data && versions.length === 0 ? <Notice tone="error" text={t('wp12.fr.noPlan')} /> : null}
-      <Chips
-        label={t('wp12.fr.plan')}
-        options={versions}
-        value={f.planVersionId}
-        onChange={(planVersionId) => setF({ ...f, planVersionId })}
-      />
-      {bad('planVersionId') ? <Text style={kit.sub}>{bad('planVersionId')}</Text> : null}
       {text.map((k) => (
         <Field key={k} label={t(`wp12.fr.f.${k}`)} value={f[k]} onChange={set(k)} error={bad(k)} />
       ))}
+      {/^\d{2}$/.test(f.stateCode.trim()) ? (
+        <Text style={kit.sub}>{stateName(f.stateCode.trim())}</Text>
+      ) : null}
       {act.failure ? <Notice tone="error" text={act.failure} /> : null}
       {made ? (
         <Notice
@@ -228,7 +309,12 @@ function NewFranchiseForm({ onDone }: { onDone: () => void }) {
             const body = franchiseBody(f);
             void act.run(
               async () => {
-                const r = await client!.post<{ code: string; status: string }>('/platform/franchises', {
+                const r = await client!.post<{
+                  code: string;
+                  displayName: string;
+                  status: string;
+                  adminCredentials?: AdminCredentials;
+                }>('/platform/franchises', {
                   body,
                   idempotencyKey: keys.keyFor(JSON.stringify(body)),
                 });
@@ -245,7 +331,7 @@ function NewFranchiseForm({ onDone }: { onDone: () => void }) {
   );
 }
 
-type Step = 'suspend' | 'reactivate' | 'plan';
+type Step = 'suspend' | 'reactivate';
 function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
   const { t, client, userId } = useP();
   const qc = useQueryClient();
@@ -253,41 +339,99 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
   const act = useAction(keys);
   const [step, setStep] = useState<Step | null>(null);
   const [reason, setReason] = useState('');
-  const [plan, setPlan] = useState('');
+  const [edit, setEdit] = useState<FranchiseEdit | null>(null);
+  const [asking, setAsking] = useState<'issue' | 'activate' | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
+  const [shown, setShown] = useState<{ c: AdminCredentials; again: boolean } | null>(null);
   const q = useQuery({
     queryKey: K(userId, 'franchise', id),
     queryFn: ({ signal }) =>
       client!.get<FranchiseDetail>(`/platform/franchises/${encodeURIComponent(id)}`, { signal }),
     retry,
   });
-  const plans = useQuery({
-    queryKey: K(userId, 'plans'),
-    queryFn: ({ signal }) => fetchPlans(client!, signal),
-    enabled: step === 'plan',
-    retry,
-  });
   const refresh = () => void qc.invalidateQueries({ queryKey: ['platform'] });
   const done = () => (setStep(null), setReason(''), refresh());
   const d = q.data;
+  const base = `/platform/franchises/${encodeURIComponent(id)}`;
   const send = () => {
-    if (!d || !step) return;
-    if (!reasonOk(reason) || (step === 'plan' && !plan)) return;
-    const body = step === 'plan' ? { planVersionId: plan, reason: reason.trim() } : { reason: reason.trim() };
+    if (!d || !step || !reasonOk(reason)) return;
     void act.run(
       () =>
-        step === 'plan'
-          ? client!.put(`/platform/franchises/${encodeURIComponent(id)}/subscription`, {
-              body,
-              idempotencyKey: keys.keyFor(JSON.stringify(body)),
-            })
-          : client!.post(`/platform/franchises/${encodeURIComponent(id)}:${step}`, {
-              body,
-              idempotencyKey: keys.keyFor(`${step}|${reason}`),
-            }),
+        client!.post(`${base}:${step}`, {
+          body: { reason: reason.trim() },
+          idempotencyKey: keys.keyFor(`${step}|${reason}`),
+        }),
       t(`wp12.fr.done.${step}`),
       done,
     );
   };
+  const save = () => {
+    if (!d || !edit || editErrors(edit).length > 0) return;
+    const body = editBody(edit);
+    void act.run(
+      () =>
+        client!.patch(base, {
+          body,
+          version: d.version,
+          idempotencyKey: keys.keyFor(`edit|${JSON.stringify(body)}`),
+        }),
+      t('wp26.edit.saved'),
+      () => (setEdit(null), refresh()),
+    );
+  };
+  /** The look is audited by the server; a password that is not there says why, like the web. */
+  const show = () =>
+    void act.run(async () => {
+      setInfo(null);
+      const r = await client!.get<{ adminLogin: AdminLogin | null; password: string | null }>(
+        `${base}/admin-login`,
+      );
+      const o = revealOutcome(r);
+      if (o.kind === 'show')
+        setShown({
+          c: { status: 'READY', loginId: o.loginId, temporaryPassword: o.password, mustChangePassword: true },
+          again: true,
+        });
+      else setInfo(t(`wp26.reveal.${o.kind}`));
+    }, '');
+  const issue = () =>
+    void act.run(
+      async () => {
+        const c = await client!.post<AdminCredentials>(`${base}:issue-admin-login`, {
+          body: {},
+          idempotencyKey: keys.keyFor(`issue|${id}`),
+        });
+        setShown({ c, again: false });
+        setAsking(null);
+      },
+      '',
+      refresh,
+    );
+  const activate = () =>
+    void act.run(
+      async () => {
+        await client!.post(`${base}:activate-admin`, {
+          body: {},
+          idempotencyKey: keys.keyFor(`activate|${id}`),
+        });
+        setAsking(null);
+      },
+      t('wp26.activate.done'),
+      refresh,
+    );
+  const a = d?.adminLogin ?? null;
+  const lines = (s: FranchiseEdit) =>
+    (['displayName', 'legalName', 'businessType', 'stateCode', 'city', 'address', 'gstin'] as const).map(
+      (k) => (
+        <Field
+          key={k}
+          label={t(k === 'address' ? 'wp26.edit.address' : `wp12.fr.f.${k}`)}
+          value={s[k]}
+          onChange={(v) => setEdit({ ...s, [k]: v })}
+          error={editErrors(s).includes(k) ? t(`wp12.fr.v.${k}`, { defaultValue: t('wp26.edit.bad') }) : null}
+        />
+      ),
+    );
   return (
     <Card>
       <Gate query={q} denied={false} deniedText={t('wp12.denied')} offlineText={t('wp12.offline')}>
@@ -301,15 +445,8 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
             <Line label={t('wp12.fr.idCode')} value={`${d.franchiseId} / ${d.code}`} />
             <Line label={t('wp12.fr.f.legalName')} value={d.legalName} />
             <Line label={t('wp12.fr.f.businessType')} value={d.businessType} />
-            <Line label={t('wp12.fr.stateGstin')} value={`${d.stateCode ?? '-'} / ${d.gstin ?? '-'}`} />
-            <Line
-              label={t('wp12.fr.plan')}
-              value={
-                d.subscription
-                  ? `${d.subscription.planCode} v${d.subscription.versionNo} (${d.subscription.effectiveFrom.slice(0, 10)})`
-                  : t('wp12.none')
-              }
-            />
+            <Line label={t('wp26.location')} value={d.city ?? t('wp26.notSet')} />
+            <Line label={t('wp12.fr.stateGstin')} value={`${stateName(d.stateCode)} / ${d.gstin ?? '-'}`} />
             <Line
               label={t('wp12.fr.contact')}
               value={
@@ -318,6 +455,27 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
                   : '-'
               }
             />
+            <Text style={kit.name}>{t('wp26.owner')}</Text>
+            {a ? (
+              <>
+                <Line label={t('wp26.cred.loginId')} value={a.loginId} />
+                <Text style={kit.sub}>{t(stateKind(a))}</Text>
+                <Text style={kit.sub}>
+                  {t(`wp26.note.${a.state === 'DEACTIVATED_BY_OWNER' ? 'off' : a.passwordStatus}`, {
+                    date: (
+                      (a.state === 'DEACTIVATED_BY_OWNER'
+                        ? a.stateChangedAt
+                        : a.passwordStatus === 'CHANGED'
+                          ? a.passwordChangedAt
+                          : a.passwordIssuedAt) ?? ''
+                    ).slice(0, 10),
+                    defaultValue: t('wp26.note.NOT_STORED'),
+                  })}
+                </Text>
+              </>
+            ) : (
+              <Text style={kit.sub}>{t('wp26.note.none')}</Text>
+            )}
             <Text style={kit.name}>{t('wp12.fr.setup')}</Text>
             {(d.provisioning.steps ?? []).length === 0 ? (
               <Text style={kit.sub}>{t('wp12.fr.noSteps')}</Text>
@@ -328,43 +486,54 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
                 {s.lastError ? ` · ${s.lastError}` : ''}
               </Text>
             ))}
-            <Text style={kit.name}>{t('wp12.fr.entitlements')}</Text>
-            {d.entitlements.length === 0 ? <Text style={kit.sub}>{t('wp12.fr.noEntitlements')}</Text> : null}
-            {d.entitlements.map((e) => (
-              <Line
-                key={e.key}
-                label={e.key}
-                value={
-                  e.kind === 'LIMIT'
-                    ? e.limit === null || e.limit === undefined
-                      ? t('wp12.fr.unlimited')
-                      : String(e.limit)
-                    : e.enabled
-                      ? t('wp12.fr.enabled')
-                      : t('wp12.fr.off')
-                }
-              />
-            ))}
+            <Text style={kit.name}>{t('wp26.access.title')}</Text>
+            <Text style={kit.sub}>{t('wp26.access.hint')}</Text>
             <Text style={kit.sub}>{d.usage.reason}</Text>
             <Text style={kit.name}>{t('wp12.fr.recent')}</Text>
-            {d.recentAudit.map((a, i) => (
+            {d.recentAudit.map((x, i) => (
               <Text key={i} style={kit.sub}>
-                {a.at.slice(0, 16).replace('T', ' ')} · {a.action} · {a.outcome}
+                {x.at.slice(0, 16).replace('T', ' ')} · {x.action} · {x.outcome}
               </Text>
             ))}
             {act.msg ? <Notice tone="ok" text={act.msg} /> : null}
             {act.failure ? <Notice tone="error" text={act.failure} /> : null}
+            {info ? <Notice tone="error" text={info} /> : null}
+            {shown ? (
+              <CredentialsCard
+                c={shown.c}
+                name={d.displayName}
+                again={shown.again}
+                onDone={() => setShown(null)}
+              />
+            ) : null}
+            {edit ? (
+              <>
+                <Text style={kit.name}>{t('wp26.edit.title', { name: d.displayName })}</Text>
+                {lines(edit)}
+                <Button
+                  label={t('wp26.edit.save')}
+                  disabled={act.busy || editErrors(edit).length > 0}
+                  onPress={save}
+                />
+                <Button kind="ghost" label={t('wp12.cancel')} onPress={() => setEdit(null)} />
+              </>
+            ) : null}
+            {asking ? (
+              <>
+                <Text style={kit.sub}>
+                  {t(asking === 'issue' ? 'wp26.issue.ask' : 'wp26.activate.ask', { name: d.displayName })}
+                </Text>
+                <Button
+                  label={t(asking === 'issue' ? 'wp26.issue.go' : 'wp26.activate.go')}
+                  disabled={act.busy}
+                  onPress={asking === 'issue' ? issue : activate}
+                />
+                <Button kind="ghost" label={t('wp12.cancel')} onPress={() => setAsking(null)} />
+              </>
+            ) : null}
             {step ? (
               <>
                 <Text style={kit.sub}>{t(`wp12.fr.ask.${step}`)}</Text>
-                {step === 'plan' ? (
-                  <Chips
-                    label={t('wp12.fr.newPlan')}
-                    options={publishedVersions(plans.data ?? [])}
-                    value={plan}
-                    onChange={setPlan}
-                  />
-                ) : null}
                 <Field
                   label={t('wp12.fr.reason')}
                   value={reason}
@@ -373,7 +542,7 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
                 />
                 <Button
                   label={t(`wp12.fr.go.${step}`)}
-                  disabled={act.busy || !reasonOk(reason) || (step === 'plan' && !plan)}
+                  disabled={act.busy || !reasonOk(reason)}
                   onPress={send}
                 />
                 <Button kind="ghost" label={t('wp12.cancel')} onPress={() => setStep(null)} />
@@ -402,7 +571,7 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
                     onPress={() =>
                       void act.run(
                         () =>
-                          client!.post(`/platform/franchises/${encodeURIComponent(id)}:reprovision`, {
+                          client!.post(`${base}:reprovision`, {
                             idempotencyKey: keys.keyFor(`re|${id}`),
                           }),
                         t('wp12.fr.retried'),
@@ -411,11 +580,28 @@ function FranchiseCard({ id, onClose }: { id: string; onClose: () => void }) {
                     }
                   />
                 ) : null}
+                {d.status !== 'TERMINATED' ? (
+                  <Button
+                    kind="ghost"
+                    label={t('wp26.edit.open')}
+                    onPress={() => (act.clear(), keys.reset(), setEdit(editFromDetail(d)))}
+                  />
+                ) : null}
+                {a?.passwordStatus === 'TEMPORARY' ? (
+                  <Button kind="ghost" label={t('wp26.show')} disabled={act.busy} onPress={show} />
+                ) : null}
+                {a?.state === 'DEACTIVATED_BY_OWNER' ? (
+                  <Button
+                    kind="ghost"
+                    label={t('wp26.activate.open')}
+                    onPress={() => (act.clear(), keys.reset(), setAsking('activate'))}
+                  />
+                ) : null}
                 {d.status === 'ACTIVE' || d.status === 'SUSPENDED' ? (
                   <Button
                     kind="ghost"
-                    label={t('wp12.fr.go.plan')}
-                    onPress={() => (keys.reset(), setStep('plan'))}
+                    label={t('wp26.issue.open')}
+                    onPress={() => (act.clear(), keys.reset(), setAsking('issue'))}
                   />
                 ) : null}
               </View>
@@ -464,14 +650,19 @@ export function FranchisesScreen() {
             <Text style={kit.sub}>
               {f.franchiseId} / {f.code} · {t(`wp12.st.${f.status}`, { defaultValue: f.status })}
             </Text>
-            <Line
-              label={t('wp12.fr.plan')}
-              value={f.plan ? `${f.plan.code} v${f.plan.versionNo}` : t('wp12.none')}
-            />
-            <Line label={t('wp12.fr.state')} value={f.stateCode ?? '-'} />
+            <Line label={t('wp26.location')} value={f.city ?? t('wp26.notSet')} />
+            <Line label={t('wp12.fr.state')} value={stateName(f.stateCode)} />
             <Line
               label={t('wp12.fr.contact')}
               value={f.contact ? `${f.contact.fullName ?? '-'} ${f.contact.mobile ?? ''}` : '-'}
+            />
+            <Line
+              label={t('wp26.adminLogin')}
+              value={
+                f.adminLogin
+                  ? `${f.adminLogin.loginId} · ${t(stateKind(f.adminLogin))}`
+                  : t('wp26.notRecorded')
+              }
             />
             <Button
               kind="ghost"
