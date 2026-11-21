@@ -1358,3 +1358,17 @@ Mocked API, not run against the real backend or a phone. Copied from the web's `
 | 37.3 Designation filter from the loaded staff; branch filter (shown with more than one branch) sent as `branchId` | DONE (mocked client) | `__tests__/wp37.test.tsx` |
 | Already built before, found while comparing: the profile shows the emergency contact; Exit with last working day and reason | DONE | `__tests__/stf-hr.test.tsx` |
 | Limits: Delete is on the employee's profile (the web has it in the row). The list does not show a Bank column (the profile does). Hindi and Marathi need a native check | Limit | - |
+
+## Web parity, phase 38: payroll runs like the web (cards, filters, edit and delete a draft)
+
+Mocked API, not run against the real backend or a phone. Copied from the web's `hr-payroll.js` and `hr.controller.ts`. Code: `src/features/staff/PayrollScreen.tsx`.
+
+| Feature | State | Test |
+|---|---|---|
+| 38.1 Cards over the list: payroll runs, employees paid, gross, net (added as decimals; a reversed run is left out), draft runs, runs to review | DONE (mocked client) | `__tests__/wp38.test.tsx` |
+| 38.2 Search by run number, month or status; filters for status, month (YYYY-MM, checked) and branch (with more than one branch) | DONE (mocked client) | `__tests__/wp38.test.tsx` |
+| 38.3 Edit a draft run's month (`PATCH /hr/payroll-runs/:id` `{period}`, one Idempotency-Key; says that drawn payslips are cleared) | DONE (mocked client) | `__tests__/wp38.test.tsx` |
+| 38.4 Delete a draft run with its draft payslips (`DELETE /hr/payroll-runs/:id`): asks first with the web sentence, Cancel sends nothing, a refusal shows its reference; only a draft run has the buttons on, with the reason why not shown for the others; only with `hr.payroll.prepare` | DONE (mocked client) | `__tests__/wp38.test.tsx` |
+| Already built before, found while comparing: no leave type yet is handled on the leave screen (the web's "no leave types" empty state) | DONE | `__tests__/hr-screens.test.tsx` |
+| Not for the app: the web's incentives "internal error" fix and "toasts at the top" are server and web layout changes | Not applicable | - |
+| Limits: edit and delete are on each run's card (the web has them in the row menu). The run's branch name is not shown on the card. Hindi and Marathi need a native check | Limit | - |

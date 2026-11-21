@@ -7545,5 +7545,26 @@
     "title": "Delete employee?",
     "ask": "{{code}} {{name}} will be removed. Only an employee with no attendance, leave, salary or payslips can be deleted; otherwise use Exit.",
     "done": "Employee deleted."
+  },
+  "wp38": {
+    "runs": "Payroll runs",
+    "paid": "Employees paid",
+    "drafts": "Draft runs",
+    "review": "To review",
+    "search": "Search by run number, month or status",
+    "month": "Month (YYYY-MM)",
+    "badMonth": "Write the month like 2026-11.",
+    "noMatch": "No run matches the search and filters.",
+    "edit": "Edit {{no}}",
+    "editTitle": "Edit the run",
+    "editNote": "Payslips already drawn are cleared; calculate again after changing the month.",
+    "save": "Save run",
+    "updated": "Run updated.",
+    "deleteRun": "Delete {{no}}",
+    "deleteTitle": "Delete {{no}}?",
+    "deleteAsk": "The draft run for {{period}} and its draft payslips will be removed. This cannot be undone.",
+    "delete": "Delete run",
+    "deleted": "Run deleted.",
+    "onlyDraft": "Only a draft run can be edited or deleted. Reopen a calculated run first; an approved run is reversed instead."
   }
 }

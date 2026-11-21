@@ -1,0 +1,71 @@
+{
+  "en": {
+    "wp38": {
+      "runs": "Payroll runs",
+      "paid": "Employees paid",
+      "drafts": "Draft runs",
+      "review": "To review",
+      "search": "Search by run number, month or status",
+      "month": "Month (YYYY-MM)",
+      "badMonth": "Write the month like 2026-11.",
+      "noMatch": "No run matches the search and filters.",
+      "edit": "Edit {{no}}",
+      "editTitle": "Edit the run",
+      "editNote": "Payslips already drawn are cleared; calculate again after changing the month.",
+      "save": "Save run",
+      "updated": "Run updated.",
+      "deleteRun": "Delete {{no}}",
+      "deleteTitle": "Delete {{no}}?",
+      "deleteAsk": "The draft run for {{period}} and its draft payslips will be removed. This cannot be undone.",
+      "delete": "Delete run",
+      "deleted": "Run deleted.",
+      "onlyDraft": "Only a draft run can be edited or deleted. Reopen a calculated run first; an approved run is reversed instead."
+    }
+  },
+  "hi": {
+    "wp38": {
+      "runs": "वेतन रन",
+      "paid": "वेतन पाने वाले कर्मचारी",
+      "drafts": "ड्राफ़्ट रन",
+      "review": "जाँचने के लिए",
+      "search": "रन नंबर, महीने या स्थिति से खोजें",
+      "month": "महीना (YYYY-MM)",
+      "badMonth": "महीना 2026-11 की तरह लिखें।",
+      "noMatch": "खोज और फ़िल्टर से कोई रन नहीं मिला।",
+      "edit": "{{no}} बदलें",
+      "editTitle": "रन बदलें",
+      "editNote": "बन चुकी पेस्लिप हट जाती हैं; महीना बदलने के बाद फिर से गणना करें।",
+      "save": "रन सहेजें",
+      "updated": "रन बदला गया।",
+      "deleteRun": "{{no}} हटाएँ",
+      "deleteTitle": "{{no}} हटाएँ?",
+      "deleteAsk": "{{period}} का ड्राफ़्ट रन और उसकी ड्राफ़्ट पेस्लिप हटा दी जाएँगी। इसे वापस नहीं किया जा सकता।",
+      "delete": "रन हटाएँ",
+      "deleted": "रन हटा दिया गया।",
+      "onlyDraft": "सिर्फ़ ड्राफ़्ट रन बदला या हटाया जा सकता है। गणना किया हुआ रन पहले दोबारा खोलें; मंज़ूर रन को उलटा जाता है।"
+    }
+  },
+  "mr": {
+    "wp38": {
+      "runs": "पगार रन",
+      "paid": "पगार मिळालेले कर्मचारी",
+      "drafts": "मसुदा रन",
+      "review": "तपासायचे",
+      "search": "रन क्रमांक, महिना किंवा स्थितीने शोधा",
+      "month": "महिना (YYYY-MM)",
+      "badMonth": "महिना 2026-11 असा लिहा.",
+      "noMatch": "शोध आणि फिल्टरशी जुळणारा एकही रन नाही.",
+      "edit": "{{no}} बदला",
+      "editTitle": "रन बदला",
+      "editNote": "तयार झालेल्या पेस्लिप काढल्या जातात; महिना बदलल्यावर पुन्हा गणना करा.",
+      "save": "रन जतन करा",
+      "updated": "रन बदलला.",
+      "deleteRun": "{{no}} हटवा",
+      "deleteTitle": "{{no}} हटवायचा?",
+      "deleteAsk": "{{period}} चा मसुदा रन आणि त्याच्या मसुदा पेस्लिप काढून टाकल्या जातील. हे परत करता येत नाही.",
+      "delete": "रन हटवा",
+      "deleted": "रन हटवला.",
+      "onlyDraft": "फक्त मसुदा रन बदलता किंवा हटवता येतो. गणना केलेला रन आधी पुन्हा उघडा; मंजूर रन उलटवला जातो."
+    }
+  }
+}
