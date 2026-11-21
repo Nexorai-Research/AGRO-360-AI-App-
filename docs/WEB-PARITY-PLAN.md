@@ -265,3 +265,24 @@ The web removed plans from a franchise: a new franchise has no plan, and the pla
 | 38 | Payroll runs: edit and delete a draft run; cards (runs, employees paid, gross, net, drafts, to review); search, status, month and branch filters; leave type empty state | `PATCH/DELETE /hr/payroll-runs/:id` | `hr.payroll.prepare` | `hr-payroll.js`, `hr.controller.ts` |
 
 Order: 26 (done), 27, 28, 29, 34, 35, 36, 37, 38, then 30, 31, 32, and last 33 (languages for every new text of phases 25 to 38).
+
+## Status after the eighth scan (22 November 2026)
+
+Branch `27-feature-implementation-from-25-to-33` (web-parity phases 1 to 25 merged in), one commit per phase. Full run: typecheck clean, lint with no errors, 121 test suites and 1610 tests passing, all against mocked APIs.
+
+| Phase | State |
+|---|---|
+| 25 Automatic day-end | Done |
+| 26 Franchises without plans, owner login (show, issue, activate), location, state names, edit | Done |
+| 27 Observability with a chosen period | Done |
+| 28 Where a sign-in came from; users newest first | Done |
+| 29 Delete and edit (documents, manufacturers, units, draft expenses and budgets) | Done |
+| 30 Date rules | Done where the app has the field; the others are not applicable (see the tracker) |
+| 31 Lists with search and filters | Partly: invoices, purchase orders, receipts, bills, expiry, import history, products newest first. Not yet: supplier payments, stock, adjustments, transfers, reorder |
+| 32 Home taps | Done for the widgets the app's home has |
+| 33 Languages | Hindi and Marathi done for every new text; the 19 other languages show English for the new texts |
+| 34 Access control for a franchise | Done |
+| 35 Access control for one person | Done |
+| 36 The owner switches their own account off | Done |
+| 37 Staff: delete, designation and branch filters, search | Done |
+| 38 Payroll runs: cards, filters, edit and delete a draft | Done |

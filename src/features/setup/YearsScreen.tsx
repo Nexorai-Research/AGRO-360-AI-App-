@@ -42,6 +42,9 @@ export default function YearsScreen() {
   const [ask, setAsk] = useState<Ask>(null);
   const [reason, setReason] = useState('');
   const [tried, setTried] = useState(false);
+  // web parity 16: the dates of the year being edited (declared here, before any early return)
+  const [eStart, setEStart] = useState('');
+  const [eEnd, setEEnd] = useState('');
   const ok = s.ready && s.can(SP.view);
 
   const years = useQuery({
@@ -84,8 +87,6 @@ export default function YearsScreen() {
     );
   }
   // web parity 16: edit the dates of a year nothing is booked in; delete the last one before it starts
-  const [eStart, setEStart] = useState('');
-  const [eEnd, setEEnd] = useState('');
   const neighbours = (y: FinancialYear) => {
     const i = rows.findIndex((x) => x.id === y.id);
     return { prev: rows[i - 1], next: rows[i + 1] };
